@@ -1,0 +1,20 @@
+{
+  "name": "protosite-core",
+  "version": "0.0.1",
+  "description": "Web Application Core",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BPanchenko/protosite-core.git"
+  },
+  "author": {
+    "name": "Boris Panchenko",
+    "email": "boris.v.panchenko@gmail.com",
+    "url": "http://bpanchenko.ru"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BPanchenko/protosite-core/issues"
+  },
+  "homepage": "https://github.com/BPanchenko/protosite-core#readme"
+}

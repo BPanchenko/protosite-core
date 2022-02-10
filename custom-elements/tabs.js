@@ -1,138 +1,132 @@
-(function() {
+{
+	class TablistElement extends HTMLElement {
 
-    /* Class `TabsContainerElement`
-     ========================================================================== */
+		get activeTab() {
+			return this.dataset.activeTab
+		}
 
-    class TablistElement extends HTMLElement {
+		get activeTabpanel() {
+			return this.dataset.activeTabpanel
+		}
 
-        get activeTab() {
-            return this.dataset.activeTab;
-        }
+		connectedCallback() {
+			this.classList.add('c-tabs-container')
+			this.setAttribute('role', 'tablist')
 
-        get activeTabpanel() {
-            return this.dataset.activeTabpanel;
-        }
+			if (!this.indicator) {
+				this.indicator = createIndicator()
+				this.appendChild(this.indicator)
+			}
 
-        connectedCallback() {
-            this.classList.add('c-tabs-container');
-            this.setAttribute('role', 'tablist');
+			this.addEventListener('click', this.onSelectTab, false)
+			setTimeout(this.activate.bind(this), 0)
+		}
 
-            if (!this.indicator) {
-                this.indicator = createIndicator();
-                this.appendChild(this.indicator);
-            }
+		activate() {
+			let selectedTab = this.querySelector('.c-tab[aria-selected=true]')
+			if(!selectedTab) selectedTab = this.children[0]
+			selectedTab.dispatchEvent(new Event("click", { bubbles: true }))
+		}
 
-            this.addEventListener('click', this.onSelectTab, false);
-            setTimeout(this.activate.bind(this), 0);
-        }
+		onSelectTab(e) {
+			let selectedTab
 
-        activate() {
-            let selectedTab = this.querySelector('.c-tab[aria-selected=true]');
-            if(!selectedTab) selectedTab = this.children[0];
-            selectedTab.dispatchEvent(new Event("click", { bubbles: true }));
-        }
+			// unselect don't current tabs
+			this.querySelectorAll('.c-tab').forEach(tab => {
+				if(tab.contains(e.target)) selectedTab = tab
+				else tab.ariaSelected = false
+			})
 
-        onSelectTab(e) {
-            let selectedTab;
+			// dispatch a change event with the data of the selected tab
+			if(selectedTab) {
+				this.dataset.activeTab = selectedTab.id
+				this.dataset.activeTabpanel = selectedTab.ariaControls
+				this.dispatchEvent(new Event("change", { bubbles: true }))
+			}
 
-            // unselect don't current tabs
-            this.querySelectorAll('.c-tab').forEach(tab => {
-                if(tab.contains(e.target)) selectedTab = tab;
-                else tab.ariaSelected = false;
-            });
+			this.renderIndicator()
+		}
 
-            // dispatch a change event with the data of the selected tab
-            if(selectedTab) {
-                this.dataset.activeTab = selectedTab.id;
-                this.dataset.activeTabpanel = selectedTab.ariaControls;
-                this.dispatchEvent(new Event("change", { bubbles: true }));
-            }
+		renderIndicator() {
+			let selectedTab = this.querySelector('.c-tab[aria-selected=true]')
 
-            this.renderIndicator();
+			this.indicator.setAttribute('aria-hidden', !selectedTab)
+			if(selectedTab) {
+				this.indicator.style.width = selectedTab.clientWidth + 'px'
+				this.indicator.style.transform = `translateX(${selectedTab.offsetLeft}px)`
+			}
+		}
+	}
 
-            return;
-        }
+	/* Class `TabElement`
+	 ========================================================================== */
 
-        renderIndicator() {
-            let selectedTab = this.querySelector('.c-tab[aria-selected=true]');
+	class TabElement extends HTMLElement {
 
-            this.indicator.setAttribute('aria-hidden', !selectedTab);
-            if(selectedTab) {
-                this.indicator.style.width = selectedTab.clientWidth + 'px';
-                this.indicator.style.transform = `translateX(${selectedTab.offsetLeft}px)`;
-            }
-        }
-    }
+		get ariaControls() {
+			return (this.getAttribute('aria-controls') || '')
+		}
 
-    /* Class `TabElement`
-     ========================================================================== */
+		set ariaSelected(flag) {
+			this.setAttribute('aria-selected', !!flag && flag != 'false')
+		}
 
-    class TabElement extends HTMLElement {
+		connectedCallback() {
+			this.classList.add('c-tab')
+			this.setAttribute('role', 'tab')
 
-        get ariaControls() {
-            return this.getAttribute('aria-controls') || '';
-        }
+			if (this.dataset.glyph) {
+				this.appendChild(createIcon(this.dataset.glyph))
+				delete this.dataset.glyph
+			}
 
-        set ariaSelected(flag) {
-            this.setAttribute('aria-selected', !!flag && flag != 'false');
-        }
+			if (this.dataset.text) {
+				this.appendChild(createLabel(this.dataset.text))
+				delete this.dataset.text
+			}
 
-        connectedCallback() {
-            this.classList.add('c-tab');
-            this.setAttribute('role', 'tab');
+			this.addEventListener('click', this.onSelectTab)
+		}
 
-            if (this.dataset.glyph) {
-                this.appendChild(createIcon(this.dataset.glyph));
-                delete this.dataset.glyph;
-            }
+		onSelectTab(e) {
+			e.preventDefault()
+			this.setAttribute('aria-selected', true)
+			return
+		}
+	}
 
-            if (this.dataset.text) {
-                this.appendChild(createLabel(this.dataset.text));
-                delete this.dataset.text;
-            }
+	// Private function's
 
-            this.addEventListener('click', this.onSelectTab);
-        }
+	function createIcon(glyph) {
+		let node = document.createElement('span')
+		node.classList.add('c-tab__icon')
+		node.innerHTML = `<span class="iconic" data-glyph="${glyph}"></span>`
+		return node
+	}
 
-        onSelectTab(e) {
-            e.preventDefault();
-            this.setAttribute('aria-selected', true);
-            return;
-        }
-    }
-
-    // Private function's
-
-    function createIcon(glyph) {
-        let node = document.createElement('span');
-        node.classList.add('c-tab__icon');
-        node.innerHTML = `<span class="iconic" data-glyph="${glyph}"></span>`;
-        return node;
-    }
-
-    function createLabel(text) {
-        let node = document.createElement('span');
-        node.classList.add('c-tab__label');
-        node.innerText = text;
-        return node;
-    }
+	function createLabel(text) {
+		let node = document.createElement('span')
+		node.classList.add('c-tab__label')
+		node.innerText = text
+		return node
+	}
 
 
-    function createIndicator() {
-        let node = document.createElement('span');
-        node.classList.add('c-tab-indicator');
-        return node;
-    }
+	function createIndicator() {
+		let node = document.createElement('span')
+		node.classList.add('c-tab-indicator')
+		return node
+	}
 
-    // Define the new element's
+	// Define the new element's
 
-    if (customElements) {
-        customElements.define('c-tablist', TablistElement);
-        customElements.define('c-tab', TabElement);
-    }
+	if (customElements) {
+		customElements.define('c-tablist', TablistElement)
+		customElements.define('c-tab', TabElement)
+	}
 
-    if (typeof exports != 'undefined' && !exports.nodeType) {
-        exports.TablistElement = TablistElement;
-        exports.TabElement = TabElement;
-    }
-}());
+	if (typeof exports != 'undefined' && !exports.nodeType) {
+		exports.TablistElement = TablistElement
+		exports.TabElement = TabElement
+	}
+}

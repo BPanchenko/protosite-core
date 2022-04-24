@@ -25,9 +25,7 @@
         }
 
         disconnectedCallback() {
-            this.removeElems(this.children)
-			this.#resizeObserver.disconnect()
-            this.#resizeObserver = null
+            this.clean()
         }
 
         render() {
@@ -64,6 +62,11 @@
 
         removeElems(list, start = 0) {
             Array.from(list).slice(start).forEach(elem => elem.remove())
+        }
+
+        clean() {
+            this.removeElems(this)
+            this.#resizeObserver = null;
         }
 
         #initResizeObserver() {

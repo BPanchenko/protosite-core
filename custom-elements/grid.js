@@ -66,8 +66,12 @@
 		renderLines(container, size) {
 			if (container instanceof HTMLElement && typeof size === 'number') {
 				let old_lines_count = container.children.length
-				let new_lines_count = Math.ceil(size/this.step)
+				let new_lines_count = Math.floor(size/this.step)
 				let diff_lines_count = new_lines_count - old_lines_count
+
+				if (this.orientation === 'center') {
+					new_lines_count += +!(new_lines_count % 2)
+				}
 				
 				if (diff_lines_count > 0) {
 					for (let i = diff_lines_count; i>0; i--) {
@@ -151,11 +155,11 @@
 		}
 
 		get orientation() {
-			return this.dataset.step
+			return this.dataset.orientation || 'center'
 		}
 		set orientation(value) {
 			console.assert(ORIENTATIONS.includes(value), 'Orientation is not supported')
-			this.dataset.step = value
+			this.dataset.orientation = value
 		}
 
 		get height() {

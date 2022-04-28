@@ -4,6 +4,7 @@
         ['line', 'line'],
         ['root', 'u-grid'],
         ['vertical', 'guide--vertical'],
+        ['sizes', 'sizes'],
     ])
 
     const TAGS = new Map([
@@ -11,6 +12,7 @@
         ['line', 'span'],
         ['root', 'u-grid'],
         ['vertical', 'div'],
+        ['sizes', 'span'],
     ])
 
     const DEFAULT_STEP = 16
@@ -19,6 +21,17 @@
         #horizontal
         #resizeObserver
         #vertical
+        #sizes
+
+        static get observedAttributes() {
+            return ['width', 'height']
+        }
+
+        attributeChangedCallback(name, oldValue, value) {
+            if (['width', 'height'].includes(name)) {
+                this.renderSizes();
+            }
+        }
         
         connectedCallback() {
             this.render()
@@ -33,10 +46,15 @@
             this.classList.add(CLS.get('root'))
             this.#horizontal = document.createElement(TAGS.get('horizontal'))
             this.#vertical = document.createElement(TAGS.get('vertical'))
+            this.#sizes = document.createElement(TAGS.get('vertical'))
+
             this.#horizontal.classList.add(CLS.get('horizontal'))
             this.#vertical.classList.add(CLS.get('vertical'))
+            this.#sizes.classList.add(CLS.get('sizes'))
+            
             this.appendChild(this.#horizontal)
             this.appendChild(this.#vertical)
+            this.appendChild(this.#sizes)
         }
 
         renderLines(container, size) {
@@ -50,14 +68,14 @@
                         let line = document.createElement(TAGS.get('line'))
                         line.classList.add(CLS.get('line'))
                         container.appendChild(line)
+                    }
 
-                        if (container.classList.contains(CLS.get('horizontal'))) {
-                            line.style.left += i * this.step + 'px'
-                        }
+                    if (container.classList.contains(CLS.get('horizontal'))) {
+                        line.style.left += i * this.step + 'px'
+                    }
 
-                        if (container.classList.contains(CLS.get('vertical'))) {
-                            line.style.top += i * this.step + 'px'
-                        }
+                    if (container.classList.contains(CLS.get('vertical'))) {
+                        line.style.top += i * this.step + 'px'
                     }
                 } else if (diff_lines_count < 0) {
                     this.removeElems(container.children, old_lines_count + diff_lines_count)
@@ -68,13 +86,17 @@
             }
         }
 
-        removeElems(list, start = 0) {
-            Array.from(list).slice(start).forEach(elem => elem.remove())
+        renderSizes() {
+            this.#sizes.innerHTML = `${this.width}px / ${this.height}px`
         }
 
         clean() {
             this.removeElems(this)
             this.#resizeObserver = null;
+        }
+
+        removeElems(list, start = 0) {
+            Array.from(list).slice(start).forEach(elem => elem.remove())
         }
 
         #initResizeObserver() {

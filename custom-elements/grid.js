@@ -1,136 +1,175 @@
 ;{
-    const CLS = new Map([
-        ['horizontal', 'guide--horizontal'],
-        ['line', 'line'],
-        ['root', 'u-grid'],
-        ['vertical', 'guide--vertical'],
-        ['sizes', 'sizes'],
-    ])
+	const CLS = new Map([
+		['horizontal', 'guide--horizontal'],
+		['line', 'line'],
+		['root', 'u-grid'],
+		['vertical', 'guide--vertical'],
+		['sizes', 'sizes'],
+	])
 
-    const TAGS = new Map([
-        ['horizontal', 'div'],
-        ['line', 'span'],
-        ['root', 'u-grid'],
-        ['vertical', 'div'],
-        ['sizes', 'span'],
-    ])
+	const ORIENTATIONS = [
+		'top-left',
+		'center'
+	]
 
-    const DEFAULT_STEP = 16
-    
-    customElements.define(TAGS.get('root'), class extends HTMLElement {
-        #horizontal
-        #resizeObserver
-        #vertical
-        #sizes
+	const TAGS = new Map([
+		['horizontal', 'div'],
+		['line', 'span'],
+		['root', 'u-grid'],
+		['vertical', 'div'],
+		['sizes', 'span'],
+	])
 
-        static get observedAttributes() {
-            return ['width', 'height']
-        }
+	const DEFAULT_STEP = 16
+	
+	customElements.define(TAGS.get('root'), class extends HTMLElement {
+		#horizontal
+		#resizeObserver
+		#vertical
+		#sizes
 
-        attributeChangedCallback(name, oldValue, value) {
-            if (['width', 'height'].includes(name)) {
-                this.renderSizes();
-            }
-        }
-        
-        connectedCallback() {
-            this.render()
-            this.#initResizeObserver()
-        }
+		static get observedAttributes() {
+			return ['width', 'height']
+		}
 
-        disconnectedCallback() {
-            this.clean()
-        }
+		attributeChangedCallback(name, oldValue, value) {
+			if (['width', 'height'].includes(name)) {
+				this.renderSizes();
+			}
+		}
+		
+		connectedCallback() {
+			this.render()
+			this.#initResizeObserver()
+		}
 
-        render() {
-            this.classList.add(CLS.get('root'))
-            this.#horizontal = document.createElement(TAGS.get('horizontal'))
-            this.#vertical = document.createElement(TAGS.get('vertical'))
-            this.#sizes = document.createElement(TAGS.get('vertical'))
+		disconnectedCallback() {
+			this.clean()
+		}
 
-            this.#horizontal.classList.add(CLS.get('horizontal'))
-            this.#vertical.classList.add(CLS.get('vertical'))
-            this.#sizes.classList.add(CLS.get('sizes'))
-            
-            this.appendChild(this.#horizontal)
-            this.appendChild(this.#vertical)
-            this.appendChild(this.#sizes)
-        }
+		render() {
+			this.classList.add(CLS.get('root'))
+			
+			this.#horizontal = document.createElement(TAGS.get('horizontal'))
+			this.#vertical = document.createElement(TAGS.get('vertical'))
+			this.#sizes = document.createElement(TAGS.get('vertical'))
 
-        renderLines(container, size) {
-            if (container instanceof HTMLElement && typeof size === 'number') {
-                let old_lines_count = container.children.length
-                let new_lines_count = Math.floor(size/this.step)
-                let diff_lines_count = new_lines_count - old_lines_count
-                
-                if (diff_lines_count > 0) {
-                    for (let i = diff_lines_count; i>0; i--) {
-                        let line = document.createElement(TAGS.get('line'))
-                        line.classList.add(CLS.get('line'))
-                        container.appendChild(line)
-                    }
-                } else if (diff_lines_count < 0) {
-                    this.removeElems(container.children, old_lines_count + diff_lines_count)
-                }
-            } else {
-                this.renderLines(this.#horizontal, this.width)
-                this.renderLines(this.#vertical, this.height)
-            }
+			this.#horizontal.classList.add(CLS.get('horizontal'))
+			this.#vertical.classList.add(CLS.get('vertical'))
+			this.#sizes.classList.add(CLS.get('sizes'))
+			
+			this.appendChild(this.#horizontal)
+			this.appendChild(this.#vertical)
+			this.appendChild(this.#sizes)
+		}
 
-            Array.from(this.#horizontal.children).forEach((elem, i) => {
-                elem.style.left += i * this.step + 'px'
-            })
+		renderLines(container, size) {
+			if (container instanceof HTMLElement && typeof size === 'number') {
+				let old_lines_count = container.children.length
+				let new_lines_count = Math.ceil(size/this.step)
+				let diff_lines_count = new_lines_count - old_lines_count
+				
+				if (diff_lines_count > 0) {
+					for (let i = diff_lines_count; i>0; i--) {
+						let line = document.createElement(TAGS.get('line'))
+						line.classList.add(CLS.get('line'))
+						container.appendChild(line)
+					}
+				} else if (diff_lines_count < 0) {
+					this.removeElems(container.children, old_lines_count + diff_lines_count)
+				}
+			} else {
+				this.renderLines(this.#horizontal, this.width)
+				this.renderLines(this.#vertical, this.height)
+			}
+		}
 
-            Array.from(this.#vertical.children).forEach((elem, i) => {
-                elem.style.top += i * this.step + 'px'
-            })
-        }
+		renderSizes() {
+			this.#sizes.innerHTML = `${this.width}px / ${this.height}px`
+		}
 
-        renderSizes() {
-            this.#sizes.innerHTML = `${this.width}px / ${this.height}px`
-        }
+		clean() {
+			this.removeElems(this)
+			this.#resizeObserver = null;
+		}
 
-        clean() {
-            this.removeElems(this)
-            this.#resizeObserver = null;
-        }
+		removeElems(list, start = 0) {
+			Array.from(list).slice(start).forEach(elem => elem.remove())
+		}
 
-        removeElems(list, start = 0) {
-            Array.from(list).slice(start).forEach(elem => elem.remove())
-        }
+		#initResizeObserver() {
+			this.#resizeObserver = new ResizeObserver(_.debounce(this.#onResize.bind(this), 150))
+			this.#resizeObserver.observe(this.parentNode)
+			this.#onResize()
+		}
 
-        #initResizeObserver() {
-            this.#resizeObserver = new ResizeObserver(entries => this.#onResize())
-            this.#resizeObserver.observe(this.parentNode)
-            this.#onResize()
-        }
+		#onResize(entries) {
+			let { offsetWidth: width, offsetHeight: height } = this.parentNode
+			this.width = width
+			this.height = height
+			this.renderLines()
+			this.#positioningLines()
+		}
 
-        #onResize() {
-            let { offsetWidth: width, offsetHeight: height } = this.parentNode
-            this.width = width
-            this.height = height
-            this.renderLines()
-        }
+		#positioningLines() {
+			switch (this.orientation) {
+				case 'top-left':
+					Array.from(this.#horizontal.children).forEach((elem, i) => {
+						elem.style.left = i * this.step + 'px'
+					})
+		
+					Array.from(this.#vertical.children).forEach((elem, i) => {
+						elem.style.top = i * this.step + 'px'
+					})
+					break
+				default: // center orientation
+					let cntLinesH = this.#horizontal.children.length
+					let widthLines = cntLinesH * this.step
+					Array.from(this.#horizontal.children).forEach((elem, i) => {
+						elem.style.left = i * this.step + (this.width/2 - widthLines/2) + 'px'
+					})
+					if (cntLinesH  % 2) {
+						this.#horizontal.children.item(Math.floor(cntLinesH/2)).classList.add('s-axis')
+					}
 
-        get width() {
-            return parseInt(this.getAttribute('width'))
-        }
-        set width(value) {
-            this.setAttribute('width', parseInt(value))
-        }
+					let cntLinesV = this.#vertical.children.length
+					let heightLines = cntLinesV * this.step
+					Array.from(this.#vertical.children).forEach((elem, i) => {
+						elem.style.top = i * this.step + (this.height/2 - heightLines/2) + 'px'
+					})
+					if (cntLinesV  % 2) {
+						this.#vertical.children.item(Math.floor(cntLinesV/2)).classList.add('s-axis')
+					}
+			}
+		}
 
-        get height() {
-            return parseInt(this.getAttribute('height'))
-        }
-        set height(value) {
-            this.setAttribute('height', parseInt(value))
-        }
+		get width() {
+			return parseInt(this.getAttribute('width'))
+		}
+		set width(value) {
+			this.setAttribute('width', parseInt(value))
+		}
 
-        get step() {
-            return parseInt(this.dataset.step) || DEFAULT_STEP
-        }
-        set step(value) {
-            this.dataset.step = parseInt(value)
-        }
-    })
+		get orientation() {
+			return this.dataset.step
+		}
+		set orientation(value) {
+			console.assert(ORIENTATIONS.includes(value), 'Orientation is not supported')
+			this.dataset.step = value
+		}
+
+		get height() {
+			return parseInt(this.getAttribute('height'))
+		}
+		set height(value) {
+			this.setAttribute('height', parseInt(value))
+		}
+
+		get step() {
+			return parseInt(this.dataset.step) || DEFAULT_STEP
+		}
+		set step(value) {
+			this.dataset.step = parseInt(value)
+		}
+	})
 }

@@ -69,14 +69,6 @@
                         line.classList.add(CLS.get('line'))
                         container.appendChild(line)
                     }
-
-                    if (container.classList.contains(CLS.get('horizontal'))) {
-                        line.style.left += i * this.step + 'px'
-                    }
-
-                    if (container.classList.contains(CLS.get('vertical'))) {
-                        line.style.top += i * this.step + 'px'
-                    }
                 } else if (diff_lines_count < 0) {
                     this.removeElems(container.children, old_lines_count + diff_lines_count)
                 }
@@ -84,6 +76,14 @@
                 this.renderLines(this.#horizontal, this.width)
                 this.renderLines(this.#vertical, this.height)
             }
+
+            Array.from(this.#horizontal.children).forEach((elem, i) => {
+                elem.style.left += i * this.step + 'px'
+            })
+
+            Array.from(this.#vertical.children).forEach((elem, i) => {
+                elem.style.top += i * this.step + 'px'
+            })
         }
 
         renderSizes() {

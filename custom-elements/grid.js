@@ -127,23 +127,26 @@
 					})
 					break
 				default: // center orientation
-					let cntLinesH = this.#horizontal.children.length
-					let widthLines = cntLinesH * this.step
-					Array.from(this.#horizontal.children).forEach((elem, i) => {
-						elem.style.left = i * this.step + (this.width/2 - widthLines/2) + 'px'
-					})
-					if (cntLinesH  % 2) {
-						this.#horizontal.children.item(Math.floor(cntLinesH/2)).classList.add('s-axis')
+
+					const _positioningLines = container => {
+						let countLines = container.children.length
+						let sizeLines = countLines * (this.step - 1)
+						Array.from(container.children).forEach((elem, i) => {
+							if (container === this.#horizontal) {
+								elem.style.left = i * this.step + (this.width/2 - sizeLines/2) + this.step/2 + 'px'
+							}
+							if (container === this.#vertical) {
+								elem.style.top = i * this.step + (this.height/2 - sizeLines/2) + this.step/2 + 'px'
+							}
+							elem.classList.remove('s-axis')
+						})
+						if (countLines  % 2) {
+							container.children.item(Math.floor(countLines/2)).classList.add('s-axis')
+						}
 					}
 
-					let cntLinesV = this.#vertical.children.length
-					let heightLines = cntLinesV * this.step
-					Array.from(this.#vertical.children).forEach((elem, i) => {
-						elem.style.top = i * this.step + (this.height/2 - heightLines/2) + 'px'
-					})
-					if (cntLinesV  % 2) {
-						this.#vertical.children.item(Math.floor(cntLinesV/2)).classList.add('s-axis')
-					}
+					_positioningLines(this.#horizontal)
+					_positioningLines(this.#vertical)
 			}
 		}
 

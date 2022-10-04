@@ -4,16 +4,16 @@
   "description": "Web Application Core",
   "type": "module",
   "main": "index.js",
-  "author": {
-    "name": "Boris Panchenko",
-    "email": "boris.v.panchenko@gmail.com",
-    "url": "http://bpanchenko.ru"
-  },
   "license": "MIT",
   "homepage": "https://www.npmjs.com/package/protosite-core",
   "repository": "https://github.com/BPanchenko/protosite-core",
   "bugs": {
     "email": "boris.v.panchenko@gmail.com",
     "url": "https://github.com/BPanchenko/protosite-core/issues"
+  },
+  "author": {
+    "name": "Boris Panchenko",
+    "email": "boris.v.panchenko@mail.ru",
+    "url": "https://bpanchenko.ru"
   }
 }

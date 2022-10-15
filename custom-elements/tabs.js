@@ -23,24 +23,24 @@
 		}
 
 		activate() {
-			let selectedTab = this.querySelector('.c-tab[aria-selected=true]')
-			if(!selectedTab) selectedTab = this.children[0]
-			selectedTab.dispatchEvent(new Event("click", { bubbles: true }))
+			let currentTab = this.querySelector('.c-tab[aria-current=true]')
+			if(!currentTab) currentTab = this.children[0]
+			currentTab.dispatchEvent(new Event("click", { bubbles: true }))
 		}
 
 		onSelectTab(e) {
-			let selectedTab
+			let currentTab
 
 			// unselect don't current tabs
 			this.querySelectorAll('.c-tab').forEach(tab => {
-				if(tab.contains(e.target)) selectedTab = tab
-				else tab.ariaSelected = false
+				if(tab.contains(e.target)) currentTab = tab
+				else tab.ariaCurrent = false
 			})
 
-			// dispatch a change event with the data of the selected tab
-			if(selectedTab) {
-				this.dataset.activeTab = selectedTab.id
-				this.dataset.activeTabpanel = selectedTab.ariaControls
+			// dispatch a change event with the data of the current tab
+			if(currentTab) {
+				this.dataset.activeTab = currentTab.id
+				this.dataset.activeTabpanel = currentTab.ariaControls
 				this.dispatchEvent(new Event("change", { bubbles: true }))
 			}
 
@@ -48,17 +48,17 @@
 		}
 
 		renderIndicator() {
-			let selectedTab = this.querySelector('.c-tab[aria-selected=true]')
+			let currentTab = this.querySelector('.c-tab[aria-current=true]')
 
-			this.indicator.setAttribute('aria-hidden', !selectedTab)
-			if(selectedTab) {
-				this.indicator.style.width = selectedTab.clientWidth + 'px'
-				this.indicator.style.transform = `translateX(${selectedTab.offsetLeft}px)`
+			this.indicator.setAttribute('aria-hidden', !currentTab)
+			if(currentTab) {
+				this.indicator.style.width = currentTab.clientWidth + 'px'
+				this.indicator.style.transform = `translateX(${currentTab.offsetLeft}px)`
 			}
 		}
 	}
 
-	/* Class `TabElement`
+	/* Tab Element
 	 ========================================================================== */
 
 	class TabElement extends HTMLElement {
@@ -67,8 +67,8 @@
 			return (this.getAttribute('aria-controls') || '')
 		}
 
-		set ariaSelected(flag) {
-			this.setAttribute('aria-selected', !!flag && flag != 'false')
+		set ariaCurrent(flag) {
+			this.setAttribute('aria-current', !!flag && flag != 'false')
 		}
 
 		connectedCallback() {
@@ -90,12 +90,12 @@
 
 		onSelectTab(e) {
 			e.preventDefault()
-			this.setAttribute('aria-selected', true)
+			this.setAttribute('aria-current', true)
 			return
 		}
 	}
 
-	// Private function's
+	// Utils
 
 	function createIcon(glyph) {
 		let node = document.createElement('span')
@@ -118,7 +118,7 @@
 		return node
 	}
 
-	// Define the new element's
+	// Define the custom elements
 
 	if (customElements) {
 		customElements.define('c-tablist', TablistElement)

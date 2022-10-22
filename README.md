@@ -14,18 +14,18 @@ npm i protosite-core --save-dev
 ### URL-адреса модулей для тега \<script\>
 
 ```bash
-http://assets.protosite.rocks/core/custom-elements/avatar.js
-http://assets.protosite.rocks/core/custom-elements/button.js
-http://assets.protosite.rocks/core/custom-elements/field-range.js
-http://assets.protosite.rocks/core/custom-elements/field.js
-http://assets.protosite.rocks/core/custom-elements/grid.js
-http://assets.protosite.rocks/core/custom-elements/pagination.js
-http://assets.protosite.rocks/core/custom-elements/popover.js
-http://assets.protosite.rocks/core/custom-elements/tabs.js
-http://assets.protosite.rocks/core/custom-elements/thumbnail.js
-http://assets.protosite.rocks/core/lib/component.js
-http://assets.protosite.rocks/core/lib/event-emmiter.js
-http://assets.protosite.rocks/core/lib/local-storage-map.js
-http://assets.protosite.rocks/core/lib/store.js
-http://assets.protosite.rocks/core/lib/utilites.js
+http://assets.protosite.rocks/core/custom-elements/avatar.mjs
+http://assets.protosite.rocks/core/custom-elements/button.mjs
+http://assets.protosite.rocks/core/custom-elements/field-range.mjs
+http://assets.protosite.rocks/core/custom-elements/field.mjs
+http://assets.protosite.rocks/core/custom-elements/grid.mjs
+http://assets.protosite.rocks/core/custom-elements/pagination.mjs
+http://assets.protosite.rocks/core/custom-elements/popover.mjs
+http://assets.protosite.rocks/core/custom-elements/tabs.mjs
+http://assets.protosite.rocks/core/custom-elements/thumbnail.mjs
+http://assets.protosite.rocks/core/lib/component.mjs
+http://assets.protosite.rocks/core/lib/event-emmiter.mjs
+http://assets.protosite.rocks/core/lib/local-storage-map.mjs
+http://assets.protosite.rocks/core/lib/store.mjs
+http://assets.protosite.rocks/core/lib/utilites.mjs
 ```

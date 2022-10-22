@@ -9,3 +9,23 @@ JavaScript библиотека компонентов для разработк
 ```bash
 npm i protosite-core --save-dev
 ```
+
+
+### URL-адреса модулей для тега \<script\>
+
+```bash
+http://assets.protosite.rocks/custom-elements/avatar.js
+http://assets.protosite.rocks/custom-elements/button.js
+http://assets.protosite.rocks/custom-elements/field-range.js
+http://assets.protosite.rocks/custom-elements/field.js
+http://assets.protosite.rocks/custom-elements/grid.js
+http://assets.protosite.rocks/custom-elements/pagination.js
+http://assets.protosite.rocks/custom-elements/popover.js
+http://assets.protosite.rocks/custom-elements/tabs.js
+http://assets.protosite.rocks/custom-elements/thumbnail.js
+http://assets.protosite.rocks/lib/component.js
+http://assets.protosite.rocks/lib/event-emmiter.js
+http://assets.protosite.rocks/lib/local-storage-map.js
+http://assets.protosite.rocks/lib/store.js
+http://assets.protosite.rocks/lib/utilites.js
+```

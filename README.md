@@ -7,7 +7,11 @@ JavaScript библиотека компонентов для разработк
 ### Установка библиотеки
 
 ```bash
-npm i protosite-core --save-dev
+npm i -D protosite-core
+```
+
+```bash
+yarn add -D protosite-core
 ```
 
 

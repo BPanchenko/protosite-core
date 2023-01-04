@@ -1,9 +1,9 @@
 import type {
-	CustomElementConstructor,
-	CustomElementInterface
+	ICustomElement,
+	ICustomElementConstructor
 } from './'
 
-type GClassDecorator<Type> = (target: Type) => Type
+type GClassDecorator<Type> = (target: Type) => Type | void
 
 type Metadata = {
     tagName: string;
@@ -16,7 +16,7 @@ const validateTagName = (name: string): void | never => {
     }
 }
 
-export const CustomElement = <T extends CustomElementConstructor>({
+export const CustomElement = <T extends ICustomElementConstructor>({
 	tagName,
 	template: tplString
 }: Metadata): GClassDecorator<T> => {
@@ -28,7 +28,7 @@ export const CustomElement = <T extends CustomElementConstructor>({
 	template.setAttribute('name', `custom-element-${tagName}`)
 
     return (target: T): T => {
-        const Adapter = class extends target implements CustomElementInterface {
+        const Adapter = class extends target implements ICustomElement {
             constructor(...args: any[]) {
                 super(args)
                 if (!this.shadowRoot) {

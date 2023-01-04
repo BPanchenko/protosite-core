@@ -1,0 +1,23 @@
+{
+	"compilerOptions": {
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"module": "ES6",
+		"sourceMap": true,
+		"target": "ES2020",
+    	"outDir": "assets",
+		"types": [
+			"jest"
+		],
+		"lib": [
+			"es6",
+			"dom"
+		]
+	},
+	"include": [
+		"**/*.ts"
+, "custom-elements/.d.ts"	],
+	"exclude": [
+		"node_modules"
+	]
+}

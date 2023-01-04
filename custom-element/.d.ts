@@ -1,4 +1,4 @@
-export interface ICustomElement extends HTMLElement {
+declare interface ICustomElement extends HTMLElement {
     readonly observedAttributes?: string[];
     attributeChangedCallback?(name: string, previous: string, current: string): void;
     connectedCallback(): void;
@@ -6,4 +6,4 @@ export interface ICustomElement extends HTMLElement {
     disconnectedCallback?(): void;
 }
 
-export type ICustomElementConstructor = new (...args: any[]) => ICustomElement;
+declare type ICustomElementConstructor = new (...args: any[]) => ICustomElement;

@@ -1,8 +1,3 @@
-import type {
-	ICustomElement,
-	ICustomElementConstructor
-} from './'
-
 type GClassDecorator<Type> = (target: Type) => Type | void
 
 type Metadata = {

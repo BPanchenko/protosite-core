@@ -15,8 +15,10 @@
 		]
 	},
 	"include": [
-		"**/*.ts"
-, "custom-elements/.d.ts"	],
+		"**/*.ts",
+		"**/.d.ts",
+		"**/.decorator.ts"
+	],
 	"exclude": [
 		"node_modules"
 	]

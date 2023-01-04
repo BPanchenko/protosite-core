@@ -1,4 +1,15 @@
-{
+import { CustomElement } from './.decorator'
+import type { ICustomElement } from './'
+
+@CustomElement({
+	tagName: 'c-avatar',
+    template: `
+		<figure>
+		<a></a>
+		</figure>
+	`
+})
+
 	const CLS = Object.create(null, {
 		component: { value: 'c-field' }
 		, container: { value: 'c-field-box' }

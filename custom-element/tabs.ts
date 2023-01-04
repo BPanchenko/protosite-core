@@ -1,4 +1,11 @@
-{
+import { CustomElement } from './.decorator'
+import type { ICustomElement } from './'
+
+@CustomElement({
+	tagName: '',
+    template: ``
+})
+
 	class TablistElement extends HTMLElement {
 
 		get activeTab() {

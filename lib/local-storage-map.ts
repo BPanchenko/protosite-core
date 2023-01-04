@@ -1,6 +1,6 @@
 import EventEmmiter from "./event-emmiter.js"
 
-class LocalStorageMap extends Map {
+class LocalStorage extends Map {
 
 	name
 
@@ -65,9 +65,9 @@ function getDefaultLocalStorageName() {
 	,'')
 }
 
-EventEmmiter.extend(LocalStorageMap.prototype)
+EventEmmiter.extend(LocalStorage.prototype)
 
 export {
 	getDefaultLocalStorageName,
-	LocalStorageMap
+	LocalStorage
 }

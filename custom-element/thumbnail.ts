@@ -1,3 +1,11 @@
+import { CustomElement } from './.decorator'
+import type { ICustomElement } from './'
+
+@CustomElement({
+	tagName: '',
+    template: ``
+})
+
 /**
  * Component: `c-thumbnail`
  *
@@ -92,15 +100,3 @@
 			return this
 		}
 	}
-	
-	/* Define the new element
-	 ========================================================================== */
-
-	if (customElements) {
-		customElements.define('c-thumbnail', AvatarElement)
-	}
-
-	if (typeof exports != 'undefined' && !exports.nodeType) {
-		exports.AvatarElement = AvatarElement
-	}
-}

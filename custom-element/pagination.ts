@@ -1,3 +1,11 @@
+import { CustomElement } from './.decorator'
+import type { ICustomElement } from './'
+
+@CustomElement({
+	tagName: '',
+    template: ``
+})
+
 /**
  * Component: 'c-pagination'
  * 
@@ -21,8 +29,6 @@
 	<a class="c-pagination__next" href="#next" data-page="7" aria-disabled="false"></a>
 </section>
 */
-
-{
 
 	/* Constants
 	 ========================================================================== */
@@ -140,17 +146,9 @@
 	/* Private
 	 ========================================================================== */
 
-	function onClick(evt) {
-		evt.preventDefault()
-		if (evt.target.dataset.hasOwnProperty('page')) {
-			evt.currentTarget.dataset.current = evt.target.dataset.page
+	function onClick(event: Event): void {
+		event.preventDefault()
+		if (event.target.dataset.hasOwnProperty('page')) {
+			event.currentTarget.dataset.current = evt.target.dataset.page
 		}
-		return
 	}
-
-	/* Define the new element
-	 ========================================================================== */
-
-	if (customElements) customElements.define('c-pagination', PaginationElement)
-	if (typeof exports != 'undefined' && !exports.nodeType) exports.PaginationElement = PaginationElement
-}

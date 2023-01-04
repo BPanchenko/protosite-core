@@ -1,3 +1,11 @@
+import { CustomElement } from './.decorator'
+import type { ICustomElement } from './'
+
+@CustomElement({
+	tagName: '',
+    template: ``
+})
+
 /**
  * Component: 'c-popover'
  * 
@@ -5,8 +13,6 @@
 	<a href="#" aria-controls="poID">...</a>
 	<c-popover id="poID">...</c-popover>
  */
-
-{
 	
 	/* Constants
 	 ========================================================================== */
@@ -321,5 +327,3 @@
 	if (typeof exports != 'undefined' && !exports.nodeType) {
 		exports.PopoverElement = PopoverElement
 	}
-
-}

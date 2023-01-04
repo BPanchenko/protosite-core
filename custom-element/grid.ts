@@ -1,4 +1,11 @@
-;{
+import { CustomElement } from './.decorator'
+import type { ICustomElement } from './'
+
+@CustomElement({
+	tagName: '',
+    template: ``
+})
+
 	const CLS = new Map([
 		['horizontal', 'guide--horizontal'],
 		['line', 'line'],

@@ -1,13 +1,13 @@
-const path = require('path');
-const glob = require('glob');
-const TerserPlugin = require('terser-webpack-plugin');
+const path = require('path')
+const glob = require('glob')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const files = glob
   .sync('**/*.ts', {
     dot: true,
     ignore: 'node_modules/**/*.ts'
   })
-  .map(file => path.resolve(__dirname, file));
+  .map(file => path.resolve(__dirname, file))
 
 module.exports = {
   mode: 'production',
@@ -20,26 +20,26 @@ module.exports = {
       {
         test: /\.ts$/,
         loader: 'ts-loader',
-        exclude: /node_modules/,
-      },
-    ],
+        exclude: /node_modules/
+      }
+    ]
   },
   resolve: {
-    extensions: ['.js', '.mjs', '.json'],
+    extensions: ['.js', '.mjs', '.json']
   },
   output: {
     clean: true,
     filename: '[name].mjs',
-    path: path.resolve(__dirname, 'assets'),
+    path: path.resolve(__dirname, 'assets')
   },
   optimization: {
     minimize: true,
     minimizer: [
       new TerserPlugin({
-		minify: TerserPlugin.uglifyJsMinify,
-		terserOptions: {}
+        minify: TerserPlugin.uglifyJsMinify,
+        terserOptions: {}
       })
     ],
     usedExports: true
   }
-};
+}

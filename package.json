@@ -11,7 +11,7 @@
     "build": "webpack",
     "fix": "run-s prettier lint:fix",
     "lint:fix": "npm run lint -- --fix",
-    "lint": "eslint . --ext .ts",
+    "lint": "eslint .",
     "prebuild": "npm run fix",
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch",

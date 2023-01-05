@@ -12,6 +12,6 @@
     "lib": ["ES2022", "DOM"]
   },
   "display": "Recommended",
-  "include": ["**/.d.ts", "**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules/**/*.ts"]
 }

@@ -7,7 +7,7 @@
     "assets/*"
   ],
   "scripts": {
-    "clean": "rimraf assets coverage temp",
+    "clean": "rimraf assets coverage",
     "fix": "run-s prettier lint:fix",
     "prebuild": "npm run lint",
     "build": "tsc --project tsconfig.json --showConfig",

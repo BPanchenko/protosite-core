@@ -1,15 +1,17 @@
 {
+  "$schema": "https://json.schemastore.org/tsconfig",
   "compileOnSave": true,
   "compilerOptions": {
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "module": "ES6",
     "sourceMap": true,
-    "target": "ES2020",
+    "target": "ES2022",
     "outDir": "assets",
     "types": ["jest"],
-    "lib": ["es6", "dom"]
+    "lib": ["ES2022", "DOM"]
   },
+  "display": "Recommended",
   "include": ["**/.d.ts", "**/*.ts"],
   "exclude": ["node_modules"]
 }

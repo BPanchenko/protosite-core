@@ -1,0 +1,16 @@
+{
+	"arrowParens": "avoid",
+	"bracketSameLine": false,
+	"bracketSpacing": true,
+	"overrides": [
+    {
+      "files": ["*.ts"],
+      "options": {
+        "parser": "typescript"
+      }
+    }
+  ],
+	"proseWrap": "always",
+  "singleQuote": true,
+  "trailingComma": "es5"
+}

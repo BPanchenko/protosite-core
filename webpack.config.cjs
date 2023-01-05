@@ -1,12 +1,13 @@
 const path = require('path');
 const glob = require('glob');
-const ESLintPlugin = require('eslint-webpack-plugin');
-const tsConfig = require('./tsconfig.json');
+const TerserPlugin = require('terser-webpack-plugin');
 
-const files = glob.sync(tsConfig.include[0], {
-  dot: true,
-  ignore: tsConfig.exclude[0],
-}).map(file => path.resolve(__dirname, file));
+const files = glob
+  .sync('**/*.ts', {
+    dot: true,
+    ignore: 'node_modules/**/*.ts'
+  })
+  .map(file => path.resolve(__dirname, file));
 
 module.exports = {
   mode: 'production',
@@ -18,27 +19,27 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-    	loader: 'ts-loader',
+        loader: 'ts-loader',
         exclude: /node_modules/,
       },
     ],
   },
   resolve: {
-    extensions: ['.ts'],
+    extensions: ['.js', '.mjs', '.json'],
   },
   output: {
-	clean: true,
+    clean: true,
     filename: '[name].mjs',
     path: path.resolve(__dirname, 'assets'),
   },
   optimization: {
-    usedExports: true,
-  },
-  plugins: [
-	new ESLintPlugin({
-		files
-	})
-  ],
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+		minify: TerserPlugin.uglifyJsMinify,
+		terserOptions: {}
+      })
+    ],
+    usedExports: true
+  }
 };
-
-

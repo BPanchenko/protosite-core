@@ -1,10 +1,4 @@
-import { CustomElement } from './.decorator'
-import type { ICustomElement } from './'
-
-@CustomElement({
-	tagName: '',
-    template: ``
-})
+import { CustomElementDecorator } from './.decorator'
 
 /**
  * Component: `c-thumbnail`
@@ -36,10 +30,12 @@ import type { ICustomElement } from './'
 		, xl: { value: 'c-thumbnail--xl' }
 	})
 
-	/* Element Class
-	 ========================================================================== */
 
-	class AvatarElement extends HTMLElement {
+	@CustomElementDecorator({
+		tagName: 'c-thumbnail',
+		template: ``
+	})
+	class ThumbnailElement extends HTMLElement implements CustomElement {
 		connectedCallback() {
 			this.render().cleanup()
 		}

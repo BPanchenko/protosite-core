@@ -5,21 +5,13 @@
     "module": "ES6",
     "sourceMap": true,
     "target": "ES2020",
-	"outDir": "assets",
-    "types": [
-      "jest"
-    ],
-    "lib": [
-      "es6",
-      "dom"
-    ]
+    "outDir": "assets",
+    "types": ["jest"],
+    "lib": ["es6", "dom"]
   },
   "include": [
-    "**/*.ts",
-    "**/.d.ts",
-    "**/.decorator.ts"
+	"**/.d.ts",
+	"**/*.ts",
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

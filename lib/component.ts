@@ -4,20 +4,19 @@ import Store from './store.js';
 
 export default class Component {
 	constructor(props = {}) {
-
 		// If there's a store passed in, subscribe to the state change
-		if(props.store instanceof Store) {
+		if (props.store instanceof Store) {
 			this.store = props.store;
 			this.store.events.subscribe('stateChange', () => this.render());
 		}
 
 		// Store the HTML element to attach the render to if set
-		if(props.hasOwnProperty('element')) {
+		if (props.hasOwnProperty('element')) {
 			this.element = props.element;
 		} else {
 			this.element = document.createElement(this.tagName);
-			if(Array.isArray(this.className)) this.element.classList.add(...this.className);
-			else if(this.className) this.element.classList.add('' + this.className);
+			if (Array.isArray(this.className)) this.element.classList.add(...this.className);
+			else if (this.className) this.element.classList.add('' + this.className);
 		}
 	}
 
@@ -25,6 +24,10 @@ export default class Component {
 		return this;
 	}
 
-	get tagName() { return 'div'; }
-	get className() { return null; }
+	get tagName() {
+		return 'div';
+	}
+	get className() {
+		return null;
+	}
 }

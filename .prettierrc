@@ -1,8 +1,8 @@
 {
-	"arrowParens": "avoid",
-	"bracketSameLine": false,
-	"bracketSpacing": true,
-	"overrides": [
+  "arrowParens": "avoid",
+  "bracketSameLine": false,
+  "bracketSpacing": true,
+  "overrides": [
     {
       "files": ["*.ts"],
       "options": {
@@ -10,7 +10,7 @@
       }
     }
   ],
-	"proseWrap": "always",
+  "proseWrap": "always",
   "singleQuote": true,
   "trailingComma": "es5"
 }

@@ -1,10 +1,4 @@
-import { CustomElement } from './.decorator'
-import type { ICustomElement } from './'
-
-@CustomElement({
-	tagName: '',
-    template: ``
-})
+import { CustomElementDecorator } from './.decorator';
 
 /**
  * Component: 'c-pagination'
@@ -30,125 +24,118 @@ import type { ICustomElement } from './'
 </section>
 */
 
-	/* Constants
-	 ========================================================================== */
+/* Constants
+	========================================================================== */
 
-	const attrs = ['data-displayed', 'data-current', 'data-pagesize', 'data-total']
+const attrs = ['data-displayed', 'data-current', 'data-pagesize', 'data-total'];
 
-	const CLS = Object.create(null, {
-		main: { value: 'c-pagination' }
-		, ellipsis: { value: 'c-pagination__ellipsis' }
-		, next: { value: 'c-pagination__next' }
-		, page: { value: 'c-pagination__page' }
-		, prev: { value: 'c-pagination__prev' }
-	})
+const CLS = Object.create(null, {
+	main: { value: 'c-pagination' },
+	ellipsis: { value: 'c-pagination__ellipsis' },
+	next: { value: 'c-pagination__next' },
+	page: { value: 'c-pagination__page' },
+	prev: { value: 'c-pagination__prev' },
+});
 
-	/* Element Class
-	 ========================================================================== */
-
-	class PaginationElement extends HTMLElement {
-		connectedCallback() {
-			this.render()
-			this.addEventListener('click', onClick, false)
-
-			(new MutationObserver(() => this.render())).observe(this, {
-				attributes: true,
-				attributeFilter: attrs
-			})
-		}
-
-		render() {
-			let {
-				current, pages,
-				disabledFirst,
-				disabledLast,
-				prev, next,
-				end, start
-			} = this.calc()
-
-			let html = `
-				<a class="c-pagination__prev" href="#page=${prev}" data-page="${prev}" aria-disabled="${prev == 1}"></a>
-				<a class="c-pagination__page" href="#page=1" data-page="1" aria-disabled="${disabledFirst}">1</a>
-				<span class="c-pagination__ellipsis" aria-disabled="${disabledFirst}">&hellip</span>
-			`
-
-			for (let i = start; i <= end; i++) {
-				html += `<a class="c-pagination__page" href="#page=${i}" data-page="${i}" aria-selected="${current == i}">${i}</a>`
-			}
-
-			html += `
-				<span class="c-pagination__ellipsis" aria-disabled="${disabledLast}">&hellip</span>
-				<a class="c-pagination__page" href="#page=${pages}" data-page="${pages}" aria-disabled="${disabledLast}">${pages}</a>
-				<a class="c-pagination__next" href="#page=${next}" data-page="${next}" aria-disabled="${next == pages}"></a>
-			`
-
-			this.innerHTML = html.replace(/[\s]{2,}/g, '')
-			return this
-		}
-
-		calc() {
-			let {
-				current = 1,
-				displayed = 5,
-				pagesize = 20,
-				total = 0
-			} = this.options()
-			
-			this.classList.add(CLS.main)
-			this.setAttribute('aria-disabled', !total)
-
-			let edgesStart = Math.floor((displayed-1)/2)
-			let edgesEnd = Math.ceil((displayed-1)/2)
-			let pages = Math.ceil(total/pagesize)
-			
-			if (displayed > pages) displayed = pages
-
-			let disabledFirst = current < edgesStart + 1
-			let disabledLast = current > pages - edgesEnd
-
-			let prev = current - 1
-			let next = current + 1
-
-			if (prev < 1) prev = 1
-			if (next > pages) next = pages
-
-			let start = current - edgesStart
-			let end = current + edgesEnd
-
-			if (start < 1) start = 1, end = displayed
-			if (end > pages) end = pages, start = end - displayed + 1
-
-			return {
-				current, pages,
-				disabledFirst, disabledLast,
-				prev, next,
-				end, start
-			}
-		}
-
-		options() {
-			let {
-				current = 1,
-				displayed = 5,
-				pagesize = 20,
-				total = 0
-			} = this.dataset
-
-			current   = parseInt(current)
-			displayed = parseInt(displayed)
-			pagesize  = parseInt(pagesize)
-			total	 = parseInt(total)
-
-			return { current, displayed, pagesize, total }
-		}
+@CustomElementDecorator({
+	tagName: 'c-pagination',
+	template: ``,
+})
+class PaginationElement extends HTMLElement implements CustomElement {
+	connectedCallback() {
+		this.render();
+		this.addEventListener(
+			'click',
+			onClick,
+			false
+		)(new MutationObserver(() => this.render())).observe(this, {
+			attributes: true,
+			attributeFilter: attrs,
+		});
 	}
 
-	/* Private
-	 ========================================================================== */
+	render() {
+		let { current, pages, disabledFirst, disabledLast, prev, next, end, start } = this.calc();
 
-	function onClick(event: Event): void {
-		event.preventDefault()
-		if (event.target.dataset.hasOwnProperty('page')) {
-			event.currentTarget.dataset.current = evt.target.dataset.page
+		let html = `
+			<a class="c-pagination__prev" href="#page=${prev}" data-page="${prev}" aria-disabled="${prev == 1}"></a>
+			<a class="c-pagination__page" href="#page=1" data-page="1" aria-disabled="${disabledFirst}">1</a>
+			<span class="c-pagination__ellipsis" aria-disabled="${disabledFirst}">&hellip</span>
+		`;
+
+		for (let i = start; i <= end; i++) {
+			html += `<a class="c-pagination__page" href="#page=${i}" data-page="${i}" aria-selected="${
+				current == i
+			}">${i}</a>`;
 		}
+
+		html += `
+			<span class="c-pagination__ellipsis" aria-disabled="${disabledLast}">&hellip</span>
+			<a class="c-pagination__page" href="#page=${pages}" data-page="${pages}" aria-disabled="${disabledLast}">${pages}</a>
+			<a class="c-pagination__next" href="#page=${next}" data-page="${next}" aria-disabled="${next == pages}"></a>
+		`;
+
+		this.innerHTML = html.replace(/[\s]{2,}/g, '');
+		return this;
 	}
+
+	calc() {
+		let { current = 1, displayed = 5, pagesize = 20, total = 0 } = this.options();
+
+		this.classList.add(CLS.main);
+		this.setAttribute('aria-disabled', !total);
+
+		let edgesStart = Math.floor((displayed - 1) / 2);
+		let edgesEnd = Math.ceil((displayed - 1) / 2);
+		let pages = Math.ceil(total / pagesize);
+
+		if (displayed > pages) displayed = pages;
+
+		let disabledFirst = current < edgesStart + 1;
+		let disabledLast = current > pages - edgesEnd;
+
+		let prev = current - 1;
+		let next = current + 1;
+
+		if (prev < 1) prev = 1;
+		if (next > pages) next = pages;
+
+		let start = current - edgesStart;
+		let end = current + edgesEnd;
+
+		if (start < 1) (start = 1), (end = displayed);
+		if (end > pages) (end = pages), (start = end - displayed + 1);
+
+		return {
+			current,
+			pages,
+			disabledFirst,
+			disabledLast,
+			prev,
+			next,
+			end,
+			start,
+		};
+	}
+
+	options() {
+		let { current = 1, displayed = 5, pagesize = 20, total = 0 } = this.dataset;
+
+		current = parseInt(current);
+		displayed = parseInt(displayed);
+		pagesize = parseInt(pagesize);
+		total = parseInt(total);
+
+		return { current, displayed, pagesize, total };
+	}
+}
+
+/* Private
+	========================================================================== */
+
+function onClick(event: Event): void {
+	event.preventDefault();
+	if (event.target.dataset.hasOwnProperty('page')) {
+		event.currentTarget.dataset.current = evt.target.dataset.page;
+	}
+}

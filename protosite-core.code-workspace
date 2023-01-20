@@ -5,12 +5,14 @@
 		}
 	],
 	"settings": {
-		"editor.detectIndentation": true,
-		"editor.insertSpaces": true,
-		"editor.tabSize": 4,
-		"[json]": {
-			"editor.tabSize": 2
-		},
-		"eslint.enable": true
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"editor.formatOnPaste": false,
+		"editor.formatOnSave": true,
+		"editor.formatOnSaveMode": "file",
+		"editor.formatOnType": false,
+		"eslint.enable": true,
+		"files.autoSave": "onFocusChange",
+		"vscode.tsc.compiler.alertTSConfigChanges": "never",
+		"vscode.tsc.compiler.alertOnError": "never"
 	}
 }

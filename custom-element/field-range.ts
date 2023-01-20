@@ -18,7 +18,7 @@ function _init() {
 
 @CustomElementDecorator({
 	tagName: 'c-field-container',
-	template: ``,
+	template: ``
 })
 class FieldRangeElement extends HTMLElement implements CustomElement {
 	constructor() {

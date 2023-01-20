@@ -61,7 +61,7 @@ export default class EventEmmiter {
 		if (BUS.has(this)) {
 			let events = BUS.get(this);
 			events.has(event) &&
-				events.get(event).forEach(callback => {
+				events.get(event).forEach((callback) => {
 					if (window.debug) {
 						console.log(
 							`%cevent %c"${event}"%c: `,

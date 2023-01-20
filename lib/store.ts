@@ -41,13 +41,13 @@ export default class Store extends EventEmmiter {
 						console.log(`change:state:${key}`, {
 							[key]: value,
 							previos: previosValue,
-							state: this.state,
+							state: this.state
 						});
 
 					this.trigger(`change:state:${key}`, {
 						[key]: value,
 						previos: previosValue,
-						state: this.state,
+						state: this.state
 					});
 				}
 
@@ -58,7 +58,7 @@ export default class Store extends EventEmmiter {
 				this.status = 'resting';
 
 				return true;
-			},
+			}
 		});
 	}
 
@@ -122,11 +122,11 @@ export default class Store extends EventEmmiter {
 		if (this.#debug)
 			console.log('update:state', {
 				state: this.state,
-				previos: previosState,
+				previos: previosState
 			});
 		this.trigger('update:state', {
 			state: this.state,
-			previos: previosState,
+			previos: previosState
 		});
 
 		return true;

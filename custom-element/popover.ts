@@ -15,7 +15,7 @@ const CLS = Object.create(null, {
 	main: { value: 'c-popover' },
 	body: { value: 'c-popover__body' },
 	show: { value: 'is-visible' },
-	hide: { value: 'is-hidden' },
+	hide: { value: 'is-hidden' }
 });
 
 const DEFAULT_FLOATING = true;
@@ -26,7 +26,7 @@ const SIDE_RATION = 1.1;
 
 @CustomElementDecorator({
 	tagName: 'c-popover',
-	template: ``,
+	template: ``
 })
 class PopoverElement extends HTMLElement implements CustomElement {
 	connectedCallback() {
@@ -125,22 +125,22 @@ class PopoverElement extends HTMLElement implements CustomElement {
 	========================================================================== */
 
 function addEventListeners() {
-	this.__onShow = e => {
+	this.__onShow = (e) => {
 		e.preventDefault();
 		this.show().placement();
 	};
-	this.__onHide = e => {
+	this.__onHide = (e) => {
 		e.preventDefault();
 		this.hide();
 	};
-	this.__onMove = e => {
+	this.__onMove = (e) => {
 		e.preventDefault();
 		this.placement({
 			mouseX: e.clientX,
-			mouseY: e.clientY,
+			mouseY: e.clientY
 		});
 	};
-	this.__onToggle = e => {
+	this.__onToggle = (e) => {
 		e.preventDefault();
 		this.toggle();
 	};
@@ -225,7 +225,7 @@ function getTransformStyle() {
 		top: parseInt(style.marginTop),
 		right: parseInt(style.marginRight),
 		bottom: parseInt(style.marginBottom),
-		left: parseInt(style.marginLeft),
+		left: parseInt(style.marginLeft)
 	};
 
 	offset.vertical = offset.top + offset.bottom;
@@ -298,7 +298,7 @@ function isInvalidPosition(value) {
 		'bottom-right',
 		'left',
 		'left-top',
-		'left-bottom',
+		'left-bottom'
 	].indexOf(value);
 }
 
@@ -316,7 +316,7 @@ function removeEventListeners() {
 	========================================================================== */
 
 function hideAllPopovers() {
-	Array.from(document.querySelectorAll('c-popover.is-visible')).forEach(elem => {
+	Array.from(document.querySelectorAll('c-popover.is-visible')).forEach((elem) => {
 		elem.classList.add('is-hidden');
 		elem.classList.remove('is-visible');
 	});

@@ -13,7 +13,7 @@ const validateTagName = (name: string): void | never => {
 
 export const CustomElementDecorator = <T extends CustomElementConstructor>({
 	tagName,
-	template: tplString,
+	template: tplString
 }: Metadata): GClassDecorator<T> => {
 	validateTagName(tagName);
 

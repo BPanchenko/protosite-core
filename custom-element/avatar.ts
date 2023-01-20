@@ -2,7 +2,7 @@ import { CustomElementDecorator } from './.decorator';
 
 const enum AttributeName {
 	Href = 'href',
-	Src = 'src',
+	Src = 'src'
 }
 
 @CustomElementDecorator({
@@ -13,7 +13,7 @@ const enum AttributeName {
 			<slot class="js-slot"></slot>
 			</a>
 		</figure>
-	`,
+	`
 })
 class AvatarElement extends HTMLElement implements CustomElement {
 	static readonly observedAttributes? = [AttributeName.Href, AttributeName.Src];

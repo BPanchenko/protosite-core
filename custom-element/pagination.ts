@@ -34,12 +34,12 @@ const CLS = Object.create(null, {
 	ellipsis: { value: 'c-pagination__ellipsis' },
 	next: { value: 'c-pagination__next' },
 	page: { value: 'c-pagination__page' },
-	prev: { value: 'c-pagination__prev' },
+	prev: { value: 'c-pagination__prev' }
 });
 
 @CustomElementDecorator({
 	tagName: 'c-pagination',
-	template: ``,
+	template: ``
 })
 class PaginationElement extends HTMLElement implements CustomElement {
 	connectedCallback() {
@@ -50,7 +50,7 @@ class PaginationElement extends HTMLElement implements CustomElement {
 			false
 		)(new MutationObserver(() => this.render())).observe(this, {
 			attributes: true,
-			attributeFilter: attrs,
+			attributeFilter: attrs
 		});
 	}
 
@@ -114,7 +114,7 @@ class PaginationElement extends HTMLElement implements CustomElement {
 			prev,
 			next,
 			end,
-			start,
+			start
 		};
 	}
 

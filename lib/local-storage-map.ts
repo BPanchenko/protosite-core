@@ -37,7 +37,7 @@ class LocalStorage extends Map {
 		let result = Object.create(null);
 		Array.from(this.keys())
 			.sort()
-			.forEach(key => (result[key] = this.get(key)));
+			.forEach((key) => (result[key] = this.get(key)));
 		return result;
 	}
 

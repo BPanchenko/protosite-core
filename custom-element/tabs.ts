@@ -2,7 +2,7 @@ import { CustomElementDecorator } from './.decorator';
 
 @CustomElementDecorator({
 	tagName: 'c-tabs-container',
-	template: ``,
+	template: ``
 })
 class TabsContainerElement extends HTMLElement implements CustomElement {
 	get activeTab() {
@@ -36,7 +36,7 @@ class TabsContainerElement extends HTMLElement implements CustomElement {
 		let currentTab;
 
 		// unselect don't current tabs
-		this.querySelectorAll('.c-tab').forEach(tab => {
+		this.querySelectorAll('.c-tab').forEach((tab) => {
 			if (tab.contains(e.target)) currentTab = tab;
 			else tab.ariaCurrent = false;
 		});
@@ -64,7 +64,7 @@ class TabsContainerElement extends HTMLElement implements CustomElement {
 
 @CustomElementDecorator({
 	tagName: 'c-tab',
-	template: ``,
+	template: ``
 })
 class TabElement extends HTMLElement implements CustomElement {
 	get ariaControls() {

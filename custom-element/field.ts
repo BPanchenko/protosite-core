@@ -5,7 +5,7 @@ const PATTERN_PWD = '^\\w{6,20}$';
 
 @CustomElementDecorator({
 	tagName: 'c-field-container',
-	template: ``,
+	template: ``
 })
 class FieldElement extends HTMLElement implements CustomElement {
 	connectedCallback() {
@@ -15,12 +15,12 @@ class FieldElement extends HTMLElement implements CustomElement {
 
 		this.render().cleanup();
 
-		this.addEventListener('click', e => this.focus());
-		this._field.addEventListener('blur', e => this.blur());
-		this._field.addEventListener('change', e => this.change());
-		this._field.addEventListener('focus', e => this.focus());
-		this._field.addEventListener('input', e => this.input());
-		if (this._button) this._button.addEventListener('click', e => this.clickButton(e));
+		this.addEventListener('click', (e) => this.focus());
+		this._field.addEventListener('blur', (e) => this.blur());
+		this._field.addEventListener('change', (e) => this.change());
+		this._field.addEventListener('focus', (e) => this.focus());
+		this._field.addEventListener('input', (e) => this.input());
+		if (this._button) this._button.addEventListener('click', (e) => this.clickButton(e));
 
 		this.blur().change();
 	}
@@ -196,7 +196,7 @@ class FieldElement extends HTMLElement implements CustomElement {
 			pattern: this.pattern,
 			placeholder: this.placeholder,
 			type: this.type,
-			value: this._defaultValue,
+			value: this._defaultValue
 		});
 		this.appendChild(elem);
 		return elem;
@@ -312,7 +312,7 @@ function createField(options = {}) {
 		case 'select':
 			node = document.createElement('select');
 			if (children.length) {
-				Array.from(children).forEach(child => {
+				Array.from(children).forEach((child) => {
 					if (child instanceof HTMLOptionElement) node.appendChild(child);
 				});
 			}

@@ -9,7 +9,6 @@
 			"dbaeumer.vscode-eslint",
 			"editorconfig.editorconfig",
 			"esbenp.prettier-vscode",
-			"morissonmaciel.typescript-auto-compiler",
 			"tyriar.sort-lines",
 			"zengxingxin.sort-js-object-keys"
 		]
@@ -21,8 +20,6 @@
 		"editor.formatOnSaveMode": "file",
 		"editor.formatOnType": false,
 		"eslint.enable": true,
-		"files.autoSave": "onFocusChange",
-		"vscode.tsc.compiler.alertTSConfigChanges": "never",
-		"vscode.tsc.compiler.alertOnError": "never"
+		"files.autoSave": "onFocusChange"
 	}
 }

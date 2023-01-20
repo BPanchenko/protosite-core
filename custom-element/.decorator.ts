@@ -1,9 +1,5 @@
 type CustomElementConstructor = new (...params: any[]) => CustomElement;
 
-type MappedTypeWithNewProperties<Type> = {
-	[Properties in keyof Type as KeyType]: Type[Properties];
-};
-
 type Metadata = {
 	tagName: string;
 	template: string;

@@ -1,13 +1,13 @@
-const path = require('path')
-const glob = require('glob')
-const TerserPlugin = require('terser-webpack-plugin')
+const path = require('path');
+const glob = require('glob');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const files = glob
   .sync('**/*.ts', {
     dot: true,
     ignore: 'node_modules/**/*.ts'
   })
-  .map(file => path.resolve(__dirname, file))
+  .map((file) => path.resolve(__dirname, file));
 
 module.exports = {
   mode: 'production',
@@ -19,8 +19,11 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
+        exclude: /node_modules/,
         loader: 'ts-loader',
-        exclude: /node_modules/
+        options: {
+          configFile: 'tsconfig.build.json'
+        }
       }
     ]
   },
@@ -42,4 +45,4 @@ module.exports = {
     ],
     usedExports: true
   }
-}
+};

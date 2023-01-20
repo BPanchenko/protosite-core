@@ -1,19 +1,21 @@
 {
-  "root": true,
+  "configType": "flat",
   "env": {
     "browser": false,
     "es6": true
   },
-  "configType": "flat",
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:jest/recommended"],
+  "ignores": ["assets/**", "**/node_modules/**"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
+    "ecmaVersion": 2022,
     "project": "tsconfig.json",
-    "sourceType": "module",
-    "ecmaVersion": 2022
+    "sourceType": "module"
   },
   "plugins": ["@typescript-eslint", "jest"],
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:jest/recommended", "prettier"],
+  "root": true,
   "rules": {
-    "@typescript-eslint/explicit-function-return-type": "warn"
+    "@typescript-eslint/explicit-function-return-type": "warn",
+    "array-element-newline": ["error", "consistent"]
   }
 }

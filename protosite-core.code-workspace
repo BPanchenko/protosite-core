@@ -4,6 +4,16 @@
 			"path": "."
 		}
 	],
+	"extensions": {
+		"recommendations": [
+			"dbaeumer.vscode-eslint",
+			"editorconfig.editorconfig",
+			"esbenp.prettier-vscode",
+			"morissonmaciel.typescript-auto-compiler",
+			"tyriar.sort-lines",
+			"zengxingxin.sort-js-object-keys"
+		]
+	},
 	"settings": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode",
 		"editor.formatOnPaste": false,

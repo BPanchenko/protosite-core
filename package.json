@@ -9,14 +9,15 @@
   "scripts": {
     "build:watch": "npm run build -- --watch",
     "build": "webpack",
-    "clean": "rimraf assets",
+    "clean": "rimraf assets .jest/coverage",
     "fix": "run-s prettier lint:fix",
     "lint:fix": "npm run lint -- --fix",
     "lint": "eslint .",
     "prebuild": "run-s clean fix",
     "prettier": "prettier --write .",
+    "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
-    "test": "jest --coverage"
+    "test": "jest --onlyChanged"
   },
   "devDependencies": {
     "@types/jest": "29.2.5",
@@ -35,6 +36,7 @@
     "puppeteer": "19.4.1",
     "rimraf": "4.1.1",
     "terser-webpack-plugin": "5.3.6",
+    "ts-jest": "29.0.5",
     "typescript": "4.9.4",
     "uglify-js": "3.17.4",
     "webpack": "5.75.0",

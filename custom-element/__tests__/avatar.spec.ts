@@ -1,8 +1,10 @@
 import AvatarElement from '../avatar';
 
-describe('Avatar', () => {
+describe('AvatarElement', () => {
 	const avatar = new AvatarElement();
+
 	test('renders correctly', () => {
-		expect(avatar).toMatchSnapshot();
+		document.body.appendChild(avatar);
+		expect(document.body).toMatchSnapshot();
 	});
 });

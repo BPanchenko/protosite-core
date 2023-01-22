@@ -1,8 +1,8 @@
-import { CustomElementDecorator } from './.decorator';
+import { CustomElementDecorator } from '../lib/CustomElementDecorator';
 
 /**
  * Component: 'c-popover'
- * 
+ *
  * Example:
 	<a href="#" aria-controls="poID">...</a>
 	<c-popover id="poID">...</c-popover>

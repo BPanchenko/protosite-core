@@ -1,4 +1,4 @@
-import { CustomElementDecorator } from './.decorator'
+import { CustomElementDecorator } from '../lib/CustomElementDecorator'
 
 /**
  * Component: `c-thumbnail`
@@ -46,7 +46,7 @@ import { CustomElementDecorator } from './.decorator'
 			this.innerHTML = ''
 
 			this.classList.add(CLS.main)
-			
+
 			if (~['xs','sm','md','lg','xl'].indexOf(size)) {
 				this.classList.add(CLS[size])
 			} else if (size) {
@@ -54,7 +54,7 @@ import { CustomElementDecorator } from './.decorator'
 			}
 
 			let container = this
-			
+
 			if (href) {
 				this._link = document.createElement('a')
 				this._link.classList.add(CLS.link)

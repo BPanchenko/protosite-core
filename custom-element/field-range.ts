@@ -1,4 +1,4 @@
-import { CustomElementDecorator } from './.decorator';
+import { CustomElementDecorator } from '../lib/CustomElementDecorator';
 
 const DEFAULT_MIN = 2;
 const DEFAULT_MAX = 64;

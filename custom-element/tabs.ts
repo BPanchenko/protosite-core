@@ -1,4 +1,4 @@
-import { CustomElementDecorator } from './.decorator';
+import { CustomElementDecorator } from '../lib/CustomElementDecorator';
 
 @CustomElementDecorator({
 	tagName: 'c-tabs-container',

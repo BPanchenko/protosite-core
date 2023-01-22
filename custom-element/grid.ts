@@ -1,4 +1,4 @@
-import { CustomElementDecorator } from './.decorator'
+import { CustomElementDecorator } from '../lib/CustomElementDecorator'
 
 const CLS = new Map([
 	['horizontal', 'guide--horizontal'],
@@ -26,7 +26,7 @@ const DEFAULT_STEP = 16
 @CustomElementDecorator({
 	tagName: 'u-grid',
 	template: ``
-})	
+})
 class UtilityGridElement extends HTMLElement implements CustomElement {
 	#horizontal
 	#resizeObserver
@@ -42,7 +42,7 @@ class UtilityGridElement extends HTMLElement implements CustomElement {
 			this.renderSizes();
 		}
 	}
-	
+
 	connectedCallback() {
 		this.render()
 		this.#initResizeObserver()
@@ -54,7 +54,7 @@ class UtilityGridElement extends HTMLElement implements CustomElement {
 
 	render() {
 		this.classList.add(CLS.get('root'))
-		
+
 		this.#horizontal = document.createElement(TAGS.get('horizontal'))
 		this.#vertical = document.createElement(TAGS.get('vertical'))
 		this.#sizes = document.createElement(TAGS.get('vertical'))
@@ -62,7 +62,7 @@ class UtilityGridElement extends HTMLElement implements CustomElement {
 		this.#horizontal.classList.add(CLS.get('horizontal'))
 		this.#vertical.classList.add(CLS.get('vertical'))
 		this.#sizes.classList.add(CLS.get('sizes'))
-		
+
 		this.appendChild(this.#horizontal)
 		this.appendChild(this.#vertical)
 		this.appendChild(this.#sizes)
@@ -77,7 +77,7 @@ class UtilityGridElement extends HTMLElement implements CustomElement {
 			if (this.orientation === 'center') {
 				new_lines_count += +!(new_lines_count % 2)
 			}
-			
+
 			if (diff_lines_count > 0) {
 				for (let i = diff_lines_count; i>0; i--) {
 					let line = document.createElement(TAGS.get('line'))
@@ -126,7 +126,7 @@ class UtilityGridElement extends HTMLElement implements CustomElement {
 				Array.from(this.#horizontal.children).forEach((elem, i) => {
 					elem.style.left = i * this.step + 'px'
 				})
-	
+
 				Array.from(this.#vertical.children).forEach((elem, i) => {
 					elem.style.top = i * this.step + 'px'
 				})

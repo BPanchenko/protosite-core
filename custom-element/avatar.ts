@@ -1,4 +1,4 @@
-import { CustomElementDecorator } from './.decorator';
+import { CustomElementDecorator } from '../lib/CustomElementDecorator';
 
 const enum AttributeName {
 	Href = 'href',

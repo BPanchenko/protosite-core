@@ -1,8 +1,8 @@
-import { CustomElementDecorator } from './.decorator';
+import { CustomElementDecorator } from '../lib/CustomElementDecorator';
 
 /**
  * Component: 'c-pagination'
- * 
+ *
  * Example:
 <c-pagination data-displayed="5" data-current="7" data-pagesize="20" data-total="1234"></c-pagination>
  *

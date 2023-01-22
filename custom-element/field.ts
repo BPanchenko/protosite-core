@@ -1,4 +1,4 @@
-import { CustomElementDecorator } from './.decorator';
+import { CustomElementDecorator } from '../lib/CustomElementDecorator';
 
 const PATTERN_EMAIL = '^\\S+@\\S+\\.\\S+$';
 const PATTERN_PWD = '^\\w{6,20}$';

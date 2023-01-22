@@ -23,6 +23,7 @@ export const CustomElementDecorator = <T extends CustomElementConstructor>({
 
 	return (target: T): T => {
 		const Adapter = class extends target {
+			readonly tag;
 			constructor(...params: any[]) {
 				super(params);
 				this.classList.add('u-display-contents');

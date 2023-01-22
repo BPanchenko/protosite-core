@@ -10,14 +10,14 @@
     "build:watch": "npm run build -- --watch",
     "build": "webpack",
     "clean": "rimraf assets .jest/coverage",
-    "fix": "run-s prettier lint:fix",
+    "fix": "run-s lint:fix",
     "lint:fix": "npm run lint -- --fix",
     "lint": "eslint .",
-    "prebuild": "run-s clean fix",
+    "prebuild": "run-s clean fix test:coverage",
     "prettier": "prettier --write .",
     "test:coverage": "jest --coverage",
-    "test:watch": "jest --watch",
-    "test": "jest --onlyChanged"
+    "test:watch": "npm run test -- --watch",
+    "test": "jest --onlyChanged --update-snapshot"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "5.16.5",

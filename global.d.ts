@@ -7,4 +7,4 @@ declare interface CustomElement extends HTMLElement {
 	disconnectedCallback?(): void;
 }
 
-declare type GClassDecorator<Type> = (target: Type) => Type | void;
+declare type GClassDecorator<Type> = (target: Type) => Type;

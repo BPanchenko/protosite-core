@@ -1,6 +1,6 @@
 type CustomElementConstructor = new (...params: any[]) => CustomElement;
 
-type Metadata = {
+export type Metadata = {
 	tagName: string;
 	template: string;
 };

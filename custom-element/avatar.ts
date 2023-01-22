@@ -1,11 +1,11 @@
-import { CustomElementDecorator } from '../lib/CustomElementDecorator';
+import { CustomElementDecorator, Metadata } from '../lib/CustomElementDecorator';
 
 const enum AttributeName {
 	Href = 'href',
 	Src = 'src'
 }
 
-@CustomElementDecorator({
+export const AvatarMetadata: Metadata = {
 	tagName: 'c-avatar',
 	template: `
 		<figure class="c-avatar js-container">
@@ -14,7 +14,9 @@ const enum AttributeName {
 			</a>
 		</figure>
 	`
-})
+};
+
+@CustomElementDecorator(AvatarMetadata)
 class AvatarElement extends HTMLElement implements CustomElement {
 	static readonly observedAttributes? = [AttributeName.Href, AttributeName.Src];
 

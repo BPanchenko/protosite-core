@@ -7,7 +7,7 @@
     "sourceMap": true,
     "target": "ES6",
     "outDir": "assets",
-    "types": ["jest", "jest-image-snapshot", "puppeteer"],
+    "types": ["jest", "jest-image-snapshot"],
     "lib": ["ES2022", "DOM"]
   },
   "display": "Recommended",

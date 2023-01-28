@@ -19,12 +19,12 @@ class PuppeteerEnvironment extends JSDOMEnvironment {
     }
 
     // connect to puppeteer
-    this.global.__browser__ = await puppeteer.connect({
+    this.global.browser = await puppeteer.connect({
       browserWSEndpoint: wsEndpoint
     });
 
     // define method newBlankPage()
-    this.global.__browser__.newBlankPage = async function () {
+    this.global.browser.newBlankPage = async function () {
       const page = await this.newPage();
       await page.setContent(BLANK_HTML);
       return page;
@@ -32,8 +32,8 @@ class PuppeteerEnvironment extends JSDOMEnvironment {
   }
 
   async teardown() {
-    if (this.global.__browser__) {
-      this.global.__browser__.disconnect();
+    if (this.global.browser) {
+      this.global.browser.disconnect();
     }
     await super.teardown();
   }

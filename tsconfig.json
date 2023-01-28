@@ -4,17 +4,19 @@
     "baseUrl": ".",
     "esModuleInterop": true,
     "experimentalDecorators": true,
-    "module": "ES6",
+    "module": "ESNext",
     "sourceMap": true,
     "target": "ES6",
     "outDir": "esm",
     "types": ["jest", "jest-image-snapshot", "lodash"],
     "lib": ["ES2022", "DOM"],
     "paths": {
+      "@bpanchenko/uikit": ["node_modules/@bpanchenko/uikit"],
       "lodash": ["node_modules/lodash"],
       "puppeteer": ["node_modules/puppeteer"]
     },
-    "rootDirs": ["src", "esm"]
+    "rootDirs": ["src", "esm"],
+    "plugins": [{ "name": "typescript-plugin-css-modules" }]
   },
   "display": "Recommended",
   "include": ["src/**/*.ts"],

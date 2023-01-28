@@ -1,13 +1,16 @@
-const { readFile } = require('fs').promises;
+const {
+  readFileSync,
+  promises: { readFile }
+} = require('fs');
 const JSDOMEnvironment = require('jest-environment-jsdom').TestEnvironment;
 const puppeteer = require('puppeteer');
 const { BLANK_HTML_FILE, WS_ENDPOINT_FILE } = require('./constants.cjs');
 
+const BLANK_HTML = readFileSync(BLANK_HTML_FILE, 'utf8');
+
 class PuppeteerEnvironment extends JSDOMEnvironment {
   async setup() {
     await super.setup();
-
-    this.global.__blank_html__ = await readFile(BLANK_HTML_FILE, 'utf8');
 
     // get the wsEndpoint
     const wsEndpoint = await readFile(WS_ENDPOINT_FILE, 'utf8');
@@ -19,6 +22,13 @@ class PuppeteerEnvironment extends JSDOMEnvironment {
     this.global.__browser__ = await puppeteer.connect({
       browserWSEndpoint: wsEndpoint
     });
+
+    // define method newBlankPage()
+    this.global.__browser__.newBlankPage = async function () {
+      const page = await this.newPage();
+      await page.setContent(BLANK_HTML);
+      return page;
+    };
   }
 
   async teardown() {

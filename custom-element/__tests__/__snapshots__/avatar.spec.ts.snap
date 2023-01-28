@@ -1,9 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`AvatarElement renders correctly 1`] = `
-<body>
-  <c-avatar
-    class="u-display-contents"
-  />
-</body>
-`;

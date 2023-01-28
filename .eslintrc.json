@@ -5,7 +5,7 @@
     "es6": true
   },
   "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:jest/recommended"],
-  "ignores": ["assets/**", "**/node_modules/**"],
+  "ignores": ["esm/**", "**/node_modules/**"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 2022,

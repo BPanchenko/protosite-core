@@ -1,3 +1,2 @@
-/.jest/coverage
-/assets
+/test-environment/coverage
 /node_modules

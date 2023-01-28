@@ -1,7 +1,7 @@
 export default [
 	{
 		files: ['**/*.+(js|mjs|cjs)'],
-		ignores: ['assets/**', '**/node_modules/**'],
+		ignores: ['esm/**', '**/node_modules/**'],
 		languageOptions: {
 			ecmaVersion: 2022
 		}

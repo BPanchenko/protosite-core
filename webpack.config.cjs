@@ -3,15 +3,14 @@ const glob = require('glob');
 const TerserPlugin = require('terser-webpack-plugin');
 
 const files = glob
-  .sync('**/*.ts', {
-    dot: true,
-    ignore: 'node_modules/**/*.ts'
+  .sync('src/**/*.ts', {
+    dot: true
   })
   .map((file) => path.resolve(__dirname, file));
 
 module.exports = {
   mode: 'production',
-  context: path.resolve(__dirname, '.'),
+  context: path.resolve(__dirname, 'src'),
   entry: files,
   target: 'web',
   devtool: 'hidden-source-map',
@@ -19,7 +18,6 @@ module.exports = {
     rules: [
       {
         test: /\.ts$/,
-        exclude: /node_modules/,
         loader: 'ts-loader',
         options: {
           configFile: 'tsconfig.build.json'
@@ -33,7 +31,7 @@ module.exports = {
   output: {
     clean: true,
     filename: '[name].mjs',
-    path: path.resolve(__dirname, 'assets')
+    path: path.resolve(__dirname, 'esm')
   },
   optimization: {
     minimize: true,

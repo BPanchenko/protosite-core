@@ -2,36 +2,53 @@ const path = require('path');
 const glob = require('glob');
 const TerserPlugin = require('terser-webpack-plugin');
 
-const files = glob
+const ROOT = process.cwd();
+const OUTPUT = path.resolve(ROOT, 'esm');
+
+const FILES = glob
   .sync('src/**/*.ts', {
     dot: true
   })
-  .map((file) => path.resolve(__dirname, file));
+  .map((file) => path.resolve(ROOT, file));
 
 module.exports = {
   mode: 'production',
-  context: path.resolve(__dirname, 'src'),
-  entry: files,
+  context: path.resolve(ROOT, 'src'),
+  entry: FILES,
   target: 'web',
   devtool: 'hidden-source-map',
   module: {
     rules: [
       {
         test: /\.ts$/,
-        loader: 'ts-loader',
-        options: {
-          configFile: 'tsconfig.build.json'
-        }
+        loader: 'ts-loader'
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'css-loader',
+          {
+            options: {
+              esModule: true,
+              modules: {
+                namedExport: true
+              }
+            }
+          }
+        ]
       }
     ]
   },
   resolve: {
-    extensions: ['.js', '.mjs', '.json']
+    alias: {
+      '@uikit': path.resolve(ROOT, 'node_modules/@bpanchenko/uikit/assets')
+    },
+    extensions: ['.ts']
   },
   output: {
     clean: true,
     filename: '[name].mjs',
-    path: path.resolve(__dirname, 'esm')
+    path: OUTPUT
   },
   optimization: {
     minimize: true,

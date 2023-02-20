@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AvatarElement Markup 1`] = `
+<body>
+  <c-avatar
+    class="u-display-contents"
+  />
+</body>
+`;

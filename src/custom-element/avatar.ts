@@ -1,3 +1,5 @@
+import * as css from '@uikit/component/avatar.css';
+
 import { CustomElementDecorator, Metadata } from '../lib/CustomElementDecorator';
 
 const enum AttributeName {
@@ -6,10 +8,10 @@ const enum AttributeName {
 }
 
 export const AvatarMetadata: Metadata = {
-	tagName: 'c-avatar',
+	tagName: css.cAvatar,
 	template: `
-		<figure class="c-avatar js-container">
-			<a class="c-avatar__link js-link">
+		<figure class="${css.cAvatar} js-container">
+			<a class="${css.cAvatarLink} js-link">
 			<slot class="js-slot"></slot>
 			</a>
 		</figure>

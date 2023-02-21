@@ -6,5 +6,3 @@ declare interface CustomElement extends HTMLElement {
 	constructor: Function;
 	disconnectedCallback?(): void;
 }
-
-declare type GClassDecorator<Type> = (target: Type) => Type;

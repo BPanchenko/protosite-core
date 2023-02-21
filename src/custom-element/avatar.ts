@@ -1,6 +1,9 @@
-import * as css from '@uikit/component/avatar.css';
-
 import { CustomElementDecorator, Metadata } from '../lib/CustomElementDecorator';
+// @ts-ignore
+import stylesheet, {
+	cAvatar,
+	cAvatarLink
+} from '@uikit/component/avatar.css' assert { type: 'css' };
 
 const enum AttributeName {
 	Href = 'href',
@@ -8,14 +11,15 @@ const enum AttributeName {
 }
 
 export const AvatarMetadata: Metadata = {
-	tagName: css.cAvatar,
+	tagName: cAvatar.toString(),
 	template: `
-		<figure class="${css.cAvatar} js-container">
-			<a class="${css.cAvatarLink} js-link">
+		<figure class="${cAvatar} js-container">
+			<a class="${cAvatarLink} js-link">
 			<slot class="js-slot"></slot>
 			</a>
 		</figure>
-	`
+	`,
+	stylesheet
 };
 
 @CustomElementDecorator(AvatarMetadata)

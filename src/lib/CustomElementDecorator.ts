@@ -1,8 +1,10 @@
 type CustomElementConstructor = new (...params: any[]) => CustomElement;
+type ClassDecorator<Type> = (target: Type) => Type;
 
 export type Metadata = {
 	tagName: string;
 	template: string;
+	stylesheet?: CSSStyleSheet;
 };
 
 const validateTagName = (name: string): void | never => {
@@ -13,8 +15,9 @@ const validateTagName = (name: string): void | never => {
 
 export const CustomElementDecorator = <T extends CustomElementConstructor>({
 	tagName,
-	template: tplString
-}: Metadata): GClassDecorator<T> => {
+	template: tplString,
+	stylesheet
+}: Metadata): ClassDecorator<T> => {
 	validateTagName(tagName);
 
 	const template = document.createElement('template') as HTMLTemplateElement;
@@ -29,6 +32,7 @@ export const CustomElementDecorator = <T extends CustomElementConstructor>({
 				this.classList.add('u-display-contents');
 				if (!this.shadowRoot) {
 					this.attachShadow({ mode: 'open' });
+					this.shadowRoot.adoptedStyleSheets = [stylesheet];
 				}
 			}
 

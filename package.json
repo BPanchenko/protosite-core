@@ -7,13 +7,10 @@
     "esm/*"
   ],
   "scripts": {
-    "build:watch": "npm run build -- --watch",
-    "build": "webpack",
-    "clean": "rimraf esm test-environment/coverage",
-    "fix": "run-s lint:fix",
+    "build": "run-s clean webpack",
+    "clean": "rimraf esm .code-coverage",
     "lint:fix": "npm run lint -- --fix",
     "lint": "eslint .",
-    "prebuild": "run-s clean fix test:coverage",
     "prettier": "prettier --write .",
     "test:coverage": "jest --coverage",
     "test:watch": "npm run test -- --watch",

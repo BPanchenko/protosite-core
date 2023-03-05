@@ -5,7 +5,7 @@ export type Metadata = {
 	tagName: string;
 	template: string;
 	stylesheet?: CSSStyleSheet;
-	useShadowDom: boolean;
+	useShadowDom?: boolean;
 };
 
 const validateTagName = (name: string): void | never => {

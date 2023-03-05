@@ -41,7 +41,7 @@ module.exports = (env) => {
           test: /\.ts$/,
           loader: 'ts-loader',
           options: {
-            configFile: 'tsconfig.build.json'
+            configFile: path.resolve(ROOT, '.config/tsconfig.build.json')
           }
         },
         {

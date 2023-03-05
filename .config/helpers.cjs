@@ -59,7 +59,7 @@ const types = Object.create(
         dashed: 'web-component',
         plural: 'web-components',
         source: 'component',
-        useShadowDom: true
+        useShadowDOM: true
       }),
       enumerable: true
     }

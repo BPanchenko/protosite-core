@@ -3,18 +3,14 @@ const path = require('path');
 const glob = require('glob');
 const TerserPlugin = require('terser-webpack-plugin');
 const logger = require('node-color-log');
-const { ROOT, types, getFileEntryByRelativePath } = require('./helpers.cjs');
-
-const OUTPUT = path.resolve(ROOT, `esm`);
+const { ROOT, OUTPUT, types, getFileEntryByRelativePath } = require('./helpers.cjs');
 
 module.exports = (env) => {
-  console.dir(env);
-
   if (isString(env.type) && types.selectByProperty('dashed', env.type) === false) {
     logger.error(
       `Parameter "env.type" can have only one of thees values: "${types.CE.dashed}", "${types.WC.dashed}"`
     );
-    process.exit(1);
+    process.exit(5);
   }
 
   const source = env.source || types.selected.source;
@@ -34,6 +30,7 @@ module.exports = (env) => {
     entry: ENTRIES,
     target: 'web',
     devtool: false,
+    stats: 'verbose',
     module: {
       rules: [
         {

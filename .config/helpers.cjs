@@ -2,6 +2,7 @@ const path = require('path');
 const { kebabCase, trim } = require('lodash');
 
 const ROOT = process.cwd();
+const OUTPUT = path.resolve(ROOT, `esm`);
 
 const getFileEntryByRelativePath = (relativePath, typeName = '') => {
   const absolutePath = path.resolve(ROOT, relativePath);
@@ -66,6 +67,7 @@ const types = Object.create(
 
 module.exports = {
   ROOT,
+  OUTPUT,
   getFileEntryByRelativePath,
   types
 };

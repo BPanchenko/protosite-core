@@ -1,16 +1,20 @@
 {
   "name": "protosite-core",
-  "version": "1.3.8",
+  "version": "1.3.9",
   "type": "module",
   "main": "esm/index.mjs",
   "files": [
     "esm/*"
   ],
   "scripts": {
-    "build": "run-s clean webpack",
+    "build": "run-p --print-name \"build:* mode=production\"",
+    "build:trunk": "webpack --config .config/builder.cjs --env source=trunk",
+    "build:custom-elements": "webpack --config .config/builder.cjs --env type=custom-element",
+    "build:web-components": "webpack --config .config/builder.cjs --env type=web-component",
     "clean": "rimraf esm .code-coverage",
     "lint:fix": "npm run lint -- --fix",
     "lint": "eslint .",
+    "prebuild": "run-s clean",
     "prettier": "prettier --write .",
     "test:coverage": "jest --coverage",
     "test:watch": "npm run test -- --watch",
@@ -35,6 +39,7 @@
     "jest-environment-jsdom": "29.3.1",
     "jest-image-snapshot": "6.1.0",
     "lodash": "4.17.21",
+    "node-color-log": "10.0.2",
     "npm-run-all": "4.1.5",
     "prettier": "2.8.3",
     "puppeteer": "19.6.1",

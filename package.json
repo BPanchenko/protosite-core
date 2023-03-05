@@ -1,6 +1,6 @@
 {
   "name": "protosite-core",
-  "version": "1.4.9",
+  "version": "1.5.9",
   "type": "module",
   "main": "esm/index.mjs",
   "files": [
@@ -11,7 +11,7 @@
     "build:trunk": "webpack --config .config/builder.cjs --env source=trunk",
     "build:custom-elements": "webpack --config .config/builder.cjs --env type=custom-element",
     "build:web-components": "webpack --config .config/builder.cjs --env type=web-component",
-    "clean": "rimraf esm .code-coverage",
+    "clean": "rimraf esm \"(e2e|src)/**/__coverage__\"",
     "lint:fix": "npm run lint -- --fix",
     "lint": "eslint .",
     "prebuild": "run-s clean",

@@ -2,7 +2,7 @@
 
 import Store from './store.js';
 
-export default class Component {
+export default class CorePart {
 	constructor(props = {}) {
 		// If there's a store passed in, subscribe to the state change
 		if (props.store instanceof Store) {
@@ -18,16 +18,5 @@ export default class Component {
 			if (Array.isArray(this.className)) this.element.classList.add(...this.className);
 			else if (this.className) this.element.classList.add('' + this.className);
 		}
-	}
-
-	render() {
-		return this;
-	}
-
-	get tagName() {
-		return 'div';
-	}
-	get className() {
-		return null;
 	}
 }

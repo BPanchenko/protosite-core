@@ -1,4 +1,4 @@
-import { CustomElementDecorator } from '../lib/CustomElementDecorator'
+import { CustomElementDecorator } from '../trunk/custom-element-decorator'
 
 const CLS = new Map([
 	['horizontal', 'guide--horizontal'],

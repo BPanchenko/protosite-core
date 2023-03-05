@@ -1,4 +1,4 @@
-import { CustomElementDecorator } from '../lib/CustomElementDecorator';
+import { CustomElementDecorator } from '../trunk/custom-element-decorator';
 
 /**
  * Component: 'c-popover'

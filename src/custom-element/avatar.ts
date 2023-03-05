@@ -1,4 +1,4 @@
-import { CustomElementDecorator, Metadata } from '../lib/CustomElementDecorator';
+import { CustomElementDecorator, Metadata } from '../trunk/custom-element-decorator';
 // @ts-ignore
 import stylesheet, {
 	cAvatar,

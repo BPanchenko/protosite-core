@@ -1,4 +1,4 @@
-import { CustomElementDecorator } from '../lib/CustomElementDecorator';
+import { CustomElementDecorator } from '../trunk/custom-element-decorator';
 
 const PATTERN_EMAIL = '^\\S+@\\S+\\.\\S+$';
 const PATTERN_PWD = '^\\w{6,20}$';
@@ -163,7 +163,8 @@ class FieldElement extends HTMLElement implements CustomElement {
 		if (this.label && this.isCheckable()) this._label = this.renderLabel(this.label);
 		if (this.glyphAtRight) this._iconAtRight = this.renderIcon(this.glyphAtRight);
 		if (this.button) this._button = this.renderButton({ text: this.button, type: this.buttonType });
-		if (this.buttonGlyph) this._button = this.renderButton({ glyph: this.buttonGlyph, type: this.buttonType });
+		if (this.buttonGlyph)
+			this._button = this.renderButton({ glyph: this.buttonGlyph, type: this.buttonType });
 		if (this.error) this._error = this.renderError(this.error);
 		if (this.info) this._info = this.renderInfo(this.info);
 

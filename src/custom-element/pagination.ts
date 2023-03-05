@@ -1,4 +1,4 @@
-import { CustomElementDecorator } from '../lib/CustomElementDecorator';
+import { CustomElementDecorator } from '../trunk/custom-element-decorator';
 
 /**
  * Component: 'c-pagination'
@@ -58,7 +58,9 @@ class PaginationElement extends HTMLElement implements CustomElement {
 		let { current, pages, disabledFirst, disabledLast, prev, next, end, start } = this.calc();
 
 		let html = `
-			<a class="c-pagination__prev" href="#page=${prev}" data-page="${prev}" aria-disabled="${prev == 1}"></a>
+			<a class="c-pagination__prev" href="#page=${prev}" data-page="${prev}" aria-disabled="${
+			prev == 1
+		}"></a>
 			<a class="c-pagination__page" href="#page=1" data-page="1" aria-disabled="${disabledFirst}">1</a>
 			<span class="c-pagination__ellipsis" aria-disabled="${disabledFirst}">&hellip</span>
 		`;
@@ -72,7 +74,9 @@ class PaginationElement extends HTMLElement implements CustomElement {
 		html += `
 			<span class="c-pagination__ellipsis" aria-disabled="${disabledLast}">&hellip</span>
 			<a class="c-pagination__page" href="#page=${pages}" data-page="${pages}" aria-disabled="${disabledLast}">${pages}</a>
-			<a class="c-pagination__next" href="#page=${next}" data-page="${next}" aria-disabled="${next == pages}"></a>
+			<a class="c-pagination__next" href="#page=${next}" data-page="${next}" aria-disabled="${
+			next == pages
+		}"></a>
 		`;
 
 		this.innerHTML = html.replace(/[\s]{2,}/g, '');

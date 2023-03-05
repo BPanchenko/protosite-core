@@ -58,7 +58,8 @@ const types = Object.create(
         name: 'WebComponent',
         dashed: 'web-component',
         plural: 'web-components',
-        source: 'component'
+        source: 'component',
+        useShadowDom: true
       }),
       enumerable: true
     }

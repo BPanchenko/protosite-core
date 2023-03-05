@@ -5,6 +5,7 @@ export type Metadata = {
 	tagName: string;
 	template: string;
 	stylesheet?: CSSStyleSheet;
+	useShadowDom: boolean;
 };
 
 const validateTagName = (name: string): void | never => {
@@ -16,7 +17,8 @@ const validateTagName = (name: string): void | never => {
 export const CustomElementDecorator = <T extends CustomElementConstructor>({
 	tagName,
 	template: tplString,
-	stylesheet
+	stylesheet,
+	useShadowDom = USE_SHADOW_DOM
 }: Metadata): ClassDecorator<T> => {
 	validateTagName(tagName);
 
@@ -30,8 +32,8 @@ export const CustomElementDecorator = <T extends CustomElementConstructor>({
 			constructor(...params: any[]) {
 				super(params);
 				this.classList.add('u-display-contents');
-				if (!this.shadowRoot) {
-					this.attachShadow({ mode: 'open' });
+				if (useShadowDom) {
+					this.attachShadow({ mode: 'closed' });
 					this.shadowRoot.adoptedStyleSheets = [stylesheet];
 				}
 			}

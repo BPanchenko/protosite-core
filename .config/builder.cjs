@@ -1,9 +1,11 @@
-const { isString } = require('lodash');
-const path = require('path');
-const glob = require('glob');
-const TerserPlugin = require('terser-webpack-plugin');
-const logger = require('node-color-log');
 const { ROOT, OUTPUT, types, getFileEntryByRelativePath } = require('./helpers.cjs');
+
+const { isString } = require('lodash');
+const glob = require('glob');
+const logger = require('node-color-log');
+const path = require('path');
+const TerserPlugin = require('terser-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = (env) => {
   if (isString(env.type) && types.selectByProperty('dashed', env.type) === false) {
@@ -13,8 +15,10 @@ module.exports = (env) => {
     process.exit(5);
   }
 
-  const source = env.source || types.selected.source;
-  const suffix = types.selected ? types.selected.dashed : '';
+  const type = Object.assign({}, types.selected);
+
+  const source = env.source || type.source;
+  const suffix = type.dashed || '';
 
   const ENTRIES = Object.fromEntries(
     glob
@@ -59,6 +63,11 @@ module.exports = (env) => {
       },
       extensions: ['.ts']
     },
+    plugins: [
+      new webpack.DefinePlugin({
+        USE_SHADOW_DOM: Boolean(type.useShadowDOM)
+      })
+    ],
     output: {
       filename: '[name].mjs',
       path: OUTPUT

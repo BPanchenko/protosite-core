@@ -1,3 +1,5 @@
+declare const USE_SHADOW_DOM: boolean;
+
 declare interface CustomElement extends HTMLElement {
 	readonly observedAttributes?: string[];
 

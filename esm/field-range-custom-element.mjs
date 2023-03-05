@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./src/lib/CustomElementDecorator.ts":
-/*!*******************************************!*\
-  !*** ./src/lib/CustomElementDecorator.ts ***!
-  \*******************************************/
+/***/ "./src/trunk/custom-element-decorator.ts":
+/*!***********************************************!*\
+  !*** ./src/trunk/custom-element-decorator.ts ***!
+  \***********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -16,7 +16,8 @@ const validateTagName = (name) => {
         throw new Error('You need at least 1 dash in the custom element name!');
     }
 };
-const CustomElementDecorator = ({ tagName, template: tplString, stylesheet }) => {
+console.log('[DEBUG] USE_SHADOW_DOM = ' + false);
+const CustomElementDecorator = ({ tagName, template: tplString, stylesheet, useShadowDom = false }) => {
     validateTagName(tagName);
     const template = document.createElement('template');
     template.innerHTML = tplString;
@@ -27,8 +28,8 @@ const CustomElementDecorator = ({ tagName, template: tplString, stylesheet }) =>
             constructor(...params) {
                 super(params);
                 this.classList.add('u-display-contents');
-                if (!this.shadowRoot) {
-                    this.attachShadow({ mode: 'open' });
+                if (useShadowDom) {
+                    this.attachShadow({ mode: 'closed' });
                     this.shadowRoot.adoptedStyleSheets = [stylesheet];
                 }
             }
@@ -93,10 +94,10 @@ const CustomElementDecorator = ({ tagName, template: tplString, stylesheet }) =>
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*******************************************!*\
-  !*** ./src/custom-element/field-range.ts ***!
-  \*******************************************/
-/* harmony import */ var _lib_CustomElementDecorator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../lib/CustomElementDecorator */ "./src/lib/CustomElementDecorator.ts");
+/*!**************************************!*\
+  !*** ./src/component/field-range.ts ***!
+  \**************************************/
+/* harmony import */ var _trunk_custom_element_decorator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../trunk/custom-element-decorator */ "./src/trunk/custom-element-decorator.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -139,7 +140,7 @@ let FieldRangeElement = class FieldRangeElement extends HTMLElement {
     }
 };
 FieldRangeElement = __decorate([
-    (0,_lib_CustomElementDecorator__WEBPACK_IMPORTED_MODULE_0__.CustomElementDecorator)({
+    (0,_trunk_custom_element_decorator__WEBPACK_IMPORTED_MODULE_0__.CustomElementDecorator)({
         tagName: 'c-field-container',
         template: ``
     })

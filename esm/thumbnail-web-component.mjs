@@ -16,8 +16,8 @@ const validateTagName = (name) => {
         throw new Error('You need at least 1 dash in the custom element name!');
     }
 };
-console.log('[DEBUG] USE_SHADOW_DOM = ' + false);
-const CustomElementDecorator = ({ tagName, template: tplString, stylesheet, useShadowDom = false }) => {
+console.log('[DEBUG] USE_SHADOW_DOM = ' + true);
+const CustomElementDecorator = ({ tagName, template: tplString, stylesheet, useShadowDom = true }) => {
     validateTagName(tagName);
     const template = document.createElement('template');
     template.innerHTML = tplString;
@@ -94,9 +94,9 @@ const CustomElementDecorator = ({ tagName, template: tplString, stylesheet, useS
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*******************************!*\
-  !*** ./src/component/tabs.ts ***!
-  \*******************************/
+/*!************************************!*\
+  !*** ./src/component/thumbnail.ts ***!
+  \************************************/
 /* harmony import */ var _trunk_custom_element_decorator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../trunk/custom-element-decorator */ "./src/trunk/custom-element-decorator.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -105,110 +105,90 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-let TabsContainerElement = class TabsContainerElement extends HTMLElement {
-    get activeTab() {
-        return this.dataset.activeTab;
-    }
-    get activeTabpanel() {
-        return this.dataset.activeTabpanel;
-    }
-    connectedCallback() {
-        this.classList.add('c-tabs-container');
-        this.setAttribute('role', 'tablist');
-        if (!this.indicator) {
-            this.indicator = createIndicator();
-            this.appendChild(this.indicator);
+/**
+ * Component: `c-thumbnail`
+ *
+ * Markup: <c-thumbnail
+ *			data-src="..."
+ *			data-href="..."
+ *			data-size="xsmall|small|medium|large|xlarge"
+ *			data-shadow="inset|2dp|3dp|4dp|6dp|8dp|16dp|24dp"
+ * />
+ */
+{
+    /* Constants
+     ========================================================================== */
+    const CLS = Object.create(null, {
+        main: { value: 'c-thumbnail' },
+        caption: { value: 'c-thumbnail__caption' },
+        link: { value: 'c-thumbnail__link' },
+        img: { value: 'c-thumbnail__image' },
+        shutter: { value: 'c-thumbnail__shutter' },
+        xs: { value: 'c-thumbnail--xs' },
+        sm: { value: 'c-thumbnail--sm' },
+        md: { value: 'c-thumbnail--md' },
+        lg: { value: 'c-thumbnail--lg' },
+        xl: { value: 'c-thumbnail--xl' }
+    });
+    let ThumbnailElement = class ThumbnailElement extends HTMLElement {
+        connectedCallback() {
+            this.render().cleanup();
         }
-        this.addEventListener('click', this.onSelectTab, false);
-        setTimeout(this.activate.bind(this), 0);
-    }
-    activate() {
-        let currentTab = this.querySelector('.c-tab[aria-current=true]');
-        if (!currentTab)
-            currentTab = this.children[0];
-        currentTab.dispatchEvent(new Event('click', { bubbles: true }));
-    }
-    onSelectTab(e) {
-        let currentTab;
-        // unselect don't current tabs
-        this.querySelectorAll('.c-tab').forEach((tab) => {
-            if (tab.contains(e.target))
-                currentTab = tab;
-            else
-                tab.ariaCurrent = false;
-        });
-        // dispatch a change event with the data of the current tab
-        if (currentTab) {
-            this.dataset.activeTab = currentTab.id;
-            this.dataset.activeTabpanel = currentTab.ariaControls;
-            this.dispatchEvent(new Event('change', { bubbles: true }));
+        render() {
+            let { src, href, size, target } = this.dataset;
+            let text = this.innerText;
+            this.innerHTML = '';
+            this.classList.add(CLS.main);
+            if (~['xs', 'sm', 'md', 'lg', 'xl'].indexOf(size)) {
+                this.classList.add(CLS[size]);
+            }
+            else if (size) {
+                console.warn('Size must have one of the values "xs", "sm", "md", "lg" or "xl"');
+            }
+            let container = this;
+            if (href) {
+                this._link = document.createElement('a');
+                this._link.classList.add(CLS.link);
+                this._link.href = href;
+                this._link.target = target || '_self';
+                container.appendChild(this._link);
+                container = this._link;
+            }
+            if (src) {
+                this._img = document.createElement('img');
+                this._img.classList.add(CLS.img);
+                this._img.src = src;
+                container.appendChild(this._img);
+            }
+            if (text) {
+                if (href) {
+                    this._text = document.createElement('span');
+                    this._text.classList.add(CLS.shutter);
+                }
+                else {
+                    this._text = document.createElement('figcaption');
+                    this._text.classList.add(CLS.caption);
+                }
+                this._text.innerText = text;
+                container.appendChild(this._text);
+            }
+            return this;
         }
-        this.renderIndicator();
-    }
-    renderIndicator() {
-        let currentTab = this.querySelector('.c-tab[aria-current=true]');
-        this.indicator.setAttribute('aria-hidden', !currentTab);
-        if (currentTab) {
-            this.indicator.style.width = currentTab.clientWidth + 'px';
-            this.indicator.style.transform = `translateX(${currentTab.offsetLeft}px)`;
+        cleanup() {
+            this.removeAttribute('data-src');
+            this.removeAttribute('data-href');
+            this.removeAttribute('data-size');
+            this.removeAttribute('data-shadow');
+            this.removeAttribute('data-target');
+            return this;
         }
-    }
-};
-TabsContainerElement = __decorate([
-    (0,_trunk_custom_element_decorator__WEBPACK_IMPORTED_MODULE_0__.CustomElementDecorator)({
-        tagName: 'c-tabs-container',
-        template: ``
-    })
-], TabsContainerElement);
-let TabElement = class TabElement extends HTMLElement {
-    get ariaControls() {
-        return this.getAttribute('aria-controls') || '';
-    }
-    set ariaCurrent(flag) {
-        this.setAttribute('aria-current', !!flag && flag != 'false');
-    }
-    connectedCallback() {
-        this.classList.add('c-tab');
-        this.setAttribute('role', 'tab');
-        if (this.dataset.glyph) {
-            this.appendChild(createIcon(this.dataset.glyph));
-            delete this.dataset.glyph;
-        }
-        if (this.dataset.text) {
-            this.appendChild(createLabel(this.dataset.text));
-            delete this.dataset.text;
-        }
-        this.addEventListener('click', this.onSelectTab);
-    }
-    onSelectTab(e) {
-        e.preventDefault();
-        this.setAttribute('aria-current', true);
-        return;
-    }
-};
-TabElement = __decorate([
-    (0,_trunk_custom_element_decorator__WEBPACK_IMPORTED_MODULE_0__.CustomElementDecorator)({
-        tagName: 'c-tab',
-        template: ``
-    })
-], TabElement);
-// Utils
-function createIcon(glyph) {
-    let node = document.createElement('span');
-    node.classList.add('c-tab__icon');
-    node.innerHTML = `<span class="iconic" data-glyph="${glyph}"></span>`;
-    return node;
-}
-function createLabel(text) {
-    let node = document.createElement('span');
-    node.classList.add('c-tab__label');
-    node.innerText = text;
-    return node;
-}
-function createIndicator() {
-    let node = document.createElement('span');
-    node.classList.add('c-tab-indicator');
-    return node;
+    };
+    ThumbnailElement = __decorate([
+        (0,_trunk_custom_element_decorator__WEBPACK_IMPORTED_MODULE_0__.CustomElementDecorator)({
+            tagName: 'c-thumbnail',
+            template: ``
+        })
+    ], ThumbnailElement);
 }
 
 })();

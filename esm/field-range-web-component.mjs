@@ -16,8 +16,8 @@ const validateTagName = (name) => {
         throw new Error('You need at least 1 dash in the custom element name!');
     }
 };
-console.log('[DEBUG] USE_SHADOW_DOM = ' + false);
-const CustomElementDecorator = ({ tagName, template: tplString, stylesheet, useShadowDom = false }) => {
+console.log('[DEBUG] USE_SHADOW_DOM = ' + true);
+const CustomElementDecorator = ({ tagName, template: tplString, stylesheet, useShadowDom = true }) => {
     validateTagName(tagName);
     const template = document.createElement('template');
     template.innerHTML = tplString;
@@ -94,9 +94,9 @@ const CustomElementDecorator = ({ tagName, template: tplString, stylesheet, useS
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-/*!*******************************!*\
-  !*** ./src/component/tabs.ts ***!
-  \*******************************/
+/*!**************************************!*\
+  !*** ./src/component/field-range.ts ***!
+  \**************************************/
 /* harmony import */ var _trunk_custom_element_decorator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../trunk/custom-element-decorator */ "./src/trunk/custom-element-decorator.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -105,110 +105,71 @@ var __decorate = (undefined && undefined.__decorate) || function (decorators, ta
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 
-let TabsContainerElement = class TabsContainerElement extends HTMLElement {
-    get activeTab() {
-        return this.dataset.activeTab;
+const DEFAULT_MIN = 2;
+const DEFAULT_MAX = 64;
+function _init() {
+    this.__container = _createContainer.call(this);
+    this.__component = _createComponent.call(this);
+    this.__label = _createLabel.call(this);
+    this.__container.appendChild(this.__label);
+    this.__container.appendChild(this.__component);
+    this._shadow = this.attachShadow({ mode: 'open' });
+    this._shadow.appendChild(this.__style);
+    this._shadow.appendChild(this.__container);
+}
+let FieldRangeElement = class FieldRangeElement extends HTMLElement {
+    constructor() {
+        super();
+        _init.call(this);
+        this.id || (window._ && window._.uniqId && (this.id = _.uniqId('c-')));
+        return self;
     }
-    get activeTabpanel() {
-        return this.dataset.activeTabpanel;
+    static get observedAttributes() {
+        return ['class', 'value', 'data-value'];
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+        if (~['data-value', 'value'].indexOf(name)) {
+            this.__component.value = String(newValue);
+        }
     }
     connectedCallback() {
-        this.classList.add('c-tabs-container');
-        this.setAttribute('role', 'tablist');
-        if (!this.indicator) {
-            this.indicator = createIndicator();
-            this.appendChild(this.indicator);
-        }
-        this.addEventListener('click', this.onSelectTab, false);
-        setTimeout(this.activate.bind(this), 0);
+        console.log(`connectedCallback.${this.id}`);
     }
-    activate() {
-        let currentTab = this.querySelector('.c-tab[aria-current=true]');
-        if (!currentTab)
-            currentTab = this.children[0];
-        currentTab.dispatchEvent(new Event('click', { bubbles: true }));
-    }
-    onSelectTab(e) {
-        let currentTab;
-        // unselect don't current tabs
-        this.querySelectorAll('.c-tab').forEach((tab) => {
-            if (tab.contains(e.target))
-                currentTab = tab;
-            else
-                tab.ariaCurrent = false;
-        });
-        // dispatch a change event with the data of the current tab
-        if (currentTab) {
-            this.dataset.activeTab = currentTab.id;
-            this.dataset.activeTabpanel = currentTab.ariaControls;
-            this.dispatchEvent(new Event('change', { bubbles: true }));
-        }
-        this.renderIndicator();
-    }
-    renderIndicator() {
-        let currentTab = this.querySelector('.c-tab[aria-current=true]');
-        this.indicator.setAttribute('aria-hidden', !currentTab);
-        if (currentTab) {
-            this.indicator.style.width = currentTab.clientWidth + 'px';
-            this.indicator.style.transform = `translateX(${currentTab.offsetLeft}px)`;
-        }
+    disconnectedCallback() {
+        console.log(`disconnectedCallback.${this.id}`);
     }
 };
-TabsContainerElement = __decorate([
+FieldRangeElement = __decorate([
     (0,_trunk_custom_element_decorator__WEBPACK_IMPORTED_MODULE_0__.CustomElementDecorator)({
-        tagName: 'c-tabs-container',
+        tagName: 'c-field-container',
         template: ``
     })
-], TabsContainerElement);
-let TabElement = class TabElement extends HTMLElement {
-    get ariaControls() {
-        return this.getAttribute('aria-controls') || '';
-    }
-    set ariaCurrent(flag) {
-        this.setAttribute('aria-current', !!flag && flag != 'false');
-    }
-    connectedCallback() {
-        this.classList.add('c-tab');
-        this.setAttribute('role', 'tab');
-        if (this.dataset.glyph) {
-            this.appendChild(createIcon(this.dataset.glyph));
-            delete this.dataset.glyph;
-        }
-        if (this.dataset.text) {
-            this.appendChild(createLabel(this.dataset.text));
-            delete this.dataset.text;
-        }
-        this.addEventListener('click', this.onSelectTab);
-    }
-    onSelectTab(e) {
-        e.preventDefault();
-        this.setAttribute('aria-current', true);
-        return;
-    }
-};
-TabElement = __decorate([
-    (0,_trunk_custom_element_decorator__WEBPACK_IMPORTED_MODULE_0__.CustomElementDecorator)({
-        tagName: 'c-tab',
-        template: ``
-    })
-], TabElement);
-// Utils
-function createIcon(glyph) {
-    let node = document.createElement('span');
-    node.classList.add('c-tab__icon');
-    node.innerHTML = `<span class="iconic" data-glyph="${glyph}"></span>`;
+], FieldRangeElement);
+function _createTag(tagName, cls, text) {
+    let node = document.createElement(tagName);
+    node.classList.add(cls);
+    if (text)
+        node.innerText = text;
     return node;
 }
-function createLabel(text) {
-    let node = document.createElement('span');
-    node.classList.add('c-tab__label');
-    node.innerText = text;
-    return node;
+function _createComponent() {
+    let elem = _createTag('input', CLS.component);
+    elem.setAttribute('type', 'range');
+    elem.setAttribute('min', Number(this.dataset.min || DEFAULT_MIN));
+    elem.setAttribute('max', Number(this.dataset.max || DEFAULT_MAX));
+    this.dataset.hasOwnProperty('name') && elem.setAttribute('name', String(this.dataset.name));
+    this.dataset.hasOwnProperty('value') && elem.setAttribute('value', String(this.dataset.value));
+    return elem;
 }
-function createIndicator() {
-    let node = document.createElement('span');
-    node.classList.add('c-tab-indicator');
-    return node;
+function _createContainer() {
+    let elem = _createTag('label', CLS.container);
+    // TODO: data attributes?
+    return elem;
+}
+function _createLabel() {
+    let elem = _createTag('span', CLS.label);
+    this.dataset.hasOwnProperty('label') && (elem.innerText = String(this.dataset.label));
+    return elem;
 }
 
 })();

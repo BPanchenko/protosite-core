@@ -16,8 +16,8 @@ const validateTagName = (name) => {
         throw new Error('You need at least 1 dash in the custom element name!');
     }
 };
-console.log('[DEBUG] USE_SHADOW_DOM = ' + false);
-const CustomElementDecorator = ({ tagName, template: tplString, stylesheet, useShadowDom = false }) => {
+console.log('[DEBUG] USE_SHADOW_DOM = ' + true);
+const CustomElementDecorator = ({ tagName, template: tplString, stylesheet, useShadowDom = true }) => {
     validateTagName(tagName);
     const template = document.createElement('template');
     template.innerHTML = tplString;

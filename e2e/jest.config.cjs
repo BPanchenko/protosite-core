@@ -1,9 +1,11 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
+
 module.exports = {
-  collectCoverageFrom: ['../esm/*-web-component.mjs'],
-  coverageDirectory: './__coverage__',
-  globalSetup: './environment/setup.cjs',
-  globalTeardown: './environment/teardown.cjs',
-  testEnvironment: './environment/PuppeteerEnvironment.cjs',
-  testRegex: '(/__tests__/.*|(\\.|/)test)\\.mjs$'
+  collectCoverageFrom: ['<rootDir>/../esm/*-web-component.mjs'],
+  coverageDirectory: '<rootDir>/__coverage__',
+  globalSetup: '<rootDir>/environment/setup.cjs',
+  globalTeardown: '<rootDir>/environment/teardown.cjs',
+  rootDir: process.cwd(),
+  testEnvironment: '<rootDir>/environment/PuppeteerEnvironment.cjs',
+  testRegex: '(/__tests__/.*\\.test)\\.mjs$'
 };

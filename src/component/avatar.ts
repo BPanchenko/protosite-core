@@ -1,9 +1,6 @@
 import { CustomElementDecorator, Metadata } from '../trunk/custom-element-decorator';
 // @ts-ignore
-import stylesheet, {
-	cAvatar,
-	cAvatarLink
-} from '@uikit/component/avatar.css' assert { type: 'css' };
+import stylesheet, { cAvatar, cAvatarLink } from '@uikit/component/avatar.css';
 
 const enum AttributeName {
 	Href = 'href',

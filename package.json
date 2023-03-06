@@ -1,24 +1,22 @@
 {
   "name": "protosite-core",
-  "version": "1.5.9",
+  "version": "1.5.10",
   "type": "module",
   "main": "esm/index.mjs",
   "files": [
     "esm/*"
   ],
   "scripts": {
-    "build": "run-p --print-name \"build:* mode=production\"",
-    "build:trunk": "webpack --config .config/builder.cjs --env source=trunk",
     "build:custom-elements": "webpack --config .config/builder.cjs --env type=custom-element",
+    "build:trunk": "webpack --config .config/builder.cjs --env source=trunk",
     "build:web-components": "webpack --config .config/builder.cjs --env type=web-component",
-    "clean": "rimraf esm \"(e2e|src)/**/__coverage__\"",
-    "lint:fix": "npm run lint -- --fix",
-    "lint": "eslint .",
-    "prebuild": "run-s clean",
-    "prettier": "prettier --write .",
-    "test:coverage": "jest --coverage",
-    "test:watch": "npm run test -- --watch",
-    "test": "jest --onlyChanged --update-snapshot"
+    "build": "run-p --print-name \"build:* mode=production\"",
+    "clean": "rimraf esm src/__coverage__ e2e/__coverage__",
+    "codestyle": "eslint . --fix",
+    "debug": "yarn test:unit --onlyChanged --update-snapshot --watch",
+    "prebuild": "run-s --print-name clean codestyle \"test:* --coverage\"",
+    "test:e2e": "jest --config=e2e/jest.config.cjs",
+    "test:unit": "jest --config=src/jest.config.cjs"
   },
   "devDependencies": {
     "@bpanchenko/uikit": "4.22.51",
@@ -35,9 +33,9 @@
     "get-tsconfig": "4.3.0",
     "glob": "8.0.3",
     "jest": "29.3.1",
-    "jest-css-modules-transform": "4.4.2",
     "jest-environment-jsdom": "29.3.1",
     "jest-image-snapshot": "6.1.0",
+    "jest-transform-css": "6.0.1",
     "lodash": "4.17.21",
     "node-color-log": "10.0.2",
     "npm-run-all": "4.1.5",
@@ -46,6 +44,7 @@
     "rimraf": "4.1.1",
     "terser-webpack-plugin": "5.3.6",
     "ts-jest": "29.0.5",
+    "tsconfig-loader": "1.1.0",
     "typescript": "4.9.4",
     "uglify-js": "3.17.4",
     "webpack": "5.75.0",

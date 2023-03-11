@@ -3,7 +3,7 @@ module.exports = {
   collectCoverageFrom: ['!**.d.ts'],
   coverageDirectory: '<rootDir>/__coverage__',
   moduleNameMapper: {
-    '@uikit/(.*)': '<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1'
+    '@uikit/(.*)': '<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1.ts'
   },
   rootDir: __dirname,
   testEnvironment: 'jest-environment-jsdom',

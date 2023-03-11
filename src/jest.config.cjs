@@ -1,9 +1,4 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-
-const {
-  tsConfig: { compilerOptions }
-} = require('tsconfig-loader').default();
-
 module.exports = {
   collectCoverageFrom: ['!**.d.ts'],
   coverageDirectory: '<rootDir>/__coverage__',
@@ -20,10 +15,8 @@ module.exports = {
     '^.+\\.ts$': [
       'ts-jest',
       {
-        tsconfig: compilerOptions,
         useESM: true
       }
-    ],
-    '^.+\\.css$': ['jest-transform-css', { modules: true }]
+    ]
   }
 };

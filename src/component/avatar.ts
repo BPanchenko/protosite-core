@@ -8,7 +8,7 @@ const enum AttributeName {
 }
 
 export const AvatarMetadata: Metadata = {
-	tagName: cAvatar.toString(),
+	tagName: cAvatar,
 	template: `
 		<figure class="${cAvatar} js-container">
 			<a class="${cAvatarLink} js-link">

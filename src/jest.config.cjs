@@ -10,7 +10,7 @@ module.exports = {
   moduleNameMapper: {
     '@uikit/(.*)': '<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1'
   },
-  rootDir: process.cwd(),
+  rootDir: __dirname,
   testEnvironment: 'jest-environment-jsdom',
   testRegex: '(/__specs__/.*\\.spec)\\.ts$',
   globals: {

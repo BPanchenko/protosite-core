@@ -13,7 +13,7 @@
     "build": "run-p --print-name \"build:* mode=production\"",
     "clean": "rimraf esm src/__coverage__ e2e/__coverage__",
     "codestyle": "eslint . --fix",
-    "debug": "yarn test:unit --onlyChanged --update-snapshot --watch",
+    "debug": "yarn test:unit --silent=false --onlyChanged --update-snapshot --watch",
     "prebuild": "run-s --print-name clean codestyle \"test:* --coverage\"",
     "test:e2e": "jest --config=e2e/jest.config.cjs",
     "test:unit": "jest --config=src/jest.config.cjs"

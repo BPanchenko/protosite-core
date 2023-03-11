@@ -7,4 +7,8 @@ describe('AvatarElement', () => {
 		document.body.appendChild(avatar);
 		expect(document.body).toMatchSnapshot();
 	});
+
+	it('metadata', () => {
+		expect(AvatarMetadata).toMatchSnapshot();
+	});
 });

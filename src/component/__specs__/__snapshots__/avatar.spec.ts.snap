@@ -1,9 +1,23 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AvatarElement Markup 1`] = `
+exports[`AvatarElement markup 1`] = `
 <body>
   <c-avatar
     class="u-display-contents"
   />
 </body>
+`;
+
+exports[`AvatarElement metadata 1`] = `
+{
+  "stylesheet": undefined,
+  "tagName": "c-avatar",
+  "template": "
+		<figure class="c-avatar js-container">
+			<a class="c-avatar__link js-link">
+			<slot class="js-slot"></slot>
+			</a>
+		</figure>
+	",
+}
 `;

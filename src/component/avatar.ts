@@ -2,9 +2,9 @@ import { CustomElementDecorator, Metadata } from '../trunk/custom-element-decora
 // @ts-ignore
 import stylesheet, { cAvatar, cAvatarLink } from '@uikit/component/avatar.css';
 
-const enum AttributeName {
-	Href = 'href',
-	Src = 'src'
+enum AttributeName {
+	Link = 'data-link',
+	Image = 'data-image'
 }
 
 export const AvatarMetadata: Metadata = {
@@ -12,7 +12,7 @@ export const AvatarMetadata: Metadata = {
 	template: `
 		<figure class="${cAvatar} js-container">
 			<a class="${cAvatarLink} js-link">
-			<slot class="js-slot"></slot>
+				<img class="js-image">
 			</a>
 		</figure>
 	`,
@@ -21,38 +21,45 @@ export const AvatarMetadata: Metadata = {
 
 @CustomElementDecorator(AvatarMetadata)
 class AvatarElement extends HTMLElement implements CustomElement {
-	static readonly observedAttributes? = [AttributeName.Href, AttributeName.Src];
+	static readonly observedAttributes? = [AttributeName.Link, AttributeName.Image];
 
-	private readonly refs?: Map<string, HTMLElement> = new Map();
-	private href?: string | boolean;
-	private src?: string | boolean;
+	readonly $refs? = new Map([
+		['container', null],
+		['link', null],
+		['image', null]
+	]);
 
-	attributeChangedCallback?(name: string, _previous: string, current: string): void {
+	readonly state? = new Map();
+
+	attributeChangedCallback(name: string, _: string, current: string) {
 		switch (name) {
-			case AttributeName.Href:
-				this.href = current || false;
+			case AttributeName.Link:
+				this.state.set('link', current);
 				break;
-			case AttributeName.Src:
-				this.src = current || false;
+			case AttributeName.Image:
+				this.state.set('image', current);
 				break;
 		}
 	}
 
-	constructor() {
-		super();
-		this.refs.set('container', this.querySelector('.js-container'));
-		this.refs.set('link', this.querySelector('.js-link'));
-		this.refs.set('slot', this.querySelector('.js-slot'));
+	connectedCallback() {
+		if ('link' in this.dataset) this.state.set('link', this.dataset.link);
+		if ('image' in this.dataset) this.state.set('image', this.dataset.image);
 
-		this.href = this.getAttribute('href') || false;
-		this.src = this.getAttribute('src') || false;
+		if (this.children.length > 0) {
+			this.state.set('children', this.children);
+		}
+
+		this.render();
+		this.clear();
 	}
 
-	connectedCallback(): void {
-		this.refs.get('container');
-		console.log(this.shadowRoot);
-		console.log(this.children);
-		console.log(this.refs);
+	render?() {}
+
+	clear?() {
+		this.state.get(StateKey.StashedChildren).forEach((e) => e.remove());
+		delete this.dataset.link;
+		delete this.dataset.image;
 	}
 }
 

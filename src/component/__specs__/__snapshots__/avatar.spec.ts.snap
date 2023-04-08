@@ -4,7 +4,31 @@ exports[`AvatarElement markup 1`] = `
 <body>
   <c-avatar
     class="u-display-contents"
-  />
+  >
+    
+		
+    <figure
+      class="c-avatar js-container"
+    >
+      
+			
+      <a
+        class="c-avatar__link js-link"
+      >
+        
+				
+        <img
+          class="js-image"
+        />
+        
+			
+      </a>
+      
+		
+    </figure>
+    
+	
+  </c-avatar>
 </body>
 `;
 
@@ -15,9 +39,17 @@ exports[`AvatarElement metadata 1`] = `
   "template": "
 		<figure class="c-avatar js-container">
 			<a class="c-avatar__link js-link">
-			<slot class="js-slot"></slot>
+				<img class="js-image">
 			</a>
 		</figure>
 	",
+}
+`;
+
+exports[`AvatarElement references 1`] = `
+Map {
+  "container" => null,
+  "link" => null,
+  "image" => null,
 }
 `;

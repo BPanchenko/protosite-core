@@ -1,34 +1,37 @@
-import EventEmmiter from "./event-emmiter.js"
+import EventEmmiter from './event-emmiter.js'
 
 class LocalStorageMap extends Map {
-
 	name
 
 	#data
 	#createdKey
 	#updatedKey
 
-	constructor(props, {
-		name = getDefaultLocalStorageName(),
-		createdKey = '__created__',
-		updatedKey = '__updated__'
-	} = {}) {
+	constructor(
+		props,
+		{
+			name = getDefaultLocalStorageName(),
+			createdKey = '__created__',
+			updatedKey = '__updated__',
+		} = {},
+	) {
 		super(props)
 		this.name = name
 		this.#data = this.#fetch()
 		this.#createdKey = createdKey
 		this.#updatedKey = updatedKey
 
-		for(let key in this.#data) {
+		for (let key in this.#data) {
 			this.set(key, this.#data[key], true)
 		}
 
-		if (!this.has(this.#createdKey)) this.set(this.#createdKey, this.#getNowUTC())
+		if (!this.has(this.#createdKey))
+			this.set(this.#createdKey, this.#getNowUTC())
 	}
 
 	set(key, value, silent = false) {
 		super.set(key, value)
-		if(!silent) {
+		if (!silent) {
 			super.set(this.#updatedKey, this.#getNowUTC())
 			this.#save()
 		}
@@ -37,8 +40,10 @@ class LocalStorageMap extends Map {
 
 	toJSON() {
 		let result = Object.create(null)
-		Array.from(this.keys()).sort().forEach(key => result[key] = this.get(key))
-		return  result
+		Array.from(this.keys())
+			.sort()
+			.forEach((key) => (result[key] = this.get(key)))
+		return result
 	}
 
 	toString() {
@@ -50,7 +55,7 @@ class LocalStorageMap extends Map {
 	}
 
 	#getNowUTC() {
-		return (new Date()).toUTCString()
+		return new Date().toUTCString()
 	}
 
 	#save() {
@@ -60,14 +65,11 @@ class LocalStorageMap extends Map {
 }
 
 function getDefaultLocalStorageName() {
-	return window.location.hostname.split('.').reduceRight((previous, value) => 
-		`${previous}.${value}`
-	,'')
+	return window.location.hostname
+		.split('.')
+		.reduceRight((previous, value) => `${previous}.${value}`, '')
 }
 
 EventEmmiter.extend(LocalStorageMap.prototype)
 
-export {
-	getDefaultLocalStorageName,
-	LocalStorageMap
-}
+export { getDefaultLocalStorageName, LocalStorageMap }

@@ -9,41 +9,54 @@
  * />
  */
 
-;{
+{
 	const CLS = Object.create(null, {
-		'main': { value: 'c-avatar' }
+		main: { value: 'c-avatar' },
 
-		, 'link': { value: 'c-avatar__link' }
-		, 'img': { value: 'c-avatar__image' }
-		, 'xs': { value: 'c-avatar--xs' }
-		, 'sm': { value: 'c-avatar--sm' }
-		, 'md': { value: 'c-avatar--md' }
-		, 'lg': { value: 'c-avatar--lg' }
-		, 'xl': { value: 'c-avatar--xl' }
+		link: { value: 'c-avatar__link' },
+		img: { value: 'c-avatar__image' },
+		xs: { value: 'c-avatar--xs' },
+		sm: { value: 'c-avatar--sm' },
+		md: { value: 'c-avatar--md' },
+		lg: { value: 'c-avatar--lg' },
+		xl: { value: 'c-avatar--xl' },
 	})
 
 	class AvatarElement extends HTMLElement {
-
 		static get observedAttributes() {
 			return ['data-shadow', 'data-size']
 		}
-		
+
 		attributeChangedCallback(name, oldValue, newValue) {
 			if (oldValue === newValue) return null
 
 			switch (name) {
 				case 'data-size':
-					if (!~['xs','sm','md','lg','xl'].indexOf(newValue)) {
-						console.warn("Size can take values 'xs', 'sm', 'md', 'lg' or 'xl'")
+					if (!~['xs', 'sm', 'md', 'lg', 'xl'].indexOf(newValue)) {
+						console.warn(
+							"Size can take values 'xs', 'sm', 'md', 'lg' or 'xl'",
+						)
 						return null
 					}
 					this._container.classList.remove(oldValue)
 					this._container.classList.add(newValue)
 					break
-				
+
 				case 'data-shadow':
-					if (!~['2dp','3dp','4dp','6dp','8dp','16dp','24dp'].indexOf(newValue)) {
-						console.warn("Shadow can take values '2dp', '3dp', '4dp', '6dp', '8dp', '16dp' or '24dp'")
+					if (
+						!~[
+							'2dp',
+							'3dp',
+							'4dp',
+							'6dp',
+							'8dp',
+							'16dp',
+							'24dp',
+						].indexOf(newValue)
+					) {
+						console.warn(
+							"Shadow can take values '2dp', '3dp', '4dp', '6dp', '8dp', '16dp' or '24dp'",
+						)
 						return null
 					}
 					this._container.classList.remove(`s-shadow-${oldValue}`)
@@ -59,23 +72,31 @@
 
 		render() {
 			let { src, href, size, shadow, target } = this.dataset
-			
+
 			this._container = document.createElement('figure')
 			this._container.classList.add(CLS.main)
 			this.appendChild(this._container)
-			
-			if (~['xs','sm','md','lg','xl'].indexOf(size)) {
+
+			if (~['xs', 'sm', 'md', 'lg', 'xl'].indexOf(size)) {
 				this._container.classList.add(CLS[size])
 			} else if (size) {
-				console.warn("Size can take values 'xs', 'sm', 'md', 'lg' or 'xl'")
+				console.warn(
+					"Size can take values 'xs', 'sm', 'md', 'lg' or 'xl'",
+				)
 			}
 
-			if (~['2dp','3dp','4dp','6dp','8dp','16dp','24dp'].indexOf(shadow)) {
+			if (
+				~['2dp', '3dp', '4dp', '6dp', '8dp', '16dp', '24dp'].indexOf(
+					shadow,
+				)
+			) {
 				this._container.classList.add(`s-shadow-${shadow}`)
 			} else if (shadow && shadow != 'inset') {
-				console.warn("Shadow can take values '2dp', '3dp', '4dp', '6dp', '8dp', '16dp' or '24dp'")
+				console.warn(
+					"Shadow can take values '2dp', '3dp', '4dp', '6dp', '8dp', '16dp' or '24dp'",
+				)
 			}
-			
+
 			if (href) {
 				this._link = document.createElement('a')
 				this._link.classList.add(CLS.link)
@@ -100,7 +121,9 @@
 			}
 
 			if (this._children.length) {
-				this._children.forEach(child => this._container.appendChild(child))
+				this._children.forEach((child) =>
+					this._container.appendChild(child),
+				)
 			}
 
 			return this
@@ -118,9 +141,5 @@
 
 	if (customElements) {
 		customElements.define('c-avatar', AvatarElement)
-	}
-
-	if (typeof exports != 'undefined' && !exports.nodeType) {
-		exports.AvatarElement = AvatarElement
 	}
 }

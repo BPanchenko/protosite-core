@@ -10,22 +10,21 @@
  */
 
 {
-
 	/* Constants
 	 ========================================================================== */
 
 	const CLS = Object.create(null, {
-		main: { value: 'c-thumbnail' }
+		main: { value: 'c-thumbnail' },
 
-		, caption: { value: 'c-thumbnail__caption' }
-		, link: { value: 'c-thumbnail__link' }
-		, img: { value: 'c-thumbnail__image' }
-		, shutter: { value: 'c-thumbnail__shutter' }
-		, xs: { value: 'c-thumbnail--xs' }
-		, sm: { value: 'c-thumbnail--sm' }
-		, md: { value: 'c-thumbnail--md' }
-		, lg: { value: 'c-thumbnail--lg' }
-		, xl: { value: 'c-thumbnail--xl' }
+		caption: { value: 'c-thumbnail__caption' },
+		link: { value: 'c-thumbnail__link' },
+		img: { value: 'c-thumbnail__image' },
+		shutter: { value: 'c-thumbnail__shutter' },
+		xs: { value: 'c-thumbnail--xs' },
+		sm: { value: 'c-thumbnail--sm' },
+		md: { value: 'c-thumbnail--md' },
+		lg: { value: 'c-thumbnail--lg' },
+		xl: { value: 'c-thumbnail--xl' },
 	})
 
 	/* Element Class
@@ -42,15 +41,17 @@
 			this.innerHTML = ''
 
 			this.classList.add(CLS.main)
-			
-			if (~['xs','sm','md','lg','xl'].indexOf(size)) {
+
+			if (~['xs', 'sm', 'md', 'lg', 'xl'].indexOf(size)) {
 				this.classList.add(CLS[size])
 			} else if (size) {
-				console.warn('Size must have one of the values "xs", "sm", "md", "lg" or "xl"')
+				console.warn(
+					'Size must have one of the values "xs", "sm", "md", "lg" or "xl"',
+				)
 			}
 
 			let container = this
-			
+
 			if (href) {
 				this._link = document.createElement('a')
 				this._link.classList.add(CLS.link)
@@ -74,7 +75,6 @@
 				} else {
 					this._text = document.createElement('figcaption')
 					this._text.classList.add(CLS.caption)
-
 				}
 				this._text.innerText = text
 				container.appendChild(this._text)
@@ -92,7 +92,7 @@
 			return this
 		}
 	}
-	
+
 	/* Define the new element
 	 ========================================================================== */
 

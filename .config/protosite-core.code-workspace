@@ -5,9 +5,26 @@
 		}
 	],
 	"settings": {
+		"editor.codeActionsOnSave": {
+		  "source.fixAll.eslint": "explicit",
+		  "source.fixAll": "explicit"
+		},
 		"editor.detectIndentation": false,
+		"editor.fontFamily": "'Clincher Code', monospace",
+		"editor.fontLigatures": true,
+		"editor.fontSize": 13,
+		"editor.formatOnPaste": false,
+		"editor.formatOnSave": true,
+		"editor.formatOnSaveMode": "file",
+		"editor.formatOnType": false,
 		"editor.insertSpaces": false,
 		"editor.tabSize": 4,
+
+		"eslint.enable": true,
+		"eslint.format.enable": true,
+		"eslint.validate": ["javascript"],
+		"files.autoSave": "onFocusChange",
+
 		"[json]": {
 			"editor.tabSize": 2
 		}

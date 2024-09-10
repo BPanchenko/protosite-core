@@ -1,9 +1,7 @@
-import Store from "./lib/store"
+import Store from './src/trunk/store'
 
-export * from "./lib/component"
-export * from "./lib/event-emmiter"
-export * from "./lib/local-storage-map"
+export * from './src/trunk/component'
+export * from './src/trunk/event-emmiter'
+export * from './src/trunk/local-storage-map'
 
-export {
-	Store
-}
+export { Store }

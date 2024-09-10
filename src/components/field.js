@@ -1,18 +1,17 @@
 {
-
 	const CLS = Object.create(null, {
-		box: { value: 'c-field-box' }
-		, button: { value: 'c-field-button' }
-		, buttonIcon: { value: 'iconic' }
-		, error: { value: 'c-field-error' }
-		, field: { value: 'c-field' }
-		, filled: { value: 'is-filled' }
-		, focused: { value: 'is-focused' }
-		, label: { value: 'c-field-label' }
-		, icon: { value: 'c-field-icon' }
-		, info: { value: 'c-field-info' }
-		, invalid: { value: 'is-invalid' }
-		, valid: { value: 'is-valid' }
+		box: { value: 'c-field-box' },
+		button: { value: 'c-field-button' },
+		buttonIcon: { value: 'iconic' },
+		error: { value: 'c-field-error' },
+		field: { value: 'c-field' },
+		filled: { value: 'is-filled' },
+		focused: { value: 'is-focused' },
+		label: { value: 'c-field-label' },
+		icon: { value: 'c-field-icon' },
+		info: { value: 'c-field-info' },
+		invalid: { value: 'is-invalid' },
+		valid: { value: 'is-valid' },
 	})
 
 	const PATTERN_EMAIL = '^\\S+@\\S+\\.\\S+$'
@@ -22,20 +21,22 @@
 	 ========================================================================== */
 
 	class FieldElement extends HTMLElement {
-
 		connectedCallback() {
 			this._children = Array.from(this.children)
 			this._defaultValue = this.dataset.value
 			this.classList.add(CLS.box)
-			
+
 			this.render().cleanup()
 
-			this.addEventListener('click', e => this.focus())
-			this._field.addEventListener('blur', e => this.blur())
-			this._field.addEventListener('change', e => this.change())
-			this._field.addEventListener('focus', e => this.focus())
-			this._field.addEventListener('input', e => this.input())
-			if(this._button) this._button.addEventListener('click', e => this.clickButton(e))
+			this.addEventListener('click', () => this.focus())
+			this._field.addEventListener('blur', () => this.blur())
+			this._field.addEventListener('change', () => this.change())
+			this._field.addEventListener('focus', () => this.focus())
+			this._field.addEventListener('input', () => this.input())
+			if (this._button)
+				this._button.addEventListener('click', (e) =>
+					this.clickButton(e),
+				)
 
 			this.blur().change()
 		}
@@ -75,11 +76,11 @@
 			switch (this.type) {
 				case 'password':
 				case 'text':
-					if(this.buttonGlyph === 'eye-closed') {
+					if (this.buttonGlyph === 'eye-closed') {
 						e.preventDefault()
 						this.buttonGlyph = 'eye-open'
 						this.type = 'text'
-					} else if(this.buttonGlyph === 'eye-open') {
+					} else if (this.buttonGlyph === 'eye-open') {
 						e.preventDefault()
 						this.buttonGlyph = 'eye-closed'
 						this.type = 'password'
@@ -97,18 +98,19 @@
 			return this
 		}
 		focus() {
-			if(this.disabled) return false
+			if (this.disabled) return false
 			this.classList.add(CLS.focused)
 
 			this._field.focus()
 
 			// TODO: fix errors when the type is checkbox or radiobutton
-			if(this.isCheckable()) this._field.click()
+			if (this.isCheckable()) this._field.click()
 
 			return this
 		}
 		input() {
-			if(this.pattern && !~['email', 'password'].indexOf(this.type)) this.isValid()
+			if (this.pattern && !~['email', 'password'].indexOf(this.type))
+				this.isValid()
 			return this
 		}
 
@@ -116,8 +118,8 @@
 
 		isFilled() {
 			let val = this.value
-			let is = !!val && val!=='0' && val!=='null'
-			this.classList[ is ? 'add' : 'remove'](CLS.filled)
+			let is = !!val && val !== '0' && val !== 'null'
+			this.classList[is ? 'add' : 'remove'](CLS.filled)
 			return is
 		}
 
@@ -171,14 +173,25 @@
 		}
 		render() {
 			if (this.glyph) this._icon = this.renderIcon(this.glyph)
-			if (this.label && !this.isCheckable()) this._label = this.renderLabel(this.label)
+			if (this.label && !this.isCheckable())
+				this._label = this.renderLabel(this.label)
 
 			this._field = this.renderField()
 
-			if (this.label && this.isCheckable()) this._label = this.renderLabel(this.label)
-			if (this.glyphAtRight) this._iconAtRight = this.renderIcon(this.glyphAtRight)
-			if (this.button) this._button = this.renderButton({ text: this.button, type: this.buttonType })
-			if (this.buttonGlyph) this._button = this.renderButton({ glyph: this.buttonGlyph, type: this.buttonType })
+			if (this.label && this.isCheckable())
+				this._label = this.renderLabel(this.label)
+			if (this.glyphAtRight)
+				this._iconAtRight = this.renderIcon(this.glyphAtRight)
+			if (this.button)
+				this._button = this.renderButton({
+					text: this.button,
+					type: this.buttonType,
+				})
+			if (this.buttonGlyph)
+				this._button = this.renderButton({
+					glyph: this.buttonGlyph,
+					type: this.buttonType,
+				})
 			if (this.error) this._error = this.renderError(this.error)
 			if (this.info) this._info = this.renderInfo(this.info)
 
@@ -211,7 +224,7 @@
 				pattern: this.pattern,
 				placeholder: this.placeholder,
 				type: this.type,
-				value: this._defaultValue
+				value: this._defaultValue,
 			})
 			this.appendChild(elem)
 			return elem
@@ -241,7 +254,7 @@
 			return this._field.hasAttribute('disabled')
 		}
 		set disabled(flag) {
-			if(flag !== false) {
+			if (flag !== false) {
 				this.setAttribute('aria-disabled', true)
 				this._field.setAttribute('disabled', 'disabled')
 			} else {
@@ -254,8 +267,10 @@
 			return this.dataset.button || this.getAttribute('button')
 		}
 		get buttonGlyph() {
-			let glyph = this.dataset.buttonGlyph || this.getAttribute('button-glyph')
-			if (!glyph && this._button) glyph = this._button.children[0].dataset.glyph
+			let glyph =
+				this.dataset.buttonGlyph || this.getAttribute('button-glyph')
+			if (!glyph && this._button)
+				glyph = this._button.children[0].dataset.glyph
 			return glyph
 		}
 		set buttonGlyph(val) {
@@ -279,7 +294,9 @@
 		}
 
 		get glyphAtRight() {
-			return this.dataset.glyphAtRight || this.getAttribute('glyph-at-right')
+			return (
+				this.dataset.glyphAtRight || this.getAttribute('glyph-at-right')
+			)
 		}
 
 		get label() {
@@ -320,15 +337,27 @@
 
 	// Private function's
 
+	/**
+	 *
+	 * @param options
+	 */
 	function createField(options = {}) {
-		let { children, name, pattern, placeholder, type = 'text', value } = options
+		let {
+			children,
+			name,
+			pattern,
+			placeholder,
+			type = 'text',
+			value,
+		} = options
 		let node
 		switch (type) {
 			case 'select':
 				node = document.createElement('select')
 				if (children.length) {
-					Array.from(children).forEach(child => {
-						if (child instanceof HTMLOptionElement) node.appendChild(child)
+					Array.from(children).forEach((child) => {
+						if (child instanceof HTMLOptionElement)
+							node.appendChild(child)
 					})
 				}
 				break
@@ -348,6 +377,10 @@
 		return node
 	}
 
+	/**
+	 *
+	 * @param glyph
+	 */
 	function createIcon(glyph) {
 		let node = document.createElement('span')
 		node.classList.add(CLS.icon)
@@ -355,6 +388,12 @@
 		return node
 	}
 
+	/**
+	 *
+	 * @param tagName
+	 * @param cls
+	 * @param text
+	 */
 	function createTag(tagName, cls, text) {
 		let node = document.createElement(tagName)
 		node.classList.add(cls)
@@ -362,17 +401,5 @@
 		return node
 	}
 
-	function stripTags(str) {
-		return (''+str).replace(/<\/?[^>]+>/g, '')
-	}
-
-	// Define the new element's
-
-	if (customElements) {
-		customElements.define('c-field', FieldElement)
-	}
-
-	if (typeof exports != 'undefined' && !exports.nodeType) {
-		exports.FieldElement = FieldElement
-	}
+	customElements.define('c-field', FieldElement)
 }

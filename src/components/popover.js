@@ -7,30 +7,30 @@
  */
 
 {
-	
 	/* Constants
 	 ========================================================================== */
 
 	const CLS = Object.create(null, {
-		main: { value: 'c-popover' }
-		, body: { value: 'c-popover__body' }
-		, show: { value: 'is-visible' }
-		, hide: { value: 'is-hidden' }
+		main: { value: 'c-popover' },
+		body: { value: 'c-popover__body' },
+		show: { value: 'is-visible' },
+		hide: { value: 'is-hidden' },
 	})
 
 	const DEFAULT_FLOATING = true
 	const DEFAULT_POSITION = 'top'
 	const DEFAULT_TRIGGER = 'hover'
-	
+
 	const SIDE_RATION = 1.1
-	
+
 	/* Element Class
 	 ========================================================================== */
 
 	class PopoverElement extends HTMLElement {
-		
 		connectedCallback() {
-			this._control = document.body.querySelector(`*[aria-controls=${this.id}]`)
+			this._control = document.body.querySelector(
+				`*[aria-controls=${this.id}]`,
+			)
 			this.render()
 			addEventListeners.call(this)
 		}
@@ -52,17 +52,21 @@
 
 		placement({ mouseX, mouseY } = {}) {
 			this.style.transform = getTransformStyle.call(this)
-			
+
 			let correctedPosition
-			
+
 			correctedPosition = correctPositionOfBrowser.call(this)
 			if (this.position != correctedPosition) {
 				this.position = correctedPosition
 				this.style.transform = getTransformStyle.call(this)
 			}
-			
+
 			if (this.floating && mouseX && mouseY) {
-				correctedPosition = correctPositionOfMouse.call(this, mouseX, mouseY)
+				correctedPosition = correctPositionOfMouse.call(
+					this,
+					mouseX,
+					mouseY,
+				)
 				if (this.position != correctedPosition) {
 					this.position = correctedPosition
 					this.style.transform = getTransformStyle.call(this)
@@ -95,7 +99,7 @@
 
 		get floating() {
 			let floating = this.dataset.floating
-			if (!~['true','false'].indexOf(floating)) {
+			if (!~['true', 'false'].indexOf(floating)) {
 				floating = this.dataset.floating = DEFAULT_FLOATING
 			}
 			return floating
@@ -120,21 +124,33 @@
 			this.dataset.trigger = v.toString()
 		}
 	}
-	
+
 	/* Private
 	 ========================================================================== */
 
+	/**
+	 *
+	 */
 	function addEventListeners() {
-		this.__onShow = (e) => { e.preventDefault(); this.show().placement(); }
-		this.__onHide = (e) => { e.preventDefault(); this.hide(); }
+		this.__onShow = (e) => {
+			e.preventDefault()
+			this.show().placement()
+		}
+		this.__onHide = (e) => {
+			e.preventDefault()
+			this.hide()
+		}
 		this.__onMove = (e) => {
 			e.preventDefault()
 			this.placement({
 				mouseX: e.clientX,
-				mouseY: e.clientY
+				mouseY: e.clientY,
 			})
 		}
-		this.__onToggle = (e) => { e.preventDefault(); this.toggle(); }
+		this.__onToggle = (e) => {
+			e.preventDefault()
+			this.toggle()
+		}
 
 		if (~this.trigger.indexOf('hover')) {
 			this._control.addEventListener('mouseenter', this.__onShow)
@@ -152,10 +168,13 @@
 		if (~this.trigger.indexOf('click')) {
 			this._control.addEventListener('click', this.__onToggle)
 		}
-		
+
 		return this
 	}
 
+	/**
+	 *
+	 */
 	function correctPositionOfBrowser() {
 		let poss = this.position.split('-')
 		let rect = this.getBoundingClientRect()
@@ -164,44 +183,55 @@
 		if (poss[0] == 'bottom' && bodyRect.height <= rect.bottom)
 			poss[0] = 'top'
 
-		if (poss[0] == 'top' && rect.top < 0)
-			poss[0] = 'bottom'
+		if (poss[0] == 'top' && rect.top < 0) poss[0] = 'bottom'
 
-		if (poss[0] == 'right' && bodyRect.right <= rect.right)
-			poss[0] = 'left'
+		if (poss[0] == 'right' && bodyRect.right <= rect.right) poss[0] = 'left'
 
-		if (poss[0] == 'left' && rect.left < 0)
-			poss[0] = 'right'
+		if (poss[0] == 'left' && rect.left < 0) poss[0] = 'right'
 
 		return poss.join('-')
 	}
 
+	/**
+	 *
+	 * @param mouseX
+	 * @param mouseY
+	 */
 	function correctPositionOfMouse(mouseX, mouseY) {
 		let poss = this.position.split('-')
 		let rect = this.getBoundingClientRect()
 		let ctrlRect = this._control.getBoundingClientRect()
 
-		if(!rect.width || !rect.height) return this.position
+		if (!rect.width || !rect.height) return this.position
 
-		if(~['top', 'bottom'].indexOf(poss[0]) && ctrlRect.width > rect.width*SIDE_RATION) {
-			let third = ctrlRect.width/3
-			if(mouseX <= ctrlRect.left + third) poss[1] = 'left'
-			else if(mouseX <= ctrlRect.left + 2*third) poss.splice(1, 1)
-			else if(mouseX <= ctrlRect.right) poss[1] = 'right'
+		if (
+			~['top', 'bottom'].indexOf(poss[0]) &&
+			ctrlRect.width > rect.width * SIDE_RATION
+		) {
+			let third = ctrlRect.width / 3
+			if (mouseX <= ctrlRect.left + third) poss[1] = 'left'
+			else if (mouseX <= ctrlRect.left + 2 * third) poss.splice(1, 1)
+			else if (mouseX <= ctrlRect.right) poss[1] = 'right'
 			return poss.join('-')
 		}
 
-		if(~['left', 'right'].indexOf(poss[0]) && ctrlRect.height > rect.height*SIDE_RATION) {
-			let third = ctrlRect.height/3
-			if(mouseY <= ctrlRect.top + third) poss[1] = 'top'
-			else if(mouseY <= ctrlRect.top + 2*third) poss.splice(1, 1)
-			else if(mouseY <= ctrlRect.bottom) poss[1] = 'bottom'
+		if (
+			~['left', 'right'].indexOf(poss[0]) &&
+			ctrlRect.height > rect.height * SIDE_RATION
+		) {
+			let third = ctrlRect.height / 3
+			if (mouseY <= ctrlRect.top + third) poss[1] = 'top'
+			else if (mouseY <= ctrlRect.top + 2 * third) poss.splice(1, 1)
+			else if (mouseY <= ctrlRect.bottom) poss[1] = 'bottom'
 			return poss.join('-')
 		}
 
 		return poss
 	}
 
+	/**
+	 *
+	 */
 	function createBody() {
 		let elem = document.createElement('div')
 		elem.classList.add(CLS.body)
@@ -210,8 +240,11 @@
 		return elem
 	}
 
+	/**
+	 *
+	 */
 	function getTransformStyle() {
-		let x,y
+		let x, y
 		let ctrlRect = this._control.getBoundingClientRect()
 		let rect = this.getBoundingClientRect()
 		let style = window.getComputedStyle(this)
@@ -220,15 +253,18 @@
 			top: parseInt(style.marginTop),
 			right: parseInt(style.marginRight),
 			bottom: parseInt(style.marginBottom),
-			left: parseInt(style.marginLeft)
+			left: parseInt(style.marginLeft),
 		}
 
 		offset.vertical = offset.top + offset.bottom
 		offset.horizontal = offset.left + offset.right
-	
+
 		switch (this.position) {
 			case 'top':
-				x = ctrlRect.left + ctrlRect.width/2 - (rect.width + offset.horizontal)/2
+				x =
+					ctrlRect.left +
+					ctrlRect.width / 2 -
+					(rect.width + offset.horizontal) / 2
 				y = ctrlRect.top - rect.height - offset.vertical
 				break
 			case 'top-left':
@@ -241,7 +277,10 @@
 				break
 			case 'right':
 				x = ctrlRect.right + offset.left
-				y = ctrlRect.top + ctrlRect.height/2 - (rect.height + offset.horizontal)/2
+				y =
+					ctrlRect.top +
+					ctrlRect.height / 2 -
+					(rect.height + offset.horizontal) / 2
 				break
 			case 'right-top':
 				x = ctrlRect.right + offset.left
@@ -252,7 +291,10 @@
 				y = ctrlRect.bottom - rect.height - offset.bottom
 				break
 			case 'bottom':
-				x = ctrlRect.left + ctrlRect.width/2 - (rect.width + offset.horizontal)/2
+				x =
+					ctrlRect.left +
+					ctrlRect.width / 2 -
+					(rect.width + offset.horizontal) / 2
 				y = ctrlRect.bottom
 				break
 			case 'bottom-left':
@@ -265,7 +307,10 @@
 				break
 			case 'left':
 				x = ctrlRect.left - rect.width - offset.horizontal
-				y = ctrlRect.top + ctrlRect.height/2 - (rect.height + offset.horizontal)/2
+				y =
+					ctrlRect.top +
+					ctrlRect.height / 2 -
+					(rect.height + offset.horizontal) / 2
 				break
 			case 'left-top':
 				x = ctrlRect.left - rect.width - offset.horizontal
@@ -276,19 +321,34 @@
 				y = ctrlRect.bottom - rect.height - offset.bottom
 				break
 		}
-	
+
 		return `translate(${Math.round(x)}px,${Math.round(y)}px)`
 	}
 
+	/**
+	 *
+	 * @param value
+	 */
 	function isInvalidPosition(value) {
 		return !~[
-			'top', 'top-left', 'top-right',
-			'right', 'right-top', 'right-bottom',
-			'bottom', 'bottom-left', 'bottom-right',
-			'left', 'left-top', 'left-bottom'
+			'top',
+			'top-left',
+			'top-right',
+			'right',
+			'right-top',
+			'right-bottom',
+			'bottom',
+			'bottom-left',
+			'bottom-right',
+			'left',
+			'left-top',
+			'left-bottom',
 		].indexOf(value)
 	}
 
+	/**
+	 *
+	 */
 	function removeEventListeners() {
 		this._control.removeEventListener('blur', this.__onHide)
 		this._control.removeEventListener('click', this.__onToggle)
@@ -298,19 +358,24 @@
 		this._control.removeEventListener('mousemove', this.__onMove)
 		return
 	}
-	
+
 	/* Hide all popovers when scrolling a window
 	 ========================================================================== */
-	
+
+	/**
+	 *
+	 */
 	function hideAllPopovers() {
-		Array.from(document.querySelectorAll('c-popover.is-visible')).forEach(elem => {
-			elem.classList.add('is-hidden')
-			elem.classList.remove('is-visible')
-		})
+		Array.from(document.querySelectorAll('c-popover.is-visible')).forEach(
+			(elem) => {
+				elem.classList.add('is-hidden')
+				elem.classList.remove('is-visible')
+			},
+		)
 	}
 
 	window.addEventListener('scroll', hideAllPopovers, false)
-	
+
 	/* Define the new element
 	 ========================================================================== */
 
@@ -321,5 +386,4 @@
 	if (typeof exports != 'undefined' && !exports.nodeType) {
 		exports.PopoverElement = PopoverElement
 	}
-
 }

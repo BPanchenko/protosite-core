@@ -20,21 +20,25 @@
 	<a class="c-pagination__page" href="#page=124" data-page="124">124</a>
 	<a class="c-pagination__next" href="#next" data-page="7" aria-disabled="false"></a>
 </section>
-*/
+ */
 
 {
-
 	/* Constants
 	 ========================================================================== */
 
-	const attrs = ['data-displayed', 'data-current', 'data-pagesize', 'data-total']
+	const attrs = [
+		'data-displayed',
+		'data-current',
+		'data-pagesize',
+		'data-total',
+	]
 
 	const CLS = Object.create(null, {
-		main: { value: 'c-pagination' }
-		, ellipsis: { value: 'c-pagination__ellipsis' }
-		, next: { value: 'c-pagination__next' }
-		, page: { value: 'c-pagination__page' }
-		, prev: { value: 'c-pagination__prev' }
+		main: { value: 'c-pagination' },
+		ellipsis: { value: 'c-pagination__ellipsis' },
+		next: { value: 'c-pagination__next' },
+		page: { value: 'c-pagination__page' },
+		prev: { value: 'c-pagination__prev' },
 	})
 
 	/* Element Class
@@ -43,21 +47,26 @@
 	class PaginationElement extends HTMLElement {
 		connectedCallback() {
 			this.render()
-			this.addEventListener('click', onClick, false)
-
-			(new MutationObserver(() => this.render())).observe(this, {
+			this.addEventListener(
+				'click',
+				onClick,
+				false,
+			)(new MutationObserver(() => this.render())).observe(this, {
 				attributes: true,
-				attributeFilter: attrs
+				attributeFilter: attrs,
 			})
 		}
 
 		render() {
 			let {
-				current, pages,
+				current,
+				pages,
 				disabledFirst,
 				disabledLast,
-				prev, next,
-				end, start
+				prev,
+				next,
+				end,
+				start,
 			} = this.calc()
 
 			let html = `
@@ -85,16 +94,16 @@
 				current = 1,
 				displayed = 5,
 				pagesize = 20,
-				total = 0
+				total = 0,
 			} = this.options()
-			
+
 			this.classList.add(CLS.main)
 			this.setAttribute('aria-disabled', !total)
 
-			let edgesStart = Math.floor((displayed-1)/2)
-			let edgesEnd = Math.ceil((displayed-1)/2)
-			let pages = Math.ceil(total/pagesize)
-			
+			let edgesStart = Math.floor((displayed - 1) / 2)
+			let edgesEnd = Math.ceil((displayed - 1) / 2)
+			let pages = Math.ceil(total / pagesize)
+
 			if (displayed > pages) displayed = pages
 
 			let disabledFirst = current < edgesStart + 1
@@ -109,14 +118,18 @@
 			let start = current - edgesStart
 			let end = current + edgesEnd
 
-			if (start < 1) start = 1, end = displayed
-			if (end > pages) end = pages, start = end - displayed + 1
+			if (start < 1) (start = 1), (end = displayed)
+			if (end > pages) (end = pages), (start = end - displayed + 1)
 
 			return {
-				current, pages,
-				disabledFirst, disabledLast,
-				prev, next,
-				end, start
+				current,
+				pages,
+				disabledFirst,
+				disabledLast,
+				prev,
+				next,
+				end,
+				start,
 			}
 		}
 
@@ -125,32 +138,25 @@
 				current = 1,
 				displayed = 5,
 				pagesize = 20,
-				total = 0
+				total = 0,
 			} = this.dataset
 
-			current   = parseInt(current)
+			current = parseInt(current)
 			displayed = parseInt(displayed)
-			pagesize  = parseInt(pagesize)
-			total	 = parseInt(total)
+			pagesize = parseInt(pagesize)
+			total = parseInt(total)
 
 			return { current, displayed, pagesize, total }
 		}
 	}
 
-	/* Private
-	 ========================================================================== */
-
-	function onClick(evt) {
-		evt.preventDefault()
-		if (evt.target.dataset.hasOwnProperty('page')) {
-			evt.currentTarget.dataset.current = evt.target.dataset.page
+	function onClick(event) {
+		event.preventDefault()
+		if (Object.hasOwn(event.target.dataset, 'page')) {
+			event.currentTarget.dataset.current = event.target.dataset.page
 		}
 		return
 	}
 
-	/* Define the new element
-	 ========================================================================== */
-
-	if (customElements) customElements.define('c-pagination', PaginationElement)
-	if (typeof exports != 'undefined' && !exports.nodeType) exports.PaginationElement = PaginationElement
+	customElements.define('c-pagination', PaginationElement)
 }

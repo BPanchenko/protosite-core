@@ -1,6 +1,5 @@
 {
 	class TablistElement extends HTMLElement {
-
 		get activeTab() {
 			return this.dataset.activeTab
 		}
@@ -24,24 +23,24 @@
 
 		activate() {
 			let currentTab = this.querySelector('.c-tab[aria-current=true]')
-			if(!currentTab) currentTab = this.children[0]
-			currentTab.dispatchEvent(new Event("click", { bubbles: true }))
+			if (!currentTab) currentTab = this.children[0]
+			currentTab.dispatchEvent(new Event('click', { bubbles: true }))
 		}
 
 		onSelectTab(e) {
 			let currentTab
 
 			// unselect don't current tabs
-			this.querySelectorAll('.c-tab').forEach(tab => {
-				if(tab.contains(e.target)) currentTab = tab
+			this.querySelectorAll('.c-tab').forEach((tab) => {
+				if (tab.contains(e.target)) currentTab = tab
 				else tab.ariaCurrent = false
 			})
 
 			// dispatch a change event with the data of the current tab
-			if(currentTab) {
+			if (currentTab) {
 				this.dataset.activeTab = currentTab.id
 				this.dataset.activeTabpanel = currentTab.ariaControls
-				this.dispatchEvent(new Event("change", { bubbles: true }))
+				this.dispatchEvent(new Event('change', { bubbles: true }))
 			}
 
 			this.renderIndicator()
@@ -51,7 +50,7 @@
 			let currentTab = this.querySelector('.c-tab[aria-current=true]')
 
 			this.indicator.setAttribute('aria-hidden', !currentTab)
-			if(currentTab) {
+			if (currentTab) {
 				this.indicator.style.width = currentTab.clientWidth + 'px'
 				this.indicator.style.transform = `translateX(${currentTab.offsetLeft}px)`
 			}
@@ -62,9 +61,8 @@
 	 ========================================================================== */
 
 	class TabElement extends HTMLElement {
-
 		get ariaControls() {
-			return (this.getAttribute('aria-controls') || '')
+			return this.getAttribute('aria-controls') || ''
 		}
 
 		set ariaCurrent(flag) {
@@ -97,6 +95,10 @@
 
 	// Utils
 
+	/**
+	 *
+	 * @param glyph
+	 */
 	function createIcon(glyph) {
 		let node = document.createElement('span')
 		node.classList.add('c-tab__icon')
@@ -104,6 +106,10 @@
 		return node
 	}
 
+	/**
+	 *
+	 * @param text
+	 */
 	function createLabel(text) {
 		let node = document.createElement('span')
 		node.classList.add('c-tab__label')
@@ -111,7 +117,9 @@
 		return node
 	}
 
-
+	/**
+	 *
+	 */
 	function createIndicator() {
 		let node = document.createElement('span')
 		node.classList.add('c-tab-indicator')

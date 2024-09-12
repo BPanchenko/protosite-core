@@ -1,24 +1,34 @@
-const _ = window._
+const toString = Object.prototype.toString
 
-/**
- *
- * @param step
- */
-function createGridUtility(step = 10) {
-	let grid = document.createElement('u-grid')
-	if (_.isNumber(step) && step > 0) grid.dataset.step = step
+export function getTag(value) {
+	if (value == null) {
+		return value === undefined ? '[object Undefined]' : '[object Null]'
+	}
+	return toString.call(value)
+}
 
-	let fragment = document.createDocumentFragment()
+export function isNumber(value) {
+	return (
+		typeof value === 'number' ||
+		(isObjectLike(value) && getTag(value) === '[object Number]')
+	)
+}
+
+export function isObjectLike(value) {
+	return typeof value === 'object' && value !== null
+}
+
+export function createGridObject(step = 10) {
+	const grid = document.createElement('o-grid')
+	if (isNumber(step) && step > 0) grid.dataset.step = step
+
+	const fragment = document.createDocumentFragment()
 	fragment.appendChild(grid)
 
 	return fragment
 }
 
-/**
- *
- * @param node
- */
-function selectNode(node) {
+export function selectNode(node) {
 	if (document.body.createTextRange) {
 		const range = document.body.createTextRange()
 		range.moveToElementText(node)
@@ -33,5 +43,3 @@ function selectNode(node) {
 		console.warn('Could not select text in node: Unsupported browser.')
 	}
 }
-
-export { createGridUtility, selectNode }

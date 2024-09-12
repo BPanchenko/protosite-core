@@ -2,7 +2,7 @@
 	const CLS = new Map([
 		['horizontal', 'guide--horizontal'],
 		['line', 'line'],
-		['root', 'u-grid'],
+		['root', 'o-grid'],
 		['vertical', 'guide--vertical'],
 		['sizes', 'sizes'],
 	])
@@ -12,7 +12,7 @@
 	const TAGS = new Map([
 		['horizontal', 'div'],
 		['line', 'span'],
-		['root', 'u-grid'],
+		['root', 'o-grid'],
 		['vertical', 'div'],
 		['sizes', 'span'],
 	])

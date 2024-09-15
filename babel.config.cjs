@@ -10,16 +10,4 @@ module.exports = {
 			},
 		],
 	],
-	plugins: [
-		[
-			require.resolve('babel-plugin-module-resolver'),
-			{
-				root: ['.'],
-				alias: {
-					'#assets': './assets',
-					'#uikit': '@bpanchenko/uikit',
-				},
-			},
-		],
-	],
 }

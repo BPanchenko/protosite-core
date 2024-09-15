@@ -12,7 +12,7 @@ export default [
 	},
 	js.configs.recommended,
 	{
-		files: ['**/*.{js,cjs}'],
+		files: ['**/*.{js,cjs,mjs}'],
 		languageOptions: {
 			globals: {
 				...globals.browser,
@@ -81,18 +81,6 @@ export default [
 						'unknown',
 					],
 					'newlines-between': 'always',
-					pathGroups: [
-						{
-							group: 'unknown',
-							pattern: './*.css',
-							position: 'after',
-						},
-						{
-							group: 'unknown',
-							pattern: '**/*.css',
-							position: 'after',
-						},
-					],
 				},
 			],
 			'no-console': [

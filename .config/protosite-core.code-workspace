@@ -6,8 +6,7 @@
 	],
 	"settings": {
 		"editor.codeActionsOnSave": {
-		  "source.fixAll.eslint": "explicit",
-		  "source.fixAll": "explicit"
+			"source.fixAll": "explicit"
 		},
 		"editor.detectIndentation": false,
 		"editor.fontFamily": "'Clincher Code', monospace",
@@ -20,13 +19,21 @@
 		"editor.insertSpaces": false,
 		"editor.tabSize": 4,
 
+		"eslint.codeActionsOnSave.mode": "all",
+		"eslint.debug": true,
 		"eslint.enable": true,
 		"eslint.format.enable": true,
+		"eslint.run": "onSave",
+		"eslint.useFlatConfig": true,
 		"eslint.validate": ["javascript"],
+		"eslint.workingDirectories": [{ "mode": "auto" }],
+
 		"files.autoSave": "onFocusChange",
 
 		"[json]": {
-			"editor.tabSize": 2
+			"editor.detectIndentation": true,
+			"editor.tabSize": 2,
+			"editor.insertSpaces": true,
 		}
 	}
 }

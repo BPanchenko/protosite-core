@@ -10,9 +10,11 @@ export const AvatarMetadata = {
 	stylesheet,
 }
 
-export class AvatarElement extends HTMLElement {
+class AvatarElement extends HTMLElement {
 	connectedCallback() {
 		const shadow = this.attachShadow({ mode: 'open' })
 		shadow.innerHTML = AvatarMetadata.template
 	}
 }
+
+export default AvatarElement

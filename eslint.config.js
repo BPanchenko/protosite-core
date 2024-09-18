@@ -35,77 +35,50 @@ export default [
 		},
 		rules: {
 			'@stylistic/js/indent': [
-				'error',
+				2,
 				'tab',
 				{
 					ignoredNodes: ['ConditionalExpression'],
 					SwitchCase: 1,
 				},
 			],
-			'no-unused-vars': 'error',
-			'no-undef': 'error',
-			'import/default': 0,
-			'import/export': 0,
-			'import/first': 2,
-			'import/named': 2,
-			'import/namespace': 0,
-			'import/no-absolute-path': 2,
-			'import/no-default-export': 0,
-			'import/no-import-module-exports': 2,
-			'import/no-named-as-default': 0,
-			'import/no-named-as-default-member': 0,
-			'import/no-self-import': 2,
+			'import/first': 1,
+			'import/named': 1,
+			'import/no-absolute-path': 1,
+			'import/prefer-default-export': [1, { target: 'single' }],
+			'import/no-import-module-exports': 1,
+			'import/no-self-import': 1,
 			'import/no-unresolved': [
-				2,
+				1,
 				{
 					esmodule: true,
 					commonjs: true,
 				},
 			],
-			'import/order': [
-				2,
-				{
-					alphabetize: {
-						caseInsensitive: true,
-						order: 'asc',
-					},
-					groups: [
-						'external',
-						'builtin',
-						'internal',
-						'parent',
-						'sibling',
-						'type',
-						'object',
-						'index',
-						'unknown',
-					],
-					'newlines-between': 'always',
-				},
-			],
 			'no-console': [
-				'warn',
+				1,
 				{
-					allow: ['warn', 'error'],
+					allow: ['assert', 'warn'],
 				},
 			],
 			'no-duplicate-imports': [
-				2,
+				1,
 				{
 					includeExports: true,
 				},
 			],
-			'prettier/prettier': [
-				'error',
-				{
-					singleQuote: true,
-					parser: 'flow',
-				},
-			],
+			'no-unused-vars': 1,
+			'prettier/prettier': 1,
 			'sort-imports': [
-				2,
+				1,
 				{
 					ignoreDeclarationSort: true,
+					memberSyntaxSortOrder: [
+						'none',
+						'single',
+						'all',
+						'multiple',
+					],
 				},
 			],
 		},
@@ -116,16 +89,10 @@ export default [
 						['#assets', './assets'],
 						['#uikit', '@bpanchenko/uikit'],
 					],
-					extensions: ['.js', '.cjs', '.css', '.json'],
+					extensions: ['.js', '.cjs', '.mjs', '.css', '.json'],
 				},
 			},
 		},
 	},
-	{
-		files: ['**/*.json'],
-		...json.configs.recommended,
-		rules: {
-			'json/duplicate-key': 'error',
-		},
-	},
+	json.configs['recommended-with-comments'],
 ]

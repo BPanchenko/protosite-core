@@ -39,16 +39,15 @@ const globals = {
 	warn: (...args) => logger.warn(...args),
 }
 
-/** @type {import('@jest/types').Config.GlobalConfig} */
-export const config = {
+/** @type {import('@jest/types').Config} */
+export default {
 	collectCoverageFrom: ['<rootDir>/component/*.js', '<rootDir>/lib/*.js'],
 	coverageDirectory: '<rootDir>/__coverage__',
 	globals,
-	moduleNameMapper: {
-		'@core': '<rootDir>/index.js',
-		'@core/(.*)': '<rootDir>/$1.js',
-		'@uikit/(.*)': '<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1',
-	},
+	// moduleNameMapper: {
+	//	'#assets/(.*)': '<rootDir>/$1.js',
+	//	'#uikit/(.*)': '<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1',
+	// },
 	rootDir: '.',
 	testEnvironment: 'jest-environment-jsdom',
 	testRegex: '(/__specs__/.*\\.spec)\\.js$',

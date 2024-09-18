@@ -9,8 +9,8 @@
     "#uikit/*": "@bpanchenko/uikit/*"
   },
   "scripts": {
-    "lint": "eslint . --cache --fix",
-    "test:e2e": "jest --config=e2e/jest.config.cjs",
+    "lint": "eslint . --fix",
+    "test:e2e": "jest --config=e2e/jest.config.js",
     "test:unit": "jest --config=src/jest.config.js"
   },
   "devDependencies": {
@@ -26,6 +26,7 @@
     "common-tags": "1.8.2",
     "eslint": "9.10.0",
     "eslint-config-prettier": "9.1.0",
+    "eslint-import-resolver-alias": "1.1.2",
     "eslint-plugin-import": "2.30.0",
     "eslint-plugin-json": "4.0.1",
     "eslint-plugin-prettier": "5.2.1",
@@ -45,8 +46,5 @@
     "url": "https://bpanchenko.ru"
   },
   "repository": "https://github.com/BPanchenko/protosite-core",
-  "license": "LGPL-3.0-only",
-  "dependencies": {
-    "eslint-import-resolver-alias": "1.1.2"
-  }
+  "license": "LGPL-3.0-only"
 }

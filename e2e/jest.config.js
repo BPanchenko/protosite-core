@@ -1,6 +1,6 @@
 /** @type {import('jest').Config} */
-module.exports = {
-	rootDir: process.cwd(),
+export default {
+	rootDir: '.',
 	collectCoverageFrom: ['<rootDir>/../assets/*-web-component.js'],
 	coverageDirectory: '<rootDir>/__coverage__',
 	globalSetup: '<rootDir>/environment/setup.cjs',

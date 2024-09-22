@@ -1,0 +1,20 @@
+{
+	"targets": {
+		"esmodules": true,
+		"node": "current"
+	},
+	"assumptions": {
+		"enumerableModuleMeta": true
+	},
+	"plugins": [
+		"babel-plugin-transform-import-meta",
+		[
+			"@babel/plugin-transform-modules-commonjs",
+			{
+				"allowTopLevelThis": true,
+				"importInterop": "babel"
+			}
+		]
+	],
+	"presets": ["@babel/preset-env"]
+}

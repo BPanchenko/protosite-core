@@ -1,8 +1,6 @@
-// import { curry, isArrayLikeObject, isElement, isObjectLike } from 'lodash'
-import _ from 'lodash'
-import logger from 'node-color-log'
-
-import { inspect } from 'util'
+const _ = require('lodash')
+const { inspect } = require('node:util')
+const logger = require('node-color-log')
 
 const inspectOptions = {
 	compact: true,
@@ -14,7 +12,7 @@ const inspectOptions = {
 const globals = {
 	USE_SHADOW_DOM: false,
 	debug: (...args) => {
-		let curried = _.curry(logger.debug.bind(logger), args.length)
+		let curriedLogger = _.curry(logger.debug.bind(logger), args.length)
 		args.forEach((arg) => {
 			let parsed = arg
 			if (_.isArrayLikeObject(arg)) {
@@ -27,7 +25,7 @@ const globals = {
 			} else if (_.isObjectLike(arg)) {
 				parsed = inspect(arg, inspectOptions)
 			}
-			return (curried = curried(parsed))
+			return (curriedLogger = curriedLogger(parsed))
 		})
 	},
 	error: (...args) => {
@@ -39,24 +37,25 @@ const globals = {
 	warn: (...args) => logger.warn(...args),
 }
 
-/** @type {import('@jest/types').Config} */
-export default {
+/** @type {import('jest').Config} */
+const config = {
+	bail: 2,
 	collectCoverageFrom: ['<rootDir>/component/*.js', '<rootDir>/lib/*.js'],
 	coverageDirectory: '<rootDir>/__coverage__',
 	globals,
-	// moduleNameMapper: {
-	//	'#assets/(.*)': '<rootDir>/$1.js',
-	//	'#uikit/(.*)': '<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1',
-	// },
+	moduleFileExtensions: ['js', 'mjs', 'cjs', 'json'],
 	rootDir: '.',
 	testEnvironment: 'jest-environment-jsdom',
 	testRegex: '(/__specs__/.*\\.spec)\\.js$',
 	transform: {
 		// '^.+\\.css$': '<rootDir>/../.kernel/jest.cssTransformer.cjs',
-		'\\.js$': 'babel-jest',
+		'\\.m?js$': 'babel-jest',
 	},
 	transformIgnorePatterns: [
 		'<rootDir>/../node_modules/(?!@bpanchenko/uikit/assets/)',
 		'\\.pnp\\.[^\\/]+$',
 	],
+	verbose: true,
 }
+
+module.exports = config

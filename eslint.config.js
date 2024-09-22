@@ -21,11 +21,11 @@ export default [
 			},
 			parser: babelParser,
 			parserOptions: {
-				sourceType: 'module',
 				allowImportExportEverywhere: false,
 				ecmaFeatures: {
 					globalReturn: false,
 				},
+				sourceType: 'module',
 			},
 		},
 		plugins: {
@@ -47,12 +47,14 @@ export default [
 			'import/no-absolute-path': 1,
 			'import/prefer-default-export': [1, { target: 'single' }],
 			'import/no-import-module-exports': 1,
+			'import/no-dynamic-require': 0,
+			'import/no-nodejs-modules': 0,
 			'import/no-self-import': 1,
 			'import/no-unresolved': [
 				1,
 				{
-					esmodule: true,
 					commonjs: true,
+					amd: true,
 				},
 			],
 			'no-console': [
@@ -91,6 +93,7 @@ export default [
 					],
 					extensions: ['.js', '.cjs', '.mjs', '.css', '.json'],
 				},
+				node: true,
 			},
 		},
 	},

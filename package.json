@@ -11,20 +11,22 @@
   "scripts": {
     "lint": "eslint . --fix",
     "test:e2e": "jest --config=e2e/jest.config.js",
-    "test:unit": "jest --config=src/jest.config.js"
+    "test:unit": "jest --config=src/jest.config.cjs"
   },
   "devDependencies": {
     "@babel/core": "7.25.2",
     "@babel/eslint-parser": "7.25.1",
+    "@babel/plugin-transform-modules-commonjs": "7.24.8",
     "@babel/preset-env": "7.25.4",
     "@bpanchenko/uikit": "4.26.81",
-    "@eslint/js": "9.10.0",
+    "@eslint/js": "9.11.0",
     "@jest/create-cache-key-function": "29.7.0",
     "@stylistic/eslint-plugin-js": "2.8.0",
     "babel-jest": "29.7.0",
     "babel-plugin-module-resolver": "5.0.2",
+    "babel-plugin-transform-import-meta": "2.2.1",
     "common-tags": "1.8.2",
-    "eslint": "9.10.0",
+    "eslint": "9.11.0",
     "eslint-config-prettier": "9.1.0",
     "eslint-import-resolver-alias": "1.1.2",
     "eslint-plugin-import": "2.30.0",
@@ -37,8 +39,8 @@
     "jest-puppeteer": "10.1.1",
     "node-color-log": "12.0.1",
     "prettier": "3.3.3",
-    "puppeteer": "23.3.0",
-    "puppeteer-core": "23.3.0"
+    "puppeteer": "23.4.0",
+    "puppeteer-core": "23.4.0"
   },
   "author": {
     "name": "Boris Panchenko",

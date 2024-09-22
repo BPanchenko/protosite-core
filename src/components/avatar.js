@@ -1,4 +1,4 @@
-import stylesheet, { cAvatar } from '#uikit/component/avatar.js'
+import stylesheet, { cAvatar, cssText } from '#uikit/component/avatar'
 
 export const AvatarMetadata = {
 	tagName: 'c-avatar',
@@ -8,6 +8,7 @@ export const AvatarMetadata = {
 		</figure>
 	`,
 	stylesheet,
+	cssText,
 }
 
 class AvatarElement extends HTMLElement {

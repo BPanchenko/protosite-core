@@ -1,21 +1,26 @@
-import stylesheet, { cAvatar, cssText } from '#uikit/component/avatar'
+import { cAvatar, cssText } from '#uikit/component/avatar'
+import defineWebComponent from '../lib/web-component'
 
-export const AvatarMetadata = {
-	tagName: 'c-avatar',
+const tagName = cAvatar
+
+export const settings = {
+	tagName,
+	tagExtends: 'figure',
 	template: `
 		<figure class="${cAvatar}">
-			<slot name="child"></slot>
+			<slot name="image"></slot>
+			<figcaption slot="image"></figcaption>
 		</figure>
 	`,
-	stylesheet,
 	cssText,
 }
 
-class AvatarElement extends HTMLElement {
+export class AvatarElement extends HTMLElement {
 	connectedCallback() {
+		this.classList.add(cAvatar)
 		const shadow = this.attachShadow({ mode: 'open' })
-		shadow.innerHTML = AvatarMetadata.template
+		shadow.innerHTML = settings.template
 	}
 }
 
-export default AvatarElement
+export default defineWebComponent(AvatarElement, settings)

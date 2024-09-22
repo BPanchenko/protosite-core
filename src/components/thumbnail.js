@@ -9,98 +9,98 @@
  * />
  */
 
-{
-	/* Constants
+import stylesheet, { cThumbnail, cssText } from '#uikit/component/thumbnail'
+
+const tagName = cThumbnail
+
+export const settings = {
+	tagName,
+	extends: 'figure',
+	className: cThumbnail,
+	template: [
+		'<slot name="image"></slot>',
+		'<figcaption slot="image"></figcaption>',
+	].join(),
+	cssText,
+	stylesheet,
+}
+
+/* Constants
 	 ========================================================================== */
 
-	const CLS = Object.create(null, {
-		main: { value: 'c-thumbnail' },
+const CLS = Object.create(null, {
+	main: { value: 'c-thumbnail' },
 
-		caption: { value: 'c-thumbnail__caption' },
-		link: { value: 'c-thumbnail__link' },
-		img: { value: 'c-thumbnail__image' },
-		shutter: { value: 'c-thumbnail__shutter' },
-		xs: { value: 'c-thumbnail--xs' },
-		sm: { value: 'c-thumbnail--sm' },
-		md: { value: 'c-thumbnail--md' },
-		lg: { value: 'c-thumbnail--lg' },
-		xl: { value: 'c-thumbnail--xl' },
-	})
+	caption: { value: 'c-thumbnail__caption' },
+	link: { value: 'c-thumbnail__link' },
+	img: { value: 'c-thumbnail__image' },
+	shutter: { value: 'c-thumbnail__shutter' },
+	xs: { value: 'c-thumbnail--xs' },
+	sm: { value: 'c-thumbnail--sm' },
+	md: { value: 'c-thumbnail--md' },
+	lg: { value: 'c-thumbnail--lg' },
+	xl: { value: 'c-thumbnail--xl' },
+})
 
-	/* Element Class
-	 ========================================================================== */
+export class ThumbnailElement extends HTMLElement {
+	connectedCallback() {
+		this.render().cleanup()
+	}
 
-	class AvatarElement extends HTMLElement {
-		connectedCallback() {
-			this.render().cleanup()
+	render() {
+		let { src, href, size, target } = this.dataset
+		let text = this.innerText
+		this.innerHTML = ''
+
+		this.classList.add(CLS.main)
+
+		if (~['xs', 'sm', 'md', 'lg', 'xl'].indexOf(size)) {
+			this.classList.add(CLS[size])
+		} else if (size) {
+			console.warn(
+				'Size must have one of the values "xs", "sm", "md", "lg" or "xl"',
+			)
 		}
 
-		render() {
-			let { src, href, size, target } = this.dataset
-			let text = this.innerText
-			this.innerHTML = ''
+		let container = this
 
-			this.classList.add(CLS.main)
+		if (href) {
+			this._link = document.createElement('a')
+			this._link.classList.add(CLS.link)
+			this._link.href = href
+			this._link.target = target || '_self'
+			container.appendChild(this._link)
+			container = this._link
+		}
 
-			if (~['xs', 'sm', 'md', 'lg', 'xl'].indexOf(size)) {
-				this.classList.add(CLS[size])
-			} else if (size) {
-				console.warn(
-					'Size must have one of the values "xs", "sm", "md", "lg" or "xl"',
-				)
-			}
+		if (src) {
+			this._img = document.createElement('img')
+			this._img.classList.add(CLS.img)
+			this._img.src = src
+			container.appendChild(this._img)
+		}
 
-			let container = this
-
+		if (text) {
 			if (href) {
-				this._link = document.createElement('a')
-				this._link.classList.add(CLS.link)
-				this._link.href = href
-				this._link.target = target || '_self'
-				container.appendChild(this._link)
-				container = this._link
+				this._text = document.createElement('span')
+				this._text.classList.add(CLS.shutter)
+			} else {
+				this._text = document.createElement('figcaption')
+				this._text.classList.add(CLS.caption)
 			}
-
-			if (src) {
-				this._img = document.createElement('img')
-				this._img.classList.add(CLS.img)
-				this._img.src = src
-				container.appendChild(this._img)
-			}
-
-			if (text) {
-				if (href) {
-					this._text = document.createElement('span')
-					this._text.classList.add(CLS.shutter)
-				} else {
-					this._text = document.createElement('figcaption')
-					this._text.classList.add(CLS.caption)
-				}
-				this._text.innerText = text
-				container.appendChild(this._text)
-			}
-
-			return this
+			this._text.innerText = text
+			container.appendChild(this._text)
 		}
 
-		cleanup() {
-			this.removeAttribute('data-src')
-			this.removeAttribute('data-href')
-			this.removeAttribute('data-size')
-			this.removeAttribute('data-shadow')
-			this.removeAttribute('data-target')
-			return this
-		}
+		return this
 	}
 
-	/* Define the new element
-	 ========================================================================== */
-
-	if (customElements) {
-		customElements.define('c-thumbnail', AvatarElement)
-	}
-
-	if (typeof exports != 'undefined' && !exports.nodeType) {
-		exports.AvatarElement = AvatarElement
+	cleanup() {
+		this.removeAttribute('data-src')
+		this.removeAttribute('data-href')
+		this.removeAttribute('data-size')
+		this.removeAttribute('data-shadow')
+		this.removeAttribute('data-target')
+		return this
 	}
 }

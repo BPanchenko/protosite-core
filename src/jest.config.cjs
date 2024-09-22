@@ -3,10 +3,14 @@ const { inspect } = require('node:util')
 const logger = require('node-color-log')
 
 const inspectOptions = {
+	depth: 1,
 	compact: true,
+	showHidden: false,
 	sorted: true,
-	showProxy: true,
+	showProxy: false,
 	colors: true,
+	maxArrayLength: 5,
+	maxStringLength: 180,
 }
 
 const globals = {
@@ -16,12 +20,9 @@ const globals = {
 		args.forEach((arg) => {
 			let parsed = arg
 			if (_.isArrayLikeObject(arg)) {
-				parsed = Array.from(arg)
+				parsed = inspect(Array.from(arg), inspectOptions)
 			} else if (_.isElement(arg)) {
-				parsed = inspect(arg, {
-					...inspectOptions,
-					depth: null,
-				})
+				parsed = inspect(arg, inspectOptions)
 			} else if (_.isObjectLike(arg)) {
 				parsed = inspect(arg, inspectOptions)
 			}
@@ -43,9 +44,22 @@ const config = {
 	collectCoverageFrom: ['<rootDir>/component/*.js', '<rootDir>/lib/*.js'],
 	coverageDirectory: '<rootDir>/__coverage__',
 	globals,
-	moduleFileExtensions: ['js', 'mjs', 'cjs', 'json'],
+	moduleFileExtensions: ['js', 'cjs', 'mjs', 'css'],
+	moduleNameMapper: {
+		'^#uikit/(.*)$':
+			'<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1',
+	},
+	preset: 'solid-jest/preset/browser',
 	rootDir: '.',
-	testEnvironment: 'jest-environment-jsdom',
+	setupFilesAfterEnv: ['<rootDir>/jest-setup.cjs'],
+	snapshotFormat: {
+		callToJSON: false,
+		escapeString: false,
+		maxDepth: 3,
+		printBasicPrototype: true,
+		printFunctionName: true,
+	},
+	testEnvironment: 'jsdom',
 	testRegex: '(/__specs__/.*\\.spec)\\.js$',
 	transform: {
 		// '^.+\\.css$': '<rootDir>/../.kernel/jest.cssTransformer.cjs',

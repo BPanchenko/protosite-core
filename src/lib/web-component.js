@@ -1,59 +1,59 @@
-import { uniqueId } from 'lodash'
+import uniqueId from 'lodash/uniqueId'
 
-const tplStack = new Map()
+export default function defineWebComponent(settings, custom) {
+	const {
+		cssText,
+		extendsTag,
+		tagName,
+		template,
+		shadowmode = 'closed',
+	} = settings
 
-const defineWebComponent = (
-	CustomElement,
-	{ tagExtends, tagName, template, cssText, shadowrootmode = 'closed' },
-) => {
-	const uid = uniqueId(tagName + '_')
+	console.assert(tagName, 'Tag Name is required!')
+	console.assert(custom, 'Custom Methods is missing!')
+
+	const tplID = uniqueId(tagName + '_tpl')
+	const cssID = uniqueId(tagName + '_css')
 
 	const $tpl = document.createElement('template')
-	$tpl.setAttribute('shadowrootmode', shadowrootmode)
-	$tpl.setAttribute('name', uid)
-	tplStack.set(uid, $tpl)
+	$tpl.setAttribute('id', tplID)
+	$tpl.innerHTML = template
+	document.body.appendChild($tpl)
 
-	// Style
-	if (cssText !== undefined) {
-		const $style = document.createElement('style')
-		$style.innerText = `
-			:host{ outline: 1px dashed deeppink; }
-			${cssText}
-		`
-		$tpl.appendChild($style)
-	}
+	const UICoreComponent = (({
+		cssID: title,
+		cssText,
+		tplID,
+		custom,
+		shadowmode: mode,
+	}) =>
+		class extends HTMLElement {
+			#custom = custom
+			#shadow
+			#sheet
+			#tplID = tplID
 
-	// Template Content
-	$tpl.appendChild(
-		(() => {
-			const $elem = document.createDocumentFragment()
-			$elem.innerHTML = template
-			return $elem
-		})(),
-	)
+			constructor() {
+				super()
+				this.#sheet = new CSSStyleSheet(cssText, { title })
+				this.#shadow = this.attachShadow({ mode })
+			}
 
-	const WebComponent = class extends CustomElement {
-		#tagName = tagName
-		#uid = uid
+			connectedCallback() {
+				this.#shadow.appendChild(this.$tpl.content.cloneNode(true))
+				this.#shadow.adoptedStyleSheets.push(this.#sheet)
+				this.#custom.connectedCallback.call(this)
+				debug(this.#shadow.host)
+			}
 
-		constructor() {
-			super()
-			this.attachShadow({ mode: shadowrootmode })
-			this.shadowRoot.appendChild(this.$tpl.content.cloneNode(true))
-		}
+			get $tpl() {
+				return document.getElementById(this.#tplID)
+			}
+		})({ cssID, cssText, tplID, custom, shadowmode })
 
-		get tagName() {
-			return this.#tagName
-		}
-		get $tpl() {
-			return tplStack.get(this.#uid)
-		}
-	}
-
-	customElements.define(tagName, WebComponent, {
-		extends: tagExtends,
+	customElements.define(tagName, UICoreComponent, {
+		extends: extendsTag,
 	})
+
 	return customElements.get(tagName)
 }
-
-export default defineWebComponent

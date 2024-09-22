@@ -1,8 +1,5 @@
 {
-	"targets": {
-		"esmodules": true,
-		"node": "current"
-	},
+	"targets": "defaults",
 	"assumptions": {
 		"enumerableModuleMeta": true
 	},

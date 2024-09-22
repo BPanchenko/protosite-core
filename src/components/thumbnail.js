@@ -19,7 +19,7 @@ export const settings = {
 	className: cThumbnail,
 	template: [
 		'<slot name="image"></slot>',
-		'<figcaption slot="image"></figcaption>',
+		'<figcaption slot="caption"></figcaption>',
 	].join(),
 	cssText,
 	stylesheet,

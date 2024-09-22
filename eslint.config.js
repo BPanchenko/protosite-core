@@ -1,10 +1,17 @@
 import babelParser from '@babel/eslint-parser'
 import js from '@eslint/js'
+import prettier from 'eslint-plugin-prettier'
+
 import stylisticJs from '@stylistic/eslint-plugin-js'
 import importPlugin from 'eslint-plugin-import'
 import json from 'eslint-plugin-json'
-import prettier from 'eslint-plugin-prettier'
+import jest from 'eslint-plugin-jest'
+import jestDom from 'eslint-plugin-jest-dom'
+import testingLibrary from 'eslint-plugin-testing-library'
+
 import globals from 'globals'
+import jestConfig from './src/jest.config.cjs'
+import mapValues from 'lodash/mapValues.js'
 
 export default [
 	{
@@ -15,8 +22,8 @@ export default [
 		files: ['**/*.{js,cjs,mjs}'],
 		languageOptions: {
 			globals: {
+				...mapValues(jestConfig.globals, () => 'readonly'),
 				...globals.browser,
-				...globals.jest,
 				...globals.node,
 			},
 			parser: babelParser,
@@ -95,6 +102,25 @@ export default [
 				},
 				node: true,
 			},
+		},
+	},
+	{
+		files: ['src/**/__specs__/*.spec.js', 'e2e/**/__tests__/*.test.js'],
+		languageOptions: {
+			globals: {
+				...globals.jest,
+			},
+		},
+		plugins: {
+			jest,
+			'jest-dom': jestDom,
+			'testing-library': testingLibrary,
+		},
+		rules: {
+			'jest-dom/prefer-checked': 'error',
+			'jest-dom/prefer-enabled-disabled': 'error',
+			'jest-dom/prefer-required': 'error',
+			'jest-dom/prefer-to-have-attribute': 'error',
 		},
 	},
 	json.configs['recommended-with-comments'],

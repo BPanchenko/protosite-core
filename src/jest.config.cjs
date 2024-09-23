@@ -14,7 +14,7 @@ const inspectOptions = {
 }
 
 const globals = {
-	USE_SHADOW_DOM: false,
+	SHADOW_MODE: 'open',
 	debug: (...args) => {
 		let curriedLogger = _.curry(logger.debug.bind(logger), args.length)
 		args.forEach((arg) => {

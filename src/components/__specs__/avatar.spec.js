@@ -31,6 +31,7 @@ describe('AvatarComponent', () => {
 		})
 
 		it('markup', () => {
+			expect(avatar.shadowRoot).toMatchSnapshot()
 			expect(container).toMatchSnapshot()
 		})
 	})

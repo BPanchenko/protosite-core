@@ -6,7 +6,9 @@ Object {
 }
 `;
 
-exports[`AvatarComponent Link = "http://google.com"; Image = "undefined" markup 1`] = `
+exports[`AvatarComponent Link = "http://google.com"; Image = "undefined" markup 1`] = `ShadowRoot {}`;
+
+exports[`AvatarComponent Link = "http://google.com"; Image = "undefined" markup 2`] = `
 <body>
   <template
     id="c-avatar_tpl1"
@@ -15,7 +17,9 @@ exports[`AvatarComponent Link = "http://google.com"; Image = "undefined" markup 
 </body>
 `;
 
-exports[`AvatarComponent Link = "http://yandex.ru"; Image = "http://protosite.rocks/pictures/ava.gif" markup 1`] = `
+exports[`AvatarComponent Link = "http://yandex.ru"; Image = "http://protosite.rocks/pictures/ava.gif" markup 1`] = `ShadowRoot {}`;
+
+exports[`AvatarComponent Link = "http://yandex.ru"; Image = "http://protosite.rocks/pictures/ava.gif" markup 2`] = `
 <body>
   <template
     id="c-avatar_tpl1"
@@ -24,7 +28,9 @@ exports[`AvatarComponent Link = "http://yandex.ru"; Image = "http://protosite.ro
 </body>
 `;
 
-exports[`AvatarComponent Link = "undefined"; Image = "http://protosite.rocks/pictures/ava-1.gif" markup 1`] = `
+exports[`AvatarComponent Link = "undefined"; Image = "http://protosite.rocks/pictures/ava-1.gif" markup 1`] = `ShadowRoot {}`;
+
+exports[`AvatarComponent Link = "undefined"; Image = "http://protosite.rocks/pictures/ava-1.gif" markup 2`] = `
 <body>
   <template
     id="c-avatar_tpl1"
@@ -33,7 +39,9 @@ exports[`AvatarComponent Link = "undefined"; Image = "http://protosite.rocks/pic
 </body>
 `;
 
-exports[`AvatarComponent Link = "undefined"; Image = "undefined" markup 1`] = `
+exports[`AvatarComponent Link = "undefined"; Image = "undefined" markup 1`] = `ShadowRoot {}`;
+
+exports[`AvatarComponent Link = "undefined"; Image = "undefined" markup 2`] = `
 <body>
   <template
     id="c-avatar_tpl1"

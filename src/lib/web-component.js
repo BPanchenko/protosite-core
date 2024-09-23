@@ -6,7 +6,7 @@ export default function defineWebComponent(settings, custom) {
 		extendsTag,
 		tagName,
 		template,
-		shadowmode = 'closed',
+		shadowmode = SHADOW_MODE ?? 'closed',
 	} = settings
 
 	console.assert(tagName, 'Tag Name is required!')
@@ -43,7 +43,6 @@ export default function defineWebComponent(settings, custom) {
 				this.#shadow.appendChild(this.$tpl.content.cloneNode(true))
 				this.#shadow.adoptedStyleSheets.push(this.#sheet)
 				this.#custom.connectedCallback.call(this)
-				debug(this.#shadow.host)
 			}
 
 			get $tpl() {

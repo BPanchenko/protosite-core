@@ -1,15 +1,12 @@
-import uikitStyleSheet, {
-	cAvatar,
-	cssText,
-} from '#uikit/assets/component/avatar'
+import uikitStyleSheet, { cAvatar, cssText } from '#uikit/component/avatar'
 
-const stylesheet = uikitStyleSheet ?? new CSSStyleSheet(cssText)
+const stylesheet = cssText ? new CSSStyleSheet(cssText) : uikitStyleSheet
 const tagName = cAvatar
 const shadowHTML = `
 	<figure class="${cAvatar}">
 		<slot name="image"></slot>
 	</figure>
-	`.replace(/([\n\t]+)/g, '')
+`.replace(/([\n\t]+)/g, '')
 const lightHTML = '<img slot="image">'
 
 class AvatarComponent extends HTMLElement {

@@ -20,10 +20,10 @@
     "@babel/plugin-transform-modules-commonjs": "7.24.8",
     "@babel/plugin-transform-runtime": "7.25.4",
     "@babel/preset-env": "7.25.4",
-    "@bpanchenko/uikit": "4.26.84",
+    "@bpanchenko/uikit": "4.26.85",
     "@eslint/js": "9.11.1",
     "@jest/create-cache-key-function": "29.7.0",
-    "@rollup/plugin-babel": "6.0.4",
+    "@rollup/plugin-alias": "5.1.1",
     "@rollup/plugin-commonjs": "28.0.0",
     "@rollup/plugin-node-resolve": "15.3.0",
     "@rollup/plugin-terser": "0.4.4",
@@ -53,8 +53,8 @@
     "lodash": "4.17.21",
     "node-color-log": "12.0.1",
     "prettier": "3.3.3",
-    "puppeteer": "23.4.0",
-    "puppeteer-core": "23.4.0",
+    "puppeteer": "23.4.1",
+    "puppeteer-core": "23.4.1",
     "rollup": "4.22.4"
   },
   "author": {

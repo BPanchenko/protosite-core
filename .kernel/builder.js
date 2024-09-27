@@ -3,11 +3,11 @@ import path from 'node:path'
 import * as makeDir from 'make-dir'
 import { rollup } from 'rollup'
 
-import config from '../.config/rollup.config.cjs'
+import config from '../.config/rollup.config.js'
 import logger from './logger.cjs'
 
 const root = process.cwd()
-const dist = path.join(root, 'dist')
+const dist = path.join(root, 'assets')
 const savedFiles = []
 
 makeDir.sync(dist)

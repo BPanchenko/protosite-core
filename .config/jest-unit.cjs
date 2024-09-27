@@ -1,4 +1,5 @@
 const _ = require('lodash')
+const path = require('node:path')
 const { inspect } = require('node:util')
 const logger = require('node-color-log')
 
@@ -40,6 +41,8 @@ const globals = {
 
 /** @type {import('jest').Config} */
 const config = {
+	rootDir: path.join(process.cwd(), 'src'),
+
 	bail: 2,
 	collectCoverageFrom: ['<rootDir>/component/*.js', '<rootDir>/lib/*.js'],
 	coverageDirectory: '<rootDir>/__coverage__',
@@ -49,7 +52,6 @@ const config = {
 		'^#uikit/(.*)$':
 			'<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1',
 	},
-	rootDir: '.',
 	snapshotFormat: {
 		printBasicPrototype: true,
 		printFunctionName: true,
@@ -57,7 +59,6 @@ const config = {
 	testEnvironment: 'jsdom',
 	testRegex: '(/__specs__/.*\\.spec)\\.js$',
 	transform: {
-		// '^.+\\.css$': '<rootDir>/../.kernel/jest.cssTransformer.cjs',
 		'\\.m?js$': 'babel-jest',
 	},
 	transformIgnorePatterns: [

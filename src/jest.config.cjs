@@ -5,9 +5,9 @@ const logger = require('node-color-log')
 const inspectOptions = {
 	depth: 1,
 	compact: true,
-	showHidden: false,
+	showHidden: true,
 	sorted: true,
-	showProxy: false,
+	showProxy: true,
 	colors: true,
 	maxArrayLength: 5,
 	maxStringLength: 180,
@@ -49,13 +49,8 @@ const config = {
 		'^#uikit/(.*)$':
 			'<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1',
 	},
-	preset: 'solid-jest/preset/browser',
 	rootDir: '.',
-	setupFilesAfterEnv: ['<rootDir>/jest-setup.cjs'],
 	snapshotFormat: {
-		callToJSON: false,
-		escapeString: false,
-		maxDepth: 3,
 		printBasicPrototype: true,
 		printFunctionName: true,
 	},

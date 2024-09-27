@@ -21,6 +21,20 @@
 	 ========================================================================== */
 
 	class FieldElement extends HTMLElement {
+		#internals
+		#shadow
+
+		static formAssociated = true
+
+		constructor() {
+			super()
+
+			this.#internals = this.attachInternals()
+			this.#shadow = this.attachShadow({ mode: SHADOW_MODE ?? 'closed' })
+			// this.#shadow.adoptedStyleSheets.push(sheet)
+			// this.#shadow.innerHTML = shadowHTML
+		}
+
 		connectedCallback() {
 			this._children = Array.from(this.children)
 			this._defaultValue = this.dataset.value

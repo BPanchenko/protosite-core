@@ -1,4 +1,4 @@
-import '#assets/avatar-web-component.js'
+import '../avatar-component'
 
 import { configureToMatchImageSnapshot } from 'jest-image-snapshot'
 
@@ -10,34 +10,35 @@ expect.extend({
 	}),
 })
 
-describe('AvatarWebComponent', () => {
+describe('AvatarComponent', () => {
 	const avatar = document.createElement('c-avatar')
 
 	describe('Visual Regression', () => {
-		let containerHandle, image
+		let image, containerHandle
 
-		beforeAll(async () => {
+		beforeAll(async (done) => {
 			const page = await global.browser.newBlankPage()
 
 			containerHandle = await page.$('#container')
-			await page.evaluate((container) => {
-				container.appendChild(avatar)
-			}, containerHandle)
+			const container = await page.evaluate((container) => container, containerHandle)
+			debug(container)
+			container.appendChild(avatar)
 
 			image = await page.screenshot({ fullPage: true })
+			done()
 		})
 
-		afterAll(async () => {
-			await containerHandle.dispose()
+		afterAll(() => {
+			containerHandle.dispose()
 		})
 
-		it('horizontal', async () => {
+		it('horizontal', () => {
 			expect(image).toMatchImageSnapshot({
 				diffDirection: 'horizontal',
 			})
 		})
 
-		it('vertical', async () => {
+		it('vertical', () => {
 			expect(image).toMatchImageSnapshot({
 				diffDirection: 'vertical',
 			})

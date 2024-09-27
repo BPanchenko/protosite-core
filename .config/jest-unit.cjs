@@ -57,7 +57,7 @@ const config = {
 		printFunctionName: true,
 	},
 	testEnvironment: 'jsdom',
-	testRegex: '(/__specs__/.*\\.spec)\\.js$',
+	testMatch: ["**/__specs__/**/*.spec.js"],
 	transform: {
 		'\\.m?js$': 'babel-jest',
 	},

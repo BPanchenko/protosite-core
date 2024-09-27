@@ -1,13 +1,15 @@
 import uikitStyleSheet, { cAvatar, cssText } from '#uikit/component/avatar'
 
 const stylesheet = cssText ? new CSSStyleSheet(cssText) : uikitStyleSheet
+const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
+
 const tagName = cAvatar
+const lightHTML = '<img slot="image">'
 const shadowHTML = `
 	<figure class="${cAvatar}">
 		<slot name="image"></slot>
 	</figure>
-`.replace(/([\n\t]+)/g, '')
-const lightHTML = '<img slot="image">'
+`.replace(/[\n\r\t]+/g, '')
 
 class AvatarComponent extends HTMLElement {
 	#$ = new Map()
@@ -18,8 +20,7 @@ class AvatarComponent extends HTMLElement {
 	constructor(dataset) {
 		super()
 		Object.assign(this.dataset, dataset)
-		this.#shadow = this.attachShadow({ mode: SHADOW_MODE ?? 'closed' })
-		this.#shadow.adoptedStyleSheets.push(stylesheet)
+		this.#shadow = this.attachShadow({ mode: shadowMode })
 		this.#shadow.innerHTML = shadowHTML
 	}
 
@@ -44,6 +45,7 @@ class AvatarComponent extends HTMLElement {
 	}
 
 	connectedCallback() {
+		this.#shadow.adoptedStyleSheets.push(stylesheet)
 		this.insertAdjacentHTML('afterbegin', lightHTML)
 		this.#$.set('image', this.querySelector('img[slot=image]'))
 

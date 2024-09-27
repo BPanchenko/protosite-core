@@ -105,7 +105,7 @@ export default [
 		},
 	},
 	{
-		files: ['src/**/__specs__/*.spec.js', 'src/**/__tests__/*.test.js'],
+		files: ['src/**/__specs__/*.spec.js', 'assets/**/__tests__/*.test.js'],
 		languageOptions: {
 			globals: {
 				...globals.jest,

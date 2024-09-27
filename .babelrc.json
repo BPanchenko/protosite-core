@@ -3,6 +3,7 @@
 	"assumptions": {
 		"enumerableModuleMeta": true
 	},
+	"sourceType": "module",
 	"plugins": [
 		"babel-plugin-transform-import-meta",
 		[

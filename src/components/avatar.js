@@ -1,6 +1,9 @@
-import { cAvatar, cssText } from '#uikit/component/avatar'
+import uikitStyleSheet, {
+	cAvatar,
+	cssText,
+} from '#uikit/assets/component/avatar'
 
-const styleSheet = new CSSStyleSheet(cssText)
+const stylesheet = uikitStyleSheet ?? new CSSStyleSheet(cssText)
 const tagName = cAvatar
 const shadowHTML = `
 	<figure class="${cAvatar}">
@@ -19,7 +22,7 @@ class AvatarComponent extends HTMLElement {
 		super()
 		Object.assign(this.dataset, dataset)
 		this.#shadow = this.attachShadow({ mode: SHADOW_MODE ?? 'closed' })
-		this.#shadow.adoptedStyleSheets.push(styleSheet)
+		this.#shadow.adoptedStyleSheets.push(stylesheet)
 		this.#shadow.innerHTML = shadowHTML
 	}
 

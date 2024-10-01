@@ -51,7 +51,7 @@ const config = {
 	preset: 'jest-puppeteer',
 	// setupFilesAfterEnv: ["expect-puppeteer"],
 	testEnvironment: '<rootDir>/../.kernel/e2e/PuppeteerEnvironment.cjs',
-	testMatch: ["**/__tests__/**/*.test.js"],
+	testMatch: ['**/__tests__/**/*.test.js'],
 	transform: {
 		'\\.m?js$': 'babel-jest',
 	},

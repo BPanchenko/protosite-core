@@ -1,6 +1,5 @@
-import uikitStyleSheet, { cAvatar, cssText } from '#uikit/component/avatar'
+import cssStyleSheet, { cAvatar } from '#uikit/component/avatar'
 
-const stylesheet = cssText ? new CSSStyleSheet(cssText) : uikitStyleSheet
 const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
 
 const tagName = cAvatar
@@ -9,7 +8,7 @@ const shadowHTML = `
 	<figure class="${cAvatar}">
 		<slot name="image"></slot>
 	</figure>
-`.replace(/[\n\r\t]+/g, '')
+`
 
 class AvatarComponent extends HTMLElement {
 	#$ = new Map()
@@ -22,6 +21,7 @@ class AvatarComponent extends HTMLElement {
 		Object.assign(this.dataset, dataset)
 		this.#shadow = this.attachShadow({ mode: shadowMode })
 		this.#shadow.innerHTML = shadowHTML
+		this.#shadow.adoptedStyleSheets.push(cssStyleSheet)
 	}
 
 	attributeChangedCallback(name, previos, current) {
@@ -45,7 +45,6 @@ class AvatarComponent extends HTMLElement {
 	}
 
 	connectedCallback() {
-		this.#shadow.adoptedStyleSheets.push(stylesheet)
 		this.insertAdjacentHTML('afterbegin', lightHTML)
 		this.#$.set('image', this.querySelector('img[slot=image]'))
 
@@ -59,5 +58,4 @@ class AvatarComponent extends HTMLElement {
 
 customElements.define(tagName, AvatarComponent)
 
-export const settings = { cssText, tagName, shadowHTML, lightHTML }
 export default customElements.get(tagName)

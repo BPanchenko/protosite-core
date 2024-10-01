@@ -1,11 +1,7 @@
 import transform from 'lodash/transform'
-import AvatarComponent, { settings } from '../avatar.js'
+import AvatarComponent from '../avatar.js'
 
 describe('AvatarComponent', () => {
-	it('Settings', () => {
-		expect(settings).toMatchSnapshot()
-	})
-
 	it('Shadow DOM', () => {
 		const avatar = new AvatarComponent()
 		expect(avatar.shadowRoot.children).toMatchSnapshot()

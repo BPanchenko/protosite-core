@@ -52,12 +52,13 @@ const config = {
 		'^#uikit/(.*)$':
 			'<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1',
 	},
+	setupFilesAfterEnv: [path.join(__dirname, 'jest-unit.setup.cjs')],
 	snapshotFormat: {
 		printBasicPrototype: true,
 		printFunctionName: true,
 	},
 	testEnvironment: 'jsdom',
-	testMatch: ["**/__specs__/**/*.spec.js"],
+	testMatch: ['**/__specs__/**/*.spec.js'],
 	transform: {
 		'\\.m?js$': 'babel-jest',
 	},

@@ -18,6 +18,7 @@ describe('AvatarComponent', () => {
 
 		beforeAll(async (done) => {
 			const page = await global.browser.newBlankPage()
+			await page.setViewport({width: 1080, height: 1024})
 
 			containerHandle = await page.$('#container')
 			const container = await page.evaluate((container) => container, containerHandle)

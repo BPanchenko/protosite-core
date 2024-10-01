@@ -1,18 +1,9 @@
 {
-	"targets": "defaults",
-	"assumptions": {
-		"enumerableModuleMeta": true
+	"targets": {
+		"esmodules": true,
+		"node": "current",
+		"safari": "tp"
 	},
 	"sourceType": "module",
-	"plugins": [
-		"babel-plugin-transform-import-meta",
-		[
-			"@babel/plugin-transform-modules-commonjs",
-			{
-				"allowTopLevelThis": true,
-				"importInterop": "babel"
-			}
-		]
-	],
 	"presets": ["@babel/preset-env"]
 }

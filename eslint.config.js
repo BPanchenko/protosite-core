@@ -10,7 +10,7 @@ import jestDom from 'eslint-plugin-jest-dom'
 import testingLibrary from 'eslint-plugin-testing-library'
 
 import globals from 'globals'
-import jestConfig from './src/jest.config.cjs'
+import jestConfig from './.config/jest-unit.cjs'
 import mapValues from 'lodash/mapValues.js'
 
 export default [

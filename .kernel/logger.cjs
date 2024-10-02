@@ -74,7 +74,14 @@ const error = (...args) => {
 	logger.error(...args)
 	process.exit(3)
 }
-const info = (...args) => logger.info(...args)
+const info = (...args) =>
+	logger
+		.color('white')
+		.bgColor('blue')
+		.append('[INFO]')
+		.reset()
+		.color('blue')
+		.log(' ' + args.map((a) => a.toString()).join(' '))
 
 const success = (...args) => logger.success(...args)
 

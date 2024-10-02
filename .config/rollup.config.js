@@ -39,7 +39,7 @@ export default {
 						.replace(/`/g, '\\`')
 						// Escape ${} interpolation:
 						.replace(/\$/g, '\\$')
-					return `export default new CSSStyleSheet(\`${escapedCode}\`);`
+					return `const cssStyleSheet = new CSSStyleSheet(); cssStyleSheet.replaceSync(\`${escapedCode}\`); export default cssStyleSheet;`
 				}
 				return null
 			},

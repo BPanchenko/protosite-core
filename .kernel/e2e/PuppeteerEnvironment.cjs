@@ -1,13 +1,13 @@
 const JSDOMEnvironment = require('jest-environment-jsdom').TestEnvironment
 const puppeteer = require('puppeteer')
-require('pptr-testing-library/extend')
 
+const { BLANK_HTML_FILE, WS_ENDPOINT_FILE } = require('./constants.cjs')
 const {
 	readFileSync,
 	promises: { readFile },
 } = require('fs')
 
-const { BLANK_HTML_FILE, WS_ENDPOINT_FILE } = require('./constants.cjs')
+require('pptr-testing-library/extend')
 
 const BLANK_HTML = readFileSync(BLANK_HTML_FILE, 'utf8')
 

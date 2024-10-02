@@ -4,6 +4,7 @@ import js from '@eslint/js'
 import importPlugin from 'eslint-plugin-import'
 import jest from 'eslint-plugin-jest'
 import jestDom from 'eslint-plugin-jest-dom'
+import requireSortPlugin from 'eslint-plugin-require-sort'
 import json from 'eslint-plugin-json'
 import prettier from 'eslint-plugin-prettier'
 import stylisticJs from '@stylistic/eslint-plugin-js'
@@ -55,7 +56,7 @@ export default [
 			'import/no-absolute-path': 1,
 			'import/prefer-default-export': [1, { target: 'single' }],
 			'import/no-import-module-exports': 1,
-			'import/no-dynamic-require': 0,
+			'import/no-dynamic-require': 1,
 			'import/no-nodejs-modules': 0,
 			'import/no-self-import': 1,
 			'import/no-unresolved': [
@@ -103,6 +104,7 @@ export default [
 				},
 				node: true,
 			},
+			'import/ignore': ['^port-authority'],
 		},
 	},
 	{
@@ -122,6 +124,23 @@ export default [
 			'jest-dom/prefer-enabled-disabled': 'error',
 			'jest-dom/prefer-required': 'error',
 			'jest-dom/prefer-to-have-attribute': 'error',
+		},
+	},
+	{
+		files: ['**/*.cjs'],
+		plugins: {
+			'require-sort': requireSortPlugin,
+		},
+		rules: {
+			'require-sort/require-sort': [
+				'warn',
+				{
+					ignoreCase: false,
+					ignoreDeclarationSort: false,
+					ignorePropertySort: false,
+					propertySyntaxSortOrder: ['single', 'multiple', 'none'],
+				},
+			],
 		},
 	},
 ]

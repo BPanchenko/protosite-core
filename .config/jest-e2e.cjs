@@ -1,5 +1,5 @@
-const path = require('node:path')
 const { globals } = require('./jest-unit.cjs')
+const path = require('node:path')
 
 /** @type {import('jest').Config} */
 module.exports = {

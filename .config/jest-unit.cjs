@@ -1,43 +1,14 @@
-const _ = require('lodash')
 const path = require('node:path')
-const { inspect } = require('node:util')
-const logger = require('node-color-log')
-
-const inspectOptions = {
-	depth: 3,
-	compact: true,
-	showHidden: true,
-	sorted: true,
-	showProxy: true,
-	colors: true,
-	maxArrayLength: 5,
-	maxStringLength: 180,
-}
+const { debug, error, info, success, warn } = require('../.kernel/logger.cjs')
 
 const globals = {
 	ENV: 'DEV',
 	SHADOW_MODE: 'open',
-	debug: (...args) => {
-		let curriedLogger = _.curry(logger.debug.bind(logger), args.length)
-		args.forEach((arg) => {
-			let parsed = arg
-			if (_.isArrayLikeObject(arg)) {
-				parsed = inspect(Array.from(arg), inspectOptions)
-			} else if (_.isElement(arg)) {
-				parsed = inspect(arg, inspectOptions)
-			} else if (_.isObjectLike(arg)) {
-				parsed = inspect(arg, inspectOptions)
-			}
-			return (curriedLogger = curriedLogger(parsed))
-		})
-	},
-	error: (...args) => {
-		logger.error(...args)
-		process.exit(3)
-	},
-	info: (...args) => logger.info(...args),
-	success: (...args) => logger.success(...args),
-	warn: (...args) => logger.warn(...args),
+	debug,
+	error,
+	info,
+	success,
+	warn,
 }
 
 /** @type {import('jest').Config} */

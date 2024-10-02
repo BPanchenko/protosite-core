@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AvatarComponent Page Markup 1`] = `
+"<!DOCTYPE html><html><head>
+		<link href="http://assets.protosite.rocks/uikit/document.css" rel="stylesheet" type="text/css">
+		<link href="http://assets.protosite.rocks/uikit/objects.css" rel="stylesheet" type="text/css">
+		<script src="../avatar-component.mjs" type="module"></script>
+	</head>
+	<body class="t-document">
+		<main class="o-container" data-testid="container">
+			<c-avatar data-image="http://protosite.rocks/pictures/ava.gif" data-link="http://yandex.ru" data-testid="avatar-1"><img slot="image" src="http://protosite.rocks/pictures/ava.gif">
+		</c-avatar></main>
+	
+
+</body></html>"
+`;

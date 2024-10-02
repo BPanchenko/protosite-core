@@ -9,8 +9,9 @@
     "#uikit/*": "@bpanchenko/uikit/*"
   },
   "scripts": {
-    "build": "cross-env NODE_ENV=production node ./.kernel/builder",
+    "build": "node ./.kernel/builder",
     "lint": "eslint . --fix",
+    "prepublish": "npm run build",
     "test:e2e": "jest --config=.config/jest-e2e.cjs",
     "test:unit": "jest --config=.config/jest-unit.cjs"
   },
@@ -20,19 +21,18 @@
     "@babel/preset-env": "7.25.4",
     "@bpanchenko/uikit": "4.26.86",
     "@eslint/js": "9.11.1",
-    "@jest/create-cache-key-function": "29.7.0",
     "@rollup/plugin-alias": "5.1.1",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-node-resolve": "15.3.0",
     "@rollup/plugin-terser": "0.4.4",
     "@stylistic/eslint-plugin-js": "2.8.0",
+    "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.5.0",
     "babel-cli": "6.26.0",
     "babel-jest": "29.7.0",
-    "babel-plugin-module-resolver": "5.0.2",
+    "babel-plugin-transform-import-meta": "2.2.1",
     "common-tags": "1.8.2",
     "construct-style-sheets-polyfill": "3.1.0",
-    "cross-env": "7.0.3",
     "date-format": "4.0.14",
     "eslint": "9.11.1",
     "eslint-config-prettier": "9.1.0",
@@ -50,8 +50,8 @@
     "jest-image-snapshot": "6.4.0",
     "jest-puppeteer": "10.1.1",
     "lodash": "4.17.21",
-    "lodash-es": "4.17.21",
     "node-color-log": "12.0.1",
+    "pptr-testing-library": "0.8.0",
     "prettier": "3.3.3",
     "puppeteer": "23.4.1",
     "puppeteer-core": "23.4.1",
@@ -63,8 +63,5 @@
     "url": "https://bpanchenko.ru"
   },
   "repository": "https://github.com/BPanchenko/protosite-core",
-  "license": "LGPL-3.0-only",
-  "dependencies": {
-    "@babel/runtime": "7.25.6"
-  }
+  "license": "LGPL-3.0-only"
 }

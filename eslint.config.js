@@ -1,12 +1,12 @@
 import babelParser from '@babel/eslint-parser'
 import js from '@eslint/js'
-import prettier from 'eslint-plugin-prettier'
 
-import stylisticJs from '@stylistic/eslint-plugin-js'
 import importPlugin from 'eslint-plugin-import'
-import json from 'eslint-plugin-json'
 import jest from 'eslint-plugin-jest'
 import jestDom from 'eslint-plugin-jest-dom'
+import json from 'eslint-plugin-json'
+import prettier from 'eslint-plugin-prettier'
+import stylisticJs from '@stylistic/eslint-plugin-js'
 import testingLibrary from 'eslint-plugin-testing-library'
 
 import globals from 'globals'
@@ -15,8 +15,9 @@ import mapValues from 'lodash/mapValues.js'
 
 export default [
 	{
-		ignores: ['assets/*', '**/node_modules/**'],
+		ignores: ['assets/*', '!assets/__tests__/', 'node_modules/'],
 	},
+	json.configs['recommended-with-comments'],
 	js.configs.recommended,
 	{
 		files: ['**/*.{js,cjs,mjs}'],
@@ -105,7 +106,7 @@ export default [
 		},
 	},
 	{
-		files: ['src/**/__specs__/*.spec.js', 'assets/**/__tests__/*.test.js'],
+		files: ['src/**/__specs__/*.spec.js', 'assets/__tests__/*.test.js'],
 		languageOptions: {
 			globals: {
 				...globals.jest,
@@ -123,5 +124,4 @@ export default [
 			'jest-dom/prefer-to-have-attribute': 'error',
 		},
 	},
-	json.configs['recommended-with-comments'],
 ]

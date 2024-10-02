@@ -1,5 +1,6 @@
 const JSDOMEnvironment = require('jest-environment-jsdom').TestEnvironment
 const puppeteer = require('puppeteer')
+require('pptr-testing-library/extend')
 
 const {
 	readFileSync,

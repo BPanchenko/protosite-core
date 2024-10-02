@@ -16,7 +16,7 @@ class AvatarComponent extends HTMLElement {
   constructor(a) {
     super(), _classPrivateFieldInitSpec(this, _a, new Map()), _classPrivateFieldInitSpec(this, _t, void 0), this, Object.assign(this.dataset, a), _classPrivateFieldSet(_t, this, this.attachShadow({
       mode: "closed"
-    })), _classPrivateFieldGet(_t, this).innerHTML = r, _classPrivateFieldGet(_t, this).adoptedStyleSheets.push(t);
+    })), _classPrivateFieldGet(_t, this).innerHTML = r;
   }
   attributeChangedCallback(a, t, e) {
     if (!1 === this.isConnected) return;
@@ -24,7 +24,7 @@ class AvatarComponent extends HTMLElement {
     if ("data-image" === a) e ? r.setAttribute("src", e) : r.removeAttribute("src"), !t && e && this.appendChild(r), e || r.remove();
   }
   connectedCallback() {
-    this.insertAdjacentHTML("afterbegin", '<img slot="image">'), _classPrivateFieldGet(_a, this).set("image", this.querySelector("img[slot=image]")), this.dataset.image ? _classPrivateFieldGet(_a, this).get("image").setAttribute("src", this.dataset.image) : _classPrivateFieldGet(_a, this).get("image").remove();
+    _classPrivateFieldGet(_t, this).adoptedStyleSheets.push(t), this.insertAdjacentHTML("afterbegin", '<img slot="image">'), _classPrivateFieldGet(_a, this).set("image", this.querySelector("img[slot=image]")), this.dataset.image ? _classPrivateFieldGet(_a, this).get("image").setAttribute("src", this.dataset.image) : _classPrivateFieldGet(_a, this).get("image").remove();
   }
 }
 _defineProperty(AvatarComponent, "observedAttributes", ["data-image", "data-link"]);

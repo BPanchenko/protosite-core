@@ -1,5 +1,5 @@
 import { getBabelOutputPlugin } from '@rollup/plugin-babel'
-import { checkDevelopmentMode, getFilesByPattern } from '../.kernel/lib.cjs'
+import { getFilesByPattern, root } from '../.kernel/lib.cjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import alias from '@rollup/plugin-alias'
 import terser from '@rollup/plugin-terser'
@@ -9,11 +9,11 @@ export default {
 	input: getFilesByPattern(`src/components/avatar.js`),
 	output: {
 		entryFileNames: '[name]-component.mjs',
-		sourcemap: checkDevelopmentMode(),
+		sourcemap: false,
 		format: 'esm',
 		plugins: [
 			getBabelOutputPlugin({
-				configFile: path.resolve(process.cwd(), '.babelrc.json'),
+				configFile: path.resolve(root, '.babelrc.json'),
 			}),
 		],
 	},
@@ -49,7 +49,13 @@ export default {
 			compress: {
 				module: true,
 				global_defs: {
+					ENV: 'PROD',
 					SHADOW_MODE: 'closed',
+					'@debug': 'console.trace',
+					'@error': 'console.error',
+					'@info': 'console.log',
+					'@success': 'console.log',
+					'@warn': 'console.warn',
 				},
 			},
 		}),

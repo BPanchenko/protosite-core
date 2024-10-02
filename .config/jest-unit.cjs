@@ -4,7 +4,7 @@ const { inspect } = require('node:util')
 const logger = require('node-color-log')
 
 const inspectOptions = {
-	depth: 1,
+	depth: 3,
 	compact: true,
 	showHidden: true,
 	sorted: true,
@@ -15,6 +15,7 @@ const inspectOptions = {
 }
 
 const globals = {
+	ENV: 'DEV',
 	SHADOW_MODE: 'open',
 	debug: (...args) => {
 		let curriedLogger = _.curry(logger.debug.bind(logger), args.length)
@@ -40,7 +41,7 @@ const globals = {
 }
 
 /** @type {import('jest').Config} */
-const config = {
+module.exports = {
 	rootDir: path.join(process.cwd(), 'src'),
 
 	bail: 2,
@@ -52,7 +53,7 @@ const config = {
 		'^#uikit/(.*)$':
 			'<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1',
 	},
-	setupFilesAfterEnv: [path.join(__dirname, 'jest-unit.setup.cjs')],
+	setupFilesAfterEnv: ['construct-style-sheets-polyfill'],
 	snapshotFormat: {
 		printBasicPrototype: true,
 		printFunctionName: true,
@@ -68,5 +69,3 @@ const config = {
 	],
 	verbose: true,
 }
-
-module.exports = config

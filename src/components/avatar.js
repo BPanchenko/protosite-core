@@ -21,7 +21,6 @@ class AvatarComponent extends HTMLElement {
 		Object.assign(this.dataset, dataset)
 		this.#shadow = this.attachShadow({ mode: shadowMode })
 		this.#shadow.innerHTML = shadowHTML
-		this.#shadow.adoptedStyleSheets.push(cssStyleSheet)
 	}
 
 	attributeChangedCallback(name, previos, current) {
@@ -45,6 +44,8 @@ class AvatarComponent extends HTMLElement {
 	}
 
 	connectedCallback() {
+		this.#shadow.adoptedStyleSheets.push(cssStyleSheet)
+
 		this.insertAdjacentHTML('afterbegin', lightHTML)
 		this.#$.set('image', this.querySelector('img[slot=image]'))
 

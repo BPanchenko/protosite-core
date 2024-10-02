@@ -1,6 +1,8 @@
 import '../avatar-component'
 
 import { configureToMatchImageSnapshot } from 'jest-image-snapshot'
+import { readFileSync } from 'node:fs'
+import path from 'node:path'
 
 expect.extend({
 	toMatchImageSnapshot: configureToMatchImageSnapshot({
@@ -10,28 +12,28 @@ expect.extend({
 	}),
 })
 
+const PAGE_HTML = readFileSync(
+	path.resolve(__dirname, './avatar.test.html'),
+	'utf8',
+)
+
 describe('AvatarComponent', () => {
-	const avatar = document.createElement('c-avatar')
-
 	describe('Visual Regression', () => {
-		let image, containerHandle
+		let image
 
-		beforeAll(async (done) => {
-			const page = await global.browser.newBlankPage()
-			await page.setViewport({width: 1080, height: 1024})
+		beforeAll(async () => {
+			const page = await global.browser.newPage()
+			await page.setContent(PAGE_HTML)
+			await page.setViewport({ width: 768, height: 1024 })
 
-			containerHandle = await page.$('#container')
-			const container = await page.evaluate((container) => container, containerHandle)
-			debug(container)
-			container.appendChild(avatar)
-
-			image = await page.screenshot({ fullPage: true })
-			done()
-		})
-
-		afterAll(() => {
-			containerHandle.dispose()
-		})
+			image = Buffer.from(
+				await page.screenshot({
+					fullPage: true,
+					encoding: 'base64',
+				}),
+				'base64',
+			)
+		}, 15000)
 
 		it('horizontal', () => {
 			expect(image).toMatchImageSnapshot({

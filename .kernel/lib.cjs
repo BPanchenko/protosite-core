@@ -4,11 +4,6 @@ const glob = require('glob')
 
 const root = process.cwd()
 
-const checkProductionMode = () => getEnvMode() === 'production'
-const checkDevelopmentMode = () => getEnvMode() === 'development'
-
-const getEnvMode = () => `${process.env.NODE_ENV ?? 'development'}`.trim()
-
 const getFilesByPattern = (pattern, ignore) =>
 	glob
 		.sync(pattern, {
@@ -26,9 +21,7 @@ function checkFileDir(filePath) {
 }
 
 module.exports = {
-	checkDevelopmentMode,
 	checkFileDir,
-	checkProductionMode,
-	getEnvMode,
 	getFilesByPattern,
+	root,
 }

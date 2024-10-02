@@ -1,5 +1,12 @@
 const toString = Object.prototype.toString
 
+Object.defineProperty(String.prototype, 'capitalize', {
+	value: function () {
+		return this.charAt(0).toUpperCase() + this.slice(1)
+	},
+	enumerable: false,
+})
+
 export function getTag(value) {
 	if (value == null) {
 		return value === undefined ? '[object Undefined]' : '[object Null]'
@@ -16,6 +23,14 @@ export function isNumber(value) {
 
 export function isObjectLike(value) {
 	return typeof value === 'object' && value !== null
+}
+
+export function createElement(tagName, attrs = {}) {
+	const element = document.createElement(tagName)
+	Object.entries(attrs).forEach(([key, value]) =>
+		element.setAttribute(key, value),
+	)
+	return element
 }
 
 export function createGridObject(step = 10) {

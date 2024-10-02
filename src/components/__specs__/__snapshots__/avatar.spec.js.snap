@@ -1,39 +1,210 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AvatarComponent Link = "http://google.com"; Image = "undefined" Light DOM 1`] = `
+exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures/ava.gif"; Link = "http://yandex.ru"; Target = "undefined"] Light DOM: 1`] = `
 <c-avatar
-  data-link="http://google.com"
-/>
-`;
-
-exports[`AvatarComponent Link = "http://yandex.ru"; Image = "http://protosite.rocks/pictures/ava.gif" Light DOM 1`] = `
-<c-avatar
-  data-image="http://protosite.rocks/pictures/ava.gif"
-  data-link="http://yandex.ru"
+  href="http://yandex.ru"
+  src="http://protosite.rocks/pictures/ava.gif"
 >
-  <img
-    slot="image"
-    src="http://protosite.rocks/pictures/ava.gif"
-  />
+  <a
+    href="http://yandex.ru"
+    target="_self"
+  >
+    <img
+      src="http://protosite.rocks/pictures/ava.gif"
+    />
+  </a>
 </c-avatar>
 `;
 
-exports[`AvatarComponent Link = "undefined"; Image = "http://protosite.rocks/pictures/ava-1.gif" Light DOM 1`] = `<c-avatar />`;
-
-exports[`AvatarComponent Link = "undefined"; Image = "undefined" Light DOM 1`] = `<c-avatar />`;
-
-exports[`AvatarComponent Shadow DOM 1`] = `
+exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures/ava.gif"; Link = "http://yandex.ru"; Target = "undefined"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
     class="c-avatar"
   >
-    
-		
-    <slot
-      name="image"
-    />
-    
-	
+    <slot />
+  </figure>,
+]
+`;
+
+exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures/ava-1.gif"; Link = "undefined"; Target = "_parent"] Light DOM: 1`] = `
+<c-avatar
+  src="http://protosite.rocks/pictures/ava-1.gif"
+  target="_parent"
+>
+  <img
+    src="http://protosite.rocks/pictures/ava-1.gif"
+  />
+</c-avatar>
+`;
+
+exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures/ava-1.gif"; Link = "undefined"; Target = "_parent"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <figure
+    class="c-avatar"
+  >
+    <slot />
+  </figure>,
+]
+`;
+
+exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "http://google.com"; Target = "_blank"] Light DOM: 1`] = `
+<c-avatar
+  href="http://google.com"
+  target="_blank"
+>
+  <a
+    href="http://google.com"
+    target="_blank"
+  />
+</c-avatar>
+`;
+
+exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "http://google.com"; Target = "_blank"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <figure
+    class="c-avatar"
+  >
+    <slot />
+  </figure>,
+]
+`;
+
+exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "undefined"; Target = "_top"] Light DOM: 1`] = `
+<c-avatar
+  target="_top"
+/>
+`;
+
+exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "undefined"; Target = "_top"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <figure
+    class="c-avatar"
+  >
+    <slot />
+  </figure>,
+]
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "lg"] Light DOM: 1`] = `
+<c-avatar
+  size="lg"
+/>
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "lg"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <figure
+    class="c-avatar s-lg"
+  >
+    <slot />
+  </figure>,
+]
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "md"] Light DOM: 1`] = `
+<c-avatar
+  size="md"
+/>
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "md"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <figure
+    class="c-avatar s-md"
+  >
+    <slot />
+  </figure>,
+]
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "sm"] Light DOM: 1`] = `
+<c-avatar
+  size="sm"
+/>
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "sm"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <figure
+    class="c-avatar s-sm"
+  >
+    <slot />
+  </figure>,
+]
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "undefined"] Light DOM: 1`] = `<c-avatar />`;
+
+exports[`[AvatarComponent] Attributes: [Size = "undefined"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <figure
+    class="c-avatar"
+  >
+    <slot />
+  </figure>,
+]
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "xl"] Light DOM: 1`] = `
+<c-avatar
+  size="xl"
+/>
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "xl"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <figure
+    class="c-avatar s-xl"
+  >
+    <slot />
+  </figure>,
+]
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "xs"] Light DOM: 1`] = `
+<c-avatar
+  size="xs"
+/>
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "xs"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <figure
+    class="c-avatar s-xs"
+  >
+    <slot />
+  </figure>,
+]
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "xxl"] Light DOM: 1`] = `
+<c-avatar
+  size="xxl"
+/>
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "xxl"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <figure
+    class="c-avatar s-xxl"
+  >
+    <slot />
+  </figure>,
+]
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "xxs"] Light DOM: 1`] = `
+<c-avatar
+  size="xxs"
+/>
+`;
+
+exports[`[AvatarComponent] Attributes: [Size = "xxs"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <figure
+    class="c-avatar s-xxs"
+  >
+    <slot />
   </figure>,
 ]
 `;

@@ -1,16 +1,15 @@
-// require('expect-puppeteer')
-require('@testing-library/jest-dom')
-require('pptr-testing-library/extend')
-
-/*
-const { expect } = require('jest')
 const { configureToMatchImageSnapshot } = require('jest-image-snapshot')
+const { expect } = require('@jest/globals')
+
+require('@testing-library/jest-dom')
+require('construct-style-sheets-polyfill')
+require('pptr-testing-library/extend')
+require('setimmediate')
 
 expect.extend({
 	toMatchImageSnapshot: configureToMatchImageSnapshot({
 		comparisonMethod: 'ssim',
-		failureThreshold: 0.1,
+		failureThreshold: 0,
 		failureThresholdType: 'percent',
 	}),
 })
-*/

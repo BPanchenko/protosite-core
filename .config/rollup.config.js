@@ -31,15 +31,10 @@ export default {
 				const isCssModule =
 					this.getModuleInfo(id)?.attributes.type === 'css'
 				if (isCssModule) {
-					// Escape the CSS source so that it can be used in a template literal.
-					const escapedCode = code
-						// Preserve any escape sequences in the source:
-						.replace('\\', '\\\\')
-						// Escape backticks:
-						.replace(/`/g, '\\`')
-						// Escape ${} interpolation:
-						.replace(/\$/g, '\\$')
-					return `const cssStyleSheet = new CSSStyleSheet(); cssStyleSheet.replaceSync(\`${escapedCode}\`); export default cssStyleSheet;`
+					const adaptedCode = code.replaceAll(':root', ':host')
+					return `const cssStyleSheet = new CSSStyleSheet();
+cssStyleSheet.replaceSync(\`${adaptedCode}\`);
+export default cssStyleSheet;`
 				}
 				return null
 			},

@@ -4,7 +4,19 @@
 	"description": "Web Application Core. It сontains a library of Web Components.",
 	"homepage": "http://protosite.rocks",
 	"type": "module",
+	"main": "./index.js",
+	"types": "./@types/index.d.ts",
+	"files": [
+		"@types/*",
+		"assets/*.js"
+	],
+	"exports": {
+		".": "./index.js",
+		"./avatar": "./assets/avatar-component.mjs",
+		"./field": "./assets/field-component.mjs"
+	},
 	"imports": {
+		"#types": "@types/index.d.ts",
 		"#assets/*": "assets/*",
 		"#uikit/*": "@bpanchenko/uikit/*"
 	},

@@ -1,22 +1,26 @@
-import cssStyleSheet, * as css from '#uikit/component/avatar'
-import { createElement } from '../lib/utilites'
+/// <reference path="../../@types/index.d.ts" />
 
-const { cAvatar } = css
+import cssStyleSheet, { cAvatar } from '#uikit/component/avatar'
+import { SIZES } from '../constants'
+import { createElement } from '../helpers'
+
 const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
 
 const tagName = cAvatar
 const shadowHTML = `<figure class="${cAvatar}"><slot></slot></figure>`
 
-class AvatarComponent extends HTMLElement {
+/** @implements {Avatar.WebComponent} */
+export class AvatarComponent extends HTMLElement {
 	#$ = new Map()
 	#shadow
 
 	static observedAttributes = ['src', 'size', 'href', 'target']
-	static sizes = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl']
+	static sizes = SIZES
 
-	constructor(attrs = {}) {
+	/** @param {Avatar.Attributes} [attributes] */
+	constructor(attributes = {}) {
 		super()
-		this.#applyAttributes(attrs)
+		this.#applyAttributes(attributes)
 		this.#shadow = this.attachShadow({ mode: shadowMode })
 		this.#shadow.innerHTML = shadowHTML
 	}
@@ -45,10 +49,17 @@ class AvatarComponent extends HTMLElement {
 		this.#renderImage()
 	}
 
-	#applyAttributes(attrs) {
-		Object.entries(attrs).forEach(([key, value]) =>
-			this.setAttribute(key, value),
-		)
+	#applyAttributes(attrs = {}) {
+		const valid = AvatarComponent.observedAttributes
+		const pairs = Object.entries(attrs)
+		const badly = pairs.filter(([attr]) => valid.includes(attr) === false)
+		const goodly = pairs.filter(([attr]) => valid.includes(attr))
+
+		goodly.forEach(([key, value]) => this.setAttribute(key, value))
+		if (badly.length > 0)
+			console.warn(
+				`Unsupported attributes: "${badly.map(([key]) => key).join(', ')}"`,
+			)
 	}
 
 	#applySize() {

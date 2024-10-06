@@ -2,6 +2,7 @@
 
 exports[`AvatarComponent Page Markup 1`] = `
 "<!DOCTYPE html><html><head>
+		<title>[TEST] Avatar Component ⁕ Protosite Core</title>
 		<link href="http://assets.protosite.rocks/uikit/document.css" rel="stylesheet" type="text/css">
 		<link href="http://assets.protosite.rocks/uikit/objects.css" rel="stylesheet" type="text/css">
 		<link href="http://assets.protosite.rocks/uikit/component/panel.css" rel="stylesheet" type="text/css">

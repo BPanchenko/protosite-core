@@ -1,0 +1,13 @@
+# Тесты
+assets/__tests__/
+
+# Файлы конфигурации
+.config/
+.babelrc.json
+.prettierrc.json
+.puppeteerrc.cjs
+eslint.config.js
+
+# Исходники и ядро
+.kernel/
+src/

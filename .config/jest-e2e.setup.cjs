@@ -8,8 +8,7 @@ require('setimmediate')
 
 expect.extend({
 	toMatchImageSnapshot: configureToMatchImageSnapshot({
-		comparisonMethod: 'ssim',
-		failureThreshold: 0,
-		failureThresholdType: 'percent',
+		onlyDiff: true,
+		noColors: true,
 	}),
 })

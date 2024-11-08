@@ -3,7 +3,7 @@
 exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures/ava.gif"; Link = "http://yandex.ru"; Target = "undefined"] Light DOM: 1`] = `
 <c-avatar
   href="http://yandex.ru"
-  src="http://protosite.rocks/pictures/ava.gif"
+  img="http://protosite.rocks/pictures/ava.gif"
 >
   <a
     href="http://yandex.ru"
@@ -28,7 +28,7 @@ HTMLCollection [
 
 exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures/ava-1.gif"; Link = "undefined"; Target = "_parent"] Light DOM: 1`] = `
 <c-avatar
-  src="http://protosite.rocks/pictures/ava-1.gif"
+  img="http://protosite.rocks/pictures/ava-1.gif"
   target="_parent"
 >
   <img

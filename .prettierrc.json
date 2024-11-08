@@ -1,17 +1,17 @@
 {
-	"endOfLine": "auto",
-	"semi": false,
-	"singleQuote": true,
-	"trailingComma": "all",
-	"useTabs": false,
-	"tabWidth": 2,
-	"overrides": [
-		{
-			"files": ["*.css", "*.js", "*.cjs", "*.mjs"],
-			"options": {
-				"useTabs": true,
-				"tabWidth": 4
-			}
-		}
-	]
+  "endOfLine": "auto",
+  "semi": false,
+  "singleQuote": true,
+  "trailingComma": "all",
+  "useTabs": false,
+  "tabWidth": 2,
+  "overrides": [
+    {
+      "files": ["*.css", "*.ts", "*.js", "*.cjs", "*.mjs"],
+      "options": {
+        "useTabs": true,
+        "tabWidth": 4
+      }
+    }
+  ]
 }

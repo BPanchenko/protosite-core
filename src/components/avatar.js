@@ -14,7 +14,7 @@ export class AvatarComponent extends HTMLElement {
 	#$ = new Map()
 	#shadow
 
-	static observedAttributes = ['src', 'size', 'href', 'target']
+	static observedAttributes = ['img', 'size', 'href', 'target']
 	static sizes = SIZES
 
 	/** @param {Avatar.Attributes} [attributes] */
@@ -36,7 +36,7 @@ export class AvatarComponent extends HTMLElement {
 			case 'size':
 				this.#applySize()
 				break
-			case 'src':
+			case 'img':
 				this.#renderImage()
 				break
 		}
@@ -96,14 +96,14 @@ export class AvatarComponent extends HTMLElement {
 	}
 
 	#renderImage() {
-		const src = this.getAttribute('src')
-		if (src) {
+		const source = this.getAttribute('img')
+		if (source) {
 			if (this.#hasParentPanel) {
-				this.#root.style.backgroundImage = `url(${src})`
+				this.#root.style.backgroundImage = `url(${source})`
 			} else {
 				if (this.#$.has('image'))
-					this.#$.get('image').setAttribute('src', src)
-				else this.#$.set('image', createElement('img', { src }))
+					this.#$.get('image').setAttribute('src', source)
+				else this.#$.set('image', createElement('img', { src: source }))
 				if (this.#$.has('link'))
 					this.#$.get('link').appendChild(this.#$.get('image'))
 				else this.appendChild(this.#$.get('image'))

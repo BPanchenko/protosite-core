@@ -6,7 +6,7 @@ import terser from '@rollup/plugin-terser'
 import path from 'node:path'
 
 export default {
-	input: getFilesByPattern(`src/components/avatar.js`),
+	input: getFilesByPattern(`src/components/{arrow,avatar}.js`),
 	output: {
 		entryFileNames: '[name]-component.mjs',
 		sourcemap: false,
@@ -31,7 +31,11 @@ export default {
 				const isCssModule =
 					this.getModuleInfo(id)?.attributes.type === 'css'
 				if (isCssModule) {
-					const adaptedCode = code.replaceAll(':root', ':host')
+					const cName = '.c-' + path.parse(id).name
+					const adaptedCode = code
+						.replaceAll('\\', '\\\\')
+						.replaceAll(':root', ':host')
+						.replaceAll(cName, ':host')
 					return `const cssStyleSheet = new CSSStyleSheet();
 cssStyleSheet.replaceSync(\`${adaptedCode}\`);
 export default cssStyleSheet;`

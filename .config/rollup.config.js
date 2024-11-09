@@ -32,10 +32,15 @@ export default {
 					this.getModuleInfo(id)?.attributes.type === 'css'
 				if (isCssModule) {
 					const cName = '.c-' + path.parse(id).name
+					const hostRegExp = new RegExp(
+						`(:root|${cName})([\\s,{]+)`,
+						'g',
+					)
+
 					const adaptedCode = code
+						.replace(hostRegExp, ':host$2')
 						.replaceAll('\\', '\\\\')
-						.replaceAll(':root', ':host')
-						.replaceAll(cName, ':host')
+
 					return `const cssStyleSheet = new CSSStyleSheet();
 cssStyleSheet.replaceSync(\`${adaptedCode}\`);
 export default cssStyleSheet;`

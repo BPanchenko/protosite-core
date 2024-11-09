@@ -1,13 +1,16 @@
 /// <reference path="../../@types/index.d.ts" />
 
-import cssStyleSheet, { cAvatar } from '#uikit/component/avatar'
-import { SIZES } from '../constants'
+import cssStyleSheet, {
+	cAvatar,
+	cAvatarLink,
+	cAvatarRoot,
+} from '#uikit/component/avatar'
 import { createElement } from '../helpers'
 
 const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
 
 const tagName = cAvatar
-const shadowHTML = `<figure class="${cAvatar}"><slot></slot></figure>`
+const shadowHTML = `<figure class="${cAvatarRoot}"><slot></slot></figure>`
 
 /** @implements {Avatar.WebComponent} */
 export class AvatarComponent extends HTMLElement {
@@ -15,7 +18,7 @@ export class AvatarComponent extends HTMLElement {
 	#shadow
 
 	static observedAttributes = ['img', 'size', 'href', 'target']
-	static sizes = SIZES
+	static sizes = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl']
 
 	/** @param {Avatar.Attributes} [attributes] */
 	constructor(attributes = {}) {
@@ -78,6 +81,7 @@ export class AvatarComponent extends HTMLElement {
 	}
 
 	#renderLink() {
+		const className = cAvatarLink
 		const href = this.getAttribute('href')
 		const target = this.getAttribute('target') ?? '_self'
 		if (href) {
@@ -86,7 +90,10 @@ export class AvatarComponent extends HTMLElement {
 				$link.setAttribute('href', href)
 				$link.setAttribute('target', target)
 			} else {
-				this.#$.set('link', createElement('a', { href, target }))
+				this.#$.set(
+					'link',
+					createElement('a', { className, href, target }),
+				)
 				this.appendChild(this.#$.get('link'))
 			}
 		} else if (this.#$.has('link')) {

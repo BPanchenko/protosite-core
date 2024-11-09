@@ -1,7 +1,6 @@
 /// <reference path="../../@types/index.d.ts" />
 
 import cssStyleSheet, { cArrow } from '#uikit/component/arrow'
-import { SIZES } from '../constants'
 
 const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
 
@@ -17,7 +16,7 @@ const shadowHTML = `<i data-glyph=loop><slot>&nbsp;</slot></i>`
 
 /** @implements {Arrow.WebComponent} */
 export class ArrowComponent extends HTMLElement {
-	#glyph = 'right-angle-left-top-fill-angled'
+	#glyph
 	#shadow
 
 	/** @type State */
@@ -30,7 +29,7 @@ export class ArrowComponent extends HTMLElement {
 
 	/** @type Array<string> */
 	static observedAttributes = ['direction', 'figure', 'style', 'weight']
-	static sizes = SIZES
+	static sizes = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl']
 
 	/** @param {Arrow.Attributes} [attributes] */
 	constructor(attributes = {}) {
@@ -84,8 +83,6 @@ export class ArrowComponent extends HTMLElement {
 			)
 			this.#root.classList.add('s-' + size)
 		}
-
-		console.log(size)
 	}
 
 	hasParent(sel = '.c-panel') {

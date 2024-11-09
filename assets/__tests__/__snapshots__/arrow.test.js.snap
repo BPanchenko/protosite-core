@@ -5,13 +5,13 @@ exports[`ArrowComponent Page Markup 1`] = `
 		<title>[TEST] Arrow Component ⁕ Protosite Core</title>
 		<link href="http://assets.protosite.rocks/fonts/iconic/stylesheet.css" rel="stylesheet" type="text/css">
 		<link href="http://assets.protosite.rocks/uikit/document.css" rel="stylesheet" type="text/css">
-		<link href="http://assets.protosite.rocks/uikit/objects.css" rel="stylesheet" type="text/css">
+		<link href="http://assets.protosite.rocks/uikit/utilities.css" rel="stylesheet" type="text/css">
 		<link href="http://assets.protosite.rocks/uikit/component/panel.css" rel="stylesheet" type="text/css">
 		
 		<script src="../arrow-component.mjs" type="module"></script>
 	</head>
 	<body class="t-document">
-		<main class="o-container" data-testid="container">
+		<main class="u-container" data-testid="container">
 			<section class="c-panel">
 				<c-arrow direction="left" figure="fill" size="md"></c-arrow>
 				<c-arrow direction="top-left" figure="fill" style="acute" size="md"></c-arrow>

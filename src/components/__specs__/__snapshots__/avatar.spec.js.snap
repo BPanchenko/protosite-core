@@ -6,6 +6,7 @@ exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures
   img="http://protosite.rocks/pictures/ava.gif"
 >
   <a
+    class="c-avatar__link"
     href="http://yandex.ru"
     target="_self"
   >
@@ -19,7 +20,7 @@ exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures
 exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures/ava.gif"; Link = "http://yandex.ru"; Target = "undefined"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar"
+    class="c-avatar__root"
   >
     <slot />
   </figure>,
@@ -40,7 +41,7 @@ exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures
 exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures/ava-1.gif"; Link = "undefined"; Target = "_parent"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar"
+    class="c-avatar__root"
   >
     <slot />
   </figure>,
@@ -53,6 +54,7 @@ exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "http://goog
   target="_blank"
 >
   <a
+    class="c-avatar__link"
     href="http://google.com"
     target="_blank"
   />
@@ -62,7 +64,7 @@ exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "http://goog
 exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "http://google.com"; Target = "_blank"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar"
+    class="c-avatar__root"
   >
     <slot />
   </figure>,
@@ -78,7 +80,7 @@ exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "undefined";
 exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "undefined"; Target = "_top"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar"
+    class="c-avatar__root"
   >
     <slot />
   </figure>,
@@ -94,7 +96,7 @@ exports[`[AvatarComponent] Attributes: [Size = "lg"] Light DOM: 1`] = `
 exports[`[AvatarComponent] Attributes: [Size = "lg"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar s-lg"
+    class="c-avatar__root s-lg"
   >
     <slot />
   </figure>,
@@ -110,7 +112,7 @@ exports[`[AvatarComponent] Attributes: [Size = "md"] Light DOM: 1`] = `
 exports[`[AvatarComponent] Attributes: [Size = "md"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar s-md"
+    class="c-avatar__root s-md"
   >
     <slot />
   </figure>,
@@ -126,7 +128,7 @@ exports[`[AvatarComponent] Attributes: [Size = "sm"] Light DOM: 1`] = `
 exports[`[AvatarComponent] Attributes: [Size = "sm"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar s-sm"
+    class="c-avatar__root s-sm"
   >
     <slot />
   </figure>,
@@ -138,7 +140,7 @@ exports[`[AvatarComponent] Attributes: [Size = "undefined"] Light DOM: 1`] = `<c
 exports[`[AvatarComponent] Attributes: [Size = "undefined"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar"
+    class="c-avatar__root"
   >
     <slot />
   </figure>,
@@ -154,7 +156,7 @@ exports[`[AvatarComponent] Attributes: [Size = "xl"] Light DOM: 1`] = `
 exports[`[AvatarComponent] Attributes: [Size = "xl"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar s-xl"
+    class="c-avatar__root s-xl"
   >
     <slot />
   </figure>,
@@ -170,7 +172,7 @@ exports[`[AvatarComponent] Attributes: [Size = "xs"] Light DOM: 1`] = `
 exports[`[AvatarComponent] Attributes: [Size = "xs"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar s-xs"
+    class="c-avatar__root s-xs"
   >
     <slot />
   </figure>,
@@ -186,7 +188,7 @@ exports[`[AvatarComponent] Attributes: [Size = "xxl"] Light DOM: 1`] = `
 exports[`[AvatarComponent] Attributes: [Size = "xxl"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar s-xxl"
+    class="c-avatar__root s-xxl"
   >
     <slot />
   </figure>,
@@ -202,7 +204,7 @@ exports[`[AvatarComponent] Attributes: [Size = "xxs"] Light DOM: 1`] = `
 exports[`[AvatarComponent] Attributes: [Size = "xxs"] Shadow DOM: 1`] = `
 HTMLCollection [
   <figure
-    class="c-avatar s-xxs"
+    class="c-avatar__root s-xxs"
   >
     <slot />
   </figure>,

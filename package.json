@@ -1,6 +1,6 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.5.13",
+  "version": "1.5.14",
   "description": "Web Application Core. It сontains a library of Web Components.",
   "homepage": "http://protosite.rocks",
   "type": "module",
@@ -33,7 +33,7 @@
     "@babel/core": "7.26.0",
     "@babel/eslint-parser": "7.25.9",
     "@babel/preset-env": "7.26.0",
-    "@bpanchenko/uikit": "4.28.94",
+    "@bpanchenko/uikit": "4.28.95",
     "@eslint/js": "9.14.0",
     "@rollup/plugin-alias": "5.1.1",
     "@rollup/plugin-babel": "6.0.4",
@@ -69,9 +69,9 @@
     "portscanner": "2.2.0",
     "pptr-testing-library": "0.8.0",
     "prettier": "3.3.3",
-    "puppeteer": "23.7.1",
-    "puppeteer-core": "23.7.1",
-    "rollup": "4.25.0",
+    "puppeteer": "23.8.0",
+    "puppeteer-core": "23.8.0",
+    "rollup": "4.26.0",
     "setimmediate": "1.0.5"
   },
   "author": {

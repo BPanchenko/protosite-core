@@ -1,0 +1,21 @@
+Object.defineProperty(window.console, 'assert', {
+	writable: true,
+	value: jest.fn().mockImplementation((assertion, message) => {
+		if (assertion === false) {
+			throw new Error(message)
+		}
+	}),
+})
+
+Object.defineProperty(window.document, 'fonts', {
+	writable: true,
+	value: {
+		values: () => [
+			{
+				fontFace: {
+					family: 'IconFont'
+				},
+			},
+		]
+	},
+})

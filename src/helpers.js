@@ -7,6 +7,11 @@ Object.defineProperty(String.prototype, 'capitalize', {
 	enumerable: false,
 })
 
+export const checkFontFace = (search) =>
+	document.fonts
+		.values()
+		.findIndex(({ fontFace }) => fontFace.family === search) > -1
+
 export const compactObject = (obj) => {
 	const result = Array.from(Object.entries(obj)).reduce(
 		(acc, [key, value]) => (value ? (acc[key] = value) && acc : acc),

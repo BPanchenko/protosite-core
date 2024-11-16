@@ -84,10 +84,11 @@ export class ArrowComponent extends HTMLElement {
 			'weight',
 		].map((attr) => this.hasAttribute(attr) && this.getAttribute(attr))
 
-		const value = ['arrow']
-			.concat(glyph || [weight, direction, figure, style])
-			.filter((i) => Boolean(i))
-			.join('-')
+		const value =
+			glyph ||
+			['arrow', weight, direction, figure, style]
+				.filter((i) => Boolean(i))
+				.join('-')
 
 		this.#root.dataset.glyph = value
 	}

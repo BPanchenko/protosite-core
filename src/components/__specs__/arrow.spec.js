@@ -5,11 +5,11 @@ import ArrowComponent from '../arrow.js'
 describe('[ArrowComponent]', () => {
 	describe('Attributes:', () => {
 		describe.each`
-			glyph           | weight     | direction        | figure    | style
-			${'right-line'} | ${null}    | ${null}          | ${null}   | ${null}
-			${null}         | ${'thick'} | ${'bottom'}      | ${null}   | ${'fill-angled'}
-			${'left-line'}  | ${null}    | ${'right'}       | ${'line'} | ${'oblique'}
-			${null}         | ${null}    | ${'bottom-left'} | ${'fill'} | ${'large-acute'}
+			glyph                 | weight     | direction        | figure    | style
+			${'arrow-right-line'} | ${null}    | ${null}          | ${null}   | ${null}
+			${null}               | ${'thick'} | ${'bottom'}      | ${null}   | ${'fill-angled'}
+			${'arrow-left-line'}  | ${null}    | ${'right'}       | ${'line'} | ${'oblique'}
+			${null}               | ${null}    | ${'bottom-left'} | ${'fill'} | ${'large-acute'}
 		`(
 			'[Glyph = "$glyph"; Weight = "$weight"; Direction = "$direction"; Figure = "$figure"; Style = "$style"]',
 			(options) => {
@@ -23,17 +23,17 @@ describe('[ArrowComponent]', () => {
 		)
 
 		describe.each`
-			glyph                                          | size
-			${'right-line'}                                | ${null}
-			${'right-angle-top-right-fill-acute'}          | ${'xxs'}
-			${'right-angle-thick-right-top-fill-acute'}    | ${'xs'}
-			${'right-angle-bottom-right-fill-angled'}      | ${'sm'}
-			${'right-angle-thick-bottom-left-fill-angled'} | ${'md'}
-			${'right-angle-right-bottom-fill'}             | ${'lg'}
-			${'right-angle-thick-top-right-fill'}          | ${'xl'}
-			${'right-angle-bottom-right-fill'}             | ${'xxl'}
-			${'right-angle-right-top-line'}                | ${null}
-			${'right-angle-right-bottom-fill-acute'}       | ${'another-size'}
+			glyph                                                | size
+			${'arrow-right-line'}                                | ${null}
+			${'arrow-right-angle-top-right-fill-acute'}          | ${'xxs'}
+			${'arrow-right-angle-thick-right-top-fill-acute'}    | ${'xs'}
+			${'arrow-right-angle-bottom-right-fill-angled'}      | ${'sm'}
+			${'arrow-right-angle-thick-bottom-left-fill-angled'} | ${'md'}
+			${'arrow-right-angle-right-bottom-fill'}             | ${'lg'}
+			${'arrow-right-angle-thick-top-right-fill'}          | ${'xl'}
+			${'arrow-right-angle-bottom-right-fill'}             | ${'xxl'}
+			${'arrow-right-angle-right-top-line'}                | ${null}
+			${'arrow-right-angle-right-bottom-fill-acute'}       | ${'another-size'}
 		`('[Glyph = "$glyph"; Size = "$size"]', ({ glyph, size }) => {
 			const avatar = new ArrowComponent({ glyph })
 			document.body.appendChild(avatar)

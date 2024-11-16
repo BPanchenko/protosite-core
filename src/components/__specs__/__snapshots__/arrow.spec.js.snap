@@ -45,19 +45,176 @@ HTMLCollection [
 ]
 `;
 
-exports[`[ArrowComponent] Attributes: [Glyph = "left-line"; Weight = "null"; Direction = "right"; Figure = "line"; Style = "oblique"] Light DOM: 1`] = `
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-left-line"; Weight = "null"; Direction = "right"; Figure = "line"; Style = "oblique"] Light DOM: 1`] = `
 <c-arrow
   direction="right"
   figure="line"
-  glyph="left-line"
+  glyph="arrow-left-line"
   style="oblique"
 />
 `;
 
-exports[`[ArrowComponent] Attributes: [Glyph = "left-line"; Weight = "null"; Direction = "right"; Figure = "line"; Style = "oblique"] Shadow DOM: 1`] = `
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-left-line"; Weight = "null"; Direction = "right"; Figure = "line"; Style = "oblique"] Shadow DOM: 1`] = `
 HTMLCollection [
   <i
     data-glyph="arrow-left-line"
+  >
+    <slot>
+       
+    </slot>
+  </i>,
+]
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-bottom-right-fill"; Size = "xxl"] Light DOM: 1`] = `
+<c-arrow
+  glyph="arrow-right-angle-bottom-right-fill"
+/>
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-bottom-right-fill"; Size = "xxl"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <i
+    class="s-xxl"
+    data-glyph="arrow-right-angle-bottom-right-fill"
+  >
+    <slot>
+       
+    </slot>
+  </i>,
+]
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-bottom-right-fill-angled"; Size = "sm"] Light DOM: 1`] = `
+<c-arrow
+  glyph="arrow-right-angle-bottom-right-fill-angled"
+/>
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-bottom-right-fill-angled"; Size = "sm"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <i
+    class="s-sm"
+    data-glyph="arrow-right-angle-bottom-right-fill-angled"
+  >
+    <slot>
+       
+    </slot>
+  </i>,
+]
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-right-bottom-fill"; Size = "lg"] Light DOM: 1`] = `
+<c-arrow
+  glyph="arrow-right-angle-right-bottom-fill"
+/>
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-right-bottom-fill"; Size = "lg"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <i
+    class="s-lg"
+    data-glyph="arrow-right-angle-right-bottom-fill"
+  >
+    <slot>
+       
+    </slot>
+  </i>,
+]
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-right-bottom-fill-acute"; Size = "another-size"] Error: 1`] = `[Error: Wrong size: "another-size"]`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-right-top-line"; Size = "null"] Error: 1`] = `[Error: Wrong size: "null"]`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-thick-bottom-left-fill-angled"; Size = "md"] Light DOM: 1`] = `
+<c-arrow
+  glyph="arrow-right-angle-thick-bottom-left-fill-angled"
+/>
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-thick-bottom-left-fill-angled"; Size = "md"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <i
+    class="s-md"
+    data-glyph="arrow-right-angle-thick-bottom-left-fill-angled"
+  >
+    <slot>
+       
+    </slot>
+  </i>,
+]
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-thick-right-top-fill-acute"; Size = "xs"] Light DOM: 1`] = `
+<c-arrow
+  glyph="arrow-right-angle-thick-right-top-fill-acute"
+/>
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-thick-right-top-fill-acute"; Size = "xs"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <i
+    class="s-xs"
+    data-glyph="arrow-right-angle-thick-right-top-fill-acute"
+  >
+    <slot>
+       
+    </slot>
+  </i>,
+]
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-thick-top-right-fill"; Size = "xl"] Light DOM: 1`] = `
+<c-arrow
+  glyph="arrow-right-angle-thick-top-right-fill"
+/>
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-thick-top-right-fill"; Size = "xl"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <i
+    class="s-xl"
+    data-glyph="arrow-right-angle-thick-top-right-fill"
+  >
+    <slot>
+       
+    </slot>
+  </i>,
+]
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-top-right-fill-acute"; Size = "xxs"] Light DOM: 1`] = `
+<c-arrow
+  glyph="arrow-right-angle-top-right-fill-acute"
+/>
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-angle-top-right-fill-acute"; Size = "xxs"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <i
+    class="s-xxs"
+    data-glyph="arrow-right-angle-top-right-fill-acute"
+  >
+    <slot>
+       
+    </slot>
+  </i>,
+]
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-line"; Size = "null"] Error: 1`] = `[Error: Wrong size: "null"]`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-line"; Weight = "null"; Direction = "null"; Figure = "null"; Style = "null"] Light DOM: 1`] = `
+<c-arrow
+  glyph="arrow-right-line"
+/>
+`;
+
+exports[`[ArrowComponent] Attributes: [Glyph = "arrow-right-line"; Weight = "null"; Direction = "null"; Figure = "null"; Style = "null"] Shadow DOM: 1`] = `
+HTMLCollection [
+  <i
+    data-glyph="arrow-right-line"
   >
     <slot>
        
@@ -98,163 +255,6 @@ exports[`[ArrowComponent] Attributes: [Glyph = "null"; Weight = "thick"; Directi
 HTMLCollection [
   <i
     data-glyph="arrow-thick-bottom-fill-angled"
-  >
-    <slot>
-       
-    </slot>
-  </i>,
-]
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-bottom-right-fill"; Size = "xxl"] Light DOM: 1`] = `
-<c-arrow
-  glyph="right-angle-bottom-right-fill"
-/>
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-bottom-right-fill"; Size = "xxl"] Shadow DOM: 1`] = `
-HTMLCollection [
-  <i
-    class="s-xxl"
-    data-glyph="arrow-right-angle-bottom-right-fill"
-  >
-    <slot>
-       
-    </slot>
-  </i>,
-]
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-bottom-right-fill-angled"; Size = "sm"] Light DOM: 1`] = `
-<c-arrow
-  glyph="right-angle-bottom-right-fill-angled"
-/>
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-bottom-right-fill-angled"; Size = "sm"] Shadow DOM: 1`] = `
-HTMLCollection [
-  <i
-    class="s-sm"
-    data-glyph="arrow-right-angle-bottom-right-fill-angled"
-  >
-    <slot>
-       
-    </slot>
-  </i>,
-]
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-right-bottom-fill"; Size = "lg"] Light DOM: 1`] = `
-<c-arrow
-  glyph="right-angle-right-bottom-fill"
-/>
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-right-bottom-fill"; Size = "lg"] Shadow DOM: 1`] = `
-HTMLCollection [
-  <i
-    class="s-lg"
-    data-glyph="arrow-right-angle-right-bottom-fill"
-  >
-    <slot>
-       
-    </slot>
-  </i>,
-]
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-right-bottom-fill-acute"; Size = "another-size"] Error: 1`] = `[Error: Wrong size: "another-size"]`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-right-top-line"; Size = "null"] Error: 1`] = `[Error: Wrong size: "null"]`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-thick-bottom-left-fill-angled"; Size = "md"] Light DOM: 1`] = `
-<c-arrow
-  glyph="right-angle-thick-bottom-left-fill-angled"
-/>
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-thick-bottom-left-fill-angled"; Size = "md"] Shadow DOM: 1`] = `
-HTMLCollection [
-  <i
-    class="s-md"
-    data-glyph="arrow-right-angle-thick-bottom-left-fill-angled"
-  >
-    <slot>
-       
-    </slot>
-  </i>,
-]
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-thick-right-top-fill-acute"; Size = "xs"] Light DOM: 1`] = `
-<c-arrow
-  glyph="right-angle-thick-right-top-fill-acute"
-/>
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-thick-right-top-fill-acute"; Size = "xs"] Shadow DOM: 1`] = `
-HTMLCollection [
-  <i
-    class="s-xs"
-    data-glyph="arrow-right-angle-thick-right-top-fill-acute"
-  >
-    <slot>
-       
-    </slot>
-  </i>,
-]
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-thick-top-right-fill"; Size = "xl"] Light DOM: 1`] = `
-<c-arrow
-  glyph="right-angle-thick-top-right-fill"
-/>
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-thick-top-right-fill"; Size = "xl"] Shadow DOM: 1`] = `
-HTMLCollection [
-  <i
-    class="s-xl"
-    data-glyph="arrow-right-angle-thick-top-right-fill"
-  >
-    <slot>
-       
-    </slot>
-  </i>,
-]
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-top-right-fill-acute"; Size = "xxs"] Light DOM: 1`] = `
-<c-arrow
-  glyph="right-angle-top-right-fill-acute"
-/>
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-angle-top-right-fill-acute"; Size = "xxs"] Shadow DOM: 1`] = `
-HTMLCollection [
-  <i
-    class="s-xxs"
-    data-glyph="arrow-right-angle-top-right-fill-acute"
-  >
-    <slot>
-       
-    </slot>
-  </i>,
-]
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-line"; Size = "null"] Error: 1`] = `[Error: Wrong size: "null"]`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-line"; Weight = "null"; Direction = "null"; Figure = "null"; Style = "null"] Light DOM: 1`] = `
-<c-arrow
-  glyph="right-line"
-/>
-`;
-
-exports[`[ArrowComponent] Attributes: [Glyph = "right-line"; Weight = "null"; Direction = "null"; Figure = "null"; Style = "null"] Shadow DOM: 1`] = `
-HTMLCollection [
-  <i
-    data-glyph="arrow-right-line"
   >
     <slot>
        

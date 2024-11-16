@@ -69,7 +69,7 @@ function _e() {
 }
 function _t() {
   var [o, e, t, a, l] = ["direction", "figure", "glyph", "style", "weight"].map(o => this.hasAttribute(o) && this.getAttribute(o)),
-    i = ["arrow"].concat(t || [l, o, e, a]).filter(o => Boolean(o)).join("-");
+    i = t || ["arrow", l, o, e, a].filter(o => Boolean(o)).join("-");
   _classPrivateGetter(_ArrowComponent_brand, this, _get_a).dataset.glyph = i;
 }
 function _get_a(_this) {

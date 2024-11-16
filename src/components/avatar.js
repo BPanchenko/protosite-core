@@ -1,16 +1,13 @@
 /// <reference path="../../@types/index.d.ts" />
 
-import cssStyleSheet, {
-	cAvatar,
-	cAvatarLink,
-	cAvatarRoot,
-} from '#uikit/component/avatar'
 import { createElement } from '../helpers'
+import { SIZES } from '../constants'
+import cssStyleSheet, { cAvatar, cAvatarLink } from '#uikit/component/avatar'
 
 const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
 
 const tagName = cAvatar
-const shadowHTML = `<figure class="${cAvatarRoot}"><slot></slot></figure>`
+const shadowHTML = `<div role=img><slot></slot></div>`
 
 /** @implements {Avatar.WebComponent} */
 export class AvatarComponent extends HTMLElement {
@@ -18,7 +15,7 @@ export class AvatarComponent extends HTMLElement {
 	#shadow
 
 	static observedAttributes = ['img', 'size', 'href', 'target']
-	static sizes = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', 'xxl']
+	static sizes = SIZES
 
 	/** @param {Avatar.Attributes} [attributes] */
 	constructor(attributes = {}) {

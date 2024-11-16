@@ -19,11 +19,11 @@ exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures
 
 exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures/ava.gif"; Link = "http://yandex.ru"; Target = "undefined"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root"
+  <div
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;
 
@@ -40,11 +40,11 @@ exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures
 
 exports[`[AvatarComponent] Attributes: [Image = "http://protosite.rocks/pictures/ava-1.gif"; Link = "undefined"; Target = "_parent"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root"
+  <div
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;
 
@@ -63,11 +63,11 @@ exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "http://goog
 
 exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "http://google.com"; Target = "_blank"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root"
+  <div
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;
 
@@ -79,11 +79,11 @@ exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "undefined";
 
 exports[`[AvatarComponent] Attributes: [Image = "undefined"; Link = "undefined"; Target = "_top"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root"
+  <div
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;
 
@@ -95,11 +95,12 @@ exports[`[AvatarComponent] Attributes: [Size = "lg"] Light DOM: 1`] = `
 
 exports[`[AvatarComponent] Attributes: [Size = "lg"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root s-lg"
+  <div
+    class="s-lg"
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;
 
@@ -111,11 +112,12 @@ exports[`[AvatarComponent] Attributes: [Size = "md"] Light DOM: 1`] = `
 
 exports[`[AvatarComponent] Attributes: [Size = "md"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root s-md"
+  <div
+    class="s-md"
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;
 
@@ -127,11 +129,12 @@ exports[`[AvatarComponent] Attributes: [Size = "sm"] Light DOM: 1`] = `
 
 exports[`[AvatarComponent] Attributes: [Size = "sm"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root s-sm"
+  <div
+    class="s-sm"
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;
 
@@ -139,11 +142,11 @@ exports[`[AvatarComponent] Attributes: [Size = "undefined"] Light DOM: 1`] = `<c
 
 exports[`[AvatarComponent] Attributes: [Size = "undefined"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root"
+  <div
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;
 
@@ -155,11 +158,12 @@ exports[`[AvatarComponent] Attributes: [Size = "xl"] Light DOM: 1`] = `
 
 exports[`[AvatarComponent] Attributes: [Size = "xl"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root s-xl"
+  <div
+    class="s-xl"
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;
 
@@ -171,11 +175,12 @@ exports[`[AvatarComponent] Attributes: [Size = "xs"] Light DOM: 1`] = `
 
 exports[`[AvatarComponent] Attributes: [Size = "xs"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root s-xs"
+  <div
+    class="s-xs"
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;
 
@@ -187,11 +192,12 @@ exports[`[AvatarComponent] Attributes: [Size = "xxl"] Light DOM: 1`] = `
 
 exports[`[AvatarComponent] Attributes: [Size = "xxl"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root s-xxl"
+  <div
+    class="s-xxl"
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;
 
@@ -203,10 +209,11 @@ exports[`[AvatarComponent] Attributes: [Size = "xxs"] Light DOM: 1`] = `
 
 exports[`[AvatarComponent] Attributes: [Size = "xxs"] Shadow DOM: 1`] = `
 HTMLCollection [
-  <figure
-    class="c-avatar__root s-xxs"
+  <div
+    class="s-xxs"
+    role="img"
   >
     <slot />
-  </figure>,
+  </div>,
 ]
 `;

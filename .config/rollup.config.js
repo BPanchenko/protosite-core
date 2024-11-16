@@ -31,14 +31,8 @@ export default {
 				const isCssModule =
 					this.getModuleInfo(id)?.attributes.type === 'css'
 				if (isCssModule) {
-					const cName = '.c-' + path.parse(id).name
-					const hostRegExp = new RegExp(
-						`(:root|${cName})([\\s,{]+)`,
-						'g',
-					)
-
 					const adaptedCode = code
-						.replace(hostRegExp, ':host$2')
+						.replaceAll(':root', ':host')
 						.replaceAll('\\', '\\\\')
 
 					return `const cssStyleSheet = new CSSStyleSheet();

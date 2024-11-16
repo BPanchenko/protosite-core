@@ -1,13 +1,5 @@
-import transform from 'lodash/transform'
+import { compactObject } from '../../helpers.js'
 import AvatarComponent from '../avatar.js'
-
-const compactObject = (obj) =>
-	transform(
-		obj,
-		(result, value, key) =>
-			typeof value === 'undefined' || (result[key] = value),
-		{},
-	)
 
 describe('[AvatarComponent]', () => {
 	describe('Attributes:', () => {

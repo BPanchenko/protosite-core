@@ -7,22 +7,12 @@ Object.defineProperty(String.prototype, 'capitalize', {
 	enumerable: false,
 })
 
-export function getTag(value) {
-	if (value == null) {
-		return value === undefined ? '[object Undefined]' : '[object Null]'
-	}
-	return toString.call(value)
-}
-
-export function isNumber(value) {
-	return (
-		typeof value === 'number' ||
-		(isObjectLike(value) && getTag(value) === '[object Number]')
+export const compactObject = (obj) => {
+	const result = Array.from(Object.entries(obj)).reduce(
+		(acc, [key, value]) => (value ? (acc[key] = value) && acc : acc),
+		{},
 	)
-}
-
-export function isObjectLike(value) {
-	return typeof value === 'object' && value !== null
+	return result
 }
 
 export function createElement(tagName, attrs = {}) {
@@ -50,6 +40,24 @@ export function createGridObject(step = 10) {
 	fragment.appendChild(grid)
 
 	return fragment
+}
+
+export function getTag(value) {
+	if (value == null) {
+		return value === undefined ? '[object Undefined]' : '[object Null]'
+	}
+	return toString.call(value)
+}
+
+export function isNumber(value) {
+	return (
+		typeof value === 'number' ||
+		(isObjectLike(value) && getTag(value) === '[object Number]')
+	)
+}
+
+export function isObjectLike(value) {
+	return typeof value === 'object' && value !== null
 }
 
 export function selectNode(node) {

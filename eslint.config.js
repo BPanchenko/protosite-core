@@ -14,9 +14,17 @@ import globals from 'globals'
 import jestConfig from './.config/jest-unit.cjs'
 import mapValues from 'lodash/mapValues.js'
 
+import html from '@html-eslint/eslint-plugin'
+import htmlParser from '@html-eslint/parser'
+
 export default [
 	{
-		ignores: ['assets/*', '!assets/__tests__/', 'node_modules/'],
+		ignores: [
+			'assets/*',
+			'!assets/__tests__/',
+			'src/components/field.js',
+			'node_modules/',
+		],
 	},
 	json.configs['recommended-with-comments'],
 	js.configs.recommended,
@@ -140,6 +148,27 @@ export default [
 					ignorePropertySort: false,
 					propertySyntaxSortOrder: ['single', 'multiple', 'none'],
 				},
+			],
+		},
+	},
+	{
+		...html.configs['flat/recommended'],
+		files: ['**/*.html'],
+		plugins: {
+			'@html-eslint': html,
+		},
+		languageOptions: {
+			parser: htmlParser,
+		},
+		rules: {
+			...html.configs['flat/recommended'].rules, // Must be defined. If not, all recommended rules will be lost
+			'@html-eslint/indent': ['error', 'tab'],
+			'@html-eslint/require-img-alt': 0,
+			'@html-eslint/no-multiple-h1': 0,
+			'@html-eslint/require-title': 0,
+			'@html-eslint/element-newline': [
+				'error',
+				{ skip: ['code', 'link', 'pre'] },
 			],
 		},
 	},

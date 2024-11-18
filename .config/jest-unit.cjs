@@ -29,7 +29,12 @@ module.exports = {
 		printBasicPrototype: true,
 		printFunctionName: true,
 	},
-	testEnvironment: 'jsdom',
+	testEnvironment: '@happy-dom/jest-environment', // happy-dom, jsdom
+	testEnvironmentOptions: {
+		url: "http://localhost:53000",
+		width: 1920,
+		height: 1080,
+	},
 	testMatch: ['**/__specs__/**/*.spec.js'],
 	transform: {
 		'\\.m?js$': 'babel-jest',

@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ru">
+	<head>
+		<title>[TEST FORM OBJECT] Select Field Form ⁕ Protosite Core</title>
+		<link
+			href="http://assets.protosite.rocks/fonts/iconic/stylesheet.css"
+			rel="stylesheet"
+			type="text/css"
+		>
+		<link
+			href="http://assets.protosite.rocks/uikit/document.css"
+			rel="stylesheet"
+			type="text/css"
+		>
+		<link
+			href="http://assets.protosite.rocks/uikit/utilities.css"
+			rel="stylesheet"
+			type="text/css"
+		>
+		<link
+			href="http://assets.protosite.rocks/uikit/component/panel.css"
+			rel="stylesheet"
+			type="text/css"
+		>
+		
+		<script src="../select-field-component.mjs" type="module"></script>
+	</head>
+	<body class="t-document">
+		<main class="u-container" data-testid="container">
+			<section class="c-panel">
+				<c-select-field>
+					<div role="option" data-value="hex">в формате HEX</div>
+					<div role="option" data-value="rgb">в формате RGB</div>
+					<div role="option" data-value="css-var">как переменную CSS</div>
+					<div role="option" data-value="js-const">как константу JS</div>
+				</c-select-field>
+			</section>
+			<section class="c-panel"></section>
+		</main>
+		<template id="tpl-select-field">
+			<input
+				id="value"
+				type="hidden"
+				name="clr-copy-format"
+				part="input"
+			>
+			<div
+				aria-expanded="true"
+				aria-controls="listbox"
+				id="button"
+				part="button"
+				role="button"
+			>
+				<span aria-label="Копировать цвет" part="selected-option" part="selected-option">
+					как переменную CSS
+				</span>
+			</div>
+			<slot name="listbox">
+				<!--
+					Both aria-selected and aria-checked are valid for option.
+					Some user interfaces indicate selection with aria-selected in single-select list boxes and with aria-checked in multi-select list boxes.
+				-->
+				<div
+					aria-labelledby="button"
+					aria-multiselectable="false"
+					id="listbox"
+					role="listbox"
+					part="listbox"
+				>
+					<slot>
+						<div role="option" data-value="hex">в формате HEX</div>
+						<div role="option" data-value="rgb">в формате RGB</div>
+						<div
+							aria-selected="true"
+							role="option"
+							data-value="css-var"
+						>как переменную CSS</div>
+						<div role="option" data-value="js-const">как константу JS</div>
+					</slot>
+				</div>
+			</slot>
+		</template>
+	</body>
+</html>

@@ -6,7 +6,7 @@ import terser from '@rollup/plugin-terser'
 import path from 'node:path'
 
 export default {
-	input: getFilesByPattern(`src/components/{arrow,avatar}.js`),
+	input: getFilesByPattern(`src/components/{arrow,avatar,select-field}.js`),
 	output: {
 		entryFileNames: '[name]-component.mjs',
 		sourcemap: false,

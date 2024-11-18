@@ -33,7 +33,7 @@ module.exports = {
 	testEnvironmentOptions: {
 		url: "http://localhost:53000",
 		width: 1920,
-		height: 1080,
+		height: 1200,
 	},
 	testMatch: ['**/__specs__/**/*.spec.js'],
 	transform: {

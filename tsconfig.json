@@ -1,13 +1,14 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "noImplicitAny": false,
     "noEmitOnError": true,
+    "noImplicitAny": false,
+    "outDir": "assets",
     "removeComments": false,
     "sourceMap": true,
-    "target": "ES6",
-    "outDir": "assets"
+    "target": "ES6"
   },
+  "exclude": ["node_modules", "assets"],
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "assets"]
+  "moduleResolution": "nodenext"
 }

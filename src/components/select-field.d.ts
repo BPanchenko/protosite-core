@@ -1,5 +1,5 @@
 declare namespace SelectField {
-	type Attributes = {
+	type Attributes = Partial<{
 		expanded: boolean
 		font: string
 		glyph: string
@@ -11,5 +11,5 @@ declare namespace SelectField {
 		 * [UIKit Reference](http://protosite.rocks/components/select-field.html)
 		 */
 		size: 'sm' | 'md' | 'lg'
-	}
+	}>
 }

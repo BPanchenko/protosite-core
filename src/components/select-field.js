@@ -1,11 +1,13 @@
-/// <reference path="./arrow.d.ts" />
+/// <reference path="./select-field.d.ts" />
 
 import { cSelectField } from '#uikit/component/select-field'
 
-// const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
+import { TemplateInstance } from '@github/template-parts'
+
+const tpl = new TemplateInstance(document.getElementById('tpl-select-field'))
+const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
 
 const tagName = cSelectField
-const shadowHTML = ``
 
 /**
  * @typedef {object} State
@@ -14,39 +16,65 @@ const shadowHTML = ``
  * @property {Style | Style[]} style
  * */
 
-/** @implements {SelectField.ElementInternals} */
-
 class SelectField extends HTMLElement {
+	/** @type {ShadowRoot} */
+	#shadow_
+
 	/** @type {ElementInternals} */
 	#internals_
-
-	/** @type {ElementInternals} */
-	#state_
 
 	static formAssociated = true
 
 	constructor() {
 		super()
 		this.#internals_ = this.attachInternals()
+		this.ariaActivedescendant = true
+		this.ariaExpanded = true
+		this.#internals_.ariaExpanded = true
 		this.#internals_.states.add('expanded')
+		this.#shadow_ = this.attachShadow({ mode: shadowMode })
 		// this.#internals_.ariaChecked = true
 		// this.#internals_.ariaSelected = true
-
-		console.log(this.#internals_, this.#internals_.states)
+		this.#internals_.ariaActivedescendant = true
 	}
 
 	connectedCallback() {
-
+		this.#shadow_.appendChild(tpl.cloneNode(true))
 	}
 
-	selectOption(idx) {}
+	selectOption(idx) {
+		this.options[idx].ariaSelected = true
+		this.options[idx].ariaChecked = true
+	}
+
+	$byID(elId) {
+		return this.#shadow_.getElementById(elId)
+	}
+
+	get listbox() {
+		return this.#shadow_.querySelector('[role=listbox]')
+	}
+
+	get button() {
+		return this.#shadow_.querySelector('[role=button]')
+	}
 
 	get internals() {
 		return this.#internals_
 	}
 
-	get state() {
-		return this.#state_
+	get options() {
+		return this.#shadow_.querySelectorAll('[role=option]')
+	}
+
+	/** @type {(state: null || 'collapsed' | 'expanded')) => state} */
+	toggle(state = null) {
+		this.#internals_.ariaExpanded =
+			state === 'expanded' || !this.#internals_.ariaExpanded
+	}
+
+	static OnClick(event, $anchor) {
+		console.log('[EVENT]:', event, $anchor)
 	}
 }
 

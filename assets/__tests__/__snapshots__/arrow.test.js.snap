@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ArrowComponent Page Markup 1`] = `
-"<!DOCTYPE html><html><head>
+"<!DOCTYPE html><html lang="ru"><head>
 		<title>[TEST] Arrow Component ⁕ Protosite Core</title>
 		<link href="http://assets.protosite.rocks/fonts/iconic/stylesheet.css" rel="stylesheet" type="text/css">
 		<link href="http://assets.protosite.rocks/uikit/document.css" rel="stylesheet" type="text/css">
@@ -26,18 +26,25 @@ exports[`ArrowComponent Page Markup 1`] = `
 			</section>
 			<section class="c-panel">
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="xxs"></c-arrow>
+
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique"></c-arrow>
+
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="xs"></c-arrow>
+
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="sm"></c-arrow>
+
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="md"></c-arrow>
+
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="lg"></c-arrow>
+
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="xl"></c-arrow>
+
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="xxl"></c-arrow>
 			</section>

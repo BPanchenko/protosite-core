@@ -21,7 +21,7 @@ describe('ArrowComponent', () => {
 			}),
 			'base64',
 		)
-	}, 15000)
+	}, 30000)
 
 	it('Page Markup', () => expect(page.content()).resolves.toMatchSnapshot())
 

@@ -29,9 +29,9 @@ module.exports = {
 		printBasicPrototype: true,
 		printFunctionName: true,
 	},
-	testEnvironment: '@happy-dom/jest-environment', // happy-dom, jsdom
+	testEnvironment: 'jsdom', // @happy-dom/jest-environment, jsdom
 	testEnvironmentOptions: {
-		url: "http://localhost:53000",
+		url: 'http://localhost:53000',
 		width: 1920,
 		height: 1200,
 	},

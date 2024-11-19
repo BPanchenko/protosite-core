@@ -1,6 +1,6 @@
 /// <reference path="./select-field.d.ts" />
 
-import { cSelectField } from '#uikit/component/select-field'
+import cssStyleSheet, { cSelectField } from '#uikit/component/select-field'
 
 import { TemplateInstance } from '@github/template-parts'
 
@@ -27,19 +27,15 @@ class SelectField extends HTMLElement {
 
 	constructor() {
 		super()
+		this.setAttribute('exportparts', 'button, listbox, value')
 		this.#internals_ = this.attachInternals()
-		this.ariaActivedescendant = true
-		this.ariaExpanded = true
-		this.#internals_.ariaExpanded = true
-		this.#internals_.states.add('expanded')
 		this.#shadow_ = this.attachShadow({ mode: shadowMode })
-		// this.#internals_.ariaChecked = true
-		// this.#internals_.ariaSelected = true
-		this.#internals_.ariaActivedescendant = true
+		this.#shadow_.appendChild(tpl.cloneNode(true))
 	}
 
 	connectedCallback() {
-		this.#shadow_.appendChild(tpl.cloneNode(true))
+		this.#shadow_.adoptedStyleSheets.push(cssStyleSheet)
+		this.toggle(false)
 	}
 
 	selectOption(idx) {
@@ -59,10 +55,6 @@ class SelectField extends HTMLElement {
 		return this.#shadow_.querySelector('[role=button]')
 	}
 
-	get internals() {
-		return this.#internals_
-	}
-
 	get options() {
 		return this.#shadow_.querySelectorAll('[role=option]')
 	}
@@ -71,8 +63,19 @@ class SelectField extends HTMLElement {
 	toggle(state = null) {
 		this.#internals_.ariaExpanded =
 			state === 'expanded' || !this.#internals_.ariaExpanded
+
+		if (this.#internals_.ariaExpanded) {
+			this.#internals_.states.delete('collapsed')
+			this.#internals_.states.add('expanded')
+		} else {
+			this.#internals_.states.delete('expanded')
+			this.#internals_.states.add('collapsed')
+		}
 	}
 
+	onFocus(event, $anchor) {
+		console.log('[EVENT]:', event, $anchor)
+	}
 	static OnClick(event, $anchor) {
 		console.log('[EVENT]:', event, $anchor)
 	}

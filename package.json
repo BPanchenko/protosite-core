@@ -1,6 +1,6 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.5.22",
+  "version": "1.6.22",
   "description": "Web Application Core. It сontains a library of Web Components.",
   "homepage": "http://protosite.rocks",
   "type": "module",
@@ -28,7 +28,7 @@
   },
   "scripts": {
     "build": "node ./.kernel/builder",
-    "debug": "node ./.kernel/server.cjs",
+    "debug": "node --watch ./.kernel/watcher.js && node ./.kernel/server.cjs",
     "lint": "eslint . --fix",
     "test:e2e": "jest --config=.config/jest-e2e.cjs",
     "test:unit": "jest --config=.config/jest-unit.cjs --watch",
@@ -83,7 +83,8 @@
     "puppeteer-core": "23.9.0",
     "rollup": "4.27.4",
     "setimmediate": "1.0.5",
-    "typescript": "5.7.2"
+    "typescript": "5.7.2",
+    "watcher": "2.3.1"
   },
   "author": {
     "name": "Boris Panchenko",

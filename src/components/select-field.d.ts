@@ -1,9 +1,9 @@
+declare module "@bpanchenko/core/select-field"
+
 declare namespace SelectField {
 	type Attributes = Partial<{
-		expanded: boolean
-		font: string
-		glyph: string
-		code: string
+		expanded: 'true' | 'on' | 'false' | 'off'
+		label: string
 
 		/**
 		 * Resizes the component. The default size is defined in UIKit.

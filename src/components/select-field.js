@@ -25,12 +25,35 @@ class SelectField extends HTMLElement {
 
 	static formAssociated = true
 
-	constructor() {
+	/** @type Array<SelectField.Attributes> */
+	static observedAttributes = ['expanded', 'label', 'name', 'size']
+
+	/** @param {SelectField.Attributes} [attributes] */
+	constructor(attributes = {}) {
 		super()
 		this.setAttribute('exportparts', 'button, listbox, value')
+		this.#applyAttributes(attributes)
 		this.#internals_ = this.attachInternals()
 		this.#shadow_ = this.attachShadow({ mode: shadowMode })
 		this.#shadow_.appendChild(tpl.cloneNode(true))
+	}
+
+	attributeChangedCallback(name, previous, current) {
+		if (this.isConnected === false) return
+
+		switch (name) {
+			case 'expanded':
+				this.$button.ariaExpanded = current
+				break
+			case 'name':
+				this.$input.setAttribute('name', current)
+				break
+			case 'label':
+				this.$label.ariaLabel = current
+				break
+			default:
+				this.#internals_ = this.attachInternals()
+		}
 	}
 
 	connectedCallback() {
@@ -47,16 +70,63 @@ class SelectField extends HTMLElement {
 		return this.#shadow_.getElementById(elId)
 	}
 
-	get listbox() {
+	/**
+	 * @type {HTMLInputElement}
+	 *
+	 * Resizes the component. The default size is defined in UIKit.
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Functions/get)
+	 */
+	get $input() {
+		return this.#shadow_.querySelector('[role=value]')
+	}
+
+	get $label() {
+		return this.#shadow_.querySelector('[role=label]')
+	}
+
+	get $listbox() {
 		return this.#shadow_.querySelector('[role=listbox]')
 	}
 
-	get button() {
+	get $button() {
 		return this.#shadow_.querySelector('[role=button]')
 	}
 
-	get options() {
+	get $options() {
 		return this.#shadow_.querySelectorAll('[role=option]')
+	}
+
+	/** @param {Array<string>} selector */
+	/*
+
+	$options(selector) {
+		return this.#shadow_.querySelectorAll('[role=option]')
+	}
+	*/
+
+	get value() {
+		const result = this.$input.value
+		this.setAttribute('value', result)
+		return result
+	}
+
+	#applyAttributes(attrs = {}) {
+		const valid = SelectField.observedAttributes
+		const pairs = Object.entries(attrs)
+		const badly = pairs.filter(([attr]) => valid.includes(attr) === false)
+		const goodly = pairs.filter(([attr]) => valid.includes(attr))
+
+		if (badly.length > 0)
+			console.warn(
+				`Unsupported attributes: "${badly.map(([key]) => key).join(', ')}"`,
+			)
+
+		goodly.forEach(([key, value]) => this.setAttribute(key, value))
+	}
+
+	set exportparts(value) {
+		throw new Error(`Don't Change! ${value.toString()}`)
 	}
 
 	/** @type {(state: null || 'collapsed' | 'expanded')) => state} */
@@ -73,11 +143,15 @@ class SelectField extends HTMLElement {
 		}
 	}
 
-	onFocus(event, $anchor) {
-		console.log('[EVENT]:', event, $anchor)
+	static onFocus(ctx, event) {
+		console.log('[EVENT]:', event, ctx)
 	}
-	static OnClick(event, $anchor) {
-		console.log('[EVENT]:', event, $anchor)
+	static OnClick(ctx, event) {
+		console.log('[EVENT]:', event, ctx)
+	}
+
+	static onKeyUp(ctx, event) {
+		console.log('[EVENT]:', event, ctx)
 	}
 }
 

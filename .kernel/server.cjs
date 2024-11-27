@@ -1,9 +1,10 @@
-const express = require('express')
 const { info } = require('./logger.cjs')
+const { root } = require('./lib.cjs')
+const childProcess = require('node:child_process')
+const express = require('express')
 const nocache = require('nocache')
 const path = require('node:path')
 const portScanner = require('portscanner')
-const { root } = require('./lib.cjs')
 
 const launchServer = async () =>
 	new Promise((resolve) => {
@@ -20,11 +21,12 @@ const launchServer = async () =>
 	})
 
 if (require.main === module) {
-	launchServer().then(({ BASE_DIR, BASE_URL }) =>
+	launchServer().then(({ BASE_DIR, BASE_URL }) => {
 		info(
 			`Server started at ${BASE_URL} and serves the directory ${BASE_DIR}`,
-		),
-	)
+		)
+		childProcess.exec(`start chrome ${BASE_URL}/__tests__`)
+	})
 } else {
 	module.exports = {
 		launchServer,

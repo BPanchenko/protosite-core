@@ -24,42 +24,68 @@
 		>
 		
 		<script src="../select-field-component.mjs" type="module"></script>
+		<style>
+			.u-grid {
+				display: grid;
+				row-gap: var(--space-md);
+				column-gap: var(--space-xl);
+				grid-template-columns: auto auto;
+				grid-template-rows: minmax(10rem, 10dvh);
+				justify-content: space-around;
+			}
+		</style>
 	</head>
 	<body class="t-document">
 		<main class="u-container" data-testid="container">
 			<section class="c-panel">
-				<c-select-field name="clr-copy-format">
-					<div role="option" data-value="hex">в формате HEX</div>
-					<div role="option" data-value="rgb">в формате RGB</div>
-					<div role="option" data-value="css-var">как переменную CSS</div>
-					<div role="option" data-value="js-const">как константу JS</div>
-				</c-select-field>
+				<div class="u-grid">
+					
+					<c-select-field
+						label="Дата:"
+						placeholder="Выберите дату встречи"
+						name="date"
+					>
+						<div role="grid" slot="dataset">
+							<input type="date" атрибуты>
+						</div>
+					</c-select-field>
+
+					<c-select-field label="Копировать цвет" name="clr-copy-format">
+						<div role="option" data-value="hex">в формате HEX</div>
+						<div role="option" data-value="rgb">в формате RGB</div>
+						<div role="option" data-value="css-var">как переменную CSS</div>
+						<div role="option" data-value="js-const">как константу JS</div>
+					</c-select-field>
+
+				</div>
 			</section>
-			<section class="c-panel"></section>
 		</main>
 		<template id="tpl-select-field">
 			<input
 				id="value"
 				type="hidden"
 				name="clr-copy-format"
+				role="input"
 				part="value"
 			>
 			<div
 				aria-activedescendant=""
 				aria-controls="listbox"
-				id="button"
 				part="button"
 				role="button"
 			>
-				<span aria-label="" part="selected-option"></span>
+				<span
+					aria-label=""
+					part="label"
+					role="label"
+				></span>
 			</div>
-			<slot name="listbox">
+			<slot name="dataset">
 				<div
-					aria-labelledby="button"
-					aria-multiselectable="false"
-					id="listbox"
+					aria-labelledby="??[role=button].id??"
+					aria-multiselectable="off"
 					role="listbox"
-					part="listbox"
+					part="dataset"
 				>
 					<slot></slot>
 				</div>

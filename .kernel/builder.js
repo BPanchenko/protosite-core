@@ -4,7 +4,7 @@ import * as makeDir from 'make-dir'
 import { rollup } from 'rollup'
 
 import config from '../.config/rollup.config.js'
-import logger from './logger.cjs'
+import { logger } from './logger.cjs'
 
 const root = process.cwd()
 const dist = path.join(root, 'assets')
@@ -14,7 +14,7 @@ makeDir.sync(dist)
 build()
 
 async function build() {
-	logger.log('Start building Web Components')
+	logger.info('Start building Web Components')
 	let bundle
 	let buildFailed = false
 	try {

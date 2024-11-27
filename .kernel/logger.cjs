@@ -11,28 +11,43 @@ const start = process.hrtime()
 
 logger.setDate(() => dateFormat('hh:mm:ss.SSS', new Date()))
 
-const log = (...args) => {
-	args.forEach((arg, ind, args) => {
-		if (typeof arg === 'object') {
-			args[ind] = util.inspect(arg, inspectOptions)
-		} else if (typeof arg === 'string' && arg.includes(root)) {
-			args[ind] = '`' + arg.replace(root, '') + '`'
+const debug = (...args) => {
+	let curriedLogger = _.curry(logger.debug.bind(logger), args.length)
+	args.forEach((arg) => {
+		let parsed = arg
+		if (_.isArrayLikeObject(arg)) {
+			parsed = util.inspect(Array.from(arg), inspectOptions)
+		} else if (_.isElement(arg)) {
+			parsed = util.inspect(arg, inspectOptions)
+		} else if (_.isObjectLike(arg)) {
+			parsed = util.inspect(arg, inspectOptions)
 		}
+		curriedLogger = curriedLogger(parsed)
 	})
-
-	logger.log(...args)
 }
 
-const logEvent = (name, ...args) => {
+logger.event = (name, ...args) => {
 	logger.bold().color('black').append(`${name}: `).reset()
-	if (name === 'rename') {
-		args.splice(0, 0, 'from')
-		args.splice(2, 0, 'to')
+
+	switch (name) {
+		case 'rename':
+			args.splice(0, 0, 'from')
+			args.splice(2, 0, 'to')
+		default:
+			debug(...args)
 	}
-	logger.write(...args)
 }
 
-const logSavedFile = (file, hrstart = start) => {
+logger.info = (...args) =>
+	logger
+		.color('white')
+		.bgColor('blue')
+		.append('[INFO]')
+		.reset()
+		.color('blue')
+		.log(' ' + args.map((a) => a.toString()).join(' '))
+
+logger.logSavedFile = (file, hrstart = start) => {
 	const hrend = process.hrtime(hrstart)
 	const relative = path.relative(root, file)
 	logger
@@ -45,7 +60,7 @@ const logSavedFile = (file, hrstart = start) => {
 		.log(`in ${roundNanoseconds(hrend[1])} s`)
 }
 
-const logSummaryFiles = (array, hrstart = start) => {
+logger.logSummaryFiles = (array, hrstart = start) => {
 	const hrend = process.hrtime(hrstart)
 	logger
 		.color('green')
@@ -56,45 +71,8 @@ const logSummaryFiles = (array, hrstart = start) => {
 		)
 }
 
-const debug = (...args) => {
-	let curriedLogger = _.curry(logger.debug.bind(logger), args.length)
-	args.forEach((arg) => {
-		let parsed = arg
-		if (_.isArrayLikeObject(arg)) {
-			parsed = util.inspect(Array.from(arg), inspectOptions)
-		} else if (_.isElement(arg)) {
-			parsed = util.inspect(arg, inspectOptions)
-		} else if (_.isObjectLike(arg)) {
-			parsed = util.inspect(arg, inspectOptions)
-		}
-		return (curriedLogger = curriedLogger(parsed))
-	})
-}
-const error = (...args) => {
-	logger.error(...args)
-	process.exit(3)
-}
-const info = (...args) =>
-	logger
-		.color('white')
-		.bgColor('blue')
-		.append('[INFO]')
-		.reset()
-		.color('blue')
-		.log(' ' + args.map((a) => a.toString()).join(' '))
-
-const success = (...args) => logger.success(...args)
-
-const warn = (...args) => logger.warn(...args)
-
 module.exports = {
-	log,
-	logEvent,
-	logSavedFile,
-	logSummaryFiles,
+	default: logger,
+	logger,
 	debug,
-	error,
-	info,
-	success,
-	warn,
 }

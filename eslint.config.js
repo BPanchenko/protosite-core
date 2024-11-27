@@ -80,6 +80,7 @@ export default [
 					allow: ['assert', 'warn'],
 				},
 			],
+			'no-fallthrough': 0,
 			'no-duplicate-imports': [
 				1,
 				{

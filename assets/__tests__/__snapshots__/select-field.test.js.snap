@@ -9,31 +9,62 @@ exports[`SelectField Page Markup 1`] = `
 		<link href="http://assets.protosite.rocks/uikit/component/panel.css" rel="stylesheet" type="text/css">
 		
 		<script src="../select-field-component.mjs" type="module"></script>
+		<style>
+			.u-grid {
+				display: grid;
+				grid-template-columns: auto auto;
+				gap: 8vmin;
+				justify-content: space-around;
+				align-items: center;
+			}
+
+			.c-panel:first-of-type .u-grid {
+				block-size: 22dvh;
+				margin-block-end: 8dvh;
+			}
+		</style>
 	</head>
 	<body class="t-document">
 		<main class="u-container" data-testid="container">
-			<section class="c-panel">
-				<c-select-field name="clr-copy-format" aria-expanded="true">
-					<div role="option" data-value="hex">в формате HEX</div>
-					<div role="option" data-value="rgb">в формате RGB</div>
-					<div role="option" data-value="css-var">как переменную CSS</div>
-					<div role="option" data-value="js-const">как константу JS</div>
-				</c-select-field>
+			<section class="c-panel s-clean">
+				<div class="u-grid">
+					<c-select-field name="clr-copy-format" status-label="Копировать цвет" exportparts="button, listbox, value">
+						<div role="option" data-value="hex">в формате HEX</div>
+						<div role="option" data-value="rgb">в формате RGB</div>
+						<div role="option" data-value="css-var">как переменную CSS</div>
+						<div role="option" data-value="js-const">как константу JS</div>
+					</c-select-field>
+					<div>
+						<label for="ice-cream-choice">Choose a flavor:</label>
+						<input list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice">
+						<datalist id="ice-cream-flavors">
+							<option value="Chocolate"></option>
+							<option value="Coconut"></option>
+							<option value="Mint"></option>
+							<option value="Strawberry"></option>
+							<option value="Vanilla"></option>
+						</datalist>
+					</div>
+				</div>
 			</section>
-			<section class="c-panel"></section>
+			<section class="c-panel">
+				<div class="u-grid">
+					<c-select-field name="clr-copy-format" status-label="Копировать цвет" exportparts="button, listbox, value">
+						<div role="option" data-value="hex">в формате HEX</div>
+						<div role="option" data-value="rgb">в формате RGB</div>
+						<div role="option" data-value="css-var">как переменную CSS</div>
+						<div role="option" data-value="js-const">как константу JS</div>
+					</c-select-field>
+				</div>
+			</section>
 		</main>
 		<template id="tpl-select-field">
-			<link rel="stylesheet" href="http://assets.protosite.rocks/uikit/component/select-field.css" type="text/css">
-			<input id="value" type="hidden" name="clr-copy-format" part="value">
-			<div aria-activedescendant="" aria-controls="listbox" id="button" part="button" role="button">
-				<span aria-label="" part="selected-option"></span>
+			<input type="hidden" name="clr-copy-format">
+			<div aria-activedescendant="" aria-controls="listbox" part="button" role="button">
+				<div aria-label="" part="status" role="status"></div>
 			</div>
 			<slot name="listbox">
-				<!--
-					Both aria-selected and aria-checked are valid for option.
-					Some user interfaces indicate selection with aria-selected in single-select list boxes and with aria-checked in multi-select list boxes.
-				-->
-				<div aria-labelledby="button" aria-multiselectable="false" id="listbox" role="listbox" part="listbox">
+				<div aria-labelledby="??[role=button].id??" aria-multiselectable="off" role="listbox" part="listbox">
 					<slot></slot>
 				</div>
 			</slot>

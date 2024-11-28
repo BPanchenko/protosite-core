@@ -18,9 +18,9 @@ function e(e) {
   var r = [];
   for (var _t = 0; _t < s; _t += 1) {
     var _s = e[_t],
-      _l = e[_t + 1],
-      _o = e[_t - 1];
-    "{" === _s && "{" === _l && "\\" !== _o ? (i += 1, 1 === i && (a = _t), _t += 1) : "}" === _s && "}" === _l && "\\" !== _o && i && (i -= 1, 0 === i && (a > n && (r.push(Object.freeze({
+      _o = e[_t + 1],
+      _l = e[_t - 1];
+    "{" === _s && "{" === _o && "\\" !== _l ? (i += 1, 1 === i && (a = _t), _t += 1) : "}" === _s && "}" === _o && "\\" !== _l && i && (i -= 1, 0 === i && (a > n && (r.push(Object.freeze({
       type: "string",
       start: n,
       end: a,
@@ -127,13 +127,13 @@ var i = (r = function r(t, e) {
   }
 });
 var r;
-var l = new WeakMap(),
-  o = new WeakMap();
+var o = new WeakMap(),
+  l = new WeakMap();
 class TemplateInstance extends (globalThis.DocumentFragment || EventTarget) {
   constructor(t, s) {
     var n = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : i;
     var a, r;
-    super(), Object.getPrototypeOf(this) !== TemplateInstance.prototype && Object.setPrototypeOf(this, TemplateInstance.prototype), this.appendChild(t.content.cloneNode(!0)), o.set(this, Array.from(function* (t) {
+    super(), Object.getPrototypeOf(this) !== TemplateInstance.prototype && Object.setPrototypeOf(this, TemplateInstance.prototype), this.appendChild(t.content.cloneNode(!0)), l.set(this, Array.from(function* (t) {
       var s = t.ownerDocument.createTreeWalker(t, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null);
       var n;
       for (; n = s.nextNode();) if (n instanceof Element && n.hasAttributes()) for (var _t5 = 0; _t5 < n.attributes.length; _t5 += 1) {
@@ -153,10 +153,10 @@ class TemplateInstance extends (globalThis.DocumentFragment || EventTarget) {
           break;
         }
       }
-    }(this))), l.set(this, n), null === (r = (a = l.get(this)).createCallback) || void 0 === r || r.call(a, this, o.get(this), s), l.get(this).processCallback(this, o.get(this), s);
+    }(this))), o.set(this, n), null === (r = (a = o.get(this)).createCallback) || void 0 === r || r.call(a, this, l.get(this), s), o.get(this).processCallback(this, l.get(this), s);
   }
   update(t) {
-    l.get(this).processCallback(this, o.get(this), t);
+    o.get(this).processCallback(this, l.get(this), t);
   }
 }
 var c = new TemplateInstance(document.getElementById("tpl-select-field")),
@@ -187,7 +187,7 @@ class SelectField extends HTMLElement {
     }
   }
   connectedCallback() {
-    this.toggle(!1);
+    this.$button.addEventListener("click", () => this.toggle());
   }
   selectOption(t) {
     this.options[t].ariaSelected = !0, this.options[t].ariaChecked = !0;
@@ -217,9 +217,12 @@ class SelectField extends HTMLElement {
   set exportparts(t) {
     throw new Error("Don't Change! ".concat(t.toString()));
   }
-  toggle() {
-    var t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    _classPrivateFieldGet(_e4, this).ariaExpanded = "expanded" === t || !_classPrivateFieldGet(_e4, this).ariaExpanded, _classPrivateFieldGet(_e4, this).ariaExpanded ? (_classPrivateFieldGet(_e4, this).states.delete("collapsed"), _classPrivateFieldGet(_e4, this).states.add("expanded")) : (_classPrivateFieldGet(_e4, this).states.delete("expanded"), _classPrivateFieldGet(_e4, this).states.add("collapsed"));
+  toggle(t) {
+    var {
+        states: e
+      } = _classPrivateFieldGet(_e4, this),
+      s = "expanded" === t || !1 === e.has("expanded");
+    return s ? (e.add("expanded"), e.delete("collapsed")) : (e.add("collapsed"), e.delete("expanded")), this.$button.ariaExpanded = s, s ? "expanded" : "collapsed";
   }
   static onFocus(t, e) {
     console.log("[EVENT]:", e, t);
@@ -252,8 +255,8 @@ function _s4() {
     return this.setAttribute(t, e);
   });
 }
-_defineProperty(SelectField, "formAssociated", !0);
-_defineProperty(SelectField, "observedAttributes", ["expanded", "status-label", "name", "size"]);
+_defineProperty(SelectField, "formAssociated", !1);
+_defineProperty(SelectField, "observedAttributes", ["aria-expanded", "status-label", "name", "size"]);
 customElements.define(u, SelectField);
 var h = customElements.get(u);
 export { h as default };

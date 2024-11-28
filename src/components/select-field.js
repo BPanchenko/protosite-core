@@ -7,12 +7,7 @@ const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
 
 const tagName = 'c-select-field'
 
-/**
- * @typedef {object} State
- * @property {Direction | Direction[]} direction
- * @property {Figure | Figure[]} figure
- * @property {Style | Style[]} style
- * */
+/** @typedef {'collapsed' | 'expanded'} ListBoxState */
 
 class SelectField extends HTMLElement {
 	/** @type {ShadowRoot} */
@@ -21,10 +16,15 @@ class SelectField extends HTMLElement {
 	/** @type {ElementInternals} */
 	#internals_
 
-	static formAssociated = true
+	static formAssociated = false
 
 	/** @type Array<SelectField.Attributes> */
-	static observedAttributes = ['expanded', 'status-label', 'name', 'size']
+	static observedAttributes = [
+		'aria-expanded',
+		'status-label',
+		'name',
+		'size',
+	]
 
 	/** @param {SelectField.Attributes} [attributes] */
 	constructor(attributes = {}) {
@@ -55,7 +55,7 @@ class SelectField extends HTMLElement {
 	}
 
 	connectedCallback() {
-		this.toggle(false)
+		this.$button.addEventListener('click', () => this.toggle())
 	}
 
 	selectOption(idx) {
@@ -126,18 +126,25 @@ class SelectField extends HTMLElement {
 		throw new Error(`Don't Change! ${value.toString()}`)
 	}
 
-	/** @type {(state: null || 'collapsed' | 'expanded')) => state} */
-	toggle(state = null) {
-		this.#internals_.ariaExpanded =
-			state === 'expanded' || !this.#internals_.ariaExpanded
+	/**
+	 * @param {ListBoxState}  [state] - New value of state
+	 * @returns {ListBoxState} Current state after call
+	 */
+	toggle(state) {
+		const { states } = this.#internals_
+		const expanded =
+			state === 'expanded' || states.has('expanded') === false
 
-		if (this.#internals_.ariaExpanded) {
-			this.#internals_.states.delete('collapsed')
-			this.#internals_.states.add('expanded')
+		if (expanded) {
+			states.add('expanded')
+			states.delete('collapsed')
 		} else {
-			this.#internals_.states.delete('expanded')
-			this.#internals_.states.add('collapsed')
+			states.add('collapsed')
+			states.delete('expanded')
 		}
+
+		this.$button.ariaExpanded = expanded
+		return expanded ? 'expanded' : 'collapsed'
 	}
 
 	static onFocus(ctx, event) {

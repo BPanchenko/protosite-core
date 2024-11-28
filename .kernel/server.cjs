@@ -1,4 +1,4 @@
-const { info } = require('./logger.cjs')
+const { logger } = require('./logger.cjs')
 const { root } = require('./lib.cjs')
 const childProcess = require('node:child_process')
 const express = require('express')
@@ -22,7 +22,7 @@ const launchServer = async () =>
 
 if (require.main === module) {
 	launchServer().then(({ BASE_DIR, BASE_URL }) => {
-		info(
+		logger.info(
 			`Server started at ${BASE_URL} and serves the directory ${BASE_DIR}`,
 		)
 		childProcess.exec(`start chrome ${BASE_URL}/__tests__`)

@@ -1,13 +1,13 @@
 /// <reference path="./select-field.d.ts" />
 
-import cssStyleSheet, { cSelectField } from '#uikit/component/select-field'
+import cssStyleSheet from '#uikit/component/select-field'
 
 import { TemplateInstance } from '@github/template-parts'
 
 const tpl = new TemplateInstance(document.getElementById('tpl-select-field'))
 const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
 
-const tagName = cSelectField
+const tagName = 'c-select-field'
 
 /**
  * @typedef {object} State
@@ -26,7 +26,7 @@ class SelectField extends HTMLElement {
 	static formAssociated = true
 
 	/** @type Array<SelectField.Attributes> */
-	static observedAttributes = ['expanded', 'label', 'name', 'size']
+	static observedAttributes = ['expanded', 'status-label', 'name', 'size']
 
 	/** @param {SelectField.Attributes} [attributes] */
 	constructor(attributes = {}) {
@@ -48,8 +48,8 @@ class SelectField extends HTMLElement {
 			case 'name':
 				this.$input.setAttribute('name', current)
 				break
-			case 'label':
-				this.$label.ariaLabel = current
+			case 'status-label':
+				this.$status.ariaLabel = current
 				break
 			default:
 				this.#internals_ = this.attachInternals()
@@ -70,6 +70,10 @@ class SelectField extends HTMLElement {
 		return this.#shadow_.getElementById(elId)
 	}
 
+	get $button() {
+		return this.#shadow_.querySelector('[role=button]')
+	}
+
 	/**
 	 * @type {HTMLInputElement}
 	 *
@@ -78,23 +82,19 @@ class SelectField extends HTMLElement {
 	 * [MDN Reference](https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Functions/get)
 	 */
 	get $input() {
-		return this.#shadow_.querySelector('[role=value]')
-	}
-
-	get $label() {
-		return this.#shadow_.querySelector('[role=label]')
+		return this.#shadow_.querySelector('input')
 	}
 
 	get $listbox() {
 		return this.#shadow_.querySelector('[role=listbox]')
 	}
 
-	get $button() {
-		return this.#shadow_.querySelector('[role=button]')
-	}
-
 	get $options() {
 		return this.#shadow_.querySelectorAll('[role=option]')
+	}
+
+	get $status() {
+		return this.#shadow_.querySelector('[role=status]')
 	}
 
 	/** @param {Array<string>} selector */
@@ -158,3 +158,7 @@ class SelectField extends HTMLElement {
 customElements.define(tagName, SelectField)
 
 export default customElements.get(tagName)
+
+/**
+ *
+ */

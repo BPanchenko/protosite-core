@@ -27,65 +27,72 @@
 		<style>
 			.u-grid {
 				display: grid;
-				row-gap: var(--space-md);
-				column-gap: var(--space-xl);
 				grid-template-columns: auto auto;
-				grid-template-rows: minmax(10rem, 10dvh);
+				gap: 8vmin;
 				justify-content: space-around;
+				align-items: center;
+			}
+
+			.c-panel:first-of-type .u-grid {
+				block-size: 22dvh;
+				margin-block-end: 8dvh;
 			}
 		</style>
 	</head>
 	<body class="t-document">
 		<main class="u-container" data-testid="container">
-			<section class="c-panel">
+			<section class="c-panel s-clean">
 				<div class="u-grid">
-					
-					<c-select-field
-						label="Дата:"
-						placeholder="Выберите дату встречи"
-						name="date"
-					>
-						<div role="grid" slot="dataset">
-							<input type="date" атрибуты>
-						</div>
-					</c-select-field>
-
-					<c-select-field label="Копировать цвет" name="clr-copy-format">
+					<c-select-field name="clr-copy-format" status-label="Копировать цвет">
 						<div role="option" data-value="hex">в формате HEX</div>
 						<div role="option" data-value="rgb">в формате RGB</div>
 						<div role="option" data-value="css-var">как переменную CSS</div>
 						<div role="option" data-value="js-const">как константу JS</div>
 					</c-select-field>
-
+					<div>
+						<label for="ice-cream-choice">Choose a flavor:</label>
+						<input list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice" />
+						<datalist id="ice-cream-flavors">
+							<option value="Chocolate"></option>
+							<option value="Coconut"></option>
+							<option value="Mint"></option>
+							<option value="Strawberry"></option>
+							<option value="Vanilla"></option>
+						</datalist>
+					</div>
+				</div>
+			</section>
+			<section class="c-panel">
+				<div class="u-grid">
+					<c-select-field name="clr-copy-format" status-label="Копировать цвет">
+						<div role="option" data-value="hex">в формате HEX</div>
+						<div role="option" data-value="rgb">в формате RGB</div>
+						<div role="option" data-value="css-var">как переменную CSS</div>
+						<div role="option" data-value="js-const">как константу JS</div>
+					</c-select-field>
 				</div>
 			</section>
 		</main>
 		<template id="tpl-select-field">
-			<input
-				id="value"
-				type="hidden"
-				name="clr-copy-format"
-				role="input"
-				part="value"
-			>
+			<input type="hidden" name="clr-copy-format">
 			<div
 				aria-activedescendant=""
 				aria-controls="listbox"
 				part="button"
 				role="button"
 			>
-				<span
+				<div
 					aria-label=""
-					part="label"
-					role="label"
-				></span>
+					part="status"
+					role="status"
+				></div>
 			</div>
-			<slot name="dataset">
+			<slot name="listbox">
 				<div
 					aria-labelledby="??[role=button].id??"
 					aria-multiselectable="off"
 					role="listbox"
-					part="dataset"
+					part="listbox"
 				>
 					<slot></slot>
 				</div>

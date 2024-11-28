@@ -1,6 +1,6 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.6.23",
+  "version": "1.6.24",
   "description": "Web Application Core. It сontains a library of Web Components.",
   "homepage": "http://protosite.rocks",
   "type": "module",
@@ -41,7 +41,7 @@
     "@babel/core": "7.26.0",
     "@babel/eslint-parser": "7.25.9",
     "@babel/preset-env": "7.26.0",
-    "@bpanchenko/uikit": "4.29.100",
+    "@bpanchenko/uikit": "4.30.102",
     "@eslint/js": "9.15.0",
     "@github/template-parts": "0.5.4",
     "@html-eslint/eslint-plugin": "0.27.0",

@@ -59,6 +59,7 @@ exports[`SelectField Page Markup 1`] = `
 			</section>
 		</main>
 		<template id="tpl-select-field">
+			<link href="http://assets.protosite.rocks/uikit/component/select-field.css" rel="stylesheet" type="text/css">
 			<input type="hidden" name="clr-copy-format">
 			<div aria-activedescendant="" aria-controls="listbox" part="button" role="button">
 				<div aria-label="" part="status" role="status"></div>

@@ -1,7 +1,5 @@
 /// <reference path="./select-field.d.ts" />
 
-import cssStyleSheet from '#uikit/component/select-field'
-
 import { TemplateInstance } from '@github/template-parts'
 
 const tpl = new TemplateInstance(document.getElementById('tpl-select-field'))
@@ -57,7 +55,6 @@ class SelectField extends HTMLElement {
 	}
 
 	connectedCallback() {
-		this.#shadow_.adoptedStyleSheets.push(cssStyleSheet)
 		this.toggle(false)
 	}
 

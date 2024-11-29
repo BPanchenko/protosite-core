@@ -87,6 +87,7 @@ export default [
 					includeExports: true,
 				},
 			],
+			'no-prototype-builtins': 0,
 			'no-unused-vars': 1,
 			'prettier/prettier': 1,
 			'sort-imports': [

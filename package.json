@@ -9,15 +9,17 @@
   "files": [
     "index.js",
     "@types/*",
+    "assets/*.html",
+    "assets/*.js",
     "assets/*.mjs",
-    "assets/*.js"
+    "src/*"
   ],
   "exports": {
+    "./component/*.js": "./src/components/*.js",
+    "./lib/*.js": "./src/lib/*.js",
     "./select-field": "./assets/select-field.mjs",
     "./avatar": "./assets/avatar-component.mjs",
     "./field": "./assets/field-component.mjs",
-    "./component/*.js": "./src/components/*.js",
-    "./lib/*.js": "./src/lib/*.js",
     "./*.js": "./src/*.js",
     ".": "./index.js"
   },
@@ -31,6 +33,7 @@
     "debug": "run-p server watch",
     "lint": "eslint . --fix",
     "prepublish": "npm run build",
+    "publish": "node ./.kernel/publisher.js",
     "server": "node ./.kernel/server.cjs",
     "test:e2e": "jest --config=.config/jest-e2e.cjs",
     "test:unit": "jest --config=.config/jest-unit.cjs --watch",
@@ -56,6 +59,7 @@
     "babel-cli": "6.26.0",
     "babel-jest": "29.7.0",
     "babel-plugin-transform-import-meta": "2.2.1",
+    "basic-ftp": "5.0.5",
     "construct-style-sheets-polyfill": "3.1.0",
     "date-format": "4.0.14",
     "eslint": "9.15.0",

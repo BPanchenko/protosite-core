@@ -13,21 +13,21 @@ function e(e) {
   if (t.has(e)) return t.get(e);
   var s = e.length;
   var n = 0,
-    a = 0,
-    i = 0;
+    i = 0,
+    a = 0;
   var r = [];
   for (var _t = 0; _t < s; _t += 1) {
     var _s = e[_t],
       _o = e[_t + 1],
       _l = e[_t - 1];
-    "{" === _s && "{" === _o && "\\" !== _l ? (i += 1, 1 === i && (a = _t), _t += 1) : "}" === _s && "}" === _o && "\\" !== _l && i && (i -= 1, 0 === i && (a > n && (r.push(Object.freeze({
+    "{" === _s && "{" === _o && "\\" !== _l ? (a += 1, 1 === a && (i = _t), _t += 1) : "}" === _s && "}" === _o && "\\" !== _l && a && (a -= 1, 0 === a && (i > n && (r.push(Object.freeze({
       type: "string",
       start: n,
-      end: a,
-      value: e.slice(n, a)
-    })), n = a), r.push(Object.freeze({
+      end: i,
+      value: e.slice(n, i)
+    })), n = i), r.push(Object.freeze({
       type: "part",
-      start: a,
+      start: i,
       end: _t + 2,
       value: e.slice(n + 2, _t).trim()
     })), _t += 1, n = _t + 1));
@@ -88,34 +88,34 @@ class AttributeValueSetter {
     }
   }
 }
-var a = new WeakMap();
+var i = new WeakMap();
 class NodeTemplatePart {
   constructor(t, e) {
-    this.expression = e, a.set(this, [t]), t.textContent = "";
+    this.expression = e, i.set(this, [t]), t.textContent = "";
   }
   get value() {
-    return a.get(this).map(t => t.textContent).join("");
+    return i.get(this).map(t => t.textContent).join("");
   }
   set value(t) {
     this.replace(t);
   }
   get previousSibling() {
-    return a.get(this)[0].previousSibling;
+    return i.get(this)[0].previousSibling;
   }
   get nextSibling() {
-    return a.get(this)[a.get(this).length - 1].nextSibling;
+    return i.get(this)[i.get(this).length - 1].nextSibling;
   }
   replace() {
     for (var _len = arguments.length, t = new Array(_len), _key = 0; _key < _len; _key++) {
       t[_key] = arguments[_key];
     }
     var e = t.map(t => "string" == typeof t ? new Text(t) : t);
-    e.length || e.push(new Text("")), a.get(this)[0].before(...e);
-    for (var _t3 of a.get(this)) _t3.remove();
-    a.set(this, e);
+    e.length || e.push(new Text("")), i.get(this)[0].before(...e);
+    for (var _t3 of i.get(this)) _t3.remove();
+    i.set(this, e);
   }
 }
-var i = (r = function r(t, e) {
+var a = (r = function r(t, e) {
   t.value = e instanceof Element ? e : String(e);
 }, {
   processCallback(t, e, s) {
@@ -131,8 +131,8 @@ var o = new WeakMap(),
   l = new WeakMap();
 class TemplateInstance extends (globalThis.DocumentFragment || EventTarget) {
   constructor(t, s) {
-    var n = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : i;
-    var a, r;
+    var n = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : a;
+    var i, r;
     super(), Object.getPrototypeOf(this) !== TemplateInstance.prototype && Object.setPrototypeOf(this, TemplateInstance.prototype), this.appendChild(t.content.cloneNode(!0)), l.set(this, Array.from(function* (t) {
       var s = t.ownerDocument.createTreeWalker(t, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null);
       var n;
@@ -153,7 +153,7 @@ class TemplateInstance extends (globalThis.DocumentFragment || EventTarget) {
           break;
         }
       }
-    }(this))), o.set(this, n), null === (r = (a = o.get(this)).createCallback) || void 0 === r || r.call(a, this, l.get(this), s), o.get(this).processCallback(this, l.get(this), s);
+    }(this))), o.set(this, n), null === (r = (i = o.get(this)).createCallback) || void 0 === r || r.call(i, this, l.get(this), s), o.get(this).processCallback(this, l.get(this), s);
   }
   update(t) {
     o.get(this).processCallback(this, l.get(this), t);
@@ -163,11 +163,12 @@ var c = new TemplateInstance(document.getElementById("tpl-select-field")),
   u = "c-select-field";
 var _t8 = /*#__PURE__*/new WeakMap();
 var _e4 = /*#__PURE__*/new WeakMap();
+var _s4 = /*#__PURE__*/new WeakMap();
 var _SelectField_brand = /*#__PURE__*/new WeakSet();
 class SelectField extends HTMLElement {
   constructor() {
     var _t9 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    super(), _classPrivateMethodInitSpec(this, _SelectField_brand), _classPrivateFieldInitSpec(this, _t8, void 0), _classPrivateFieldInitSpec(this, _e4, void 0), this, this.setAttribute("exportparts", "button, listbox, value"), _assertClassBrand(_SelectField_brand, this, _s4).call(this, _t9), _classPrivateFieldSet(_e4, this, this.attachInternals()), _classPrivateFieldSet(_t8, this, this.attachShadow({
+    super(), _classPrivateMethodInitSpec(this, _SelectField_brand), _classPrivateFieldInitSpec(this, _t8, void 0), _classPrivateFieldInitSpec(this, _e4, void 0), _classPrivateFieldInitSpec(this, _s4, !1), this, this.setAttribute("exportparts", "button, listbox, value"), _assertClassBrand(_SelectField_brand, this, _n2).call(this, _t9), _classPrivateFieldSet(_e4, this, this.attachInternals()), _classPrivateFieldSet(_t8, this, this.attachShadow({
       mode: "closed"
     })), _classPrivateFieldGet(_t8, this).appendChild(c.cloneNode(!0));
   }
@@ -187,28 +188,26 @@ class SelectField extends HTMLElement {
     }
   }
   connectedCallback() {
-    this.$button.addEventListener("click", () => this.toggle());
+    this.$button.addEventListener("click", () => this.toggle()), this.addEventListener("focus", _assertClassBrand(_SelectField_brand, this, _i)), this.addEventListener("blur", _assertClassBrand(_SelectField_brand, this, _a));
   }
   selectOption(t) {
     this.options[t].ariaSelected = !0, this.options[t].ariaChecked = !0;
   }
-  $byID(t) {
-    return _classPrivateFieldGet(_t8, this).getElementById(t);
+  toggle(t) {
+    var {
+        states: e
+      } = _classPrivateFieldGet(_e4, this),
+      s = "expanded" === t || !1 === e.has("expanded");
+    return s ? (e.add("expanded"), e.delete("collapsed")) : (e.add("collapsed"), e.delete("expanded"), _assertClassBrand(_SelectField_brand, this, _r).call(this, this.$button)), this.ariaExpanded = s, s ? "expanded" : "collapsed";
   }
-  get $button() {
-    return _classPrivateFieldGet(_t8, this).querySelector("[role=button]");
+  get focused() {
+    return _assertClassBrand(_SelectField_brand, this, _r).call(this);
   }
-  get $input() {
-    return _classPrivateFieldGet(_t8, this).querySelector("input");
+  get focusedRole() {
+    return this.focused.getAttribute("role");
   }
-  get $listbox() {
-    return _classPrivateFieldGet(_t8, this).querySelector("[role=listbox]");
-  }
-  get $options() {
-    return _classPrivateFieldGet(_t8, this).querySelectorAll("[role=option]");
-  }
-  get $status() {
-    return _classPrivateFieldGet(_t8, this).querySelector("[role=status]");
+  get interactive() {
+    return _classPrivateFieldGet(_s4, this);
   }
   get value() {
     var t = this.$input.value;
@@ -217,25 +216,30 @@ class SelectField extends HTMLElement {
   set exportparts(t) {
     throw new Error("Don't Change! ".concat(t.toString()));
   }
-  toggle(t) {
-    var {
-        states: e
-      } = _classPrivateFieldGet(_e4, this),
-      s = "expanded" === t || !1 === e.has("expanded");
-    return s ? (e.add("expanded"), e.delete("collapsed")) : (e.add("collapsed"), e.delete("expanded")), this.$button.ariaExpanded = s, s ? "expanded" : "collapsed";
+  get $button() {
+    return _classPrivateFieldGet(_t8, this).querySelector("[role=button]");
   }
-  static onFocus(t, e) {
-    console.log("[EVENT]:", e, t);
+  get $input() {
+    return _classPrivateFieldGet(_t8, this).querySelector("input");
   }
-  static OnClick(t, e) {
-    console.log("[EVENT]:", e, t);
+  get $status() {
+    return _classPrivateFieldGet(_t8, this).querySelector("[role=status]");
   }
-  static onKeyUp(t, e) {
-    console.log("[EVENT]:", e, t);
+  get $listbox() {
+    return _classPrivateFieldGet(_t8, this).querySelector("[role=listbox]");
+  }
+  get $options() {
+    return this.$listbox.querySelectorAll("[role=option]");
+  }
+  get $lastOption() {
+    return this.$listbox.querySelectorAll("[role=option]:last-of-type");
+  }
+  get $firstOption() {
+    return this.$listbox.querySelectorAll("[role=option]:first-of-type");
   }
 }
 _SelectField = SelectField;
-function _s4() {
+function _n2() {
   var t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   var e = _SelectField.observedAttributes,
     s = Object.entries(t),
@@ -243,17 +247,53 @@ function _s4() {
       var [t] = _ref;
       return !1 === e.includes(t);
     }),
-    a = s.filter(_ref2 => {
+    i = s.filter(_ref2 => {
       var [t] = _ref2;
       return e.includes(t);
     });
   n.length > 0 && console.warn("Unsupported attributes: \"".concat(n.map(_ref3 => {
     var [t] = _ref3;
     return t;
-  }).join(", "), "\"")), a.forEach(_ref4 => {
+  }).join(", "), "\"")), i.forEach(_ref4 => {
     var [t, e] = _ref4;
     return this.setAttribute(t, e);
   });
+}
+function _r(t) {
+  var e = _assertClassBrand(_SelectField_brand, this, _r).call(this);
+  return HTMLElement.prototype.isPrototypeOf(t) && (null !== e && e.removeAttribute("aria-activedescendant"), t.setAttribute("aria-activedescendant", "true"), e = t), e || _assertClassBrand(_SelectField_brand, this, _r).call(this, this.$button);
+}
+function _o2() {
+  !1 === _classPrivateFieldGet(_s4, this) && (this.addEventListener("click", _assertClassBrand(_SelectField_brand, this, _l2)), this.addEventListener("keypress", _assertClassBrand(_SelectField_brand, this, _c)), _classPrivateFieldSet(_s4, this, !0));
+}
+function _u() {
+  _classPrivateFieldGet(_s4, this) && (this.removeEventListener("click", _assertClassBrand(_SelectField_brand, this, _l2)), this.removeEventListener("keypress", _assertClassBrand(_SelectField_brand, this, _c)), _classPrivateFieldSet(_s4, this, !1));
+}
+function _i() {
+  console.log("#onFocus"), _assertClassBrand(_SelectField_brand, this, _o2).call(this);
+}
+function _l2() {}
+function _c(_ref5) {
+  var {
+    key: t
+  } = _ref5;
+  switch (console.log("KeyPress: ", t), t) {
+    case "Backspace":
+    case "Enter":
+      this.focused === this.$button && this.toggle("expanded");
+      break;
+    case "Escape":
+      this.focused !== this.$button && this.toggle("collapsed");
+      break;
+    case "End":
+      this.focus(this.$lastOption);
+      break;
+    case "Home":
+      this.focus(this.$firstOption);
+  }
+}
+function _a() {
+  _assertClassBrand(_SelectField_brand, this, _u).call(this), this.toggle("collapsed");
 }
 _defineProperty(SelectField, "formAssociated", !1);
 _defineProperty(SelectField, "observedAttributes", ["aria-expanded", "status-label", "name", "size"]);

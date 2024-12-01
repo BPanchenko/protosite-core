@@ -1,0 +1,26 @@
+html:template(id="tpl-select-field")
+	link(
+		href="./select-field.css"
+		rel="stylesheet"
+		type="text/css"
+	)
+	input(type="hidden")
+	div(
+		aria-activedescendant=""
+		aria-controls="listbox"
+		part="button"
+		role="button"
+	)
+		div(
+			aria-label=""
+			part="status"
+			role="status"
+		)
+	slot(name="listbox")
+		div(
+				aria-labelledby="??[role=button].id??",
+				aria-multiselectable="off",
+				role="listbox",
+				part="listbox"
+			)
+			slot

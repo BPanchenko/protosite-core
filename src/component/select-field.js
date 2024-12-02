@@ -1,64 +1,66 @@
 /// <reference path="./select-field.d.ts" />
 
 import { TemplateInstance } from '@github/template-parts'
+import { initAttributes, initShadowRoot } from '../helpers'
 
-const tpl = new TemplateInstance(document.getElementById('tpl-select-field'))
+const $template = new TemplateInstance(
+	document.getElementById('tpl-select-field'),
+)
 const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
 
 const tagName = 'c-select-field'
 
 /** @typedef {'collapsed' | 'expanded'} ListBoxState */
+/** @typedef {Map<WeakRef<HTMLElement>, { label: string, value: string }>} OptionListCache */
 
 class SelectField extends HTMLElement {
-	/** @type {ShadowRoot} */
-	#shadow_
+	/** @type {boolean} */
+	#interactive = false
 
 	/** @type {ElementInternals} */
 	#internals_
 
-	/** @type {boolean} */
-	#interactive = false
+	/** @type {ShadowRoot} */
+	#shadow_
 
-	static formAssociated = false
+	static formAssociated = true
 
 	/** @type Array<SelectField.Attributes> */
-	static observedAttributes = [
-		'aria-expanded',
-		'status-label',
-		'name',
-		'size',
-	]
+	static observedAttributes = ['label', 'name']
 
 	/** @param {SelectField.Attributes} [attributes] */
 	constructor(attributes = {}) {
 		super()
-		this.setAttribute('exportparts', 'button, listbox, value')
-		this.#applyAttributes(attributes)
-		this.#internals_ = this.attachInternals()
-		this.#shadow_ = this.attachShadow({ mode: shadowMode })
-		this.#shadow_.appendChild(tpl.cloneNode(true))
+
+		initAttributes(this, {
+			exportparts: 'button, choice, listbox',
+			role: 'combobox',
+			...attributes,
+		})
+
+		this.#shadow_ = initShadowRoot(this, {
+			$template,
+			delegatesFocus: true,
+			mode: shadowMode,
+			serializable: true,
+		})
+
+		this.#initInternals()
 	}
 
 	attributeChangedCallback(name, previous, current) {
-		if (this.isConnected === false) return
+		if (false === this.isConnected) return
 
 		switch (name) {
-			case 'expanded':
-				this.$button.ariaExpanded = current
-				break
-			case 'name':
-				this.$input.setAttribute('name', current)
-				break
-			case 'status-label':
-				this.$status.ariaLabel = current
+			case 'label':
+				this.#$status.ariaLabel = current
 				break
 			default:
-				this.#internals_ = this.attachInternals()
 		}
 	}
 
 	connectedCallback() {
-		this.$button.addEventListener('click', () => this.toggle())
+		this.addEventListener('click', this.#onClick)
 		this.addEventListener('focus', this.#onFocus)
 		this.addEventListener('blur', this.#onBlur)
 	}
@@ -69,7 +71,7 @@ class SelectField extends HTMLElement {
 	}
 
 	/**
-	 * @param {ListBoxState}  [state] - New value of state
+	 * @param {ListBoxState} [state] - New value of state
 	 * @returns {ListBoxState} Current state after call
 	 */
 	toggle(state) {
@@ -83,18 +85,14 @@ class SelectField extends HTMLElement {
 		} else {
 			states.add('collapsed')
 			states.delete('expanded')
-			this.#focus(this.$button)
+			this.#focus(this.#$button)
 		}
 		this.ariaExpanded = expanded
 		return expanded ? 'expanded' : 'collapsed'
 	}
 
-	get focused() {
-		return this.#focus()
-	}
-
-	get focusedRole() {
-		return this.focused.getAttribute('role')
+	get form() {
+		return this.#internals_.form
 	}
 
 	get interactive() {
@@ -102,122 +100,118 @@ class SelectField extends HTMLElement {
 	}
 
 	get value() {
-		const result = this.$input.value
+		const result = null
 		this.setAttribute('value', result)
 		return result
 	}
 
-	set exportparts(value) {
-		throw new Error(`Don't Change! ${value.toString()}`)
+	/** @type {HTMLDivElement} */
+	get #$active() {
+		return this.#internals_.ariaActiveDescendantElement
+	}
+
+	/** @param {HTMLDivElement} $elem */
+	set #$active($elem) {
+		this.#internals_.ariaActiveDescendantElement = $elem
 	}
 
 	/** @type {HTMLDivElement} */
-	get $button() {
-		return this.#shadow_.querySelector('[role=button]')
-	}
-
-	/** @type {HTMLInputElement} */
-	get $input() {
-		return this.#shadow_.querySelector('input')
+	get #$button() {
+		return this.#$('[role=button]')
 	}
 
 	/** @type {HTMLDivElement} */
-	get $status() {
-		return this.#shadow_.querySelector('[role=status]')
+	get #$status() {
+		return this.#$('[role=status]', this.#$button)
 	}
 
 	/** @type {HTMLDivElement} */
-	get $listbox() {
-		return this.#shadow_.querySelector('[role=listbox]')
-	}
-
-	/** @type {NodeListOf<HTMLElement>} */
-	get $options() {
-		return this.$listbox.querySelectorAll('[role=option]')
+	get #$listbox() {
+		return this.#$('[role=listbox]')
 	}
 
 	/** @type {HTMLElement} */
-	get $lastOption() {
-		return this.$listbox.querySelectorAll('[role=option]:last-of-type')
+	get #$lastOption() {
+		return this.#$('[role=option]:last-of-type', this.#$listbox)
 	}
 
 	/** @type {HTMLElement} */
-	get $firstOption() {
-		return this.$listbox.querySelectorAll('[role=option]:first-of-type')
+	get #$firstOption() {
+		return this.#$('[role=option]:first-of-type', this.#$listbox)
 	}
 
-	#applyAttributes(attrs = {}) {
-		const valid = SelectField.observedAttributes
-		const pairs = Object.entries(attrs)
-		const badly = pairs.filter(([attr]) => valid.includes(attr) === false)
-		const goodly = pairs.filter(([attr]) => valid.includes(attr))
-
-		if (badly.length > 0)
-			console.warn(
-				`Unsupported attributes: "${badly.map(([key]) => key).join(', ')}"`,
-			)
-
-		goodly.forEach(([key, value]) => this.setAttribute(key, value))
+	/**
+	 * Returns the first element that is a descendant of node that matches selector.
+	 *
+	 * @param {string} selector
+	 * @param {HTMLElement | ShadowRoot | null} $parent
+	 * @returns {HTMLElement | null}
+	 */
+	#$(selector, $parent = null) {
+		return ($parent ?? this.#shadow_).querySelector(selector)
 	}
 
 	/**
 	 * Set/Get focused element
 	 *
 	 * @param {HTMLElement} [element]
-	 * @returns {HTMLElement} Current focused element
+	 * @returns {HTMSelectFieldLElement}
 	 */
-	#focus(element) {
-		let focused = this.#focus()
-		if (HTMLElement.prototype.isPrototypeOf(element)) {
-			if (focused !== null)
-				focused.removeAttribute('aria-activedescendant')
-			element.setAttribute('aria-activedescendant', 'true')
-			focused = element
+	#focus($elem) {
+		if (HTMLElement.prototype.isPrototypeOf($elem)) {
+			this.#$active.removeAttribute('aria-activedescendant')
+			this.#$active = $elem
+			this.#$active.setAttribute('aria-activedescendant', 'true')
 		}
-		if (focused) return focused
-		else return this.#focus(this.$button)
+		return this.#$active
 	}
 
+	/** @returns {HTMSelectFieldLElement} */
 	#setInteractionHandlers() {
 		if (this.#interactive === false) {
 			this.addEventListener('click', this.#onClick)
 			this.addEventListener('keypress', this.#onKeyPress)
 			this.#interactive = true
 		}
+		return this
 	}
 
+	/** @returns {HTMSelectFieldLElement} */
 	#deleteInteractionHandlers() {
 		if (this.#interactive) {
 			this.removeEventListener('click', this.#onClick)
 			this.removeEventListener('keypress', this.#onKeyPress)
 			this.#interactive = false
 		}
+		return this
 	}
 
 	#onFocus() {
 		this.#setInteractionHandlers()
 	}
 
-	#onClick() {}
+	#onClick() {
+		this.toggle()
+	}
 
 	#onKeyPress({ key }) {
 		switch (key) {
 			case 'Backspace':
 			case 'Enter':
-				if (this.focused === this.$button) {
+				if (this.focused === this.#$button) {
 					this.toggle('expanded')
 				}
 				break
 			case 'Escape':
-				if (this.focused !== this.$button) {
+				if (this.focused !== this.#$button) {
 					this.toggle('collapsed')
 				}
 				break
 			case 'End':
-				this.focus(this.$lastOption)
+				this.focus(this.#$lastOption)
 				break
 			case 'Home':
-				this.focus(this.$firstOption)
+				this.focus(this.#$firstOption)
 				break
 			case 'ArrowUp':
 				break
@@ -233,6 +227,29 @@ class SelectField extends HTMLElement {
 	#onBlur() {
 		this.#deleteInteractionHandlers()
 		this.toggle('collapsed')
+	}
+
+	/**
+	 * This method allows a custom element to participate in HTML forms.
+	 * The ElementInternals interface provides utilities for working with these elements in the same way you would work with any standard HTML form element, and also exposes the Accessibility Object Model to the element.
+	 *
+	 * @returns {void | never}
+	 *
+	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/attachInternals)
+	 */
+	#initInternals() {
+		const node = this.attachInternals()
+
+		node.ariaActiveDescendantElement = this.#$(
+			'[aria-activedescendant=true]',
+		)
+
+		console.assert(
+			node.ariaActiveDescendantElement,
+			'Attribute `[aria-activedescendant]` requires specifying for some child node',
+		)
+
+		this.#internals_ = node
 	}
 }
 

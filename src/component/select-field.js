@@ -14,6 +14,9 @@ const tagName = 'c-select-field'
 /** @typedef {Map<WeakRef<HTMLElement>, { label: string, value: string }>} OptionListCache */
 
 class SelectField extends HTMLElement {
+	/** @type {OptionListCache} */
+	#cache = new Map()
+
 	/** @type {boolean} */
 	#interactive = false
 
@@ -46,6 +49,7 @@ class SelectField extends HTMLElement {
 		})
 
 		this.#initInternals()
+		this.#initOptionsCache()
 	}
 
 	attributeChangedCallback(name, previous, current) {
@@ -128,6 +132,16 @@ class SelectField extends HTMLElement {
 	/** @type {HTMLDivElement} */
 	get #$listbox() {
 		return this.#$('[role=listbox]')
+	}
+
+	/** @type {HTMLSlotElement} */
+	get #$slot() {
+		return this.#$listbox.children[0]
+	}
+
+	/** @type {HTMLSlotElement} */
+	get #$slotListbox() {
+		return this.#$('slot[name=listbox]')
 	}
 
 	/** @type {HTMLElement} */
@@ -250,6 +264,27 @@ class SelectField extends HTMLElement {
 		)
 
 		this.#internals_ = node
+	}
+
+	#initOptionsCache() {
+		/** @type {(list: OptionListCache) => void} */
+		const cleanup = (list) =>
+			list.forEach(
+				(_, $ref) =>
+					false === $ref.deref().isConnected && list.delete($ref),
+			)
+
+		this.#$slotListbox.addEventListener('slotchange', () => {
+			const $$elements = this.#$slot.assignedElements()
+			for (const $elem of $$elements)
+				if ($elem.hasAttribute('role') && $elem.role === 'option')
+					this.#cache.set(new WeakRef($elem), {
+						label: $elem.textContent || $elem.dataset.value,
+						value: $elem.dataset.value || $elem.textContent,
+					})
+				else $elem.remove()
+			cleanup(this.#cache)
+		})
 	}
 }
 

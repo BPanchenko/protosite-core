@@ -1,12 +1,12 @@
 /// <reference path="./select-field.d.ts" />
 
 import { TemplateInstance } from '@github/template-parts'
-import { initAttributes, initShadowRoot } from '../helpers'
+import applyAttributes from '../lib/fn.applyAttributes'
+import initShadowRoot from '../lib/fn.initShadowRoot'
 
 const $template = new TemplateInstance(
 	document.getElementById('tpl-select-field'),
 )
-const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
 
 const tagName = 'c-select-field'
 
@@ -35,16 +35,16 @@ class SelectField extends HTMLElement {
 	constructor(attributes = {}) {
 		super()
 
-		initAttributes(this, {
+		applyAttributes.call(this, {
+			'aria-atomic': true,
 			exportparts: 'button, choice, listbox',
 			role: 'combobox',
 			...attributes,
 		})
 
-		this.#shadow_ = initShadowRoot(this, {
+		this.#shadow_ = initShadowRoot.call(this, {
 			$template,
 			delegatesFocus: true,
-			mode: shadowMode,
 			serializable: true,
 		})
 

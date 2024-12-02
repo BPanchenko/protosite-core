@@ -1,5 +1,5 @@
-import { compactObject } from '../../helpers.js'
 import AvatarComponent from '../avatar.js'
+import compactObject from '../../lib/cb.compactObject.js'
 
 describe('[AvatarComponent]', () => {
 	describe('Attributes:', () => {

@@ -1,7 +1,8 @@
 /// <reference path="../../@types/index.d.ts" />
 
 import cssStyleSheet, * as css from '#uikit/component/field'
-import { createElement } from '../helpers'
+
+import createElement from '../lib/cb.createElement'
 
 const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
 

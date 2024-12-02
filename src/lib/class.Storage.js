@@ -1,4 +1,4 @@
-class LocalStorageMap extends Map {
+class Storage extends Map {
 	name
 
 	#data
@@ -69,4 +69,4 @@ function getDefaultLocalStorageName() {
 }
 
 export { getDefaultLocalStorageName }
-export default LocalStorageMap
+export default Storage

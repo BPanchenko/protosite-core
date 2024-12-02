@@ -1,13 +1,13 @@
 /// <reference path="./arrow.d.ts" />
 
-import { checkFontFace } from '../helpers'
-import { SIZES } from '../constants'
 import cssStyleSheet, { cArrow } from '#uikit/component/arrow'
 
-const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
+import applyAttributes from '../lib/fn.applyAttributes'
+import checkFontFace from '../lib/cb.checkFontFace'
+import initShadowRoot from '../lib/fn.initShadowRoot'
 
 const tagName = cArrow
-const shadowHTML = `<i data-glyph=arrow><slot>&nbsp;</slot></i>`
+const template = `<i data-glyph=arrow><slot>&nbsp;</slot></i>`
 
 /**
  * @typedef {object} State
@@ -18,7 +18,8 @@ const shadowHTML = `<i data-glyph=arrow><slot>&nbsp;</slot></i>`
 
 /** @implements {Arrow.WebComponent} */
 export class ArrowComponent extends HTMLElement {
-	#shadow
+	/** @type {ShadowRoot} */
+	#shadow_
 
 	/** @type Array<string> */
 	static observedAttributes = [
@@ -30,14 +31,19 @@ export class ArrowComponent extends HTMLElement {
 		'style',
 		'weight',
 	]
-	static sizes = SIZES
+	static sizes = ['sm', 'md', 'lg', 'xl', 'xxs', 'xs', 'xxl']
 
 	/** @param {Arrow.Attributes} [attributes] */
 	constructor(attributes = {}) {
 		super()
-		this.#applyAttributes(attributes)
-		this.#shadow = this.attachShadow({ mode: shadowMode })
-		this.#shadow.innerHTML = shadowHTML
+
+		applyAttributes.call(this, attributes)
+
+		this.#shadow_ = initShadowRoot.call(this, {
+			template,
+			delegatesFocus: true,
+			serializable: true,
+		})
 	}
 
 	attributeChangedCallback(name, previous, current) {
@@ -54,25 +60,11 @@ export class ArrowComponent extends HTMLElement {
 	}
 
 	connectedCallback() {
-		this.#shadow.adoptedStyleSheets.push(cssStyleSheet)
+		this.#shadow_.adoptedStyleSheets.push(cssStyleSheet)
 		this.#applyGlyph()
 		;['font', 'size']
 			.filter((attr) => this.hasAttribute(attr))
 			.forEach((attr) => (this[attr] = this.getAttribute(attr)))
-	}
-
-	#applyAttributes(attrs = {}) {
-		const valid = ArrowComponent.observedAttributes
-		const pairs = Object.entries(attrs)
-		const badly = pairs.filter(([attr]) => valid.includes(attr) === false)
-		const goodly = pairs.filter(([attr]) => valid.includes(attr))
-
-		if (badly.length > 0)
-			console.warn(
-				`Unsupported attributes: "${badly.map(([key]) => key).join(', ')}"`,
-			)
-
-		goodly.forEach(([key, value]) => this.setAttribute(key, value))
 	}
 
 	#applyGlyph() {
@@ -94,7 +86,7 @@ export class ArrowComponent extends HTMLElement {
 	}
 
 	get #root() {
-		return this.#shadow.firstChild
+		return this.#shadow_.firstChild
 	}
 
 	set font(value) {

@@ -1,28 +1,35 @@
 /// <reference path="../../@types/index.d.ts" />
 
-import { createElement } from '../helpers'
-import { SIZES } from '../constants'
 import cssStyleSheet, { cAvatar, cAvatarLink } from '#uikit/component/avatar'
 
-const shadowMode = typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE
+import applyAttributes from '../lib/fn.applyAttributes'
+import createElement from '../lib/cb.createElement'
+import initShadowRoot from '../lib/fn.initShadowRoot'
 
 const tagName = cAvatar
-const shadowHTML = `<div role=img><slot></slot></div>`
+const template = `<div role=img><slot></slot></div>`
 
 /** @implements {Avatar.WebComponent} */
 export class AvatarComponent extends HTMLElement {
 	#$ = new Map()
-	#shadow
+
+	/** @type {ShadowRoot} */
+	#shadow_
 
 	static observedAttributes = ['img', 'size', 'href', 'target']
-	static sizes = SIZES
+	static sizes = ['sm', 'md', 'lg', 'xl', 'xxs', 'xs', 'xxl']
 
 	/** @param {Avatar.Attributes} [attributes] */
 	constructor(attributes = {}) {
 		super()
-		this.#applyAttributes(attributes)
-		this.#shadow = this.attachShadow({ mode: shadowMode })
-		this.#shadow.innerHTML = shadowHTML
+
+		applyAttributes.call(this, attributes)
+
+		this.#shadow_ = initShadowRoot.call(this, {
+			template,
+			delegatesFocus: true,
+			serializable: true,
+		})
 	}
 
 	attributeChangedCallback(name) {
@@ -43,23 +50,11 @@ export class AvatarComponent extends HTMLElement {
 	}
 
 	connectedCallback() {
-		this.#shadow.adoptedStyleSheets.push(cssStyleSheet)
+		this.#shadow_.adoptedStyleSheets.push(cssStyleSheet)
+
 		this.#applySize()
 		this.#renderLink()
 		this.#renderImage()
-	}
-
-	#applyAttributes(attrs = {}) {
-		const valid = AvatarComponent.observedAttributes
-		const pairs = Object.entries(attrs)
-		const badly = pairs.filter(([attr]) => valid.includes(attr) === false)
-		const goodly = pairs.filter(([attr]) => valid.includes(attr))
-
-		goodly.forEach(([key, value]) => this.setAttribute(key, value))
-		if (badly.length > 0)
-			console.warn(
-				`Unsupported attributes: "${badly.map(([key]) => key).join(', ')}"`,
-			)
 	}
 
 	#applySize() {
@@ -125,7 +120,7 @@ export class AvatarComponent extends HTMLElement {
 	}
 
 	get #root() {
-		return this.#shadow.firstChild
+		return this.#shadow_.firstChild
 	}
 }
 

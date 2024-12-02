@@ -2,6 +2,8 @@
 /*-lock.json
 /*-lock.yaml
 /*.lock
+
+/.config/ftp.json
+/.vscode
 /assets/__tests__/__image_snapshots__/__diff_output__
 /node_modules
-/.vscode

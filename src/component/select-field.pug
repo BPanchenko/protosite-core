@@ -1,25 +1,25 @@
 html:template(id="tpl-select-field")
 	link(
-		href="./select-field.css"
+		href="http://assets.protosite.rocks/core/select-field.css"
 		rel="stylesheet"
 		type="text/css"
 	)
-	input(type="hidden")
 	div(
-		aria-activedescendant=""
 		aria-controls="listbox"
+		aria-activedescendant="true"
+		id="button"
 		part="button"
 		role="button"
 	)
 		div(
-			aria-label=""
-			part="status"
+			id="choice"
+			part="choice"
 			role="status"
 		)
 	slot(name="listbox")
 		div(
-				aria-labelledby="??[role=button].id??",
-				aria-multiselectable="off",
+				aria-labelledby="button",
+				id="listbox",
 				role="listbox",
 				part="listbox"
 			)

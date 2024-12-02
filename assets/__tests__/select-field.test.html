@@ -41,63 +41,93 @@
 	</head>
 	<body class="t-document">
 		<main class="u-container" data-testid="container">
-			<section class="c-panel s-clean">
-				<div class="u-grid">
-					<c-select-field name="clr-copy-format" status-label="Копировать цвет">
-						<div role="option" data-value="hex">в формате HEX</div>
-						<div role="option" data-value="rgb">в формате RGB</div>
-						<div role="option" data-value="css-var">как переменную CSS</div>
-						<div role="option" data-value="js-const">как константу JS</div>
-					</c-select-field>
-					<div>
-						<label for="ice-cream-choice">Choose a flavor:</label>
-						<input list="ice-cream-flavors" id="ice-cream-choice" name="ice-cream-choice" />
-						<datalist id="ice-cream-flavors">
-							<option value="Chocolate"></option>
-							<option value="Coconut"></option>
-							<option value="Mint"></option>
-							<option value="Strawberry"></option>
-							<option value="Vanilla"></option>
-						</datalist>
+			<form enctype="text/plain" data-testid="main-form">
+				<section class="c-panel s-clean">
+					<div class="u-grid">
+						<c-select-field name="custom-field-fruit"
+							aria-placeholder="Выберите фрукт..."
+							label="Выбранный фрукт:"
+						>
+							<div role="option" data-value="kumquat">Кумкват</div>
+							<div role="option" data-value="pseudocydonia">Псевдоайва</div>
+							<div role="option" data-value="salacca-wallichiana">Ракум-салакка</div>
+							<div role="option" data-value="mammea-americana">Антильский абрикос</div>
+							<div role="option" data-value="casimiroa-edulis" aria-disabled="true">Белая сапота</div>
+						</c-select-field>
+						<div>
+							<label for="ice-cream-choice">Выберите почту:</label>
+							<input name="native-field-email" type="email" list="emails-list" placeholder="Hello@doka.ru">
+							<datalist id="emails-list">
+								<option value="peafowls@doka.ru" label="Моя первая почта"></option>
+								<option value="work68@doka.ru" label="Рабочая почта"></option>
+								<option value="adversting68@doka.ru" label="Почта для рекламных предложений"></option>
+							</datalist>
+						</div>
 					</div>
-				</div>
-			</section>
-			<section class="c-panel">
-				<div class="u-grid">
-					<c-select-field name="clr-copy-format" status-label="Копировать цвет">
-						<div role="option" data-value="hex">в формате HEX</div>
-						<div role="option" data-value="rgb">в формате RGB</div>
-						<div role="option" data-value="css-var">как переменную CSS</div>
-						<div role="option" data-value="js-const">как константу JS</div>
-					</c-select-field>
-				</div>
-			</section>
+				</section>
+				<section class="c-panel">
+					<div class="u-grid">
+						<c-select-field name="custom-field-b" label="Копировать цвет">
+							<div role="option" data-value="hex">в формате HEX</div>
+							<div role="option" data-value="rgb">в формате RGB</div>
+							<div role="option" data-value="css-var">как переменную CSS</div>
+							<div role="option" data-value="js-const">как константу JS</div>
+						</c-select-field>
+					</div>
+				</section>
+				<section class="c-panel">
+					<output data-testid="formdata-output"></output>
+				</section>
+				<section class="c-panel s-clean">
+					<button data-testid="submitter" type="submit">Сохранить</button>
+					<button type="reset">Очистить</button>
+				</section>
+			</form>
+			<script>
+				const $form = document.querySelector('[data-testid=main-form]')
+				const $output = document.querySelector('[data-testid=formdata-output]')
+				const $submitter = $form.querySelector('[data-testid=submitter]')
+
+				$form.addEventListener('submit', event => {
+					event.preventDefault()
+					const $data = document.createElement('pre')
+					const formData = new FormData($form, $submitter)
+
+					console.log($form.elements)
+					console.log(Array.from(formData.keys()), Array.from(formData.values()))
+
+					for (const [key, value] of formData) {
+						$data.textContent += `${key}: ${value}\n`;
+					}
+					$output.prepend($data)
+				})
+			</script>
 		</main>
 		<template id="tpl-select-field">
 			<link
-				href="http://assets.protosite.rocks/uikit/component/select-field.css"
+				href="http://assets.protosite.rocks/core/select-field.css"
 				rel="stylesheet"
 				type="text/css"
 			>
-			<input type="hidden" name="clr-copy-format">
 			<div
-				aria-activedescendant=""
 				aria-controls="listbox"
+				aria-activedescendant="true"
+				id="button"
 				part="button"
 				role="button"
 			>
 				<div
-					aria-label=""
-					part="status"
+					id="choice"
+					part="choice"
 					role="status"
 				></div>
 			</div>
 			<slot name="listbox">
 				<div
-					aria-labelledby="??[role=button].id??"
-					aria-multiselectable="off"
-					role="listbox"
+					aria-labelledby="button"
+					id="listbox"
 					part="listbox"
+					role="listbox"
 				>
 					<slot></slot>
 				</div>

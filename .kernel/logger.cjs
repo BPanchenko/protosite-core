@@ -71,6 +71,11 @@ logger.logSummaryFiles = (array, hrstart = start) => {
 		)
 }
 
+logger.uploadCaption = () =>
+	logger.color('cyan').bold().underscore().log(`UPLOAD ASSETS`)
+
+logger.uploadedFile = (mess) => logger.color('black').bold().log(mess)
+
 module.exports = {
 	default: logger,
 	logger,

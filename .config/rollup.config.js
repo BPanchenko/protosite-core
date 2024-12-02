@@ -43,7 +43,9 @@ export default cssStyleSheet;`
 			},
 		},
 		terser({
+			ecma: 2022,
 			keep_classnames: true,
+			keep_fnames: true,
 			compress: {
 				module: true,
 				global_defs: {

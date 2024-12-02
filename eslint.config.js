@@ -88,7 +88,14 @@ export default [
 				},
 			],
 			'no-prototype-builtins': 0,
-			'no-unused-vars': 1,
+			'no-unused-vars': [
+				1,
+				{
+					argsIgnorePattern: '^_',
+					destructuredArrayIgnorePattern: '^_',
+					reportUsedIgnorePattern: true,
+				},
+			],
 			'prettier/prettier': 1,
 			'sort-imports': [
 				1,

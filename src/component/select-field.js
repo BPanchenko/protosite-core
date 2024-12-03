@@ -13,6 +13,7 @@ const tagName = 'c-select-field'
 /** @typedef {'collapsed' | 'expanded'} ListBoxState */
 /** @typedef {{ label: string, value: string }} ListItem */
 /** @typedef {Map<WeakRef<Element>, ListItem>} RefOptionList */
+/** @typedef {ListItem & { $element: HTMLElement}} SearchResult */
 
 class SelectField extends HTMLElement {
 	/** @type {RefOptionList} */
@@ -64,6 +65,21 @@ class SelectField extends HTMLElement {
 		this.addEventListener('click', this.#onClick)
 		this.addEventListener('focus', this.#onFocus)
 		this.addEventListener('blur', this.#onBlur)
+	}
+
+	/**
+	 *
+	 * @param {string} query
+	 * @returns {SearchResult | null}
+	 */
+	search(query) {
+		for (const [ref, option] of this.#list)
+			if (option.value.indexOf(query) === 0)
+				return {
+					$element: ref.deref(),
+					...option,
+				}
+		return null
 	}
 
 	select(idx) {

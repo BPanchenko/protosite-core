@@ -11,11 +11,12 @@ const $template = new TemplateInstance(
 const tagName = 'c-select-field'
 
 /** @typedef {'collapsed' | 'expanded'} ListBoxState */
-/** @typedef {Map<WeakRef<HTMLElement>, { label: string, value: string }>} OptionListCache */
+/** @typedef {{ label: string, value: string }} ListItem */
+/** @typedef {Map<WeakRef<Element>, ListItem>} RefOptionList */
 
 class SelectField extends HTMLElement {
-	/** @type {OptionListCache} */
-	#cache = new Map()
+	/** @type {RefOptionList} */
+	#list
 
 	/** @type {boolean} */
 	#interactive = false
@@ -42,14 +43,10 @@ class SelectField extends HTMLElement {
 			...attributes,
 		})
 
-		this.#shadow_ = initShadowRoot.call(this, {
-			$template,
-			delegatesFocus: true,
-			serializable: true,
-		})
+		this.#shadow_ = initShadowRoot.call(this, { $template })
 
-		this.#initInternals()
-		this.#initOptionsCache()
+		this.#list = this.#initRefOptionsList()
+		this.#internals_ = this.#initInternals()
 	}
 
 	attributeChangedCallback(name, previous, current) {
@@ -69,7 +66,7 @@ class SelectField extends HTMLElement {
 		this.addEventListener('blur', this.#onBlur)
 	}
 
-	selectOption(idx) {
+	select(idx) {
 		this.options[idx].ariaSelected = true
 		this.options[idx].ariaChecked = true
 	}
@@ -89,7 +86,7 @@ class SelectField extends HTMLElement {
 		} else {
 			states.add('collapsed')
 			states.delete('expanded')
-			this.#focus(this.#$button)
+			this.#$active = this.#$button
 		}
 		this.ariaExpanded = expanded
 		return expanded ? 'expanded' : 'collapsed'
@@ -109,27 +106,37 @@ class SelectField extends HTMLElement {
 		return result
 	}
 
-	/** @type {HTMLDivElement} */
+	/**
+	 * @type {HTMLElement}
+	 *
+	 * Get focused element
+	 */
 	get #$active() {
 		return this.#internals_.ariaActiveDescendantElement
 	}
 
-	/** @param {HTMLDivElement} $elem */
-	set #$active($elem) {
-		this.#internals_.ariaActiveDescendantElement = $elem
+	/**
+	 * @param {HTMLElement} $element
+	 *
+	 * Set/Get focused element
+	 */
+	set #$active($element) {
+		$element.ariaActiveDescendant = true
+		this.#$active.ariaActiveDescendant = null
+		this.#internals_.ariaActiveDescendantElement = $element
 	}
 
-	/** @type {HTMLDivElement} */
+	/** @type {HTMLElement} */
 	get #$button() {
 		return this.#$('[role=button]')
 	}
 
-	/** @type {HTMLDivElement} */
+	/** @type {HTMLElement} */
 	get #$status() {
 		return this.#$('[role=status]', this.#$button)
 	}
 
-	/** @type {HTMLDivElement} */
+	/** @type {HTMLElement} */
 	get #$listbox() {
 		return this.#$('[role=listbox]')
 	}
@@ -155,29 +162,14 @@ class SelectField extends HTMLElement {
 	}
 
 	/**
-	 * Returns the first element that is a descendant of node that matches selector.
+	 * Returns the first element that is a descendant of element that matches selector.
 	 *
 	 * @param {string} selector
-	 * @param {HTMLElement | ShadowRoot | null} $parent
+	 * @param {HTMLElement | ShadowRoot} [$parent]
 	 * @returns {HTMLElement | null}
 	 */
-	#$(selector, $parent = null) {
+	#$(selector, $parent) {
 		return ($parent ?? this.#shadow_).querySelector(selector)
-	}
-
-	/**
-	 * Set/Get focused element
-	 *
-	 * @param {HTMLElement} [element]
-	 * @returns {HTMSelectFieldLElement}
-	 */
-	#focus($elem) {
-		if (HTMLElement.prototype.isPrototypeOf($elem)) {
-			this.#$active.removeAttribute('aria-activedescendant')
-			this.#$active = $elem
-			this.#$active.setAttribute('aria-activedescendant', 'true')
-		}
-		return this.#$active
 	}
 
 	/** @returns {HTMSelectFieldLElement} */
@@ -202,6 +194,11 @@ class SelectField extends HTMLElement {
 
 	#onFocus() {
 		this.#setInteractionHandlers()
+	}
+
+	#onBlur() {
+		this.#deleteInteractionHandlers()
+		this.toggle('collapsed')
 	}
 
 	#onClick() {
@@ -238,53 +235,52 @@ class SelectField extends HTMLElement {
 		}
 	}
 
-	#onBlur() {
-		this.#deleteInteractionHandlers()
-		this.toggle('collapsed')
-	}
-
 	/**
 	 * This method allows a custom element to participate in HTML forms.
 	 * The ElementInternals interface provides utilities for working with these elements in the same way you would work with any standard HTML form element, and also exposes the Accessibility Object Model to the element.
 	 *
-	 * @returns {void | never}
-	 *
 	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/attachInternals)
+	 *
+	 * @returns {ElementInternals | never}
 	 */
 	#initInternals() {
-		const node = this.attachInternals()
+		const elem = this.attachInternals()
 
-		node.ariaActiveDescendantElement = this.#$(
+		elem.ariaActiveDescendantElement = this.#$(
 			'[aria-activedescendant=true]',
 		)
 
 		console.assert(
-			node.ariaActiveDescendantElement,
-			'Attribute `[aria-activedescendant]` requires specifying for some child node',
+			elem.ariaActiveDescendantElement,
+			'Attribute `[aria-activedescendant]` requires specifying for some child element',
 		)
 
-		this.#internals_ = node
+		return elem
 	}
 
-	#initOptionsCache() {
-		/** @type {(list: OptionListCache) => void} */
+	#initRefOptionsList() {
+		/** @type {RefOptionList} */
+		const list = new Map()
+
 		const cleanup = (list) =>
 			list.forEach(
-				(_, $ref) =>
-					false === $ref.deref().isConnected && list.delete($ref),
+				(_, ref, map) =>
+					Boolean(ref.deref()?.isConnected) || map.delete(ref),
 			)
 
 		this.#$slotListbox.addEventListener('slotchange', () => {
 			const $$elements = this.#$slot.assignedElements()
-			for (const $elem of $$elements)
-				if ($elem.hasAttribute('role') && $elem.role === 'option')
-					this.#cache.set(new WeakRef($elem), {
-						label: $elem.textContent || $elem.dataset.value,
-						value: $elem.dataset.value || $elem.textContent,
+			for (const $element of $$elements)
+				if ($element.hasAttribute('role') && $element.role === 'option')
+					list.set(new WeakRef($element), {
+						label: $element.textContent || $element.dataset.value,
+						value: $element.dataset.value || $element.textContent,
 					})
-				else $elem.remove()
-			cleanup(this.#cache)
+				else $element.remove()
+			cleanup(list)
 		})
+
+		return list
 	}
 }
 

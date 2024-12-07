@@ -1,0 +1,21 @@
+import './fruits-option-element'
+
+const list = [
+	['kumquat', 'Кумкват', 'Citrus japonica', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Owoce_Kumkwat.jpg/413px-Owoce_Kumkwat.jpg'],
+	['pseudocydonia', 'Псевдоайва', 'Pseudocydonia sinensis', 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5c/Pseudocydonia.jpg/413px-Pseudocydonia.jpg'],
+	['salacca-wallichiana', 'Ракум-салакка', 'Salacca', 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Salacca_wallichiana_fruit.jpg/411px-Salacca_wallichiana_fruit.jpg'],
+	['mammea-americana', 'Антильский абрикос', 'Mammea americana', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Mammea_americana1.jpg/413px-Mammea_americana1.jpg'],
+	['casimiroa-edulis', 'Белая сапота', 'Casimiroa edulis', 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Casimiroa_edulis.jpg/413px-Casimiroa_edulis.jpg'],
+]
+
+const options = list.map([value, label, description, picture] => {
+	const $option = document.createElement('c-fruits-option', {
+		is: 'c-fruit-option'
+	})
+	$option.value = value
+	$option.description = description
+	$option.picture = picture
+	$option.textContent = label
+
+	return $option
+})

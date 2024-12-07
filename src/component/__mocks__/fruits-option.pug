@@ -1,0 +1,17 @@
+html:template(id="tpl-select-field")
+	<style>
+		figure {
+			margin: 0;
+		}
+	</style>
+	figure
+		img(
+			slot="image"
+		)
+		figcaption
+			h4(
+				slot="label"
+			)
+			div(
+				slot="description"
+			)

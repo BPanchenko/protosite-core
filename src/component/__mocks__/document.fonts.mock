@@ -1,0 +1,12 @@
+Object.defineProperty(window.document, 'fonts', {
+	writable: true,
+	value: {
+		values: () => [
+			{
+				fontFace: {
+					family: 'IconFont'
+				},
+			},
+		]
+	},
+})

@@ -1,6 +1,10 @@
 jest.mock('@github/template-parts', () => {
-	const TemplateInstance = jest.mockFn(() => {
-		const $template = document.createDocumentFrugment()
+	const tpls = new Map([
+		['tpl-select-field', document.createDocumentFrugment()]
+	])
+	const TemplateInstance = jest.fn().mockImplementatio((tplId) => {
+		console.log(tplId)
+		const $template = tpls.get(tplId)
 		return $template
 	})
 

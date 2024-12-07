@@ -6,16 +6,3 @@ Object.defineProperty(window.console, 'assert', {
 		}
 	}),
 })
-
-Object.defineProperty(window.document, 'fonts', {
-	writable: true,
-	value: {
-		values: () => [
-			{
-				fontFace: {
-					family: 'IconFont'
-				},
-			},
-		]
-	},
-})

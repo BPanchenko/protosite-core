@@ -1,0 +1,11 @@
+jest.mock('@github/template-parts', () => {
+	const TemplateInstance = jest.mockFn(() => {
+		const $template = document.createDocumentFrugment()
+		return $template
+	})
+
+	return {
+		isMock: true,
+		TemplateInstance,
+	}
+})

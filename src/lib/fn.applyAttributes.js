@@ -5,8 +5,16 @@
  * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/setAttribute)
  */
 export default function applyAttributes(list) {
-	Object.entries(list).forEach(([key, value]) =>
-		this.setAttribute(key, value),
+	const mapAttributes = new Map(Object.entries(list))
+
+	mapAttributes.forEach((value, key) =>
+		this.hasOwnProperty(key)
+			? (this[key] = value)
+			: this.setAttribute(key, value),
 	)
-	return this
+
+	for (const { name, value } of this.attributes)
+		mapAttributes.set(name, value)
+
+	return mapAttributes
 }

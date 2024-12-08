@@ -45,18 +45,18 @@
 				<section class="c-panel s-clean">
 					<div class="u-grid">
 						<c-select-field
-							name="custom-field-fruit"
+							aria-label="Выбранный фрукт:"
 							aria-placeholder="Выберите фрукт..."
-							label="Выбранный фрукт:"
+							name="custom-field-fruit"
 						>
-							<div role="option" data-value="kumquat">Кумкват</div>
-							<div role="option" data-value="pseudocydonia">Псевдоайва</div>
-							<div role="option" data-value="salacca-wallichiana">Ракум-салакка</div>
-							<div role="option" data-value="mammea-americana">Антильский абрикос</div>
+							<div role="option" value="kumquat">Кумкват</div>
+							<div role="option" value="pseudocydonia">Псевдоайва</div>
+							<div role="option" value="salacca-wallichiana">Ракум-салакка</div>
+							<div role="option" value="mammea-americana">Антильский абрикос</div>
 							<div
-								role="option"
-								data-value="casimiroa-edulis"
 								aria-disabled="true"
+								role="option"
+								value="casimiroa-edulis"
 							>Белая сапота</div>
 						</c-select-field>
 						<div>
@@ -77,11 +77,14 @@
 				</section>
 				<section class="c-panel">
 					<div class="u-grid">
-						<c-select-field name="custom-field-b" label="Копировать цвет">
-							<div role="option" data-value="hex">в формате HEX</div>
-							<div role="option" data-value="rgb">в формате RGB</div>
-							<div role="option" data-value="css-var">как переменную CSS</div>
-							<div role="option" data-value="js-const">как константу JS</div>
+						<c-select-field
+							aria-label="Копировать цвет"
+							name="custom-field-b"
+						>
+							<div role="option" value="hex">в формате HEX</div>
+							<div role="option" value="rgb">в формате RGB</div>
+							<div role="option" value="css-var">как переменную CSS</div>
+							<div role="option" value="js-const">как константу JS</div>
 						</c-select-field>
 					</div>
 				</section>
@@ -103,8 +106,10 @@
 					const $data = document.createElement('pre')
 					const formData = new FormData($form, $submitter)
 
+					/*
 					console.log($form.elements)
 					console.log(Array.from(formData.keys()), Array.from(formData.values()))
+					*/
 
 					for (const [key, value] of formData) {
 						$data.textContent += `${key}: ${value}\n`;

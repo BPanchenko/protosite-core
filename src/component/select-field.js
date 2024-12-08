@@ -10,7 +10,10 @@ const $template = new TemplateInstance(
 
 const tagName = 'c-select-field'
 
+/** @typedef {'defined' | 'interactive' | 'loaded' } ComponentReadyState */
 /** @typedef {'collapsed' | 'expanded'} ListBoxState */
+/** @typedef {ComponentReadyState | ListBoxState } SelectFieldState */
+
 /** @typedef {{ label: string, value: string }} ListItem */
 /** @typedef {Map<WeakRef<Element>, ListItem>} RefOptionList */
 /** @typedef {ListItem & { $element: HTMLElement}} SearchResult */
@@ -41,6 +44,7 @@ class SelectField extends HTMLElement {
 		'aria-expanded',
 		'aria-disabled',
 		'aria-readonly',
+		'onchange',
 		'value',
 	]
 
@@ -70,7 +74,9 @@ class SelectField extends HTMLElement {
 	connectedCallback() {
 		this.#syncAccessibilityTree()
 		this.#setFocusHandlers()
-		this.#state('customized', true)
+
+		this.#readyStateChange('interactive')
+		this.#$('link').onload = () => this.#readyStateChange('loaded')
 	}
 
 	disconnectedCallback() {
@@ -80,42 +86,27 @@ class SelectField extends HTMLElement {
 
 	adoptedCallback() {}
 
-	attributeChangedCallback(name, previous, current) {
+	attributeChangedCallback(name, previous, updated) {
 		if (false === this.isConnected) return
+		if (previous === updated) return
 
 		switch (name) {
 			case 'aria-disabled':
-				this.#state('disabled', current)
+				this.disabled =
+					(this.#internals.ariaDisabled = updated) === 'true'
+				break
+			case 'aria-expanded':
+				this.expanded =
+					(this.#internals.ariaExpanded = updated) === 'true'
 				break
 			case 'aria-label':
-				this.#$status.ariaLabel = current
+				this.#$status.ariaLabel = updated
 				break
 			case 'value':
-				this.#internals.ariaValueNow = current
-				this.#internals.setFormValue(current, 'valid')
+				this.value = updated
 				break
 			default:
-		}
-
-		this.#syncAccessibilityTree()
-	}
-
-	stateAddedCallback(name) {
-		switch (name) {
-			case 'disabled':
-				this.#deleteInteractionHandlers()
-			case 'collapsed':
-				this.setAttribute('aria-expanded', false)
-				this.#internals.ariaExpanded = this.ariaExpanded
-				this.#states.delete('expanded')
-				this.#$active = this.#$button
-				break
-			case 'expanded':
-				this.setAttribute('aria-expanded', true)
-				this.#internals.ariaExpanded = this.ariaExpanded
-				this.#states.delete('collapsed')
-				break
-			default:
+				this.#syncAccessibilityTree()
 		}
 	}
 
@@ -144,13 +135,17 @@ class SelectField extends HTMLElement {
 	}
 
 	/**
+	 * Сall returns the first option for wich the query string is started substring of the label or value option.
 	 *
 	 * @param {string} query
 	 * @returns {SearchResult | null}
 	 */
 	search(query) {
 		for (const [ref, option] of this.#options)
-			if (option.value.indexOf(query) === 0)
+			if (
+				0 === option.label.indexOf(query) ||
+				0 === option.value.indexOf(query)
+			)
 				return {
 					$element: ref.deref(),
 					...option,
@@ -158,9 +153,20 @@ class SelectField extends HTMLElement {
 		return null
 	}
 
-	select(idx) {
-		this.options[idx].ariaSelected = true
-		this.options[idx].ariaChecked = true
+	/**
+	 * Сall will find the first option wich value is fully equal to the query string.
+	 *
+	 * @param {string} query
+	 * @returns {SearchResult | null}
+	 */
+	findByValue(query) {
+		for (const [ref, option] of this.#options)
+			if (query === option.value)
+				return {
+					$element: ref.deref(),
+					...option,
+				}
+		return null
 	}
 
 	/**
@@ -168,9 +174,8 @@ class SelectField extends HTMLElement {
 	 * @returns {ListBoxState} Current state after call
 	 */
 	toggle(state = null) {
-		const current =
-			state ?? (this.#state('collapsed') ? 'expanded' : 'collapsed')
-		this.#state(current, true)
+		const current = state ?? (this.expanded ? 'collapsed' : 'expanded')
+		this[current] = true
 		return current
 	}
 
@@ -189,9 +194,25 @@ class SelectField extends HTMLElement {
 		return this.getAttribute('type') ?? 'text'
 	}
 
+	/** @type {string} */
+	get value() {
+		return this.#internals.ariaValueNow
+	}
+
+	/** @param {string} updated */
+	set value(updated) {
+		this.#internals.ariaValueNow = updated
+		this.setAttribute('value', updated)
+	}
+
 	/** @type {boolean} */
 	get interactive() {
-		return false === this.disabled && this.#interactive
+		return this.#interactive
+	}
+
+	/** @type {CustomStateSet} */
+	get #states() {
+		return this.#internals.states
 	}
 
 	/** @type {boolean} */
@@ -201,44 +222,47 @@ class SelectField extends HTMLElement {
 
 	/** @param {boolean} flag */
 	set disabled(flag) {
-		this.setAttribute('aria-disabled', Boolean(flag))
+		if (flag) {
+			this.#states.add('disabled')
+			this.disconnectedCallback()
+		} else if (this.#states.has('disabled')) {
+			this.#states.delete('disabled')
+			this.#setFocusHandlers()
+		}
+
+		this.setAttribute('aria-disabled', flag)
 		this.setAttribute(
 			'tabindex',
 			this.disabled ? '-1' : this.#defaults.get('tabindex'),
 		)
 	}
 
-	/** @type {string} */
-	get value() {
-		return this.#internals.ariaValueNow
+	/** @type {boolean} */
+	get expanded() {
+		return this.#internals.ariaExpanded === 'true'
 	}
 
-	/** @param {string} updated */
-	set value(updated) {
-		this.setAttribute('value', updated)
+	/** @param {boolean} flag */
+	set expanded(flag) {
+		this.setAttribute('aria-expanded', flag)
+		this.#states[flag ? 'add' : 'delete']('expanded')
+		this.#states[flag ? 'delete' : 'add']('collapsed')
 	}
 
-	/** @type {CustomStateSet} */
-	get #states() {
-		return this.#internals.states
+	/** @param {boolean} flag */
+	set collapsed(flag) {
+		this.expanded = false === flag
 	}
 
 	/**
 	 * Returns the first element that is a descendant of element that matches selector.
 	 *
-	 * @param {'defined' | 'uncustomized' | 'precustomized' | 'custom' | 'collapsed' | 'expanded'} state
-	 * @param {boolean} [flag]
-	 * @returns {HTMLElement | null}
+	 * @param {ComponentReadyState} state
+	 * @returns {SelectField}
 	 */
-
-	#state(state, flag) {
-		if (flag === true) {
-			this.#states.add(state)
-			this.stateAddedCallback(state)
-		} else if (flag === false) {
-			this.#states.delete(state)
-		}
-		return this.#states.has(state)
+	#readyStateChange(state) {
+		this.#states.add(state)
+		return this
 	}
 
 	/** @returns {SelectField} */
@@ -382,11 +406,10 @@ class SelectField extends HTMLElement {
 
 	#syncAccessibilityTree() {
 		this.#internals.ariaAutoComplete = this.ariaAutoComplete
-		this.#internals.ariaDisabled = this.ariaDisabled === 'true'
+		this.#internals.ariaDisabled = this.ariaDisabled
 		this.#internals.ariaHasPopup = this.ariaHasPopup
-		this.#internals.ariaExpanded = this.ariaExpanded === 'true'
-		this.#internals.ariaMultiSelectable =
-			this.ariaMultiSelectable === 'true'
+		this.#internals.ariaExpanded = this.ariaExpanded
+		this.#internals.ariaMultiSelectable = this.ariaMultiSelectable
 		this.#internals.ariaPlaceholder = this.ariaPlaceholder
 		this.#internals.role = this.role
 	}

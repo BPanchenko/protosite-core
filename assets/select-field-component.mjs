@@ -6,7 +6,6 @@ function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" 
 function _toPrimitive(t, r) { if ("object" != typeof t || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != typeof i) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _classPrivateFieldInitSpec(e, t, a) { _checkPrivateRedeclaration(e, t), t.set(e, a); }
 function _checkPrivateRedeclaration(e, t) { if (t.has(e)) throw new TypeError("Cannot initialize the same private elements twice on an object"); }
-function _classPrivateSetter(s, r, a, t) { return r(_assertClassBrand(s, a), t), t; }
 function _classPrivateGetter(s, r, a) { return a(_assertClassBrand(s, r)); }
 function _classPrivateFieldGet(s, a) { return s.get(_assertClassBrand(s, a)); }
 function _classPrivateFieldSet(s, a, r) { return s.set(_assertClassBrand(s, a), r), r; }
@@ -16,59 +15,59 @@ var s = new Map();
 function parse(t) {
   if (s.has(t)) return s.get(t);
   var e = t.length;
-  var a = 0,
-    i = 0,
+  var i = 0,
+    a = 0,
     n = 0;
   var r = [];
   for (var _s = 0; _s < e; _s += 1) {
     var _e = t[_s],
       _l = t[_s + 1],
       _o = t[_s - 1];
-    "{" === _e && "{" === _l && "\\" !== _o ? (n += 1, 1 === n && (i = _s), _s += 1) : "}" === _e && "}" === _l && "\\" !== _o && n && (n -= 1, 0 === n && (i > a && (r.push(Object.freeze({
+    "{" === _e && "{" === _l && "\\" !== _o ? (n += 1, 1 === n && (a = _s), _s += 1) : "}" === _e && "}" === _l && "\\" !== _o && n && (n -= 1, 0 === n && (a > i && (r.push(Object.freeze({
       type: "string",
-      start: a,
-      end: i,
-      value: t.slice(a, i)
-    })), a = i), r.push(Object.freeze({
-      type: "part",
       start: i,
+      end: a,
+      value: t.slice(i, a)
+    })), i = a), r.push(Object.freeze({
+      type: "part",
+      start: a,
       end: _s + 2,
-      value: t.slice(a + 2, _s).trim()
-    })), _s += 1, a = _s + 1));
+      value: t.slice(i + 2, _s).trim()
+    })), _s += 1, i = _s + 1));
   }
-  return a < e && r.push(Object.freeze({
+  return i < e && r.push(Object.freeze({
     type: "string",
-    start: a,
+    start: i,
     end: e,
-    value: t.slice(a, e)
+    value: t.slice(i, e)
   })), s.set(t, Object.freeze(r)), s.get(t);
 }
-var a = new WeakMap(),
-  i = new WeakMap();
+var i = new WeakMap(),
+  a = new WeakMap();
 class AttributeTemplatePart {
   constructor(t, e) {
-    this.expression = e, a.set(this, t), t.updateParent("");
+    this.expression = e, i.set(this, t), t.updateParent("");
   }
   get attributeName() {
-    return a.get(this).attr.name;
+    return i.get(this).attr.name;
   }
   get attributeNamespace() {
-    return a.get(this).attr.namespaceURI;
+    return i.get(this).attr.namespaceURI;
   }
   get value() {
-    return i.get(this);
+    return a.get(this);
   }
   set value(t) {
-    i.set(this, t || ""), a.get(this).updateParent(t);
+    a.set(this, t || ""), i.get(this).updateParent(t);
   }
   get element() {
-    return a.get(this).element;
+    return i.get(this).element;
   }
   get booleanValue() {
-    return a.get(this).booleanValue;
+    return i.get(this).booleanValue;
   }
   set booleanValue(t) {
-    a.get(this).booleanValue = t;
+    i.get(this).booleanValue = t;
   }
 }
 class AttributeValueSetter {
@@ -121,10 +120,10 @@ class NodeTemplatePart {
 }
 var r = function createProcessor(t) {
   return {
-    processCallback(e, s, a) {
-      var i;
-      if ("object" == typeof a && a) for (var _e2 of s) if (_e2.expression in a) {
-        var _s2 = null !== (i = a[_e2.expression]) && void 0 !== i ? i : "";
+    processCallback(e, s, i) {
+      var a;
+      if ("object" == typeof i && i) for (var _e2 of s) if (_e2.expression in i) {
+        var _s2 = null !== (a = i[_e2.expression]) && void 0 !== a ? a : "";
         t(_e2, _s2);
       }
     }
@@ -137,7 +136,7 @@ var l = new WeakMap(),
 class TemplateInstance extends (globalThis.DocumentFragment || EventTarget) {
   constructor(t, e) {
     var s = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : r;
-    var a, i;
+    var i, a;
     super(), Object.getPrototypeOf(this) !== TemplateInstance.prototype && Object.setPrototypeOf(this, TemplateInstance.prototype), this.appendChild(t.content.cloneNode(!0)), o.set(this, Array.from(function* collectParts(t) {
       var e = t.ownerDocument.createTreeWalker(t, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null);
       var s;
@@ -153,30 +152,30 @@ class TemplateInstance extends (globalThis.DocumentFragment || EventTarget) {
       } else if (s instanceof Text && s.textContent && s.textContent.includes("{{")) {
         var _t5 = parse(s.textContent);
         for (var _e5 = 0; _e5 < _t5.length; _e5 += 1) {
-          var _a = _t5[_e5];
-          _a.end < s.textContent.length && s.splitText(_a.end), "part" === _a.type && (yield new NodeTemplatePart(s, _a.value));
+          var _i = _t5[_e5];
+          _i.end < s.textContent.length && s.splitText(_i.end), "part" === _i.type && (yield new NodeTemplatePart(s, _i.value));
           break;
         }
       }
-    }(this))), l.set(this, s), null === (i = (a = l.get(this)).createCallback) || void 0 === i || i.call(a, this, o.get(this), e), l.get(this).processCallback(this, o.get(this), e);
+    }(this))), l.set(this, s), null === (a = (i = l.get(this)).createCallback) || void 0 === a || a.call(i, this, o.get(this), e), l.get(this).processCallback(this, o.get(this), e);
   }
   update(t) {
     l.get(this).processCallback(this, o.get(this), t);
   }
 }
-var c = new TemplateInstance(document.getElementById("tpl-select-field")),
-  h = "c-select-field";
+var h = new TemplateInstance(document.getElementById("tpl-select-field")),
+  c = "c-select-field";
 var _t6 = /*#__PURE__*/new WeakMap();
 var _e6 = /*#__PURE__*/new WeakMap();
 var _s4 = /*#__PURE__*/new WeakMap();
-var _a2 = /*#__PURE__*/new WeakMap();
-var _i = /*#__PURE__*/new WeakMap();
+var _i2 = /*#__PURE__*/new WeakMap();
+var _a = /*#__PURE__*/new WeakMap();
 var _n = /*#__PURE__*/new WeakMap();
 var _SelectField_brand = /*#__PURE__*/new WeakSet();
 class SelectField extends HTMLElement {
   constructor() {
     var _s5 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    super(), _classPrivateMethodInitSpec(this, _SelectField_brand), _classPrivateFieldInitSpec(this, _t6, new AbortController()), _classPrivateFieldInitSpec(this, _e6, new Map()), _classPrivateFieldInitSpec(this, _s4, !1), _classPrivateFieldInitSpec(this, _a2, void 0), _classPrivateFieldInitSpec(this, _i, void 0), _classPrivateFieldInitSpec(this, _n, void 0), this, _classPrivateFieldSet(_i, this, t.call(this, _objectSpread({
+    super(), _classPrivateMethodInitSpec(this, _SelectField_brand), _classPrivateFieldInitSpec(this, _t6, new AbortController()), _classPrivateFieldInitSpec(this, _e6, new Map()), _classPrivateFieldInitSpec(this, _s4, !1), _classPrivateFieldInitSpec(this, _i2, void 0), _classPrivateFieldInitSpec(this, _a, void 0), _classPrivateFieldInitSpec(this, _n, void 0), this, _classPrivateFieldSet(_a, this, t.call(this, _objectSpread({
       "aria-autocomplete": "list",
       "aria-haspopup": "listbox",
       "aria-expanded": !1,
@@ -184,52 +183,33 @@ class SelectField extends HTMLElement {
       role: "combobox",
       tabindex: 0
     }, _s5))), _classPrivateFieldSet(_n, this, e.call(this, {
-      $template: c,
+      $template: h,
       delegatesFocus: !0
-    })), _classPrivateFieldSet(_e6, this, _assertClassBrand(_SelectField_brand, this, _r).call(this)), _classPrivateFieldSet(_a2, this, _assertClassBrand(_SelectField_brand, this, _l2).call(this)), _assertClassBrand(_SelectField_brand, this, _o2).call(this, "defined", !0), _assertClassBrand(_SelectField_brand, this, _o2).call(this, "uncustomized", !0);
+    })), _classPrivateFieldSet(_e6, this, _assertClassBrand(_SelectField_brand, this, _r).call(this)), _classPrivateFieldSet(_i2, this, _assertClassBrand(_SelectField_brand, this, _l2).call(this));
   }
   connectedCallback() {
-    _assertClassBrand(_SelectField_brand, this, _o2).call(this, "precustomized", !0), this.addEventListener("click", _assertClassBrand(_SelectField_brand, this, _c), {
-      signal: _classPrivateFieldGet(_t6, this).signal
-    }), this.addEventListener("focus", _assertClassBrand(_SelectField_brand, this, _h), {
-      signal: _classPrivateFieldGet(_t6, this).signal
-    }), this.addEventListener("blur", _assertClassBrand(_SelectField_brand, this, _d), {
-      signal: _classPrivateFieldGet(_t6, this).signal
-    }), this.toggle("collapsed"), _assertClassBrand(_SelectField_brand, this, _o2).call(this, "custom", !0);
+    _assertClassBrand(_SelectField_brand, this, _o2).call(this), _assertClassBrand(_SelectField_brand, this, _h).call(this), _assertClassBrand(_SelectField_brand, this, _c).call(this, "interactive"), _assertClassBrand(_SelectField_brand, this, _d).call(this, "link").onload = () => _assertClassBrand(_SelectField_brand, this, _c).call(this, "loaded");
   }
   disconnectedCallback() {
     _classPrivateFieldGet(_t6, this).abort(), _classPrivateFieldSet(_s4, this, !1);
   }
   adoptedCallback() {}
   attributeChangedCallback(t, e, s) {
-    if (!1 !== this.isConnected) {
-      switch (t) {
-        case "aria-disabled":
-          _assertClassBrand(_SelectField_brand, this, _o2).call(this, "disabled", s);
-          break;
-        case "aria-label":
-          _classPrivateGetter(_SelectField_brand, this, _get_u).ariaLabel = s;
-          break;
-        case "value":
-          _classPrivateFieldGet(_a2, this).ariaValueNow = s, _classPrivateFieldGet(_a2, this).setFormValue(s, "valid");
-      }
-      _assertClassBrand(_SelectField_brand, this, _p).call(this);
-    }
-  }
-  stateAddedCallback(t) {
-    switch (t) {
-      case "custom":
-        _classPrivateGetter(_SelectField_brand, this, _get_b).delete("precustomized");
-      case "precustomized":
-        _classPrivateGetter(_SelectField_brand, this, _get_b).delete("uncustomized");
+    if (!1 !== this.isConnected && e !== s) switch (t) {
+      case "aria-disabled":
+        this.disabled = "true" === (_classPrivateFieldGet(_i2, this).ariaDisabled = s);
         break;
-      case "disabled":
-        _assertClassBrand(_SelectField_brand, this, _g).call(this);
-      case "collapsed":
-        this.setAttribute("aria-expanded", !1), _classPrivateFieldGet(_a2, this).ariaExpanded = this.ariaExpanded, _classPrivateGetter(_SelectField_brand, this, _get_b).delete("expanded"), _classPrivateSetter(_SelectField_brand, _set_m, this, _classPrivateGetter(_SelectField_brand, this, _get_f));
+      case "aria-expanded":
+        this.expanded = "true" === (_classPrivateFieldGet(_i2, this).ariaExpanded = s);
         break;
-      case "expanded":
-        this.setAttribute("aria-expanded", !0), _classPrivateFieldGet(_a2, this).ariaExpanded = this.ariaExpanded, _classPrivateGetter(_SelectField_brand, this, _get_b).delete("collapsed");
+      case "aria-label":
+        _classPrivateGetter(_SelectField_brand, this, _get_u).ariaLabel = s;
+        break;
+      case "value":
+        this.value = s;
+        break;
+      default:
+        _assertClassBrand(_SelectField_brand, this, _o2).call(this);
     }
   }
   formAssociatedCallback(t) {}
@@ -237,145 +217,134 @@ class SelectField extends HTMLElement {
     this.setAttribute("aria-disabled", t);
   }
   formResetCallback() {
-    t.call(this, _classPrivateFieldGet(_i, this));
+    t.call(this, _classPrivateFieldGet(_a, this));
   }
   formStateRestoreCallback(t, e) {
     this.value = t;
   }
   updateValidity(t) {
-    t.length >= 2 ? _classPrivateFieldGet(_a2, this).setValidity({}) : (_classPrivateFieldGet(_a2, this).setValidity({
+    t.length >= 2 ? _classPrivateFieldGet(_i2, this).setValidity({}) : (_classPrivateFieldGet(_i2, this).setValidity({
       tooShort: !0
-    }, "value is too short", _classPrivateFieldGet(_n, this).firstChild), _classPrivateFieldGet(_a2, this).reportValidity());
+    }, "value is too short", _classPrivateFieldGet(_n, this).firstChild), _classPrivateFieldGet(_i2, this).reportValidity());
   }
   search(t) {
-    for (var [_e7, _s6] of _classPrivateFieldGet(_e6, this)) if (0 === _s6.value.indexOf(t)) return _objectSpread({
+    for (var [_e7, _s6] of _classPrivateFieldGet(_e6, this)) if (0 === _s6.label.indexOf(t) || 0 === _s6.value.indexOf(t)) return _objectSpread({
       $element: _e7.deref()
     }, _s6);
     return null;
   }
-  select(t) {
-    this.options[t].ariaSelected = !0, this.options[t].ariaChecked = !0;
+  findByValue(t) {
+    for (var [_e8, _s7] of _classPrivateFieldGet(_e6, this)) if (t === _s7.value) return _objectSpread({
+      $element: _e8.deref()
+    }, _s7);
+    return null;
   }
   toggle() {
     var t = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
-    var e = t !== null && t !== void 0 ? t : _assertClassBrand(_SelectField_brand, this, _o2).call(this, "collapsed") ? "expanded" : "collapsed";
-    return _assertClassBrand(_SelectField_brand, this, _o2).call(this, e, !0), e;
+    var e = t !== null && t !== void 0 ? t : this.expanded ? "collapsed" : "expanded";
+    return this[e] = !0, e;
   }
   get form() {
-    return _classPrivateFieldGet(_a2, this).form;
+    return _classPrivateFieldGet(_i2, this).form;
   }
   get name() {
-    return this.attributes.getNamedItem("name").value;
+    var _this$getAttribute;
+    return (_this$getAttribute = this.getAttribute("name")) !== null && _this$getAttribute !== void 0 ? _this$getAttribute : "unknown";
   }
   get type() {
-    return "number";
+    var _this$getAttribute2;
+    return (_this$getAttribute2 = this.getAttribute("type")) !== null && _this$getAttribute2 !== void 0 ? _this$getAttribute2 : "text";
+  }
+  get value() {
+    return _classPrivateFieldGet(_i2, this).ariaValueNow;
+  }
+  set value(t) {
+    _classPrivateFieldGet(_i2, this).ariaValueNow = t, this.setAttribute("value", t), this.dispatchEvent(new Event("change"));
   }
   get interactive() {
     return _classPrivateFieldGet(_s4, this);
   }
   get disabled() {
-    return "true" === this.getAttribute("aria-disabled");
+    return _classPrivateFieldGet(_i2, this).ariaDisabled;
   }
   set disabled(t) {
-    this.setAttribute("aria-disabled", Boolean(t)), this.setAttribute("tabindex", this.disabled ? "-1" : _classPrivateFieldGet(_i, this).get("tabindex"));
+    t ? (_classPrivateGetter(_SelectField_brand, this, _get_p).add("disabled"), this.disconnectedCallback()) : _classPrivateGetter(_SelectField_brand, this, _get_p).has("disabled") && (_classPrivateGetter(_SelectField_brand, this, _get_p).delete("disabled"), _assertClassBrand(_SelectField_brand, this, _h).call(this)), this.setAttribute("aria-disabled", t), this.setAttribute("tabindex", this.disabled ? "-1" : _classPrivateFieldGet(_a, this).get("tabindex"));
   }
-  get value() {
-    return _classPrivateFieldGet(_a2, this).ariaValueNow;
+  get expanded() {
+    return "true" === _classPrivateFieldGet(_i2, this).ariaExpanded;
   }
-  set value(t) {
-    this.setAttribute("value", t);
+  set expanded(t) {
+    this.setAttribute("aria-expanded", t), _classPrivateGetter(_SelectField_brand, this, _get_p)[t ? "add" : "delete"]("expanded"), _classPrivateGetter(_SelectField_brand, this, _get_p)[t ? "delete" : "add"]("collapsed");
+  }
+  set collapsed(t) {
+    this.expanded = !1 === t;
   }
 }
-function _get_b(_this) {
-  return _classPrivateFieldGet(_a2, _this).states;
+function _get_p(_this) {
+  return _classPrivateFieldGet(_i2, _this).states;
 }
-function _o2(t, e) {
-  return !0 === e ? (_classPrivateGetter(_SelectField_brand, this, _get_b).add(t), this.stateAddedCallback(t)) : !1 === e && _classPrivateGetter(_SelectField_brand, this, _get_b).delete(t), _classPrivateGetter(_SelectField_brand, this, _get_b).has(t);
+function _c(t) {
+  return _classPrivateGetter(_SelectField_brand, this, _get_p).add(t), this;
 }
-function _v(t, e) {
-  return (e !== null && e !== void 0 ? e : _classPrivateFieldGet(_n, this)).querySelector(t);
-}
-function _get_m(_this2) {
-  var _classPrivateFieldGet2;
-  return (_classPrivateFieldGet2 = _classPrivateFieldGet(_n, _this2).activeElement) !== null && _classPrivateFieldGet2 !== void 0 ? _classPrivateFieldGet2 : _classPrivateFieldGet(_a2, _this2).ariaActiveDescendantElement;
-}
-function _set_m(_this3, t) {
-  null !== _classPrivateGetter(_SelectField_brand, _this3, _get_m) && (_classPrivateGetter(_SelectField_brand, _this3, _get_m).ariaActiveDescendant = null), t.ariaActiveDescendant = !0, _classPrivateFieldGet(_a2, _this3).ariaActiveDescendantElement = t;
-}
-function _get_f(_this4) {
-  return _assertClassBrand(_SelectField_brand, _this4, _v).call(_this4, "[role=button]");
-}
-function _get_u(_this5) {
-  return _assertClassBrand(_SelectField_brand, _this5, _v).call(_this5, "[role=status]", _classPrivateGetter(_SelectField_brand, _this5, _get_f));
-}
-function _get_x(_this6) {
-  return _assertClassBrand(_SelectField_brand, _this6, _v).call(_this6, "[role=listbox]");
-}
-function _get_k(_this7) {
-  return _classPrivateGetter(_SelectField_brand, _this7, _get_x).children[0];
-}
-function _get_E(_this8) {
-  return _assertClassBrand(_SelectField_brand, _this8, _v).call(_this8, "slot[name=listbox]");
-}
-function _get_C(_this9) {
-  return _assertClassBrand(_SelectField_brand, _this9, _v).call(_this9, "[role=option]:last-of-type", _classPrivateGetter(_SelectField_brand, _this9, _get_x));
-}
-function _get_y(_this10) {
-  return _assertClassBrand(_SelectField_brand, _this10, _v).call(_this10, "[role=option]:first-of-type", _classPrivateGetter(_SelectField_brand, _this10, _get_x));
-}
-function _$() {
-  return !1 === this.disabled && !1 === _classPrivateFieldGet(_s4, this) && (this.addEventListener("click", _assertClassBrand(_SelectField_brand, this, _c), {
+function _h() {
+  this.addEventListener("click", _assertClassBrand(_SelectField_brand, this, _b), {
     signal: _classPrivateFieldGet(_t6, this).signal
-  }), this.addEventListener("keypress", _assertClassBrand(_SelectField_brand, this, _A), {
+  }), this.addEventListener("focus", _assertClassBrand(_SelectField_brand, this, _g), {
+    signal: _classPrivateFieldGet(_t6, this).signal
+  }), this.addEventListener("blur", _assertClassBrand(_SelectField_brand, this, _f), {
+    signal: _classPrivateFieldGet(_t6, this).signal
+  });
+}
+function _v() {
+  return !1 === _classPrivateFieldGet(_s4, this) && (this.addEventListener("click", _assertClassBrand(_SelectField_brand, this, _b), {
+    signal: _classPrivateFieldGet(_t6, this).signal
+  }), this.addEventListener("keypress", _assertClassBrand(_SelectField_brand, this, _m), {
     signal: _classPrivateFieldGet(_t6, this).signal
   }), _classPrivateFieldSet(_s4, this, !0)), this;
 }
+function _x() {
+  return _classPrivateFieldGet(_s4, this) && (this.removeEventListener("click", _assertClassBrand(_SelectField_brand, this, _b)), this.removeEventListener("keypress", _assertClassBrand(_SelectField_brand, this, _m)), _classPrivateFieldSet(_s4, this, !1)), this;
+}
 function _g() {
-  return _classPrivateFieldGet(_s4, this) && (this.removeEventListener("click", _assertClassBrand(_SelectField_brand, this, _c)), this.removeEventListener("keypress", _assertClassBrand(_SelectField_brand, this, _A)), _classPrivateFieldSet(_s4, this, !1)), this;
+  _assertClassBrand(_SelectField_brand, this, _v).call(this);
 }
-function _h() {
-  _assertClassBrand(_SelectField_brand, this, _$).call(this);
+function _f() {
+  _assertClassBrand(_SelectField_brand, this, _x).call(this), this.toggle("collapsed");
 }
-function _d() {
-  _assertClassBrand(_SelectField_brand, this, _g).call(this), this.toggle("collapsed");
-}
-function _c() {
+function _b() {
   this.toggle();
 }
-function _A(_ref) {
+function _m(_ref) {
   var {
     key: t
   } = _ref;
   switch (t) {
     case "Backspace":
     case "Enter":
-      this.focused === _classPrivateGetter(_SelectField_brand, this, _get_f) && this.toggle("expanded");
+      this.focused === _classPrivateGetter(_SelectField_brand, this, _get_y) && this.toggle("expanded");
       break;
     case "Escape":
-      this.focused !== _classPrivateGetter(_SelectField_brand, this, _get_f) && this.toggle("collapsed");
+      this.focused !== _classPrivateGetter(_SelectField_brand, this, _get_y) && this.toggle("collapsed");
       break;
     case "End":
-      this.focus(_classPrivateGetter(_SelectField_brand, this, _get_C));
+      this.focus(_classPrivateGetter(_SelectField_brand, this, _get_k));
       break;
     case "Home":
-      this.focus(_classPrivateGetter(_SelectField_brand, this, _get_y));
+      this.focus(_classPrivateGetter(_SelectField_brand, this, _get_E));
   }
 }
 function _l2() {
   var t = this.attachInternals();
-  return t.ariaActiveDescendantElement = _assertClassBrand(_SelectField_brand, this, _v).call(this, "[aria-activedescendant=true]"), console.assert(t.ariaActiveDescendantElement, "Attribute `[aria-activedescendant]` requires specifying for some child element"), t;
-}
-function _p() {
-  _classPrivateFieldGet(_a2, this).ariaAutoComplete = this.ariaAutoComplete, _classPrivateFieldGet(_a2, this).ariaHasPopup = this.ariaHasPopup, _classPrivateFieldGet(_a2, this).ariaExpanded = this.ariaExpanded, _classPrivateFieldGet(_a2, this).ariaMultiSelectable = this.ariaMultiSelectable, _classPrivateFieldGet(_a2, this).ariaPlaceholder = this.ariaPlaceholder, _classPrivateFieldGet(_a2, this).role = this.role;
+  return t.ariaActiveDescendantElement = _assertClassBrand(_SelectField_brand, this, _d).call(this, "[aria-activedescendant=true]"), console.assert(t.ariaActiveDescendantElement, "Attribute `[aria-activedescendant]` requires specifying for some child element"), t;
 }
 function _r() {
   var t = _classPrivateFieldGet(_e6, this);
-  return _classPrivateGetter(_SelectField_brand, this, _get_E).addEventListener("slotchange", () => {
-    var e = _classPrivateGetter(_SelectField_brand, this, _get_k).assignedElements();
-    for (var _s7 of e) _s7.hasAttribute("role") && "option" === _s7.role ? t.set(new WeakRef(_s7), {
-      label: _s7.textContent || _s7.dataset.value,
-      value: _s7.dataset.value || _s7.textContent
-    }) : _s7.remove();
+  return _classPrivateGetter(_SelectField_brand, this, _get_C).addEventListener("slotchange", () => {
+    var e = _classPrivateGetter(_SelectField_brand, this, _get_$).assignedElements();
+    for (var _s8 of e) _s8.hasAttribute("role") && "option" === _s8.role ? t.set(new WeakRef(_s8), {
+      label: _s8.textContent || _s8.dataset.value,
+      value: _s8.dataset.value || _s8.textContent
+    }) : _s8.remove();
     (t => {
       t.forEach((t, e, s) => {
         var _e$deref;
@@ -386,8 +355,42 @@ function _r() {
     signal: _classPrivateFieldGet(_t6, this).signal
   }), t;
 }
+function _o2() {
+  _classPrivateFieldGet(_i2, this).ariaAutoComplete = this.ariaAutoComplete, _classPrivateFieldGet(_i2, this).ariaDisabled = this.ariaDisabled, _classPrivateFieldGet(_i2, this).ariaHasPopup = this.ariaHasPopup, _classPrivateFieldGet(_i2, this).ariaExpanded = this.ariaExpanded, _classPrivateFieldGet(_i2, this).ariaMultiSelectable = this.ariaMultiSelectable, _classPrivateFieldGet(_i2, this).ariaPlaceholder = this.ariaPlaceholder, _classPrivateFieldGet(_i2, this).role = this.role;
+}
+function _d(t, e) {
+  return (e !== null && e !== void 0 ? e : _classPrivateFieldGet(_n, this)).querySelector(t);
+}
+function _get_A(_this2) {
+  var _classPrivateFieldGet2;
+  return (_classPrivateFieldGet2 = _classPrivateFieldGet(_n, _this2).activeElement) !== null && _classPrivateFieldGet2 !== void 0 ? _classPrivateFieldGet2 : _classPrivateFieldGet(_i2, _this2).ariaActiveDescendantElement;
+}
+function _set_A(_this3, t) {
+  null !== _classPrivateGetter(_SelectField_brand, _this3, _get_A) && (_classPrivateGetter(_SelectField_brand, _this3, _get_A).ariaActiveDescendant = null), t.ariaActiveDescendant = !0, _classPrivateFieldGet(_i2, _this3).ariaActiveDescendantElement = t;
+}
+function _get_y(_this4) {
+  return _assertClassBrand(_SelectField_brand, _this4, _d).call(_this4, "[role=button]");
+}
+function _get_u(_this5) {
+  return _assertClassBrand(_SelectField_brand, _this5, _d).call(_this5, "[role=status]", _classPrivateGetter(_SelectField_brand, _this5, _get_y));
+}
+function _get_w(_this6) {
+  return _assertClassBrand(_SelectField_brand, _this6, _d).call(_this6, "[role=listbox]");
+}
+function _get_$(_this7) {
+  return _classPrivateGetter(_SelectField_brand, _this7, _get_w).children[0];
+}
+function _get_C(_this8) {
+  return _assertClassBrand(_SelectField_brand, _this8, _d).call(_this8, "slot[name=listbox]");
+}
+function _get_k(_this9) {
+  return _assertClassBrand(_SelectField_brand, _this9, _d).call(_this9, "[role=option]:last-of-type", _classPrivateGetter(_SelectField_brand, _this9, _get_w));
+}
+function _get_E(_this10) {
+  return _assertClassBrand(_SelectField_brand, _this10, _d).call(_this10, "[role=option]:first-of-type", _classPrivateGetter(_SelectField_brand, _this10, _get_w));
+}
 _defineProperty(SelectField, "formAssociated", !0);
-_defineProperty(SelectField, "observedAttributes", ["aria-label", "aria-expanded", "aria-disabled", "aria-readonly", "value"]);
-customElements.define(h, SelectField);
-var d = customElements.get(h);
+_defineProperty(SelectField, "observedAttributes", ["aria-label", "aria-expanded", "aria-disabled", "aria-readonly", "onchange", "value"]);
+customElements.define(c, SelectField);
+var d = customElements.get(c);
 export { d as default };

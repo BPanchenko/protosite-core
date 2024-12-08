@@ -5,8 +5,8 @@ html:template(id="tpl-select-field")
 		type="text/css"
 	)
 	div(
-		aria-controls="listbox"
-		aria-activedescendant="true"
+		aria-activedescendant="selected_option"
+		aria-controls="popup_listbox"
 		id="button"
 		part="button"
 		role="button"
@@ -19,7 +19,7 @@ html:template(id="tpl-select-field")
 	slot(name="listbox")
 		div(
 				aria-labelledby="button",
-				id="listbox",
+				id="popup_listbox",
 				role="listbox",
 				part="listbox"
 			)

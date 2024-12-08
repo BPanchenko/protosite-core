@@ -1,4 +1,4 @@
-import './fruits-option-element'
+import './detailed-option'
 
 const list = [
 	['kumquat', 'Кумкват', 'Citrus japonica', 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Owoce_Kumkwat.jpg/413px-Owoce_Kumkwat.jpg'],
@@ -9,8 +9,8 @@ const list = [
 ]
 
 const options = list.map([value, label, description, picture] => {
-	const $option = document.createElement('c-fruits-option', {
-		is: 'c-fruit-option'
+	const $option = document.createElement('option', {
+		is: 'c-detailed-option'
 	})
 	$option.value = value
 	$option.description = description

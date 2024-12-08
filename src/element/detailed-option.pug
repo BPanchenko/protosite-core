@@ -5,13 +5,10 @@ html:template(id="tpl-select-field")
 		}
 	</style>
 	figure
-		img(
-			slot="image"
-		)
+		slot(name="picture")
 		figcaption
-			h4(
-				slot="label"
-			)
-			div(
-				slot="description"
-			)
+			slot
+			h4
+				slot(name="label")
+			div
+				slot(name="description")

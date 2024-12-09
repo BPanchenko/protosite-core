@@ -124,6 +124,14 @@
 				rel="stylesheet"
 				type="text/css"
 			>
+			<style>
+				:host(:defined) {
+					content-visibility: hidden;
+				}
+				:host(:state(loaded)) {
+					content-visibility: visible;
+				}
+			</style>
 			<div
 				aria-controls="listbox"
 				aria-activedescendant="true"

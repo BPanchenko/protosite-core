@@ -131,41 +131,42 @@ var r = function createProcessor(t) {
 }(function processPropertyIdentity(t, e) {
   t.value = e instanceof Element ? e : String(e);
 });
+function* collectParts(t) {
+  var e = t.ownerDocument.createTreeWalker(t, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null);
+  var s;
+  for (; s = e.nextNode();) if (s instanceof HTMLTemplateElement) for (var _t3 of collectParts(s.content)) yield _t3;else if (s instanceof Element && s.hasAttributes()) for (var _t4 = 0; _t4 < s.attributes.length; _t4 += 1) {
+    var _e3 = s.attributes.item(_t4);
+    if (_e3 && _e3.value.includes("{{")) {
+      var _t5 = new AttributeValueSetter(s, _e3);
+      for (var _s3 of parse(_e3.value)) if ("string" === _s3.type) _t5.append(_s3.value);else {
+        var _e4 = new AttributeTemplatePart(_t5, _s3.value);
+        _t5.append(_e4), yield _e4;
+      }
+    }
+  } else if (s instanceof Text && s.textContent && s.textContent.includes("{{")) {
+    var _t6 = parse(s.textContent);
+    for (var _e5 = 0; _e5 < _t6.length; _e5 += 1) {
+      var _i = _t6[_e5];
+      _i.end < s.textContent.length && s.splitText(_i.end), "part" === _i.type && (yield new NodeTemplatePart(s, _i.value));
+      break;
+    }
+  }
+}
 var l = new WeakMap(),
   o = new WeakMap();
 class TemplateInstance extends (globalThis.DocumentFragment || EventTarget) {
   constructor(t, e) {
     var s = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : r;
     var i, a;
-    super(), Object.getPrototypeOf(this) !== TemplateInstance.prototype && Object.setPrototypeOf(this, TemplateInstance.prototype), this.appendChild(t.content.cloneNode(!0)), o.set(this, Array.from(function* collectParts(t) {
-      var e = t.ownerDocument.createTreeWalker(t, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, null);
-      var s;
-      for (; s = e.nextNode();) if (s instanceof Element && s.hasAttributes()) for (var _t3 = 0; _t3 < s.attributes.length; _t3 += 1) {
-        var _e3 = s.attributes.item(_t3);
-        if (_e3 && _e3.value.includes("{{")) {
-          var _t4 = new AttributeValueSetter(s, _e3);
-          for (var _s3 of parse(_e3.value)) if ("string" === _s3.type) _t4.append(_s3.value);else {
-            var _e4 = new AttributeTemplatePart(_t4, _s3.value);
-            _t4.append(_e4), yield _e4;
-          }
-        }
-      } else if (s instanceof Text && s.textContent && s.textContent.includes("{{")) {
-        var _t5 = parse(s.textContent);
-        for (var _e5 = 0; _e5 < _t5.length; _e5 += 1) {
-          var _i = _t5[_e5];
-          _i.end < s.textContent.length && s.splitText(_i.end), "part" === _i.type && (yield new NodeTemplatePart(s, _i.value));
-          break;
-        }
-      }
-    }(this))), l.set(this, s), null === (a = (i = l.get(this)).createCallback) || void 0 === a || a.call(i, this, o.get(this), e), l.get(this).processCallback(this, o.get(this), e);
+    super(), Object.getPrototypeOf(this) !== TemplateInstance.prototype && Object.setPrototypeOf(this, TemplateInstance.prototype), this.appendChild(t.content.cloneNode(!0)), o.set(this, Array.from(collectParts(this))), l.set(this, s), null === (a = (i = l.get(this)).createCallback) || void 0 === a || a.call(i, this, o.get(this), e), l.get(this).processCallback(this, o.get(this), e);
   }
   update(t) {
     l.get(this).processCallback(this, o.get(this), t);
   }
 }
-var h = new TemplateInstance(document.getElementById("tpl-select-field")),
-  c = "c-select-field";
-var _t6 = /*#__PURE__*/new WeakMap();
+var c = new TemplateInstance(document.getElementById("tpl-select-field")),
+  h = "c-select-field";
+var _t7 = /*#__PURE__*/new WeakMap();
 var _e6 = /*#__PURE__*/new WeakMap();
 var _s4 = /*#__PURE__*/new WeakMap();
 var _i2 = /*#__PURE__*/new WeakMap();
@@ -175,7 +176,7 @@ var _SelectField_brand = /*#__PURE__*/new WeakSet();
 class SelectField extends HTMLElement {
   constructor() {
     var _s5 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-    super(), _classPrivateMethodInitSpec(this, _SelectField_brand), _classPrivateFieldInitSpec(this, _t6, new AbortController()), _classPrivateFieldInitSpec(this, _e6, new Map()), _classPrivateFieldInitSpec(this, _s4, !1), _classPrivateFieldInitSpec(this, _i2, void 0), _classPrivateFieldInitSpec(this, _a, void 0), _classPrivateFieldInitSpec(this, _n, void 0), this, _classPrivateFieldSet(_a, this, t.call(this, _objectSpread({
+    super(), _classPrivateMethodInitSpec(this, _SelectField_brand), _classPrivateFieldInitSpec(this, _t7, new AbortController()), _classPrivateFieldInitSpec(this, _e6, new Map()), _classPrivateFieldInitSpec(this, _s4, !1), _classPrivateFieldInitSpec(this, _i2, void 0), _classPrivateFieldInitSpec(this, _a, void 0), _classPrivateFieldInitSpec(this, _n, void 0), this, _classPrivateFieldSet(_a, this, t.call(this, _objectSpread({
       "aria-autocomplete": "list",
       "aria-haspopup": "listbox",
       "aria-expanded": !1,
@@ -183,15 +184,15 @@ class SelectField extends HTMLElement {
       role: "combobox",
       tabindex: 0
     }, _s5))), _classPrivateFieldSet(_n, this, e.call(this, {
-      $template: h,
+      $template: c,
       delegatesFocus: !0
-    })), _classPrivateFieldSet(_e6, this, _assertClassBrand(_SelectField_brand, this, _r).call(this)), _classPrivateFieldSet(_i2, this, _assertClassBrand(_SelectField_brand, this, _l2).call(this));
+    })), _classPrivateFieldSet(_e6, this, _assertClassBrand(_SelectField_brand, this, _r).call(this)), _classPrivateFieldSet(_i2, this, _assertClassBrand(_SelectField_brand, this, _l2).call(this)), _assertClassBrand(_SelectField_brand, this, _o2).call(this, "defined");
   }
   connectedCallback() {
-    _assertClassBrand(_SelectField_brand, this, _o2).call(this), _assertClassBrand(_SelectField_brand, this, _h).call(this), _assertClassBrand(_SelectField_brand, this, _c).call(this, "interactive"), _assertClassBrand(_SelectField_brand, this, _d).call(this, "link").onload = () => _assertClassBrand(_SelectField_brand, this, _c).call(this, "loaded");
+    _assertClassBrand(_SelectField_brand, this, _c).call(this), _assertClassBrand(_SelectField_brand, this, _h).call(this), _assertClassBrand(_SelectField_brand, this, _o2).call(this, "interactive"), _assertClassBrand(_SelectField_brand, this, _d).call(this, "link").onload = () => _assertClassBrand(_SelectField_brand, this, _o2).call(this, "loaded");
   }
   disconnectedCallback() {
-    _classPrivateFieldGet(_t6, this).abort(), _classPrivateFieldSet(_s4, this, !1);
+    _classPrivateFieldGet(_t7, this).abort(), _classPrivateFieldSet(_s4, this, !1);
   }
   adoptedCallback() {}
   attributeChangedCallback(t, e, s) {
@@ -209,7 +210,7 @@ class SelectField extends HTMLElement {
         this.value = s;
         break;
       default:
-        _assertClassBrand(_SelectField_brand, this, _o2).call(this);
+        _assertClassBrand(_SelectField_brand, this, _c).call(this);
     }
   }
   formAssociatedCallback(t) {}
@@ -283,30 +284,30 @@ class SelectField extends HTMLElement {
 function _get_p(_this) {
   return _classPrivateFieldGet(_i2, _this).states;
 }
-function _c(t) {
+function _o2(t) {
   return _classPrivateGetter(_SelectField_brand, this, _get_p).add(t), this;
 }
 function _h() {
   this.addEventListener("click", _assertClassBrand(_SelectField_brand, this, _b), {
-    signal: _classPrivateFieldGet(_t6, this).signal
+    signal: _classPrivateFieldGet(_t7, this).signal
   }), this.addEventListener("focus", _assertClassBrand(_SelectField_brand, this, _g), {
-    signal: _classPrivateFieldGet(_t6, this).signal
+    signal: _classPrivateFieldGet(_t7, this).signal
   }), this.addEventListener("blur", _assertClassBrand(_SelectField_brand, this, _f), {
-    signal: _classPrivateFieldGet(_t6, this).signal
+    signal: _classPrivateFieldGet(_t7, this).signal
   });
 }
-function _v() {
+function _m() {
   return !1 === _classPrivateFieldGet(_s4, this) && (this.addEventListener("click", _assertClassBrand(_SelectField_brand, this, _b), {
-    signal: _classPrivateFieldGet(_t6, this).signal
-  }), this.addEventListener("keypress", _assertClassBrand(_SelectField_brand, this, _m), {
-    signal: _classPrivateFieldGet(_t6, this).signal
+    signal: _classPrivateFieldGet(_t7, this).signal
+  }), this.addEventListener("keypress", _assertClassBrand(_SelectField_brand, this, _v), {
+    signal: _classPrivateFieldGet(_t7, this).signal
   }), _classPrivateFieldSet(_s4, this, !0)), this;
 }
 function _x() {
-  return _classPrivateFieldGet(_s4, this) && (this.removeEventListener("click", _assertClassBrand(_SelectField_brand, this, _b)), this.removeEventListener("keypress", _assertClassBrand(_SelectField_brand, this, _m)), _classPrivateFieldSet(_s4, this, !1)), this;
+  return _classPrivateFieldGet(_s4, this) && (this.removeEventListener("click", _assertClassBrand(_SelectField_brand, this, _b)), this.removeEventListener("keypress", _assertClassBrand(_SelectField_brand, this, _v)), _classPrivateFieldSet(_s4, this, !1)), this;
 }
 function _g() {
-  _assertClassBrand(_SelectField_brand, this, _v).call(this);
+  _assertClassBrand(_SelectField_brand, this, _m).call(this);
 }
 function _f() {
   _assertClassBrand(_SelectField_brand, this, _x).call(this), this.toggle("collapsed");
@@ -314,7 +315,7 @@ function _f() {
 function _b() {
   this.toggle();
 }
-function _m(_ref) {
+function _v(_ref) {
   var {
     key: t
   } = _ref;
@@ -352,10 +353,10 @@ function _r() {
       });
     })(t);
   }, {
-    signal: _classPrivateFieldGet(_t6, this).signal
+    signal: _classPrivateFieldGet(_t7, this).signal
   }), t;
 }
-function _o2() {
+function _c() {
   _classPrivateFieldGet(_i2, this).ariaAutoComplete = this.ariaAutoComplete, _classPrivateFieldGet(_i2, this).ariaDisabled = this.ariaDisabled, _classPrivateFieldGet(_i2, this).ariaHasPopup = this.ariaHasPopup, _classPrivateFieldGet(_i2, this).ariaExpanded = this.ariaExpanded, _classPrivateFieldGet(_i2, this).ariaMultiSelectable = this.ariaMultiSelectable, _classPrivateFieldGet(_i2, this).ariaPlaceholder = this.ariaPlaceholder, _classPrivateFieldGet(_i2, this).role = this.role;
 }
 function _d(t, e) {
@@ -391,6 +392,6 @@ function _get_E(_this10) {
 }
 _defineProperty(SelectField, "formAssociated", !0);
 _defineProperty(SelectField, "observedAttributes", ["aria-label", "aria-expanded", "aria-disabled", "aria-readonly", "onchange", "value"]);
-customElements.define(c, SelectField);
-var d = customElements.get(c);
+customElements.define(h, SelectField);
+var d = customElements.get(h);
 export { d as default };

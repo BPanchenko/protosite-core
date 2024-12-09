@@ -69,6 +69,8 @@ class SelectField extends HTMLElement {
 
 		this.#options = this.#observeOptionList()
 		this.#internals = this.#initInternals()
+
+		this.#readyStateChange('defined')
 	}
 
 	connectedCallback() {
@@ -203,6 +205,8 @@ class SelectField extends HTMLElement {
 	set value(updated) {
 		this.#internals.ariaValueNow = updated
 		this.setAttribute('value', updated)
+
+		this.dispatchEvent(new Event('change'))
 	}
 
 	/** @type {boolean} */

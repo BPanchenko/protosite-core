@@ -16,6 +16,19 @@ describe('[SelectComponent]', () => {
 	})
 
 	describe('Interactive:', () => {
+		describe.each`
+			attribute
+			${'ariaAutocomplete'}
+			${'ariaActiveDescendant'}
+			${'ariaAutoComplete'}
+			${'ariaControls'}
+			${'ariaExpanded'}
+			${'ariaLabel'}
+			${'ariaHasPopup'}
+			${'ariaPlaceholder'}
+			${'tabindex'}
+		`('[$attribute]', (attribute) => {})
+
 		it('Click Left Button', () => {})
 
 		it('Click Right Button', () => {})

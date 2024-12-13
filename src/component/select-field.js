@@ -1,12 +1,9 @@
 /// <reference path="./select-field.d.ts" />
 
-import { TemplateInstance } from '@github/template-parts'
+import template from './select-field.pug'
+
 import applyAttributes from '../lib/fn.applyAttributes'
 import initShadowRoot from '../lib/fn.initShadowRoot'
-
-const $template = new TemplateInstance(
-	document.getElementById('tpl-select-field'),
-)
 
 const tagName = 'c-select-field'
 
@@ -63,7 +60,7 @@ class SelectField extends HTMLElement {
 		})
 
 		this.#shadow = initShadowRoot.call(this, {
-			$template,
+			template,
 			delegatesFocus: true,
 		})
 

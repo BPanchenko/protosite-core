@@ -118,43 +118,5 @@
 				})
 			</script>
 		</main>
-		<template id="tpl-select-field">
-			<link
-				href="http://assets.protosite.rocks/core/select-field.css"
-				rel="stylesheet"
-				type="text/css"
-			>
-			<style>
-				:host(:defined) {
-					content-visibility: hidden;
-				}
-				:host(:state(loaded)) {
-					content-visibility: visible;
-				}
-			</style>
-			<div
-				aria-controls="listbox"
-				aria-activedescendant="true"
-				id="button"
-				part="button"
-				role="button"
-			>
-				<div
-					id="choice"
-					part="choice"
-					role="status"
-				></div>
-			</div>
-			<slot name="listbox">
-				<div
-					aria-labelledby="button"
-					id="listbox"
-					part="listbox"
-					role="listbox"
-				>
-					<slot></slot>
-				</div>
-			</slot>
-		</template>
 	</body>
 </html>

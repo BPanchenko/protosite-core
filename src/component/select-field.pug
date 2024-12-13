@@ -1,31 +1,30 @@
-template(id="tpl-select-field")
-	link(
-		href="http://assets.protosite.rocks/core/select-field.css"
-		rel="stylesheet"
-		type="text/css"
-	)
-	style(type="text/css").
-		:host(:defined) {
-			content-visibility: hidden;
-		}
-		:host(:state(loaded)) {
-			content-visibility: visible;
-		}
+link(
+	href="http://assets.protosite.rocks/core/select-field.css"
+	rel="stylesheet"
+	type="text/css"
+)
+style(type="text/css").
+	:host(:defined) {
+		content-visibility: hidden;
+	}
+	:host(:state(loaded)) {
+		content-visibility: visible;
+	}
+div(
+	aria-activedescendant="true"
+	aria-controls="listbox_popover"
+	id="button"
+	role="button"
+)
 	div(
-		aria-activedescendant="true"
-		aria-controls="listbox_popover"
-		id="button"
-		role="button"
+		part="active_option"
+		role="status"
 	)
-		div(
-			part="active_option"
-			role="status"
-		)
-	slot(name="listbox")
-		div(
-			aria-labelledby="button",
-			id="listbox_popover",
-			role="listbox",
-			part="listbox"
-		)
-			slot
+slot(name="listbox")
+	div(
+		aria-labelledby="button",
+		id="listbox_popover",
+		role="listbox",
+		part="listbox"
+	)
+		slot

@@ -6,8 +6,8 @@ describe('[SelectComponent]', () => {
 	describe('Init:', () => {
 		const select = new SelectComponent({
 			name: 'custom-field-fruit',
-			'aria-placeholder': 'Выберите фрукт...',
-			label: 'Выбранный фрукт:',
+			'aria-placeholder': 'Выбрать элемент...',
+			label: 'Выбран:',
 		})
 		document.body.appendChild(select)
 

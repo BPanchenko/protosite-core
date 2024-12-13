@@ -1,6 +1,7 @@
 import { getBabelOutputPlugin } from '@rollup/plugin-babel'
 import { getFilesByPattern, root } from '../.kernel/lib.cjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
+import pugPlugin from 'rollup-plugin-pug'
 import alias from '@rollup/plugin-alias'
 import terser from '@rollup/plugin-terser'
 import path from 'node:path'
@@ -42,6 +43,9 @@ export default cssStyleSheet;`
 				return null
 			},
 		},
+		pugPlugin({
+			staticPattern: /\.pug$/,
+		}),
 		terser({
 			ecma: 2022,
 			keep_classnames: true,

@@ -6,18 +6,26 @@ import config from '../.config/rollup.config.js'
 import { debug, logger } from './logger.cjs'
 import { root, saveFile } from './lib.cjs'
 
+logger.info('Start building ECMAScript Modules')
+
 const dist = path.join(root, 'assets')
-
 makeDir.sync(dist)
-build()
 
-async function build() {
-	logger.info('Start building Web Components')
+const promises = config.input.map((file) => build(file))
+
+Promise.allSettled(promises).then(() => {
+	const { hasFail } = logger.totalSavedFiles(saveFile.calls)
+	process.exit(hasFail ? 1 : 0)
+})
+
+async function build(sourceFile) {
 	let bundle
-	let buildFailed = false
 
 	try {
-		bundle = await rollup(config)
+		bundle = await rollup({
+			...config,
+			input: sourceFile,
+		})
 		const { output } = await bundle.generate(config.output)
 
 		for (const chunkOrAsset of output) {
@@ -27,12 +35,8 @@ async function build() {
 			saveFile(file, content)
 		}
 	} catch (err) {
-		buildFailed = true
 		debug(err, 'error')
 	} finally {
 		await bundle.close()
-
-		logger.totalSavedFiles(saveFile.calls)
-		process.exit(buildFailed ? 1 : 0)
 	}
 }

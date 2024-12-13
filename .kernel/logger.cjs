@@ -76,9 +76,11 @@ logger.logSavedFile = (path, hrstart = start) => {
 		.log(`in ${roundNanoseconds(hrend[1])} s`)
 }
 
-logger.totalSavedFiles = (calls, hrstart = start) => {
-	const total = calls.length
-	const failures = calls.filter(([_, status]) => status === 'fail').length
+logger.totalSavedFiles = (savingResults, hrstart = start) => {
+	const total = savingResults.length
+	const failures = savingResults.filter(
+		([_relChunkPath, status]) => status === 'fail',
+	).length
 	const hasFail = Boolean(failures)
 	const time = roundNanoseconds(process.hrtime(hrstart)[1])
 	const separator = String.fromCharCode(0x2017)
@@ -103,6 +105,10 @@ logger.totalSavedFiles = (calls, hrstart = start) => {
 		}
 		logger.fontColorLog(color, message, setting)
 		logger.log('\r\n')
+	}
+
+	return {
+		hasFail,
 	}
 }
 

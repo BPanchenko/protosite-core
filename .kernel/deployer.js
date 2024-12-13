@@ -1,7 +1,7 @@
 import { Client } from 'basic-ftp'
 import { globSync } from 'glob'
 import path from 'node:path'
-import { debug, logger } from './logger.cjs'
+import { logger } from './logger.cjs'
 
 import ftpAccess from '../.config/ftp.json' with { type: 'json' }
 
@@ -14,7 +14,6 @@ const files = new Map(
 	asIs.sort(([_a, a], [_b, b]) => (a < b ? -1 : a > b ? 1 : 0)),
 )
 
-debug(files)
 ;(async function deploy() {
 	const client = new Client()
 

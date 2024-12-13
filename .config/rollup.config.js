@@ -1,10 +1,8 @@
-import { getBabelOutputPlugin } from '@rollup/plugin-babel'
-import { getFilesByPattern, root } from '../.kernel/lib.cjs'
+import { getFilesByPattern } from '../.kernel/lib.cjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import pugPlugin from 'rollup-plugin-pug'
 import alias from '@rollup/plugin-alias'
 import terser from '@rollup/plugin-terser'
-import path from 'node:path'
 
 export default {
 	input: getFilesByPattern(`src/component/{arrow,avatar,select-field}.js`),
@@ -12,11 +10,8 @@ export default {
 		entryFileNames: '[name]-component.mjs',
 		sourcemap: false,
 		format: 'esm',
-		plugins: [
-			getBabelOutputPlugin({
-				configFile: path.resolve(root, '.babelrc.json'),
-			}),
-		],
+		generatedCode: 'es2015',
+		inlineDynamicImports: true,
 	},
 	plugins: [
 		alias({
@@ -47,11 +42,10 @@ export default cssStyleSheet;`
 			staticPattern: /\.pug$/,
 		}),
 		terser({
-			ecma: 2022,
+			ecma: 2020,
 			keep_classnames: true,
 			keep_fnames: true,
 			compress: {
-				module: true,
 				global_defs: {
 					ENV: 'PROD',
 					SHADOW_MODE: 'closed',

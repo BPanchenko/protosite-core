@@ -1,26 +1,15 @@
+const fs = require('node:fs')
 const glob = require('glob')
 const path = require('node:path')
 
-const { existsSync, mkdirSync } = require('node:fs')
-
-const inspectOptions = {
-	depth: 3,
-	compact: false,
-	showHidden: true,
-	sorted: true,
-	showProxy: true,
-	colors: true,
-	maxArrayLength: 5,
-	maxStringLength: 180,
-	breakLength: 120,
-}
+const { debug, logger } = require('./logger.cjs')
 
 const root = process.cwd()
 
 const checkFileDir = (filePath) => {
 	const { dir } = path.parse(filePath)
-	if (!existsSync(dir)) {
-		mkdirSync(dir, { recursive: true })
+	if (!fs.existsSync(dir)) {
+		fs.mkdirSync(dir, { recursive: true })
 	}
 	return true
 }
@@ -33,12 +22,35 @@ const getFilesByPattern = (pattern, ignore) =>
 		})
 		.map((file) => path.resolve(root, file))
 
-const roundNanoseconds = (value) => Math.round(value / 1000000) / 1000
+function saveFile(filePath, content) {
+	const relFilePath = path.relative(process.cwd(), filePath)
+	let status
+
+	try {
+		fs.writeFileSync(filePath, content)
+		logger.logSavedFile(relFilePath)
+		status = 'success'
+	} catch (err) {
+		debug(err, 'error')
+		status = 'fail'
+	} finally {
+		saveFile.calls.push([relFilePath, status])
+	}
+}
+
+{
+	/**
+	 * List of files to save with the status of the result
+	 */
+	Object.defineProperty(saveFile, 'calls', {
+		value: [],
+		configurable: true,
+	})
+}
 
 module.exports = {
 	checkFileDir,
 	getFilesByPattern,
-	inspectOptions,
 	root,
-	roundNanoseconds,
+	saveFile,
 }

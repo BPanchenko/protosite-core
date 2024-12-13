@@ -1,18 +1,35 @@
 const _ = require('lodash')
 const dateFormat = require('date-format')
 const logger = require('node-color-log')
-const path = require('node:path')
 const process = require('node:process')
 const util = require('node:util')
 
-const { inspectOptions, root, roundNanoseconds } = require('./lib.cjs')
+const roundNanoseconds = (value) => Math.round(value / 1000000) / 1000
+
+const inspectOptions = {
+	depth: 3,
+	compact: false,
+	showHidden: true,
+	sorted: true,
+	showProxy: true,
+	colors: true,
+	maxArrayLength: 5,
+	maxStringLength: 180,
+	breakLength: 120,
+}
 
 const start = process.hrtime()
 
 logger.setDate(() => dateFormat('hh:mm:ss.SSS', new Date()))
 
 const debug = (...args) => {
-	let curriedLogger = _.curry(logger.debug.bind(logger), args.length)
+	const last = _.last(args)
+	const mode = ['success', 'debug', 'info', 'warn', 'error'].includes(last)
+		? last
+		: 'debug'
+
+	let curriedLogger = _.curry(logger[mode].bind(logger), args.length)
+
 	args.forEach((arg) => {
 		let parsed = arg
 		if (_.isArrayLikeObject(arg)) {
@@ -47,28 +64,46 @@ logger.info = (...args) =>
 		.color('blue')
 		.log(' ' + args.map((a) => a.toString()).join(' '))
 
-logger.logSavedFile = (file, hrstart = start) => {
+logger.logSavedFile = (path, hrstart = start) => {
 	const hrend = process.hrtime(hrstart)
-	const relative = path.relative(root, file)
 	logger
 		.bgColor('green')
 		.color('white')
 		.append('SAVED:')
 		.reset()
-		.append(` ${relative} `)
+		.append(` ${path} `)
 		.bold()
 		.log(`in ${roundNanoseconds(hrend[1])} s`)
 }
 
-logger.logSummaryFiles = (array, hrstart = start) => {
-	const hrend = process.hrtime(hrstart)
-	logger
-		.color('green')
-		.bold()
-		.underscore()
-		.log(
-			`TOTAL: Prepared ${array.length} files in ${roundNanoseconds(hrend[1])} seconds`,
-		)
+logger.totalSavedFiles = (calls, hrstart = start) => {
+	const total = calls.length
+	const failures = calls.filter(([_, status]) => status === 'fail').length
+	const hasFail = Boolean(failures)
+	const time = roundNanoseconds(process.hrtime(hrstart)[1])
+	const separator = String.fromCharCode(0x2017)
+
+	{
+		const color = hasFail ? 'black' : 'green'
+		const message = `TOTAL: Prepared ${total} files in ${time} seconds`
+		logger
+			.color(color)
+			.bold()
+			.append(separator.repeat(message.length))
+			.append('\r\n')
+			.log(message)
+	}
+	{
+		const color = hasFail ? 'red' : 'white'
+		const message = `FAILED FILES: ${failures}`
+		const setting = {
+			bold: hasFail,
+			dim: false === hasFail,
+			underscore: hasFail,
+		}
+		logger.fontColorLog(color, message, setting)
+		logger.log('\r\n')
+	}
 }
 
 logger.uploadCaption = () =>

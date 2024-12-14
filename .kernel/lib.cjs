@@ -1,10 +1,37 @@
 const fs = require('node:fs')
 const glob = require('glob')
+const makeDir = require('make-dir')
 const path = require('node:path')
 
+const { rollup } = require('rollup')
 const { debug, logger } = require('./logger.cjs')
 
 const root = process.cwd()
+
+async function buildESM(sourceFile, config) {
+	const dist = config.output.dir
+	makeDir.sync(dist)
+
+	let bundle
+	try {
+		bundle = await rollup({
+			...config,
+			input: sourceFile,
+		})
+		const { output } = await bundle.generate(config.output)
+
+		for (const chunkOrAsset of output) {
+			const { type, fileName, code, source } = chunkOrAsset
+			const file = path.join(dist, fileName)
+			const content = type === 'asset' ? source : code
+			saveFile(file, content)
+		}
+	} catch (err) {
+		debug(err, 'error')
+	} finally {
+		await bundle.close()
+	}
+}
 
 const checkFileDir = (filePath) => {
 	const { dir } = path.parse(filePath)
@@ -49,6 +76,7 @@ function saveFile(filePath, content) {
 }
 
 module.exports = {
+	buildESM,
 	checkFileDir,
 	getFilesByPattern,
 	root,

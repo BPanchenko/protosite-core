@@ -12,23 +12,18 @@ const tagName = 'c-select-field'
 /** @typedef {ComponentReadyState | ListBoxState } SelectFieldState */
 
 /** @typedef {{ label: string, value: string }} ListItem */
-/** @typedef {Map<WeakRef<Element>, ListItem>} RefOptionList */
+/** @typedef {Map<WeakRef<Element>, ListItem>} RefOptionMap */
 /** @typedef {ListItem & { $element: HTMLElement}} SearchResult */
 
 class SelectField extends HTMLElement {
-	#controller = new AbortController()
-
-	/** @type {RefOptionList} */
+	/** @type {RefOptionMap} */
 	#options = new Map()
-
-	/** @type {boolean} */
-	#interactive = false
-
-	/** @type {ElementInternals} */
-	#internals
 
 	/** @type {Map<string, string>} */
 	#defaults
+
+	/** @type {ElementInternals} */
+	#internals
 
 	/** @type {ShadowRoot} */
 	#shadow
@@ -38,6 +33,7 @@ class SelectField extends HTMLElement {
 	/** @type Array<SelectField.Attributes> */
 	static observedAttributes = [
 		'aria-label',
+		'aria-placeholder',
 		'aria-expanded',
 		'aria-disabled',
 		'aria-readonly',
@@ -49,13 +45,13 @@ class SelectField extends HTMLElement {
 	constructor(attributes = {}) {
 		super()
 
-		this.#defaults = applyAttributes.call(this, {
+		this.#defaults = applyAttributes(this, {
 			'aria-autocomplete': 'list',
 			'aria-haspopup': 'listbox',
 			'aria-expanded': false,
-			exportparts: 'button, choice, listbox',
+			exportparts: 'button, listbox, selectedcontent',
 			role: 'combobox',
-			tabindex: 0,
+			tabIndex: 0,
 			...attributes,
 		})
 
@@ -64,23 +60,28 @@ class SelectField extends HTMLElement {
 			delegatesFocus: true,
 		})
 
-		this.#options = this.#observeOptionList()
-		this.#internals = this.#initInternals()
+		this.#internals = this.attachInternals()
 
+		this.#listenAssignedNodes()
 		this.#readyStateChange('defined')
 	}
 
 	connectedCallback() {
+		// (1)
 		this.#syncAccessibilityTree()
-		this.#setFocusHandlers()
 
+		// (2)
+		this.#listenFocus()
 		this.#readyStateChange('interactive')
+
+		// (3)
 		this.#$('link').onload = () => this.#readyStateChange('loaded')
 	}
 
 	disconnectedCallback() {
-		this.#controller.abort()
-		this.#interactive = false
+		this.#interCont?.abort()
+		this.#focusCont?.abort()
+		this.#slotChangeCont?.abort()
 	}
 
 	adoptedCallback() {}
@@ -101,6 +102,9 @@ class SelectField extends HTMLElement {
 			case 'aria-label':
 				this.#$status.ariaLabel = updated
 				break
+			case 'aria-placeholder':
+				this.#$status.ariaPlaceholder = updated
+				break
 			case 'value':
 				this.value = updated
 				break
@@ -109,14 +113,14 @@ class SelectField extends HTMLElement {
 		}
 	}
 
-	formAssociatedCallback(form) {}
+	formAssociatedCallback(_form) {}
 	formDisabledCallback(isDisabled) {
 		this.setAttribute('aria-disabled', isDisabled)
 	}
 	formResetCallback() {
-		applyAttributes.call(this, this.#defaults)
+		applyAttributes(this, this.#defaults)
 	}
-	formStateRestoreCallback(state, reason) {
+	formStateRestoreCallback(state, _reason) {
 		this.value = state
 	}
 
@@ -189,8 +193,20 @@ class SelectField extends HTMLElement {
 	}
 
 	/** @type {string} */
+	get options() {
+		const $$elements = new Set()
+		for (const [ref, _option] of this.#options) $$elements.add(ref.deref())
+		return null
+	}
+
+	/** @type {string} */
 	get type() {
 		return this.getAttribute('type') ?? 'text'
+	}
+
+	/** @type {number} */
+	get size() {
+		return this.#options.size
 	}
 
 	/** @type {string} */
@@ -207,8 +223,11 @@ class SelectField extends HTMLElement {
 	}
 
 	/** @type {boolean} */
-	get interactive() {
-		return this.#interactive
+	get interacting() {
+		return (
+			Boolean(this.#interCont) &&
+			false === this.#interCont?.signal.aborted
+		)
 	}
 
 	/** @type {CustomStateSet} */
@@ -218,17 +237,16 @@ class SelectField extends HTMLElement {
 
 	/** @type {boolean} */
 	get disabled() {
-		return this.#internals.ariaDisabled
+		return this.#internals.ariaDisabled === 'true'
 	}
 
 	/** @param {boolean} flag */
 	set disabled(flag) {
 		if (flag) {
 			this.#states.add('disabled')
-			this.disconnectedCallback()
+			this.#interCont?.abort()
 		} else if (this.#states.has('disabled')) {
 			this.#states.delete('disabled')
-			this.#setFocusHandlers()
 		}
 
 		this.setAttribute('aria-disabled', flag)
@@ -266,57 +284,91 @@ class SelectField extends HTMLElement {
 		return this
 	}
 
-	/** @returns {SelectField} */
-	#setFocusHandlers() {
-		this.addEventListener('click', this.#onClick, {
-			signal: this.#controller.signal,
-		})
-		this.addEventListener('focus', this.#onFocus, {
-			signal: this.#controller.signal,
-		})
-		this.addEventListener('blur', this.#onBlur, {
-			signal: this.#controller.signal,
-		})
-	}
+	/** @type {AbortController} */
+	#focusCont
 
-	/** @returns {SelectField} */
-	#setInteractionHandlers() {
-		if (false === this.#interactive) {
-			this.addEventListener('click', this.#onClick, {
-				signal: this.#controller.signal,
-			})
-			this.addEventListener('keypress', this.#onKeyPress, {
-				signal: this.#controller.signal,
-			})
-			this.#interactive = true
+	/** @returns {AbortController} */
+	#listenFocus() {
+		this.#focusCont?.abort()
+		this.#focusCont = new AbortController()
+
+		const options = {
+			capture: false,
+			passive: true,
+			signal: this.#focusCont.signal,
 		}
-		return this
+
+		this.addEventListener('focus', (event) => this.#onFocus(event), options)
+		this.addEventListener(
+			'focusin',
+			(event) => this.#onFocusIn(event),
+			options,
+		)
+		this.addEventListener('blur', (event) => this.#onBlur(event), options)
+		this.addEventListener(
+			'focusout',
+			(event) => this.#onFocusOut(event),
+			options,
+		)
+
+		return this.#focusCont
 	}
 
-	/** @returns {SelectField} */
-	#deleteInteractionHandlers() {
-		if (this.#interactive) {
-			this.removeEventListener('click', this.#onClick)
-			this.removeEventListener('keypress', this.#onKeyPress)
-			this.#interactive = false
-		}
-		return this
+	#onFocus(event) {
+		this.#listenInteraction()
 	}
 
-	#onFocus() {
-		this.#setInteractionHandlers()
-	}
+	#onFocusIn(event) {}
 
-	#onBlur() {
-		this.#deleteInteractionHandlers()
+	#onBlur(event) {}
+
+	#onFocusOut(event) {
 		this.toggle('collapsed')
+		this.#interCont?.abort()
 	}
 
-	#onClick() {
+	/** @type {AbortController} */
+	#interCont
+
+	/** @returns {AbortController} */
+	#listenInteraction() {
+		this.#interCont?.abort()
+		this.#interCont = new AbortController()
+
+		const options = {
+			capture: true,
+			passive: false,
+			signal: this.#interCont.signal,
+		}
+
+		this.#$button.addEventListener(
+			'click',
+			(event) => this.#onClickButton(event),
+			options,
+		)
+		this.#$listbox.addEventListener(
+			'click',
+			(event) => this.#onClickListBox(event),
+			options,
+		)
+		this.addEventListener(
+			'keypress',
+			(event) => this.#onKeyPress(event),
+			options,
+		)
+
+		return this.#interCont
+	}
+
+	#onClickButton(event) {
 		this.toggle()
 	}
 
-	#onKeyPress({ key }) {
+	#onClickListBox(event) {}
+
+	#onKeyPress(event) {
+		const { key } = event
+
 		switch (key) {
 			case 'Backspace':
 			case 'Enter':
@@ -330,10 +382,10 @@ class SelectField extends HTMLElement {
 				}
 				break
 			case 'End':
-				this.focus(this.#$lastOption)
+				this.options[this.size - 1].focus()
 				break
 			case 'Home':
-				this.focus(this.#$firstOption)
+				this.options[0].focus()
 				break
 			case 'ArrowUp':
 				break
@@ -346,66 +398,55 @@ class SelectField extends HTMLElement {
 		}
 	}
 
-	/**
-	 * This method allows a custom element to participate in HTML forms.
-	 * The ElementInternals interface provides utilities for working with these elements in the same way you would work with any standard HTML form element, and also exposes the Accessibility Object Model to the element.
-	 *
-	 * [MDN Reference](https://developer.mozilla.org/docs/Web/API/HTMLElement/attachInternals)
-	 *
-	 * @returns {ElementInternals | never}
-	 */
-	#initInternals() {
-		const elem = this.attachInternals()
+	/** @type {AbortController} */
+	#slotChangeCont
 
-		elem.ariaActiveDescendantElement = this.#$(
-			'[aria-activedescendant=true]',
-		)
+	/** @returns {AbortController} */
+	#listenAssignedNodes() {
+		this.#slotChangeCont?.abort()
+		this.#slotChangeCont = new AbortController()
 
-		console.assert(
-			elem.ariaActiveDescendantElement,
-			'Attribute `[aria-activedescendant]` requires specifying for some child element',
-		)
-
-		return elem
-	}
-
-	#observeOptionList() {
-		/** @type {RefOptionList} */
+		/** @type {RefOptionMap} */
 		const list = this.#options
 
 		const cleanup = (list) =>
-			list.forEach(
-				(_, ref, map) =>
-					Boolean(ref.deref()?.isConnected) || map.delete(ref),
-			)
+			list.forEach((_, ref, map) => {
+				const $element = ref.deref()
+				Boolean(
+					$element.isConnected && $element.parentElement === this,
+				) || map.delete(ref)
+			})
 
-		this.#$slotListbox.addEventListener(
+		this.#$listbox.children[0].addEventListener(
 			'slotchange',
-			() => {
-				const $$elements = this.#$slot.assignedElements()
+			(event) => {
+				const $$elements = event.target.assignedElements()
 				for (const $element of $$elements)
 					if (
 						$element.hasAttribute('role') &&
 						$element.role === 'option'
-					)
+					) {
+						const label = $element.ariaLabel || $element.textContent
 						list.set(new WeakRef($element), {
-							label:
-								$element.textContent || $element.dataset.value,
+							label,
 							value:
-								$element.dataset.value || $element.textContent,
+								$element.value ||
+								$element.dataset.value ||
+								label,
 						})
-					else $element.remove()
+					} else $element.remove()
 				cleanup(list)
 			},
 			{
-				signal: this.#controller.signal,
+				signal: this.#slotChangeCont.signal,
 			},
 		)
 
-		return list
+		return this.#slotChangeCont
 	}
 
 	#syncAccessibilityTree() {
+		this.#internals.ariaActiveDescendantElement = this.#shadow.activeElement
 		this.#internals.ariaAutoComplete = this.ariaAutoComplete
 		this.#internals.ariaDisabled = this.ariaDisabled
 		this.#internals.ariaHasPopup = this.ariaHasPopup
@@ -426,31 +467,6 @@ class SelectField extends HTMLElement {
 		return ($parent ?? this.#shadow).querySelector(selector)
 	}
 
-	/**
-	 * @type {HTMLElement}
-	 *
-	 * Get focused element
-	 */
-	get #$active() {
-		return (
-			this.#shadow.activeElement ??
-			this.#internals.ariaActiveDescendantElement
-		)
-	}
-
-	/**
-	 * @param {HTMLElement} $element
-	 *
-	 * Set/Get focused element
-	 */
-	set #$active($element) {
-		if (this.#$active !== null) this.#$active.ariaActiveDescendant = null
-
-		$element.ariaActiveDescendant = true
-		// this.#shadow.activeElement = $element
-		this.#internals.ariaActiveDescendantElement = $element
-	}
-
 	/** @type {HTMLElement} */
 	get #$button() {
 		return this.#$('[role=button]')
@@ -464,26 +480,6 @@ class SelectField extends HTMLElement {
 	/** @type {HTMLElement} */
 	get #$listbox() {
 		return this.#$('[role=listbox]')
-	}
-
-	/** @type {HTMLSlotElement} */
-	get #$slot() {
-		return this.#$listbox.children[0]
-	}
-
-	/** @type {HTMLSlotElement} */
-	get #$slotListbox() {
-		return this.#$('slot[name=listbox]')
-	}
-
-	/** @type {HTMLElement} */
-	get #$lastOption() {
-		return this.#$('[role=option]:last-of-type', this.#$listbox)
-	}
-
-	/** @type {HTMLElement} */
-	get #$firstOption() {
-		return this.#$('[role=option]:first-of-type', this.#$listbox)
 	}
 }
 

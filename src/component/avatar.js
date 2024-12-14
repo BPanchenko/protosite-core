@@ -3,7 +3,7 @@
 import cssStyleSheet, { cAvatar, cAvatarLink } from '#uikit/component/avatar'
 
 import applyAttributes from '../lib/fn.applyAttributes'
-import createElement from '../lib/cb.createElement'
+import createElement from '../lib/fn.createElement'
 import initShadowRoot from '../lib/fn.initShadowRoot'
 
 const tagName = cAvatar

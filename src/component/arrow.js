@@ -3,7 +3,7 @@
 import cssStyleSheet, { cArrow } from '#uikit/component/arrow'
 
 import applyAttributes from '../lib/fn.applyAttributes'
-import checkFontFace from '../lib/cb.checkFontFace'
+import checkFontFace from '../lib/fn.checkFontFace'
 import initShadowRoot from '../lib/fn.initShadowRoot'
 
 const tagName = cArrow

@@ -24,7 +24,10 @@ module.exports = {
 		'^#uikit/(.*)$':
 			'<rootDir>/../node_modules/@bpanchenko/uikit/assets/$1',
 	},
-	setupFilesAfterEnv: ['construct-style-sheets-polyfill'],
+	setupFilesAfterEnv: [
+		'construct-style-sheets-polyfill',
+		'element-internals-polyfill',
+	],
 	snapshotFormat: {
 		printBasicPrototype: true,
 		printFunctionName: true,
@@ -38,6 +41,7 @@ module.exports = {
 	testMatch: ['**/__specs__/**/*.spec.js'],
 	transform: {
 		'\\.m?js$': 'babel-jest',
+		'\\.(pug)$': 'jest-transform-pug',
 	},
 	transformIgnorePatterns: [
 		'<rootDir>/../node_modules/(?!@bpanchenko/uikit/assets/)',

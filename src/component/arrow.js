@@ -37,7 +37,7 @@ export class ArrowComponent extends HTMLElement {
 	constructor(attributes = {}) {
 		super()
 
-		applyAttributes.call(this, attributes)
+		applyAttributes(this, attributes)
 
 		this.#shadow_ = initShadowRoot.call(this, {
 			template,

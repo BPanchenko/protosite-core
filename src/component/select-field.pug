@@ -11,20 +11,20 @@ style(type="text/css").
 		content-visibility: visible;
 	}
 div(
-	aria-activedescendant="true"
 	aria-controls="listbox_popover"
 	id="button"
 	role="button"
+	tabindex="0"
 )
 	div(
-		part="active_option"
+		part="selectedcontent"
 		role="status"
 	)
-slot(name="listbox")
-	div(
-		aria-labelledby="button",
-		id="listbox_popover",
-		role="listbox",
-		part="listbox"
-	)
-		slot
+div(
+	aria-labelledby="button",
+	id="listbox_popover",
+	role="listbox",
+	part="listbox"
+	tabindex="1"
+)
+	slot

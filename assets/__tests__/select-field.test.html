@@ -44,9 +44,21 @@
 			<form enctype="text/plain" data-testid="main-form">
 				<section class="c-panel s-clean">
 					<div class="u-grid">
+						<select name="native-field-a">
+							<option label="Выбрать элемент..."></option>
+							<option value="peafowls@doka.ru" label="Моя первая почта"></option>
+							<option value="work68@doka.ru" label="Рабочая почта"></option>
+							<option value="adversting68@doka.ru" label="Почта для рекламных предложений"></option>
+						</select>
+						<select name="native-field-b">
+							<option label="Выбрать элемент..."></option>
+							<option value="peafowls@doka.ru" label="Моя первая почта"></option>
+							<option value="work68@doka.ru" label="Рабочая почта"></option>
+							<option value="adversting68@doka.ru" label="Почта для рекламных предложений"></option>
+						</select>
 						<c-select-field
-							aria-label="Выбранный фрукт:"
-							aria-placeholder="Выберите фрукт..."
+							aria-label="Выбран:"
+							aria-placeholder="Выбрать элемент..."
 							name="custom-field-fruit"
 						>
 							<div role="option" value="kumquat">Кумкват</div>
@@ -59,27 +71,20 @@
 								value="casimiroa-edulis"
 							>Белая сапота</div>
 						</c-select-field>
-						<div>
-							<label for="ice-cream-choice">Выберите почту:</label>
-							<input
-								name="native-field-email"
-								type="email"
-								list="emails-list"
-								placeholder="Hello@doka.ru"
-							>
-							<datalist id="emails-list">
-								<option value="peafowls@doka.ru" label="Моя первая почта"></option>
-								<option value="work68@doka.ru" label="Рабочая почта"></option>
-								<option value="adversting68@doka.ru" label="Почта для рекламных предложений"></option>
-							</datalist>
-						</div>
+						<select name="native-field-c">
+							<option label="Выбрать элемент..."></option>
+							<option value="peafowls@doka.ru" label="Моя первая почта"></option>
+							<option value="work68@doka.ru" label="Рабочая почта"></option>
+							<option value="adversting68@doka.ru" label="Почта для рекламных предложений"></option>
+						</select>
 					</div>
 				</section>
 				<section class="c-panel">
 					<div class="u-grid">
 						<c-select-field
 							aria-label="Копировать цвет"
-							name="custom-field-b"
+							name="custom-field-color-format"
+							value="css-var"
 						>
 							<div role="option" value="hex">в формате HEX</div>
 							<div role="option" value="rgb">в формате RGB</div>

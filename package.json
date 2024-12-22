@@ -1,6 +1,6 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.9.29",
+  "version": "1.9.30",
   "description": "Web Application Core. It сontains a library of Web Components.",
   "homepage": "http://protosite.rocks",
   "type": "module",
@@ -17,16 +17,14 @@
   "exports": {
     "./component/*.js": "./src/components/*.js",
     "./lib/*.js": "./src/lib/*.js",
-    "./select-field": "./assets/select-field.mjs",
-    "./avatar": "./assets/avatar-component.mjs",
-    "./field": "./assets/field-component.mjs",
+    "./arrow": "./assets/component.arrow.mjs",
+    "./avatar": "./assets/component.avatar.mjs",
+    "./select-field": "./assets/component.select-field.mjs",
     "./*.js": "./src/*.js",
     ".": "./index.js"
   },
   "imports": {
-    "#types": "@types/index.d.ts",
-    "#assets/*": "assets/*",
-    "#uikit/*": "@bpanchenko/uikit/*"
+    "#lib/*": "./src/lib/*"
   },
   "scripts": {
     "build": "node ./.kernel/builder",

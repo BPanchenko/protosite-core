@@ -1,4 +1,4 @@
-import applyAttributes from '../../lib/fn.applyAttributes.js'
+import applyAttributes from '#lib/fn.applyAttributes.js'
 import '../__mocks__/window.mock'
 import SelectComponent from '../select-field.js'
 import { within } from '@testing-library/dom'

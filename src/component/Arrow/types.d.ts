@@ -50,9 +50,9 @@ declare namespace Arrow {
 		weight: Weight
 	}
 
-	class WebComponent extends HTMLElement {
-		static observedAttributes: string[]
-		constructor(attributes: Attributes)
+	interface WebComponent extends HTMLElement {
+		observedAttributes: string[]
+
 		attributeChangedCallback(name: string, oldVal: string | null, newVal: string | null): void
 	}
 }

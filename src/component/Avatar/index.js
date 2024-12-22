@@ -1,12 +1,12 @@
-/// <reference path="../../@types/index.d.ts" />
+/// <reference path="./types.d.ts" />
 
-import cssStyleSheet, { cAvatar, cAvatarLink } from '#uikit/component/avatar'
+import cssStyleSheet, { cAvatar, cAvatarLink } from '@uikit/component/avatar'
 
-import applyAttributes from '../lib/fn.applyAttributes'
-import createElement from '../lib/fn.createElement'
-import initShadowRoot from '../lib/fn.initShadowRoot'
+import applyAttributes from '#lib/fn.applyAttributes.js'
+import createElement from '#lib/fn.createElement.js'
+import initShadowRoot from '#lib/fn.initShadowRoot.js'
 
-const tagName = cAvatar
+export const tagName = cAvatar
 const template = `<div role=img><slot></slot></div>`
 
 /** @implements {Avatar.WebComponent} */

@@ -114,8 +114,8 @@ export default [
 			'import/resolver': {
 				alias: {
 					map: [
-						['#assets', './assets'],
-						['#uikit', '@bpanchenko/uikit'],
+						['#lib', './src/lib'],
+						['@uikit', '@bpanchenko/uikit'],
 					],
 					extensions: ['.js', '.cjs', '.mjs', '.css', '.json'],
 				},

@@ -1,12 +1,12 @@
-/// <reference path="./arrow.d.ts" />
+/// <reference path="./types.d.ts" />
 
-import cssStyleSheet, { cArrow } from '#uikit/component/arrow'
+import cssStyleSheet, { cArrow } from '@uikit/component/arrow'
 
-import applyAttributes from '../lib/fn.applyAttributes'
-import checkFontFace from '../lib/fn.checkFontFace'
-import initShadowRoot from '../lib/fn.initShadowRoot'
+import applyAttributes from '#lib/fn.applyAttributes.js'
+import checkFontFace from '#lib/fn.checkFontFace.js'
+import initShadowRoot from '#lib/fn.initShadowRoot.js'
 
-const tagName = cArrow
+export const tagName = cArrow
 const template = `<i data-glyph=arrow><slot>&nbsp;</slot></i>`
 
 /**
@@ -23,13 +23,13 @@ export class ArrowComponent extends HTMLElement {
 
 	/** @type Array<string> */
 	static observedAttributes = [
-		'direction',
-		'figure',
 		'font',
+		'glyph-direction',
+		'glyph-figure',
+		'glyph-style',
+		'glyph-weight',
 		'glyph',
 		'size',
-		'style',
-		'weight',
 	]
 	static sizes = ['sm', 'md', 'lg', 'xl', 'xxs', 'xs', 'xxl']
 
@@ -68,12 +68,12 @@ export class ArrowComponent extends HTMLElement {
 	}
 
 	#applyGlyph() {
-		const [direction, figure, glyph, style, weight] = [
-			'direction',
-			'figure',
+		const [direction, figure, style, weight, glyph] = [
+			'glyph-direction',
+			'glyph-figure',
+			'glyph-style',
+			'glyph-weight',
 			'glyph',
-			'style',
-			'weight',
 		].map((attr) => this.hasAttribute(attr) && this.getAttribute(attr))
 
 		const value =

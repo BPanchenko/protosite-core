@@ -1,5 +1,5 @@
 import AvatarComponent from '../avatar.js'
-import compactObject from '../../lib/fn.compactObject.js'
+import compactObject from '#lib/fn.compactObject.js'
 
 describe('[AvatarComponent]', () => {
 	describe('Attributes:', () => {

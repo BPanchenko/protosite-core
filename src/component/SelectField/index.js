@@ -1,11 +1,11 @@
-/// <reference path="./select-field.d.ts" />
+/// <reference path="./types.d.ts" />
 
-import template from './select-field.pug'
+import template from './template.pug'
 
-import applyAttributes from '../lib/fn.applyAttributes'
-import initShadowRoot from '../lib/fn.initShadowRoot'
+import applyAttributes from '#lib/fn.applyAttributes.js'
+import initShadowRoot from '#lib/fn.initShadowRoot.js'
 
-const tagName = 'c-select-field'
+export const tagName = 'c-select-field'
 
 /** @typedef {'defined' | 'interactive' | 'loaded' } ComponentReadyState */
 /** @typedef {'collapsed' | 'expanded'} ListBoxState */
@@ -15,7 +15,7 @@ const tagName = 'c-select-field'
 /** @typedef {Map<WeakRef<Element>, ListItem>} RefOptionMap */
 /** @typedef {ListItem & { $element: HTMLElement}} SearchResult */
 
-class SelectField extends HTMLElement {
+export class SelectField extends HTMLElement {
 	/** @type {RefOptionMap} */
 	#options = new Map()
 

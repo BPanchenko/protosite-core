@@ -1,9 +1,13 @@
 import { getFilesByPattern } from '../.kernel/lib.cjs'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
-import pugPlugin from 'rollup-plugin-pug'
 import alias from '@rollup/plugin-alias'
-import terser from '@rollup/plugin-terser'
+import kebabCase from 'lodash/kebabCase.js'
+import last from 'lodash/last.js'
 import path from 'node:path'
+import pugPlugin from 'rollup-plugin-pug'
+import terser from '@rollup/plugin-terser'
+
+const componentDir = path.join('src', 'component')
 
 export default function getConfig(options = {}) {
 	const { mode = 'debug', root = process.cwd() } = options
@@ -12,19 +16,38 @@ export default function getConfig(options = {}) {
 
 	return {
 		input: getFilesByPattern(
-			`src/component/{arrow,avatar,select-field}.js`,
+			[
+				path.join(componentDir, 'Arrow'),
+				path.join(componentDir, 'Avatar'),
+				path.join(componentDir, 'SelectField'),
+			].map((path) => path.replaceAll('\\', '/')),
 		),
 		output: {
+			entryFileNames: ({ facadeModuleId }) => {
+				const { dir, name } = path.parse(facadeModuleId)
+				const extension = 'mjs'
+				const isWebComponent = dir.includes(componentDir)
+
+				const moduleName =
+					name === 'index' ? last(dir.split(path.sep)) : name
+				const splittedName = moduleName.split('.')
+
+				const fileName = kebabCase(
+					isWebComponent ? moduleName : splittedName[1],
+				).replace('-component', '')
+				const prefix = isWebComponent ? 'component' : splittedName[0]
+
+				return [prefix, fileName, extension].join('.')
+			},
 			dir,
-			entryFileNames: '[name]-component.mjs',
-			sourcemap: isDebug,
 			format: 'esm',
 			generatedCode: 'es2015',
 			inlineDynamicImports: true,
+			sourcemap: isDebug,
 		},
 		plugins: [
 			alias({
-				entries: [{ find: '#uikit', replacement: '@bpanchenko/uikit' }],
+				entries: [{ find: '@uikit', replacement: '@bpanchenko/uikit' }],
 			}),
 			nodeResolve({
 				custom: { 'node-resolve': { isRequire: false } },

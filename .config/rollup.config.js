@@ -8,6 +8,7 @@ import pugPlugin from 'rollup-plugin-pug'
 import terser from '@rollup/plugin-terser'
 
 const componentDir = path.join('src', 'component')
+const libraryDir = path.join('src', 'lib')
 
 export default function getConfig(options = {}) {
 	const { mode = 'debug', root = process.cwd() } = options
@@ -20,6 +21,7 @@ export default function getConfig(options = {}) {
 				path.join(componentDir, 'Arrow'),
 				path.join(componentDir, 'Avatar'),
 				path.join(componentDir, 'SelectField'),
+				path.join(libraryDir, 'fn.debounce.js'),
 			].map((path) => path.replaceAll('\\', '/')),
 		),
 		output: {

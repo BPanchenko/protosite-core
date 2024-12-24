@@ -46,7 +46,7 @@ export default function initShadowRoot(options) {
 
 	// 2.
 
-	if (typeof template === 'string') shadowRoot.setHTMLUnsafe(template)
+	if (typeof template === 'string') shadowRoot.innerHTML = template
 
 	return shadowRoot
 }

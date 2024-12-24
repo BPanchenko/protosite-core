@@ -115,7 +115,7 @@ export default [
 				alias: {
 					map: [
 						['#lib', './src/lib'],
-						['@uikit', '@bpanchenko/uikit'],
+						['#uikit', '@bpanchenko/uikit'],
 					],
 					extensions: ['.js', '.cjs', '.mjs', '.css', '.json'],
 				},

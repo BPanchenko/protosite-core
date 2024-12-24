@@ -1,6 +1,6 @@
 /// <reference path="./types.d.ts" />
 
-import cssStyleSheet, { cArrow } from '@uikit/component/arrow'
+import cssStyleSheet, { cArrow } from '#uikit/component/arrow'
 
 import applyAttributes from '#lib/fn.applyAttributes.js'
 import checkFontFace from '#lib/fn.checkFontFace.js'

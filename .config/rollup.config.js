@@ -50,7 +50,7 @@ export default function getConfig(options = {}) {
 		},
 		plugins: [
 			alias({
-				entries: [{ find: '@uikit', replacement: '@bpanchenko/uikit' }],
+				entries: [{ find: '#uikit', replacement: '@bpanchenko/uikit' }],
 			}),
 			nodeResolve({
 				custom: { 'node-resolve': { isRequire: false } },

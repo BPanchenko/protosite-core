@@ -1,6 +1,6 @@
 /// <reference path="./types.d.ts" />
 
-import cssStyleSheet, { cAvatar, cAvatarLink } from '@uikit/component/avatar'
+import cssStyleSheet, { cAvatar, cAvatarLink } from '#uikit/component/avatar'
 
 import applyAttributes from '#lib/fn.applyAttributes.js'
 import createElement from '#lib/fn.createElement.js'

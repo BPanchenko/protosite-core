@@ -1,6 +1,6 @@
 /// <reference path="../../@types/index.d.ts" />
 
-import cssStyleSheet, * as css from '@uikit/component/field'
+import cssStyleSheet, * as css from '#uikit/component/field'
 
 import createElement from '../lib/fn.createElement'
 

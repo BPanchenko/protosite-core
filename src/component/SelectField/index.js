@@ -16,54 +16,52 @@ export const tagName = 'c-select-field'
 /** @typedef {ListItem & { $element: HTMLElement}} SearchResult */
 
 export class SelectField extends HTMLElement {
-	/** @type {RefOptionMap} */
-	#options = new Map()
-
 	/** @type {Map<string, string>} */
-	#defaults
+	#initialAttributes
 
 	/** @type {ElementInternals} */
 	#internals
 
-	/** @type {ShadowRoot} */
-	#shadow
+	/** @type {RefOptionMap} */
+	#options = new Map()
 
 	static formAssociated = true
 
 	/** @type Array<SelectField.Attributes> */
 	static observedAttributes = [
+		'aria-disabled',
+		'aria-expanded',
 		'aria-label',
 		'aria-placeholder',
-		'aria-expanded',
-		'aria-disabled',
 		'aria-readonly',
 		'onchange',
 		'value',
 	]
 
-	/** @param {SelectField.Attributes} [attributes] */
-	constructor(attributes = {}) {
-		super()
-
-		this.#defaults = applyAttributes(this, {
-			'aria-autocomplete': 'list',
-			'aria-haspopup': 'listbox',
-			'aria-expanded': false,
-			exportparts: 'button, listbox, selectedcontent',
-			role: 'combobox',
-			tabIndex: 0,
-			...attributes,
-		})
-
-		this.#shadow = initShadowRoot.call(this, {
+	constructor() {
+		initShadowRoot.call(super(), {
 			template,
 			delegatesFocus: true,
 		})
 
 		this.#internals = this.attachInternals()
-
+		this.#initInternalProperties()
+		this.#initElementAttributes()
+		this.#states.add('defined')
 		this.#listenAssignedNodes()
-		this.#readyStateChange('defined')
+	}
+
+	#initElementAttributes() {
+		const $$parts = this.#internals.shadowRoot.querySelectorAll('[part]')
+
+		const attrs = {
+			role: this.#internals.role,
+		}
+	}
+
+	#initInternalProperties() {
+		this.#internals.ariaAtomic = true
+		this.#internals.role = 'combobox'
 	}
 
 	connectedCallback() {
@@ -72,10 +70,10 @@ export class SelectField extends HTMLElement {
 
 		// (2)
 		this.#listenFocus()
-		this.#readyStateChange('interactive')
+		this.#states.add('interactive')
 
 		// (3)
-		this.#$('link').onload = () => this.#readyStateChange('loaded')
+		this.#$('link').onload = () => this.#states.add('loaded')
 	}
 
 	disconnectedCallback() {
@@ -114,27 +112,14 @@ export class SelectField extends HTMLElement {
 	}
 
 	formAssociatedCallback(_form) {}
-	formDisabledCallback(isDisabled) {
-		this.setAttribute('aria-disabled', isDisabled)
+	formDisabledCallback(disabled) {
+		this.setAttribute('aria-disabled', disabled)
 	}
 	formResetCallback() {
-		applyAttributes(this, this.#defaults)
+		applyAttributes(this, this.#initialAttributes)
 	}
 	formStateRestoreCallback(state, _reason) {
 		this.value = state
-	}
-
-	updateValidity(newValue) {
-		if (newValue.length >= 2) {
-			this.#internals.setValidity({})
-			return
-		}
-		this.#internals.setValidity(
-			{ tooShort: true },
-			'value is too short',
-			this.#shadow.firstChild,
-		)
-		this.#internals.reportValidity()
 	}
 
 	/**
@@ -250,10 +235,6 @@ export class SelectField extends HTMLElement {
 		}
 
 		this.setAttribute('aria-disabled', flag)
-		this.setAttribute(
-			'tabindex',
-			this.disabled ? '-1' : this.#defaults.get('tabindex'),
-		)
 	}
 
 	/** @type {boolean} */
@@ -271,17 +252,6 @@ export class SelectField extends HTMLElement {
 	/** @param {boolean} flag */
 	set collapsed(flag) {
 		this.expanded = false === flag
-	}
-
-	/**
-	 * Returns the first element that is a descendant of element that matches selector.
-	 *
-	 * @param {ComponentReadyState} state
-	 * @returns {SelectField}
-	 */
-	#readyStateChange(state) {
-		this.#states.add(state)
-		return this
 	}
 
 	/** @type {AbortController} */
@@ -446,7 +416,9 @@ export class SelectField extends HTMLElement {
 	}
 
 	#syncAccessibilityTree() {
-		this.#internals.ariaActiveDescendantElement = this.#shadow.activeElement
+		this.#internals.ariaActiveDescendantElement =
+			this.#internals.shadowRoot.activeElement
+
 		this.#internals.ariaAutoComplete = this.ariaAutoComplete
 		this.#internals.ariaDisabled = this.ariaDisabled
 		this.#internals.ariaHasPopup = this.ariaHasPopup
@@ -464,7 +436,7 @@ export class SelectField extends HTMLElement {
 	 * @returns {HTMLElement | null}
 	 */
 	#$(selector, $parent) {
-		return ($parent ?? this.#shadow).querySelector(selector)
+		return ($parent ?? this.#internals.shadowRoot).querySelector(selector)
 	}
 
 	/** @type {HTMLElement} */

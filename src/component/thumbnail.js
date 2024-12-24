@@ -9,7 +9,7 @@
  * />
  */
 
-import stylesheet, { cThumbnail, cssText } from '@uikit/component/thumbnail'
+import stylesheet, { cThumbnail, cssText } from '#uikit/component/thumbnail'
 
 const tagName = cThumbnail
 

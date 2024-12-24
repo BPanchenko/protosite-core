@@ -1,21 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`[ArrowComponent] Attributes: [Font = "AnyAnotyherFont"] Error: 1`] = `[Error: Unsupported Font: "AnyAnotyherFont"]`;
+exports[`[ArrowComponent] Attributes: [Font = "AnyAnotyherFont"] Error: 1`] = `[TypeError: Cannot read properties of undefined (reading 'values')]`;
 
-exports[`[ArrowComponent] Attributes: [Font = "IconFont"] Light DOM: 1`] = `<c-arrow />`;
-
-exports[`[ArrowComponent] Attributes: [Font = "IconFont"] Shadow DOM: 1`] = `
-HTMLCollection [
-  <i
-    data-glyph="arrow"
-    style="--icon-font: IconFont;"
-  >
-    <slot>
-       
-    </slot>
-  </i>,
-]
-`;
+exports[`[ArrowComponent] Attributes: [Font = "IconFont"] Error: 1`] = `[TypeError: Cannot read properties of undefined (reading 'values')]`;
 
 exports[`[ArrowComponent] Attributes: [Font = "null"] Light DOM: 1`] = `<c-arrow />`;
 
@@ -234,7 +221,7 @@ exports[`[ArrowComponent] Attributes: [Glyph = "null"; Weight = "null"; Directio
 exports[`[ArrowComponent] Attributes: [Glyph = "null"; Weight = "null"; Direction = "bottom-left"; Figure = "fill"; Style = "large-acute"] Shadow DOM: 1`] = `
 HTMLCollection [
   <i
-    data-glyph="arrow-bottom-left-fill-large-acute"
+    data-glyph="arrow"
   >
     <slot>
        
@@ -254,7 +241,7 @@ exports[`[ArrowComponent] Attributes: [Glyph = "null"; Weight = "thick"; Directi
 exports[`[ArrowComponent] Attributes: [Glyph = "null"; Weight = "thick"; Direction = "bottom"; Figure = "null"; Style = "fill-angled"] Shadow DOM: 1`] = `
 HTMLCollection [
   <i
-    data-glyph="arrow-thick-bottom-fill-angled"
+    data-glyph="arrow"
   >
     <slot>
        

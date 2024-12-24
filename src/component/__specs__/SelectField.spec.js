@@ -1,9 +1,6 @@
 import applyAttributes from '#lib/fn.applyAttributes.js'
 import '../__mocks__/window.mock'
-import SelectComponent from '../select-field.js'
-import { within } from '@testing-library/dom'
-
-console.log(within)
+import SelectComponent from '../SelectField/index.js'
 
 describe('[SelectComponent]', () => {
 	const optionsContainer = document.createDocumentFragment()
@@ -25,7 +22,7 @@ describe('[SelectComponent]', () => {
 		optionsContainer.appendChild($element)
 	})
 
-	describe('Init:', () => {
+	describe('Initialization:', () => {
 		const select = new SelectComponent({
 			name: 'custom-field-fruit',
 			'aria-placeholder': 'Выбрать элемент...',
@@ -39,10 +36,9 @@ describe('[SelectComponent]', () => {
 		expect(select).toMatchInlineSnapshot()
 	})
 
-	/*
-	describe('Interactions:', () => {
-		describe.each`
-			attribute
+	describe('Verify ARIA properties:', () => {
+		it.each`
+			attrName
 			${'ariaAutocomplete'}
 			${'ariaActiveDescendant'}
 			${'ariaAutoComplete'}
@@ -53,7 +49,7 @@ describe('[SelectComponent]', () => {
 			${'ariaHasPopup'}
 			${'ariaPlaceholder'}
 			${'tabindex'}
-		`('[$attribute]', (attribute) => {})
+		`('[$attrName]', (attrName) => {})
 
 		it('Click Left Button', () => {})
 
@@ -69,5 +65,4 @@ describe('[SelectComponent]', () => {
 
 		it('Press Home', () => {})
 	})
-			*/
 })

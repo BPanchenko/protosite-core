@@ -1,1 +1,584 @@
-const t="closed";function e(e){const{$template:s,template:i,delegatesFocus:a=!1,mode:n=t,serializable:o=!1}=e,r=this.attachShadow({delegatesFocus:a,mode:n,serializable:o});return DocumentFragment.prototype.isPrototypeOf(s)&&r.appendChild(s.cloneNode(!0)),"string"==typeof i&&r.setHTMLUnsafe(i),r}const s=(t,e,s=null)=>{var i,a;return(a=typeof(i=e),!i||"object"!=a&&"function"!=a?[[e,s]]:Object.entries(e)).forEach((([e,s])=>null===s?t.removeAttribute(e):s instanceof Attr?t.setAttributeNode(s):"string"==typeof e?t.hasAttribute(e)?t.getAttributeNode(e).value=s:t.setAttribute(e,s):void 0)),new Map(t.getAttributeNames().sort().map((e=>[e,t.getAttributeNode(e)])))},i="c-select-field";class SelectField extends HTMLElement{#t;#e;#s;#i=this.attachInternals();#a=new Map;static formAssociated=!0;static role="combobox";static observedAttributes=["aria-disabled","aria-expanded","aria-label","aria-placeholder","aria-readonly","onchange","value"];constructor(){super(),e.call(this,{template:'<link href="http://assets.protosite.rocks/core/select-field.css" rel="stylesheet" type="text/css"><style type="text/css">:host(:defined) {\n\tcontent-visibility: hidden;\n}\n:host(:state(loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls="listbox_popover" id="button" role="button" tabindex="0"><div part="selectedcontent" role="status"></div></div><div aria-labelledby="button" id="listbox_popover" role="listbox" part="listbox" tabindex="1"><slot></slot></div>',delegatesFocus:!0}),this.#n(),this.#o(),this.#r.add("defined")}connectedCallback(){this.#n(),this.#l(),this.#d(),this.#r.add("interactive"),this.#h("link").onload=()=>this.#r.add("loaded")}disconnectedCallback(){this.#e?.abort(),this.#t?.abort(),this.#s?.abort()}adoptedCallback(){}attributeChangedCallback(t,e,s){if(!1!==this.isConnected&&e!==s)switch(t){case"aria-disabled":this.disabled="true"===(this.#i.ariaDisabled=s);break;case"aria-expanded":this.expanded="true"===(this.#i.ariaExpanded=s);break;case"aria-label":this.#c.ariaLabel=s;break;case"aria-placeholder":this.#c.ariaPlaceholder=s;break;case"value":this.value=s}}formAssociatedCallback(t){}formDisabledCallback(t){this.setAttribute("aria-disabled",t)}formResetCallback(){}formStateRestoreCallback(t,e){this.value=t}search(t){for(const[e,s]of this.#a)if(0===s.label.indexOf(t)||0===s.value.indexOf(t))return{$element:e.deref(),...s};return null}findByValue(t){for(const[e,s]of this.#a)if(t===s.value)return{$element:e.deref(),...s};return null}toggle(t=null){const e=t??(this.expanded?"collapsed":"expanded");return this[e]=!0,e}get form(){return this.#i.form}get name(){return this.getAttribute("name")??"unknown"}get options(){const t=new Set;for(const[e,s]of this.#a)t.add(e.deref());return null}get type(){return this.getAttribute("type")??"text"}get size(){return this.#a.size}get value(){return this.#i.ariaValueNow}set value(t){this.#i.ariaValueNow=t,this.setAttribute("value",t),this.dispatchEvent(new Event("change"))}get interacting(){return Boolean(this.#e)&&!1===this.#e?.signal.aborted}get disabled(){return"true"===this.#i.ariaDisabled}set disabled(t){t?(this.#r.add("disabled"),this.#e?.abort()):this.#r.has("disabled")&&this.#r.delete("disabled"),this.setAttribute("aria-disabled",t)}get expanded(){return"true"===this.#i.ariaExpanded}set expanded(t){s(this,"aria-expanded",t),this.#r[t?"add":"delete"]("expanded"),this.#r[t?"delete":"add"]("collapsed")}set collapsed(t){this.expanded=!1===t}#n(){const t={"aria-atomic":!0,role:SelectField.role};if(!1===this.hasAttribute("exportparts")){const e=this.#i.shadowRoot.querySelectorAll("[part]").values();e.length&&(t.exportparts=Array.from(e).map((t=>t.part.toString())).join(", "))}return this.isConnected&&this.tabIndex<0&&this.#i.form instanceof HTMLFormElement&&(t.tabindex=0),s(this,t)}#l(){this.#i.ariaAtomic=!0,this.#i.role=SelectField.role,this.#i.ariaAutoComplete="true"===this.ariaAutoComplete,this.#i.ariaDisabled="true"===this.ariaDisabled,this.#i.ariaExpanded="true"===this.ariaExpanded,this.#i.ariaHasPopup="true"===this.ariaHasPopup,this.#i.ariaMultiSelectable="true"===this.ariaMultiSelectable,this.#i.ariaPlaceholder=this.ariaPlaceholder}#o(){this.#s?.abort(),this.#s=new AbortController;const t=this.#a,e=t=>t.forEach(((t,e,s)=>{const i=e.deref();Boolean(i.isConnected&&i.parentElement===this)||s.delete(e)}));return this.#u.children[0].addEventListener("slotchange",(s=>{const i=s.target.assignedElements();for(const e of i)if(e.hasAttribute("role")&&"option"===e.role){const s=e.ariaLabel||e.textContent;t.set(new WeakRef(e),{label:s,value:e.value||e.dataset.value||s})}else e.remove();e(t)}),{signal:this.#s.signal}),this.#s}#d(){this.#t?.abort(),this.#t=new AbortController;const t={capture:!1,passive:!0,signal:this.#t.signal};return this.addEventListener("focus",(t=>this.#b(t)),t),this.addEventListener("focusin",(t=>this.#p(t)),t),this.addEventListener("blur",(t=>this.#f(t)),t),this.addEventListener("focusout",(t=>this.#g(t)),t),this.#t}#C(){this.#e?.abort(),this.#e=new AbortController;const t={capture:!0,passive:!1,signal:this.#e.signal};return this.#v.addEventListener("click",(t=>this.#m(t)),t),this.#u.addEventListener("click",(t=>this.#x(t)),t),this.addEventListener("keypress",(t=>this.#A(t)),t),this.#e}#b(t){this.#C(),this.#i.ariaActiveDescendantElement=this.#i.shadowRoot.activeElement}#p(t){}#f(t){}#g(t){this.toggle("collapsed"),this.#e?.abort()}#m(t){this.toggle()}#x(t){}#A(t){const{key:e}=t;switch(e){case"Backspace":case"Enter":this.focused===this.#v&&this.toggle("expanded");break;case"Escape":this.focused!==this.#v&&this.toggle("collapsed");break;case"End":this.options[this.size-1].focus();break;case"Home":this.options[0].focus()}}#h(t,e){return(e??this.#i.shadowRoot).querySelector(t)}get#v(){return this.#h("[role=button]")}get#c(){return this.#h("[role=status]",this.#v)}get#u(){return this.#h("[role=listbox]")}get#r(){return this.#i.states}}customElements.define(i,SelectField);const a=customElements.get(i);export{SelectField,a as default,i as tagName};
+const template = "<link href=\"http://assets.protosite.rocks/core/select-field.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:defined) {\n\tcontent-visibility: hidden;\n}\n:host(:state(loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox_popover\" id=\"button\" role=\"button\" tabindex=\"0\"><div part=\"selectedcontent\" role=\"status\"></div></div><div aria-labelledby=\"button\" id=\"listbox_popover\" role=\"listbox\" part=\"listbox\" tabindex=\"1\"><slot></slot></div>";
+
+const shadowModeByDefault =
+	typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE;
+
+/**
+ * @param {Object} options
+ * @param {DocumentFragment} [options.$template]
+ * @param {string} [options.template]
+ * @param {boolean} [options.delegatesFocus] - If true, when a non-focusable part of the shadow DOM is clicked, or .focus() is called on the host element, the first focusable part is given focus, and the shadow host is given any available :focus styling.
+ * @param {"closed" | "open"} [options.mode] - When the mode of a shadow root is "closed", the shadowroot implementation internals are inaccessible and unchangeable.
+ * @param {boolean} [options.serializable] - If set, the shadow root may be serialized by calling the Element.getHTML() or ShadowRoot.getHTML() methods with the options.serializableShadowRoots parameter set true.
+ * @param {"manual" | "named"} [options.slotAssignment]
+ * @returns {ShadowRoot}
+ *
+ * The function attaches a shadow DOM tree to the specified element and returns a reference to its ShadowRoot.
+ *
+ * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/attachShadow)
+ *
+ * [About `ShadowRoot.delegatesFocus` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus)
+ *
+ * [About `ShadowRoot.mode` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode)
+ *
+ * [About `ShadowRoot.serializable` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/serializable)
+ *
+ * [About `ShadowRoot.slotAssignment` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/slotAssignment)
+ */
+function initShadowRoot(options) {
+	const {
+		$template,
+		template,
+		delegatesFocus = false,
+		mode = shadowModeByDefault,
+		serializable = false,
+	} = options;
+
+	/** @type {ShadowRoot} */
+	const shadowRoot = this.attachShadow({
+		delegatesFocus,
+		mode,
+		serializable,
+	});
+
+	// 1.
+
+	if (DocumentFragment.prototype.isPrototypeOf($template))
+		shadowRoot.appendChild($template.cloneNode(true));
+
+	// 2.
+
+	if (typeof template === 'string') shadowRoot.setHTMLUnsafe(template);
+
+	return shadowRoot
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+	var type = typeof value;
+	return !!value && (type == 'object' || type == 'function')
+}
+
+/**
+ * @param {HTMLElement} element The element whose attributes will be modified
+ * @param {Record<string, string> | string} objectOrAttrName List of key-value pairs that represent HTML attributes of the element
+ * @param {boolean | number | string} [attrValue] List of key-value pairs that represent HTML attributes of the element
+ * @returns {Map<string, Attr>} Collection of element attributes after modification. Attributes are sorted by name.
+ *
+ * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/setAttribute)
+ */
+const updateAttributes = (element, objectOrAttrName, attrValue = null) => {
+	const pairs = isObject(objectOrAttrName)
+		? Object.entries(objectOrAttrName)
+		: [[objectOrAttrName, attrValue]];
+
+	pairs.forEach(([key, value]) =>
+		value === null
+			? element.removeAttribute(key)
+			: value instanceof Attr
+				? element.setAttributeNode(value)
+				: typeof key === 'string'
+					? element.hasAttribute(key)
+						? (element.getAttributeNode(key).value = value)
+						: element.setAttribute(key, value)
+					: void 0,
+	);
+
+	return new Map(
+		element
+			.getAttributeNames()
+			.sort()
+			.map((name) => [name, element.getAttributeNode(name)]),
+	)
+};
+
+/// <reference path="./types.d.ts" />
+
+
+const tagName = 'c-select-field';
+
+/** @typedef {'defined' | 'interactive' | 'loaded' } ComponentReadyState */
+/** @typedef {'collapsed' | 'expanded'} ListBoxState */
+/** @typedef {ComponentReadyState | ListBoxState } SelectFieldState */
+
+/** @typedef {{ label: string, value: string }} ListItem */
+/** @typedef {Map<WeakRef<Element>, ListItem>} RefOptionMap */
+/** @typedef {ListItem & { $element: HTMLElement}} SearchResult */
+
+class SelectField extends HTMLElement {
+	/** @type {AbortController} */
+	#focusCont
+
+	/** @type {AbortController} */
+	#interCont
+
+	/** @type {AbortController} */
+	#slotChangeCont
+
+	/** @type {ElementInternals} */
+	#internals = this.attachInternals()
+
+	/** @type {RefOptionMap} */
+	#options = new Map()
+
+	static formAssociated = true
+	static role = 'combobox'
+
+	/** @type Array<SelectField.Attributes> */
+	static observedAttributes = [
+		'aria-disabled',
+		'aria-expanded',
+		'aria-label',
+		'aria-placeholder',
+		'aria-readonly',
+		'onchange',
+		'value',
+	]
+
+	constructor() {
+		super();
+		initShadowRoot.call(this, {
+			template,
+			delegatesFocus: true,
+		});
+		this.#initAttributes();
+		this.#listenAssignedNodes();
+		this.#states.add('defined');
+	}
+
+	connectedCallback() {
+		// (1)
+		this.#initAttributes();
+		this.#initProperties();
+
+		// (2)
+		this.#listenFocus();
+		this.#states.add('interactive');
+
+		// (3)
+		this.#$('link').onload = () => this.#states.add('loaded');
+	}
+
+	disconnectedCallback() {
+		this.#interCont?.abort();
+		this.#focusCont?.abort();
+		this.#slotChangeCont?.abort();
+	}
+
+	adoptedCallback() {}
+
+	attributeChangedCallback(name, previous, updated) {
+		if (false === this.isConnected) return
+		if (previous === updated) return
+
+		switch (name) {
+			case 'aria-disabled':
+				this.disabled =
+					(this.#internals.ariaDisabled = updated) === 'true';
+				break
+			case 'aria-expanded':
+				this.expanded =
+					(this.#internals.ariaExpanded = updated) === 'true';
+				break
+			case 'aria-label':
+				this.#$status.ariaLabel = updated;
+				break
+			case 'aria-placeholder':
+				this.#$status.ariaPlaceholder = updated;
+				break
+			case 'value':
+				this.value = updated;
+				break
+		}
+	}
+
+	formAssociatedCallback(_form) {}
+	formDisabledCallback(disabled) {
+		this.setAttribute('aria-disabled', disabled);
+	}
+	formResetCallback() {}
+	formStateRestoreCallback(state, _reason) {
+		this.value = state;
+	}
+
+	/**
+	 * Сall returns the first option for wich the query string is started substring of the label or value option.
+	 *
+	 * @param {string} query
+	 * @returns {SearchResult | null}
+	 */
+	search(query) {
+		for (const [ref, option] of this.#options)
+			if (
+				0 === option.label.indexOf(query) ||
+				0 === option.value.indexOf(query)
+			)
+				return {
+					$element: ref.deref(),
+					...option,
+				}
+		return null
+	}
+
+	/**
+	 * Сall will find the first option wich value is fully equal to the query string.
+	 *
+	 * @param {string} query
+	 * @returns {SearchResult | null}
+	 */
+	findByValue(query) {
+		for (const [ref, option] of this.#options)
+			if (query === option.value)
+				return {
+					$element: ref.deref(),
+					...option,
+				}
+		return null
+	}
+
+	/**
+	 * @param {ListBoxState} state - New value of state
+	 * @returns {ListBoxState} Current state after call
+	 */
+	toggle(state = null) {
+		const current = state ?? (this.expanded ? 'collapsed' : 'expanded');
+		this[current] = true;
+		return current
+	}
+
+	/** @type {HTMLFormElement} */
+	get form() {
+		return this.#internals.form
+	}
+
+	/** @type {string} */
+	get name() {
+		return this.getAttribute('name') ?? 'unknown'
+	}
+
+	/** @type {string} */
+	get options() {
+		const $$elements = new Set();
+		for (const [ref, _option] of this.#options) $$elements.add(ref.deref());
+		return null
+	}
+
+	/** @type {string} */
+	get type() {
+		return this.getAttribute('type') ?? 'text'
+	}
+
+	/** @type {number} */
+	get size() {
+		return this.#options.size
+	}
+
+	/** @type {string} */
+	get value() {
+		return this.#internals.ariaValueNow
+	}
+
+	/** @param {string} updated */
+	set value(updated) {
+		this.#internals.ariaValueNow = updated;
+		this.setAttribute('value', updated);
+
+		this.dispatchEvent(new Event('change'));
+	}
+
+	/** @type {boolean} */
+	get interacting() {
+		return (
+			Boolean(this.#interCont) &&
+			false === this.#interCont?.signal.aborted
+		)
+	}
+
+	/** @type {boolean} */
+	get disabled() {
+		return this.#internals.ariaDisabled === 'true'
+	}
+
+	/** @param {boolean} flag */
+	set disabled(flag) {
+		if (flag) {
+			this.#states.add('disabled');
+			this.#interCont?.abort();
+		} else if (this.#states.has('disabled')) {
+			this.#states.delete('disabled');
+		}
+
+		this.setAttribute('aria-disabled', flag);
+	}
+
+	/** @type {boolean} */
+	get expanded() {
+		return this.#internals.ariaExpanded === 'true'
+	}
+
+	/** @param {boolean} flag */
+	set expanded(flag) {
+		updateAttributes(this, 'aria-expanded', flag);
+		this.#states[flag ? 'add' : 'delete']('expanded');
+		this.#states[flag ? 'delete' : 'add']('collapsed');
+	}
+
+	/** @param {boolean} flag */
+	set collapsed(flag) {
+		this.expanded = false === flag;
+	}
+
+	#initAttributes() {
+		const data = {
+			'aria-atomic': true,
+			role: SelectField.role,
+		};
+
+		// [exportparts]
+
+		if (false === this.hasAttribute('exportparts')) {
+			const $$parts = this.#internals.shadowRoot
+				.querySelectorAll('[part]')
+				.values();
+
+			if ($$parts.length) {
+				data.exportparts = Array.from($$parts)
+					.map(($elem) => $elem.part.toString())
+					.join(', ');
+			}
+		}
+
+		// [tabindex]
+
+		if (
+			this.isConnected &&
+			this.tabIndex < 0 &&
+			this.#internals.form instanceof HTMLFormElement
+		) {
+			data.tabindex = 0;
+		}
+
+		return updateAttributes(this, data)
+	}
+
+	#initProperties() {
+		this.#internals.ariaAtomic = true;
+		this.#internals.role = SelectField.role;
+
+		this.#internals.ariaAutoComplete = this.ariaAutoComplete === 'true';
+		this.#internals.ariaDisabled = this.ariaDisabled === 'true';
+		this.#internals.ariaExpanded = this.ariaExpanded === 'true';
+		this.#internals.ariaHasPopup = this.ariaHasPopup === 'true';
+		this.#internals.ariaMultiSelectable =
+			this.ariaMultiSelectable === 'true';
+		this.#internals.ariaPlaceholder = this.ariaPlaceholder;
+	}
+
+	/** @returns {AbortController} */
+	#listenAssignedNodes() {
+		this.#slotChangeCont?.abort();
+		this.#slotChangeCont = new AbortController();
+
+		/** @type {RefOptionMap} */
+		const list = this.#options;
+
+		const cleanup = (list) =>
+			list.forEach((_, ref, map) => {
+				const $element = ref.deref();
+				Boolean(
+					$element.isConnected && $element.parentElement === this,
+				) || map.delete(ref);
+			});
+
+		this.#$listbox.children[0].addEventListener(
+			'slotchange',
+			(event) => {
+				const $$elements = event.target.assignedElements();
+				for (const $element of $$elements)
+					if (
+						$element.hasAttribute('role') &&
+						$element.role === 'option'
+					) {
+						const label = $element.ariaLabel || $element.textContent;
+						list.set(new WeakRef($element), {
+							label,
+							value:
+								$element.value ||
+								$element.dataset.value ||
+								label,
+						});
+					} else $element.remove();
+				cleanup(list);
+			},
+			{
+				signal: this.#slotChangeCont.signal,
+			},
+		);
+
+		return this.#slotChangeCont
+	}
+
+	/** @returns {AbortController} */
+	#listenFocus() {
+		this.#focusCont?.abort();
+		this.#focusCont = new AbortController();
+
+		const options = {
+			capture: false,
+			passive: true,
+			signal: this.#focusCont.signal,
+		};
+
+		this.addEventListener('focus', (event) => this.#onFocus(event), options);
+		this.addEventListener(
+			'focusin',
+			(event) => this.#onFocusIn(event),
+			options,
+		);
+		this.addEventListener('blur', (event) => this.#onBlur(event), options);
+		this.addEventListener(
+			'focusout',
+			(event) => this.#onFocusOut(event),
+			options,
+		);
+
+		return this.#focusCont
+	}
+
+	/** @returns {AbortController} */
+	#listenInteraction() {
+		this.#interCont?.abort();
+		this.#interCont = new AbortController();
+
+		const options = {
+			capture: true,
+			passive: false,
+			signal: this.#interCont.signal,
+		};
+
+		this.#$button.addEventListener(
+			'click',
+			(event) => this.#onClickButton(event),
+			options,
+		);
+		this.#$listbox.addEventListener(
+			'click',
+			(event) => this.#onClickListBox(event),
+			options,
+		);
+		this.addEventListener(
+			'keypress',
+			(event) => this.#onKeyPress(event),
+			options,
+		);
+
+		return this.#interCont
+	}
+
+	#onFocus(event) {
+		this.#listenInteraction();
+
+		this.#internals.ariaActiveDescendantElement =
+			this.#internals.shadowRoot.activeElement;
+	}
+
+	#onFocusIn(event) {}
+
+	#onBlur(event) {}
+
+	#onFocusOut(event) {
+		this.toggle('collapsed');
+		this.#interCont?.abort();
+	}
+
+	#onClickButton(event) {
+		this.toggle();
+	}
+
+	#onClickListBox(event) {}
+
+	#onKeyPress(event) {
+		const { key } = event;
+
+		switch (key) {
+			case 'Backspace':
+			case 'Enter':
+				if (this.focused === this.#$button) {
+					this.toggle('expanded');
+				}
+				break
+			case 'Escape':
+				if (this.focused !== this.#$button) {
+					this.toggle('collapsed');
+				}
+				break
+			case 'End':
+				this.options[this.size - 1].focus();
+				break
+			case 'Home':
+				this.options[0].focus();
+				break
+		}
+	}
+
+	/**
+	 * Returns the first element that is a descendant of element that matches selector.
+	 *
+	 * @param {string} selector
+	 * @param {HTMLElement | ShadowRoot} [$parent]
+	 * @returns {HTMLElement | null}
+	 */
+	#$(selector, $parent) {
+		return ($parent ?? this.#internals.shadowRoot).querySelector(selector)
+	}
+
+	/** @type {HTMLElement} */
+	get #$button() {
+		return this.#$('[role=button]')
+	}
+
+	/** @type {HTMLElement} */
+	get #$status() {
+		return this.#$('[role=status]', this.#$button)
+	}
+
+	/** @type {HTMLElement} */
+	get #$listbox() {
+		return this.#$('[role=listbox]')
+	}
+
+	/** @type {CustomStateSet} */
+	get #states() {
+		return this.#internals.states
+	}
+}
+
+customElements.define(tagName, SelectField);
+
+const index = customElements.get(tagName);
+
+export { SelectField, index as default, tagName };

@@ -1,1 +1,270 @@
-const a=new CSSStyleSheet;a.replaceSync(":host{--clr-background:hwb(180 98.433% 1.5665%);--clr-background-rgb:251,251,251;--clr-foreground:hwb(41.755 0% 88.01%);--clr-foreground-rgb:31,21,0;--clr-red:hwb(2.2621 13.335% 31.062%);--clr-red-rgb:176,39,34;--clr-pink:hwb(337.31 60.871% 5.7094%);--clr-pink-rgb:240,155,187;--clr-purple:hwb(311.02 17.795% 24.837%);--clr-purple-rgb:192,45,165;--clr-violet:hwb(277.93 10.859% 11.012%);--clr-violet-rgb:154,28,227;--clr-indigo:hwb(255.62 7.9752% 55.905%);--clr-indigo-rgb:44,20,112;--clr-blue:hwb(238.15 29.397% 25.247%);--clr-blue-rgb:75,79,191;--clr-light-blue:hwb(201.81 29.416% 0%);--clr-light-blue-rgb:75,190,255;--clr-cyan:hwb(178.67 20.79% 19.143%);--clr-cyan-rgb:53,206,203;--clr-teal:hwb(169.21 13.714% 41.016%);--clr-teal-rgb:35,150,130;--clr-green:hwb(147.91 0% 14.342%);--clr-green-rgb:0,220,78;--clr-light-green:hwb(119.31 43.073% 9.2249%);--clr-light-green-rgb:111,231,110;--clr-lime:hwb(83.61 17.663% 19.009%);--clr-lime-rgb:143,207,45;--clr-yellow:hwb(56.613 0% 8.5678%);--clr-yellow-rgb:233,220,0;--clr-amber:hwb(47.384 0% 3.2777%);--clr-amber-rgb:247,192,0;--clr-orange:hwb(37.23 11.527% 2.7793%);--clr-orange-rgb:248,165,29;--clr-deep-orange:hwb(25.463 7.9565% 2.2452%);--clr-deep-orange-rgb:249,117,20;--clr-brown:hwb(14.024 39.629% 23.31%);--clr-brown-rgb:196,123,101;--clr-gray:hwb(122.82 48.973% 50.184%);--clr-gray-rgb:125,127,125;--duration:0.16s;--easing:cubic-bezier(0.3,0,0.2,1);--pixel:max(0.0625 * var(--unit));--unit:1.6rem;--clr-black:var(--clr-foreground,#000);--clr-white:#fff;--shadow-sharp:0 1px 1px rgba(0,0,0,.25),0 2px 2px rgba(0,0,0,.2),0 4px 4px rgba(0,0,0,.15),0 8px 8px rgba(0,0,0,.1),0 16px 16px rgba(0,0,0,.05);--inset-shadow-sharp:inset 0 -2px 1px rgba(0,0,0,.25),inset 0 -3px 2px rgba(0,0,0,.2),inset 0 -4px 4px rgba(0,0,0,.15),inset 0 -9px 8px rgba(0,0,0,.1),inset 0 -18px 16px rgba(0,0,0,.05);--shadow-diffuse:0 1px 1px rgba(0,0,0,.08),0 2px 2px rgba(0,0,0,.12),0 4px 4px rgba(0,0,0,.16),0 8px 8px rgba(0,0,0,.2);--shadow-dreamy:0 1px 2px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.07),0 4px 8px rgba(0,0,0,.07),0 8px 16px rgba(0,0,0,.07),0 16px 32px rgba(0,0,0,.07),0 32px 64px rgba(0,0,0,.07);--shadow-shorter:0 1px 1px rgba(0,0,0,.11),0 2px 2px rgba(0,0,0,.11),0 4px 4px rgba(0,0,0,.11),0 6px 8px rgba(0,0,0,.11),0 8px 16px rgba(0,0,0,.11);--shadow-longer:0 2px 1px rgba(0,0,0,.09),0 4px 2px rgba(0,0,0,.09),0 8px 4px rgba(0,0,0,.09),0 16px 8px rgba(0,0,0,.09),0 32px 16px rgba(0,0,0,.09);--shadow-key-umbra-opacity:0.2;--shadow-key-penumbra-opacity:0.14;--shadow-ambient-shadow-opacity:0.12;--shadow:var(--shadow-4dp);--shadow-2dp:0 2px 2px 0 rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 3px 1px -2px rgba(0,0,0,var(--shadow-key-umbra-opacity)),0 1px 5px 0 rgba(0,0,0,var(--shadow-ambient-shadow-opacity));--shadow-3dp:0 3px 4px 0 rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 3px 3px -2px rgba(0,0,0,var(--shadow-key-umbra-opacity)),0 1px 8px 0 rgba(0,0,0,var(--shadow-ambient-shadow-opacity));--shadow-4dp:0 4px 5px 0 rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 1px 10px 0 rgba(0,0,0,var(--shadow-ambient-shadow-opacity)),0 2px 4px -1px rgba(0,0,0,var(--shadow-key-umbra-opacity));--shadow-6dp:0 6px 10px 0 rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 1px 18px 0 rgba(0,0,0,var(--shadow-ambient-shadow-opacity)),0 3px 5px -1px rgba(0,0,0,var(--shadow-key-umbra-opacity));--shadow-8dp:0 8px 10px 1px rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 3px 14px 2px rgba(0,0,0,var(--shadow-ambient-shadow-opacity)),0 5px 5px -3px rgba(0,0,0,var(--shadow-key-umbra-opacity));--shadow-16dp:0 16px 24px 2px rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 6px 30px 5px rgba(0,0,0,var(--shadow-ambient-shadow-opacity)),0 8px 10px -5px rgba(0,0,0,var(--shadow-key-umbra-opacity));--shadow-24dp:0 9px 46px 8px rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 11px 15px -7px rgba(0,0,0,var(--shadow-ambient-shadow-opacity)),0 24px 38px 3px rgba(0,0,0,var(--shadow-key-umbra-opacity));--focus-shadow:0 0 8px rgba(0,0,0,.18),0 8px 16px rgba(0,0,0,.36);--inset-shadow-2dp:inset 0 1px 2px 0 rgba(0,0,0,var(--shadow-key-penumbra-opacity)),inset 0 3px 1px -2px rgba(0,0,0,var(--shadow-key-umbra-opacity));--text-shadow:0 0 1px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.6)}:is(.c-avatar,:host){--bg-color:transparent;--border:max(1 * var(--pixel)) solid var(--muted-color);--shadow:var(--shadow-2dp);--text-size:0;--size:max(5 * var(--unit));--size-xxs:max(1 * var(--unit));--size-xs:max(1.5 * var(--unit));--size-sm:max(2.5 * var(--unit));--size-md:max(6 * var(--unit));--size-lg:max(8 * var(--unit));--size-xl:max(12 * var(--unit));--size-xxl:max(16 * var(--unit))}:is(.c-avatar,:host [role=img]):not([style*=background-image]):empty{--bg-color:var(--clr-gray-100);--border:none;--shadow:none}.c-avatar,.c-avatar__link,:host :is([role=img],a){border-radius:50%;display:inline-block;height:var(--size);overflow:hidden;text-align:center;user-select:none;vertical-align:middle;width:var(--size)}:is(.c-avatar,:host [role=img]){background-color:var(--bg-color);border:var(--border);box-shadow:var(--shadow)}:is(.c-avatar,:host [role=img]) img{height:inherit;object-fit:cover;user-select:auto;width:inherit}:is(.c-avatar,:host [role=img])[style*=background-image]{background-size:cover}:is(.c-avatar,:host [role=img])[style*=background-image] img{display:none}:host{display:contents;pointer-events:none}:host>*{pointer-events:auto}:is(.c-avatar,:host [role=img]).s-xxs{--size:var(--size-xxs)}:is(.c-avatar,:host [role=img]).s-xs{--size:var(--size-xs)}:is(.c-avatar,:host [role=img]).s-sm{--size:var(--size-sm)}:is(.c-avatar,:host [role=img]).s-md{--size:var(--size-md)}:is(.c-avatar,:host [role=img]).s-lg{--size:var(--size-lg)}:is(.c-avatar,:host [role=img]).s-xl{--size:var(--size-xl)}:is(.c-avatar,:host [role=img]).s-xxl{--size:var(--size-xxl)}:is(.c-panel,:host-context(.c-panel)):not(.s-clean) .c-avatar{--shadow:var(--inset-shadow-2dp)}:is(.c-panel,:host-context(.c-panel)):not(.s-clean) .c-avatar img{position:relative;z-index:-1}");const e=a,r=(a,e={})=>{const r=document.createElement(a);return Object.entries(e).forEach((([a,e])=>{switch(a){case"className":r.classList.add(e);break;case"classNames":e.forEach((a=>r.classList.add(a)));break;default:r.setAttribute(a,e)}})),r},t="closed";function s(a){const{$template:e,template:r,delegatesFocus:s=!1,mode:i=t,serializable:o=!1}=a,p=this.attachShadow({delegatesFocus:s,mode:i,serializable:o});return DocumentFragment.prototype.isPrototypeOf(e)&&p.appendChild(e.cloneNode(!0)),"string"==typeof r&&p.setHTMLUnsafe(r),p}const i="c-avatar";class AvatarComponent extends HTMLElement{#a=new Map;#e;static observedAttributes=["img","size","href","target"];static sizes=["sm","md","lg","xl","xxs","xs","xxl"];constructor(a={}){super(),((a,e,r=null)=>{var t,s;(s=typeof(t=e),!t||"object"!=s&&"function"!=s?[[e,r]]:Object.entries(e)).forEach((([e,r])=>null===r?a.removeAttribute(e):r instanceof Attr?a.setAttributeNode(r):"string"==typeof e?a.hasAttribute(e)?a.getAttributeNode(e).value=r:a.setAttribute(e,r):void 0)),new Map(a.getAttributeNames().sort().map((e=>[e,a.getAttributeNode(e)])))})(this,a),this.#e=s.call(this,{template:"<div role=img><slot></slot></div>",delegatesFocus:!0,serializable:!0})}attributeChangedCallback(a){if(!1!==this.isConnected)switch(a){case"href":case"target":this.#r(),this.#t();break;case"size":this.#s();break;case"img":this.#t()}}connectedCallback(){this.#e.adoptedStyleSheets.push(e),this.#s(),this.#r(),this.#t()}#s(){const a=this.getAttribute("size");a?(console.assert(AvatarComponent.sizes.includes(a),`Wrong size: "${a}"`),this.#i.classList.add("s-"+a)):AvatarComponent.sizes.forEach((a=>this.#i.classList.remove("s-"+a)))}#r(){const a=this.getAttribute("href"),e=this.getAttribute("target")??"_self";if(a)if(this.#a.has("link")){const r=this.#a.get("link");r.setAttribute("href",a),r.setAttribute("target",e)}else this.#a.set("link",r("a",{className:"c-avatar__link",href:a,target:e})),this.appendChild(this.#a.get("link"));else this.#a.has("link")&&(this.#a.get("link").remove(),this.#a.delete("link"))}#t(){const a=this.getAttribute("img");a?this.#o?this.#i.style.backgroundImage=`url(${a})`:(this.#a.has("image")?this.#a.get("image").setAttribute("src",a):this.#a.set("image",r("img",{src:a})),this.#a.has("link")?this.#a.get("link").appendChild(this.#a.get("image")):this.appendChild(this.#a.get("image"))):this.#a.has("image")?(this.#a.get("image").remove(),this.#a.delete("image")):delete this.#i.style.backgroundImage}get#o(){return null!==this.closest(".c-panel")}get#i(){return this.#e.firstChild}}customElements.define(i,AvatarComponent);const o=customElements.get(i);export{AvatarComponent,o as default,i as tagName};
+const cssStyleSheet$1 = new CSSStyleSheet();
+	cssStyleSheet$1.replaceSync(`:host{--clr-background:hwb(180 98.433% 1.5665%);--clr-background-rgb:251,251,251;--clr-foreground:hwb(41.755 0% 88.01%);--clr-foreground-rgb:31,21,0;--clr-red:hwb(2.2621 13.335% 31.062%);--clr-red-rgb:176,39,34;--clr-pink:hwb(337.31 60.871% 5.7094%);--clr-pink-rgb:240,155,187;--clr-purple:hwb(311.02 17.795% 24.837%);--clr-purple-rgb:192,45,165;--clr-violet:hwb(277.93 10.859% 11.012%);--clr-violet-rgb:154,28,227;--clr-indigo:hwb(255.62 7.9752% 55.905%);--clr-indigo-rgb:44,20,112;--clr-blue:hwb(238.15 29.397% 25.247%);--clr-blue-rgb:75,79,191;--clr-light-blue:hwb(201.81 29.416% 0%);--clr-light-blue-rgb:75,190,255;--clr-cyan:hwb(178.67 20.79% 19.143%);--clr-cyan-rgb:53,206,203;--clr-teal:hwb(169.21 13.714% 41.016%);--clr-teal-rgb:35,150,130;--clr-green:hwb(147.91 0% 14.342%);--clr-green-rgb:0,220,78;--clr-light-green:hwb(119.31 43.073% 9.2249%);--clr-light-green-rgb:111,231,110;--clr-lime:hwb(83.61 17.663% 19.009%);--clr-lime-rgb:143,207,45;--clr-yellow:hwb(56.613 0% 8.5678%);--clr-yellow-rgb:233,220,0;--clr-amber:hwb(47.384 0% 3.2777%);--clr-amber-rgb:247,192,0;--clr-orange:hwb(37.23 11.527% 2.7793%);--clr-orange-rgb:248,165,29;--clr-deep-orange:hwb(25.463 7.9565% 2.2452%);--clr-deep-orange-rgb:249,117,20;--clr-brown:hwb(14.024 39.629% 23.31%);--clr-brown-rgb:196,123,101;--clr-gray:hwb(122.82 48.973% 50.184%);--clr-gray-rgb:125,127,125;--duration:0.16s;--easing:cubic-bezier(0.3,0,0.2,1);--pixel:max(0.0625 * var(--unit));--unit:1.6rem;--clr-black:var(--clr-foreground,#000);--clr-white:#fff;--shadow-sharp:0 1px 1px rgba(0,0,0,.25),0 2px 2px rgba(0,0,0,.2),0 4px 4px rgba(0,0,0,.15),0 8px 8px rgba(0,0,0,.1),0 16px 16px rgba(0,0,0,.05);--inset-shadow-sharp:inset 0 -2px 1px rgba(0,0,0,.25),inset 0 -3px 2px rgba(0,0,0,.2),inset 0 -4px 4px rgba(0,0,0,.15),inset 0 -9px 8px rgba(0,0,0,.1),inset 0 -18px 16px rgba(0,0,0,.05);--shadow-diffuse:0 1px 1px rgba(0,0,0,.08),0 2px 2px rgba(0,0,0,.12),0 4px 4px rgba(0,0,0,.16),0 8px 8px rgba(0,0,0,.2);--shadow-dreamy:0 1px 2px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.07),0 4px 8px rgba(0,0,0,.07),0 8px 16px rgba(0,0,0,.07),0 16px 32px rgba(0,0,0,.07),0 32px 64px rgba(0,0,0,.07);--shadow-shorter:0 1px 1px rgba(0,0,0,.11),0 2px 2px rgba(0,0,0,.11),0 4px 4px rgba(0,0,0,.11),0 6px 8px rgba(0,0,0,.11),0 8px 16px rgba(0,0,0,.11);--shadow-longer:0 2px 1px rgba(0,0,0,.09),0 4px 2px rgba(0,0,0,.09),0 8px 4px rgba(0,0,0,.09),0 16px 8px rgba(0,0,0,.09),0 32px 16px rgba(0,0,0,.09);--shadow-key-umbra-opacity:0.2;--shadow-key-penumbra-opacity:0.14;--shadow-ambient-shadow-opacity:0.12;--shadow:var(--shadow-4dp);--shadow-2dp:0 2px 2px 0 rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 3px 1px -2px rgba(0,0,0,var(--shadow-key-umbra-opacity)),0 1px 5px 0 rgba(0,0,0,var(--shadow-ambient-shadow-opacity));--shadow-3dp:0 3px 4px 0 rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 3px 3px -2px rgba(0,0,0,var(--shadow-key-umbra-opacity)),0 1px 8px 0 rgba(0,0,0,var(--shadow-ambient-shadow-opacity));--shadow-4dp:0 4px 5px 0 rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 1px 10px 0 rgba(0,0,0,var(--shadow-ambient-shadow-opacity)),0 2px 4px -1px rgba(0,0,0,var(--shadow-key-umbra-opacity));--shadow-6dp:0 6px 10px 0 rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 1px 18px 0 rgba(0,0,0,var(--shadow-ambient-shadow-opacity)),0 3px 5px -1px rgba(0,0,0,var(--shadow-key-umbra-opacity));--shadow-8dp:0 8px 10px 1px rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 3px 14px 2px rgba(0,0,0,var(--shadow-ambient-shadow-opacity)),0 5px 5px -3px rgba(0,0,0,var(--shadow-key-umbra-opacity));--shadow-16dp:0 16px 24px 2px rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 6px 30px 5px rgba(0,0,0,var(--shadow-ambient-shadow-opacity)),0 8px 10px -5px rgba(0,0,0,var(--shadow-key-umbra-opacity));--shadow-24dp:0 9px 46px 8px rgba(0,0,0,var(--shadow-key-penumbra-opacity)),0 11px 15px -7px rgba(0,0,0,var(--shadow-ambient-shadow-opacity)),0 24px 38px 3px rgba(0,0,0,var(--shadow-key-umbra-opacity));--focus-shadow:0 0 8px rgba(0,0,0,.18),0 8px 16px rgba(0,0,0,.36);--inset-shadow-2dp:inset 0 1px 2px 0 rgba(0,0,0,var(--shadow-key-penumbra-opacity)),inset 0 3px 1px -2px rgba(0,0,0,var(--shadow-key-umbra-opacity));--text-shadow:0 0 1px rgba(0,0,0,.6),0 1px 2px rgba(0,0,0,.6)}:is(.c-avatar,:host){--bg-color:transparent;--border:max(1 * var(--pixel)) solid var(--muted-color);--shadow:var(--shadow-2dp);--text-size:0;--size:max(5 * var(--unit));--size-xxs:max(1 * var(--unit));--size-xs:max(1.5 * var(--unit));--size-sm:max(2.5 * var(--unit));--size-md:max(6 * var(--unit));--size-lg:max(8 * var(--unit));--size-xl:max(12 * var(--unit));--size-xxl:max(16 * var(--unit))}:is(.c-avatar,:host [role=img]):not([style*=background-image]):empty{--bg-color:var(--clr-gray-100);--border:none;--shadow:none}.c-avatar,.c-avatar__link,:host :is([role=img],a){border-radius:50%;display:inline-block;height:var(--size);overflow:hidden;text-align:center;user-select:none;vertical-align:middle;width:var(--size)}:is(.c-avatar,:host [role=img]){background-color:var(--bg-color);border:var(--border);box-shadow:var(--shadow)}:is(.c-avatar,:host [role=img]) img{height:inherit;object-fit:cover;user-select:auto;width:inherit}:is(.c-avatar,:host [role=img])[style*=background-image]{background-size:cover}:is(.c-avatar,:host [role=img])[style*=background-image] img{display:none}:host{display:contents;pointer-events:none}:host>*{pointer-events:auto}:is(.c-avatar,:host [role=img]).s-xxs{--size:var(--size-xxs)}:is(.c-avatar,:host [role=img]).s-xs{--size:var(--size-xs)}:is(.c-avatar,:host [role=img]).s-sm{--size:var(--size-sm)}:is(.c-avatar,:host [role=img]).s-md{--size:var(--size-md)}:is(.c-avatar,:host [role=img]).s-lg{--size:var(--size-lg)}:is(.c-avatar,:host [role=img]).s-xl{--size:var(--size-xl)}:is(.c-avatar,:host [role=img]).s-xxl{--size:var(--size-xxl)}:is(.c-panel,:host-context(.c-panel)):not(.s-clean) .c-avatar{--shadow:var(--inset-shadow-2dp)}:is(.c-panel,:host-context(.c-panel)):not(.s-clean) .c-avatar img{position:relative;z-index:-1}`);
+
+/** @type {string} */
+const cAvatar = 'c-avatar';
+/** @type {string} */
+const cAvatarLink = 'c-avatar__link';
+
+/** @type {CSSStyleSheet|null} */
+const cssStyleSheet = cssStyleSheet$1;
+
+const createElement = (tagName, attrs = {}) => {
+	const element = document.createElement(tagName);
+	Object.entries(attrs).forEach(([key, value]) => {
+		switch (key) {
+			case 'className':
+				element.classList.add(value);
+				break
+			case 'classNames':
+				value.forEach((item) => element.classList.add(item));
+				break
+			default:
+				element.setAttribute(key, value);
+		}
+	});
+	return element
+};
+
+const shadowModeByDefault =
+	typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE;
+
+/**
+ * @param {Object} options
+ * @param {DocumentFragment} [options.$template]
+ * @param {string} [options.template]
+ * @param {boolean} [options.delegatesFocus] - If true, when a non-focusable part of the shadow DOM is clicked, or .focus() is called on the host element, the first focusable part is given focus, and the shadow host is given any available :focus styling.
+ * @param {"closed" | "open"} [options.mode] - When the mode of a shadow root is "closed", the shadowroot implementation internals are inaccessible and unchangeable.
+ * @param {boolean} [options.serializable] - If set, the shadow root may be serialized by calling the Element.getHTML() or ShadowRoot.getHTML() methods with the options.serializableShadowRoots parameter set true.
+ * @param {"manual" | "named"} [options.slotAssignment]
+ * @returns {ShadowRoot}
+ *
+ * The function attaches a shadow DOM tree to the specified element and returns a reference to its ShadowRoot.
+ *
+ * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/attachShadow)
+ *
+ * [About `ShadowRoot.delegatesFocus` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus)
+ *
+ * [About `ShadowRoot.mode` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode)
+ *
+ * [About `ShadowRoot.serializable` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/serializable)
+ *
+ * [About `ShadowRoot.slotAssignment` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/slotAssignment)
+ */
+function initShadowRoot(options) {
+	const {
+		$template,
+		template,
+		delegatesFocus = false,
+		mode = shadowModeByDefault,
+		serializable = false,
+	} = options;
+
+	/** @type {ShadowRoot} */
+	const shadowRoot = this.attachShadow({
+		delegatesFocus,
+		mode,
+		serializable,
+	});
+
+	// 1.
+
+	if (DocumentFragment.prototype.isPrototypeOf($template))
+		shadowRoot.appendChild($template.cloneNode(true));
+
+	// 2.
+
+	if (typeof template === 'string') shadowRoot.setHTMLUnsafe(template);
+
+	return shadowRoot
+}
+
+/**
+ * Checks if `value` is the
+ * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
+ * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+ *
+ * @static
+ * @memberOf _
+ * @since 0.1.0
+ * @category Lang
+ * @param {*} value The value to check.
+ * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+ * @example
+ *
+ * _.isObject({});
+ * // => true
+ *
+ * _.isObject([1, 2, 3]);
+ * // => true
+ *
+ * _.isObject(_.noop);
+ * // => true
+ *
+ * _.isObject(null);
+ * // => false
+ */
+function isObject(value) {
+	var type = typeof value;
+	return !!value && (type == 'object' || type == 'function')
+}
+
+/**
+ * @param {HTMLElement} element The element whose attributes will be modified
+ * @param {Record<string, string> | string} objectOrAttrName List of key-value pairs that represent HTML attributes of the element
+ * @param {boolean | number | string} [attrValue] List of key-value pairs that represent HTML attributes of the element
+ * @returns {Map<string, Attr>} Collection of element attributes after modification. Attributes are sorted by name.
+ *
+ * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/setAttribute)
+ */
+const updateAttributes = (element, objectOrAttrName, attrValue = null) => {
+	const pairs = isObject(objectOrAttrName)
+		? Object.entries(objectOrAttrName)
+		: [[objectOrAttrName, attrValue]];
+
+	pairs.forEach(([key, value]) =>
+		value === null
+			? element.removeAttribute(key)
+			: value instanceof Attr
+				? element.setAttributeNode(value)
+				: typeof key === 'string'
+					? element.hasAttribute(key)
+						? (element.getAttributeNode(key).value = value)
+						: element.setAttribute(key, value)
+					: void 0,
+	);
+
+	return new Map(
+		element
+			.getAttributeNames()
+			.sort()
+			.map((name) => [name, element.getAttributeNode(name)]),
+	)
+};
+
+/// <reference path="./types.d.ts" />
+
+
+const tagName = cAvatar;
+const template = `<div role=img><slot></slot></div>`;
+
+/** @implements {Avatar.WebComponent} */
+class AvatarComponent extends HTMLElement {
+	#$ = new Map()
+
+	/** @type {ShadowRoot} */
+	#shadow_
+
+	static observedAttributes = ['img', 'size', 'href', 'target']
+	static sizes = ['sm', 'md', 'lg', 'xl', 'xxs', 'xs', 'xxl']
+
+	/** @param {Avatar.Attributes} [attributes] */
+	constructor(attributes = {}) {
+		super();
+
+		updateAttributes(this, attributes);
+
+		this.#shadow_ = initShadowRoot.call(this, {
+			template,
+			delegatesFocus: true,
+			serializable: true,
+		});
+	}
+
+	attributeChangedCallback(name) {
+		if (this.isConnected === false) return
+		switch (name) {
+			case 'href':
+			case 'target':
+				this.#renderLink();
+				this.#renderImage();
+				break
+			case 'size':
+				this.#applySize();
+				break
+			case 'img':
+				this.#renderImage();
+				break
+		}
+	}
+
+	connectedCallback() {
+		this.#shadow_.adoptedStyleSheets.push(cssStyleSheet);
+
+		this.#applySize();
+		this.#renderLink();
+		this.#renderImage();
+	}
+
+	#applySize() {
+		const size = this.getAttribute('size');
+		if (size) {
+			console.assert(
+				AvatarComponent.sizes.includes(size),
+				`Wrong size: "${size}"`,
+			);
+			this.#root.classList.add('s-' + size);
+		} else {
+			AvatarComponent.sizes.forEach((size) =>
+				this.#root.classList.remove('s-' + size),
+			);
+		}
+	}
+
+	#renderLink() {
+		const className = cAvatarLink;
+		const href = this.getAttribute('href');
+		const target = this.getAttribute('target') ?? '_self';
+		if (href) {
+			if (this.#$.has('link')) {
+				const $link = this.#$.get('link');
+				$link.setAttribute('href', href);
+				$link.setAttribute('target', target);
+			} else {
+				this.#$.set(
+					'link',
+					createElement('a', { className, href, target }),
+				);
+				this.appendChild(this.#$.get('link'));
+			}
+		} else if (this.#$.has('link')) {
+			this.#$.get('link').remove();
+			this.#$.delete('link');
+		}
+	}
+
+	#renderImage() {
+		const source = this.getAttribute('img');
+		if (source) {
+			if (this.#hasParentPanel) {
+				this.#root.style.backgroundImage = `url(${source})`;
+			} else {
+				if (this.#$.has('image'))
+					this.#$.get('image').setAttribute('src', source);
+				else this.#$.set('image', createElement('img', { src: source }));
+				if (this.#$.has('link'))
+					this.#$.get('link').appendChild(this.#$.get('image'));
+				else this.appendChild(this.#$.get('image'));
+			}
+		} else if (this.#$.has('image')) {
+			this.#$.get('image').remove();
+			this.#$.delete('image');
+		} else {
+			delete this.#root.style.backgroundImage;
+		}
+	}
+
+	get #hasParentPanel() {
+		return this.closest('.c-panel') !== null
+	}
+
+	get #root() {
+		return this.#shadow_.firstChild
+	}
+}
+
+customElements.define(tagName, AvatarComponent);
+
+const index = customElements.get(tagName);
+
+export { AvatarComponent, index as default, tagName };

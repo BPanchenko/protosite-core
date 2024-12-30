@@ -5,7 +5,6 @@ import kebabCase from 'lodash/kebabCase.js'
 import last from 'lodash/last.js'
 import path from 'node:path'
 import pugPlugin from 'rollup-plugin-pug'
-import terser from '@rollup/plugin-terser'
 
 const componentDir = path.join('src', 'component')
 const libraryDir = path.join('src', 'lib')
@@ -75,21 +74,6 @@ export default function getConfig(options = {}) {
 			},
 			pugPlugin({
 				staticPattern: /\.pug$/,
-			}),
-			terser({
-				ecma: 2020,
-				keep_classnames: true,
-				compress: {
-					global_defs: {
-						ENV: 'PROD',
-						SHADOW_MODE: 'closed',
-						'@debug': 'console.trace',
-						'@error': 'console.error',
-						'@info': 'console.log',
-						'@success': 'console.log',
-						'@warn': 'console.warn',
-					},
-				},
 			}),
 		],
 	}

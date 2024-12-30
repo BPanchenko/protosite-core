@@ -1,0 +1,9 @@
+import { Primitive } from '#types/primitive'
+
+export const checkTruth = (value: Primitive): boolean => {
+	return typeof value === 'string'
+		? ['on', 'true'].includes(value.trim().toLocaleLowerCase())
+		: Boolean(value)
+}
+
+export default checkTruth

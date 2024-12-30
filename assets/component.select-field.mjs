@@ -1,4 +1,4 @@
-const template = "<link href=\"http://assets.protosite.rocks/core/select-field.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:defined) {\n\tcontent-visibility: hidden;\n}\n:host(:state(loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox_popover\" id=\"button\" role=\"button\" tabindex=\"0\"><div part=\"selectedcontent\" role=\"status\"></div></div><div aria-labelledby=\"button\" id=\"listbox_popover\" role=\"listbox\" part=\"listbox\" tabindex=\"1\"><slot></slot></div>";
+const template = "<link href=\"http://assets.protosite.rocks/core/select-field.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:state(--defined)) {\n\tcontent-visibility: hidden;\n}\n:host(:state(--loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox_popover\" id=\"button\" role=\"button\" tabindex=\"0\"><div part=\"selectedcontent\" role=\"status\"></div></div><div aria-labelledby=\"button\" id=\"listbox_popover\" role=\"listbox\" part=\"listbox\" tabindex=\"0\"><slot></slot></div>";
 
 const shadowModeByDefault =
 	typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE;
@@ -121,7 +121,7 @@ const updateAttributes = (element, objectOrAttrName, attrValue = null) => {
 
 const tagName = 'c-select-field';
 
-/** @typedef {'defined' | 'interactive' | 'loaded' } ComponentReadyState */
+/** @typedef {'--defined' | '--interactive' | '--loaded' } ComponentReadyState */
 /** @typedef {'collapsed' | 'expanded'} ListBoxState */
 /** @typedef {ComponentReadyState | ListBoxState } SelectFieldState */
 
@@ -136,14 +136,14 @@ class SelectField extends HTMLElement {
 	/** @type {AbortController} */
 	#interCont
 
-	/** @type {AbortController} */
-	#slotChangeCont
-
 	/** @type {ElementInternals} */
 	#internals = this.attachInternals()
 
 	/** @type {RefOptionMap} */
 	#options = new Map()
+
+	/** @type {AbortController} */
+	#slotChangeCont
 
 	static formAssociated = true
 	static role = 'combobox'
@@ -153,11 +153,71 @@ class SelectField extends HTMLElement {
 		'aria-disabled',
 		'aria-expanded',
 		'aria-label',
+		'aria-multiselectable',
 		'aria-placeholder',
 		'aria-readonly',
-		'onchange',
+		'name',
 		'value',
 	]
+
+	/**
+	 * @param {SelectField} element
+	 * @param {Object} [options]
+	 * @param {ElementInternals} [options.internals]
+	 * @param {ShadowRoot} [options.shadowRoot]
+	 */
+	static initAttributes(element, { internals, shadowRoot }) {
+		const data = {
+			'aria-atomic': true,
+			role: SelectField.role,
+		};
+
+		// [exportparts]
+
+		if (
+			false === element.hasAttribute('exportparts') &&
+			shadowRoot instanceof ShadowRoot
+		) {
+			const $$parts = shadowRoot.querySelectorAll('[part]').values();
+
+			if ($$parts.length) {
+				data.exportparts = Array.from($$parts)
+					.map(($elem) => $elem.part.toString())
+					.join(', ');
+			}
+		}
+
+		// [tabindex]
+
+		if (
+			element.isConnected &&
+			element.tabIndex < 0 &&
+			internals instanceof ElementInternals &&
+			internals.form instanceof HTMLElement
+		) {
+			data.tabindex = 0;
+		}
+
+		return updateAttributes(element, data)
+	}
+
+	/**
+	 * @param {SelectField} element
+	 * @param {Object} [options]
+	 * @param {ElementInternals} [options.internals]
+	 * @param {ShadowRoot} [options.shadowRoot_]
+	 */
+	static initAccessibilityTree(element, { internals, shadowRoot_ }) {
+		internals.ariaAtomic = true;
+		internals.ariaLive = 'polite';
+		internals.role = SelectField.role;
+
+		internals.ariaDisabled = element.ariaDisabled === 'true';
+		internals.ariaExpanded = element.ariaExpanded === 'true';
+		internals.ariaRequired = element.ariaRequired === 'true';
+		internals.ariaHasPopup = 'listbox';
+		internals.ariaMultiSelectable = element.ariaMultiSelectable === 'true';
+	}
 
 	constructor() {
 		super();
@@ -165,22 +225,32 @@ class SelectField extends HTMLElement {
 			template,
 			delegatesFocus: true,
 		});
-		this.#initAttributes();
+		SelectField.initAttributes(this, {
+			shadowRoot: this.#internals.shadowRoot,
+		});
 		this.#listenAssignedNodes();
-		this.#states.add('defined');
+		this.#states.add('--defined');
+
+		console.dir(this);
+		console.log(this.#internals);
 	}
 
 	connectedCallback() {
 		// (1)
-		this.#initAttributes();
-		this.#initProperties();
+		SelectField.initAttributes(this, {
+			internals: this.#internals,
+		});
+		SelectField.initAccessibilityTree(this, {
+			internals: this.#internals,
+		});
 
 		// (2)
 		this.#listenFocus();
-		this.#states.add('interactive');
+		this.#states.add('--interactive');
 
 		// (3)
-		this.#$('link').onload = () => this.#states.add('loaded');
+		this.#internals.shadowRoot.querySelector('link').onload = () =>
+			this.#states.add('--loaded');
 	}
 
 	disconnectedCallback() {
@@ -216,12 +286,12 @@ class SelectField extends HTMLElement {
 		}
 	}
 
-	formAssociatedCallback(_form) {}
+	formAssociatedCallback(form_) {}
 	formDisabledCallback(disabled) {
 		this.setAttribute('aria-disabled', disabled);
 	}
 	formResetCallback() {}
-	formStateRestoreCallback(state, _reason) {
+	formStateRestoreCallback(state, reason_) {
 		this.value = state;
 	}
 
@@ -231,7 +301,7 @@ class SelectField extends HTMLElement {
 	 * @param {string} query
 	 * @returns {SearchResult | null}
 	 */
-	search(query) {
+	#search(query) {
 		for (const [ref, option] of this.#options)
 			if (
 				0 === option.label.indexOf(query) ||
@@ -250,7 +320,7 @@ class SelectField extends HTMLElement {
 	 * @param {string} query
 	 * @returns {SearchResult | null}
 	 */
-	findByValue(query) {
+	#findByValue(query) {
 		for (const [ref, option] of this.#options)
 			if (query === option.value)
 				return {
@@ -270,26 +340,11 @@ class SelectField extends HTMLElement {
 		return current
 	}
 
-	/** @type {HTMLFormElement} */
-	get form() {
-		return this.#internals.form
-	}
-
-	/** @type {string} */
-	get name() {
-		return this.getAttribute('name') ?? 'unknown'
-	}
-
 	/** @type {string} */
 	get options() {
 		const $$elements = new Set();
-		for (const [ref, _option] of this.#options) $$elements.add(ref.deref());
+		for (const [ref, option_] of this.#options) $$elements.add(ref.deref());
 		return null
-	}
-
-	/** @type {string} */
-	get type() {
-		return this.getAttribute('type') ?? 'text'
 	}
 
 	/** @type {number} */
@@ -350,52 +405,6 @@ class SelectField extends HTMLElement {
 	/** @param {boolean} flag */
 	set collapsed(flag) {
 		this.expanded = false === flag;
-	}
-
-	#initAttributes() {
-		const data = {
-			'aria-atomic': true,
-			role: SelectField.role,
-		};
-
-		// [exportparts]
-
-		if (false === this.hasAttribute('exportparts')) {
-			const $$parts = this.#internals.shadowRoot
-				.querySelectorAll('[part]')
-				.values();
-
-			if ($$parts.length) {
-				data.exportparts = Array.from($$parts)
-					.map(($elem) => $elem.part.toString())
-					.join(', ');
-			}
-		}
-
-		// [tabindex]
-
-		if (
-			this.isConnected &&
-			this.tabIndex < 0 &&
-			this.#internals.form instanceof HTMLFormElement
-		) {
-			data.tabindex = 0;
-		}
-
-		return updateAttributes(this, data)
-	}
-
-	#initProperties() {
-		this.#internals.ariaAtomic = true;
-		this.#internals.role = SelectField.role;
-
-		this.#internals.ariaAutoComplete = this.ariaAutoComplete === 'true';
-		this.#internals.ariaDisabled = this.ariaDisabled === 'true';
-		this.#internals.ariaExpanded = this.ariaExpanded === 'true';
-		this.#internals.ariaHasPopup = this.ariaHasPopup === 'true';
-		this.#internals.ariaMultiSelectable =
-			this.ariaMultiSelectable === 'true';
-		this.#internals.ariaPlaceholder = this.ariaPlaceholder;
 	}
 
 	/** @returns {AbortController} */
@@ -504,22 +513,24 @@ class SelectField extends HTMLElement {
 
 		this.#internals.ariaActiveDescendantElement =
 			this.#internals.shadowRoot.activeElement;
+
+		console.log('onFocus', event);
 	}
 
-	#onFocusIn(event) {}
+	#onFocusIn(event_) {}
 
-	#onBlur(event) {}
+	#onBlur(event_) {}
 
-	#onFocusOut(event) {
+	#onFocusOut(event_) {
 		this.toggle('collapsed');
 		this.#interCont?.abort();
 	}
 
-	#onClickButton(event) {
+	#onClickButton(event_) {
 		this.toggle();
 	}
 
-	#onClickListBox(event) {}
+	#onClickListBox(event_) {}
 
 	#onKeyPress(event) {
 		const { key } = event;
@@ -545,30 +556,19 @@ class SelectField extends HTMLElement {
 		}
 	}
 
-	/**
-	 * Returns the first element that is a descendant of element that matches selector.
-	 *
-	 * @param {string} selector
-	 * @param {HTMLElement | ShadowRoot} [$parent]
-	 * @returns {HTMLElement | null}
-	 */
-	#$(selector, $parent) {
-		return ($parent ?? this.#internals.shadowRoot).querySelector(selector)
-	}
-
 	/** @type {HTMLElement} */
 	get #$button() {
-		return this.#$('[role=button]')
+		return this.#internals.shadowRoot.querySelector('[role=button]')
 	}
 
 	/** @type {HTMLElement} */
 	get #$status() {
-		return this.#$('[role=status]', this.#$button)
+		return this.#$button.querySelector('[role=status]')
 	}
 
 	/** @type {HTMLElement} */
 	get #$listbox() {
-		return this.#$('[role=listbox]')
+		return this.#internals.shadowRoot.querySelector('[role=listbox]')
 	}
 
 	/** @type {CustomStateSet} */

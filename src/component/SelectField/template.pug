@@ -4,10 +4,10 @@ link(
 	type="text/css"
 )
 style(type="text/css").
-	:host(:defined) {
+	:host(:state(--defined)) {
 		content-visibility: hidden;
 	}
-	:host(:state(loaded)) {
+	:host(:state(--loaded)) {
 		content-visibility: visible;
 	}
 div(
@@ -25,6 +25,6 @@ div(
 	id="listbox_popover",
 	role="listbox",
 	part="listbox"
-	tabindex="1"
+	tabindex="0"
 )
 	slot

@@ -2,8 +2,8 @@
 
 import template from './template.pug'
 
-import applyAttributes from '#lib/fn.applyAttributes.js'
 import initShadowRoot from '#lib/fn.initShadowRoot.js'
+import updateAttributes from '#lib/fn.updateAttributes.js'
 
 export const tagName = 'c-select-field'
 
@@ -16,16 +16,23 @@ export const tagName = 'c-select-field'
 /** @typedef {ListItem & { $element: HTMLElement}} SearchResult */
 
 export class SelectField extends HTMLElement {
-	/** @type {Map<string, string>} */
-	#initialAttributes
+	/** @type {AbortController} */
+	#focusCont
+
+	/** @type {AbortController} */
+	#interCont
+
+	/** @type {AbortController} */
+	#slotChangeCont
 
 	/** @type {ElementInternals} */
-	#internals
+	#internals = this.attachInternals()
 
 	/** @type {RefOptionMap} */
 	#options = new Map()
 
 	static formAssociated = true
+	static role = 'combobox'
 
 	/** @type Array<SelectField.Attributes> */
 	static observedAttributes = [
@@ -39,34 +46,20 @@ export class SelectField extends HTMLElement {
 	]
 
 	constructor() {
-		initShadowRoot.call(super(), {
+		super()
+		initShadowRoot.call(this, {
 			template,
 			delegatesFocus: true,
 		})
-
-		this.#internals = this.attachInternals()
-		this.#initInternalProperties()
-		this.#initElementAttributes()
-		this.#states.add('defined')
+		this.#initAttributes()
 		this.#listenAssignedNodes()
-	}
-
-	#initElementAttributes() {
-		const $$parts = this.#internals.shadowRoot.querySelectorAll('[part]')
-
-		const attrs = {
-			role: this.#internals.role,
-		}
-	}
-
-	#initInternalProperties() {
-		this.#internals.ariaAtomic = true
-		this.#internals.role = 'combobox'
+		this.#states.add('defined')
 	}
 
 	connectedCallback() {
 		// (1)
-		this.#syncAccessibilityTree()
+		this.#initAttributes()
+		this.#initProperties()
 
 		// (2)
 		this.#listenFocus()
@@ -107,7 +100,6 @@ export class SelectField extends HTMLElement {
 				this.value = updated
 				break
 			default:
-				this.#syncAccessibilityTree()
 		}
 	}
 
@@ -115,9 +107,7 @@ export class SelectField extends HTMLElement {
 	formDisabledCallback(disabled) {
 		this.setAttribute('aria-disabled', disabled)
 	}
-	formResetCallback() {
-		applyAttributes(this, this.#initialAttributes)
-	}
+	formResetCallback() {}
 	formStateRestoreCallback(state, _reason) {
 		this.value = state
 	}
@@ -215,11 +205,6 @@ export class SelectField extends HTMLElement {
 		)
 	}
 
-	/** @type {CustomStateSet} */
-	get #states() {
-		return this.#internals.states
-	}
-
 	/** @type {boolean} */
 	get disabled() {
 		return this.#internals.ariaDisabled === 'true'
@@ -244,7 +229,7 @@ export class SelectField extends HTMLElement {
 
 	/** @param {boolean} flag */
 	set expanded(flag) {
-		this.setAttribute('aria-expanded', flag)
+		updateAttributes(this, 'aria-expanded', flag)
 		this.#states[flag ? 'add' : 'delete']('expanded')
 		this.#states[flag ? 'delete' : 'add']('collapsed')
 	}
@@ -254,122 +239,51 @@ export class SelectField extends HTMLElement {
 		this.expanded = false === flag
 	}
 
-	/** @type {AbortController} */
-	#focusCont
-
-	/** @returns {AbortController} */
-	#listenFocus() {
-		this.#focusCont?.abort()
-		this.#focusCont = new AbortController()
-
-		const options = {
-			capture: false,
-			passive: true,
-			signal: this.#focusCont.signal,
+	#initAttributes() {
+		const data = {
+			'aria-atomic': true,
+			role: SelectField.role,
 		}
 
-		this.addEventListener('focus', (event) => this.#onFocus(event), options)
-		this.addEventListener(
-			'focusin',
-			(event) => this.#onFocusIn(event),
-			options,
-		)
-		this.addEventListener('blur', (event) => this.#onBlur(event), options)
-		this.addEventListener(
-			'focusout',
-			(event) => this.#onFocusOut(event),
-			options,
-		)
+		// [exportparts]
 
-		return this.#focusCont
-	}
+		if (false === this.hasAttribute('exportparts')) {
+			const $$parts = this.#internals.shadowRoot
+				.querySelectorAll('[part]')
+				.values()
 
-	#onFocus(event) {
-		this.#listenInteraction()
-	}
-
-	#onFocusIn(event) {}
-
-	#onBlur(event) {}
-
-	#onFocusOut(event) {
-		this.toggle('collapsed')
-		this.#interCont?.abort()
-	}
-
-	/** @type {AbortController} */
-	#interCont
-
-	/** @returns {AbortController} */
-	#listenInteraction() {
-		this.#interCont?.abort()
-		this.#interCont = new AbortController()
-
-		const options = {
-			capture: true,
-			passive: false,
-			signal: this.#interCont.signal,
+			if ($$parts.length) {
+				data.exportparts = Array.from($$parts)
+					.map(($elem) => $elem.part.toString())
+					.join(', ')
+			}
 		}
 
-		this.#$button.addEventListener(
-			'click',
-			(event) => this.#onClickButton(event),
-			options,
-		)
-		this.#$listbox.addEventListener(
-			'click',
-			(event) => this.#onClickListBox(event),
-			options,
-		)
-		this.addEventListener(
-			'keypress',
-			(event) => this.#onKeyPress(event),
-			options,
-		)
+		// [tabindex]
 
-		return this.#interCont
-	}
-
-	#onClickButton(event) {
-		this.toggle()
-	}
-
-	#onClickListBox(event) {}
-
-	#onKeyPress(event) {
-		const { key } = event
-
-		switch (key) {
-			case 'Backspace':
-			case 'Enter':
-				if (this.focused === this.#$button) {
-					this.toggle('expanded')
-				}
-				break
-			case 'Escape':
-				if (this.focused !== this.#$button) {
-					this.toggle('collapsed')
-				}
-				break
-			case 'End':
-				this.options[this.size - 1].focus()
-				break
-			case 'Home':
-				this.options[0].focus()
-				break
-			case 'ArrowUp':
-				break
-			case 'ArrowDown':
-				break
-			default:
-				if (/\w+/.test(key)) {
-					// TODO
-				}
+		if (
+			this.isConnected &&
+			this.tabIndex < 0 &&
+			this.#internals.form instanceof HTMLFormElement
+		) {
+			data.tabindex = 0
 		}
+
+		return updateAttributes(this, data)
 	}
 
-	/** @type {AbortController} */
-	#slotChangeCont
+	#initProperties() {
+		this.#internals.ariaAtomic = true
+		this.#internals.role = SelectField.role
+
+		this.#internals.ariaAutoComplete = this.ariaAutoComplete === 'true'
+		this.#internals.ariaDisabled = this.ariaDisabled === 'true'
+		this.#internals.ariaExpanded = this.ariaExpanded === 'true'
+		this.#internals.ariaHasPopup = this.ariaHasPopup === 'true'
+		this.#internals.ariaMultiSelectable =
+			this.ariaMultiSelectable === 'true'
+		this.#internals.ariaPlaceholder = this.ariaPlaceholder
+	}
 
 	/** @returns {AbortController} */
 	#listenAssignedNodes() {
@@ -415,17 +329,115 @@ export class SelectField extends HTMLElement {
 		return this.#slotChangeCont
 	}
 
-	#syncAccessibilityTree() {
+	/** @returns {AbortController} */
+	#listenFocus() {
+		this.#focusCont?.abort()
+		this.#focusCont = new AbortController()
+
+		const options = {
+			capture: false,
+			passive: true,
+			signal: this.#focusCont.signal,
+		}
+
+		this.addEventListener('focus', (event) => this.#onFocus(event), options)
+		this.addEventListener(
+			'focusin',
+			(event) => this.#onFocusIn(event),
+			options,
+		)
+		this.addEventListener('blur', (event) => this.#onBlur(event), options)
+		this.addEventListener(
+			'focusout',
+			(event) => this.#onFocusOut(event),
+			options,
+		)
+
+		return this.#focusCont
+	}
+
+	/** @returns {AbortController} */
+	#listenInteraction() {
+		this.#interCont?.abort()
+		this.#interCont = new AbortController()
+
+		const options = {
+			capture: true,
+			passive: false,
+			signal: this.#interCont.signal,
+		}
+
+		this.#$button.addEventListener(
+			'click',
+			(event) => this.#onClickButton(event),
+			options,
+		)
+		this.#$listbox.addEventListener(
+			'click',
+			(event) => this.#onClickListBox(event),
+			options,
+		)
+		this.addEventListener(
+			'keypress',
+			(event) => this.#onKeyPress(event),
+			options,
+		)
+
+		return this.#interCont
+	}
+
+	#onFocus(event) {
+		this.#listenInteraction()
+
 		this.#internals.ariaActiveDescendantElement =
 			this.#internals.shadowRoot.activeElement
+	}
 
-		this.#internals.ariaAutoComplete = this.ariaAutoComplete
-		this.#internals.ariaDisabled = this.ariaDisabled
-		this.#internals.ariaHasPopup = this.ariaHasPopup
-		this.#internals.ariaExpanded = this.ariaExpanded
-		this.#internals.ariaMultiSelectable = this.ariaMultiSelectable
-		this.#internals.ariaPlaceholder = this.ariaPlaceholder
-		this.#internals.role = this.role
+	#onFocusIn(event) {}
+
+	#onBlur(event) {}
+
+	#onFocusOut(event) {
+		this.toggle('collapsed')
+		this.#interCont?.abort()
+	}
+
+	#onClickButton(event) {
+		this.toggle()
+	}
+
+	#onClickListBox(event) {}
+
+	#onKeyPress(event) {
+		const { key } = event
+
+		switch (key) {
+			case 'Backspace':
+			case 'Enter':
+				if (this.focused === this.#$button) {
+					this.toggle('expanded')
+				}
+				break
+			case 'Escape':
+				if (this.focused !== this.#$button) {
+					this.toggle('collapsed')
+				}
+				break
+			case 'End':
+				this.options[this.size - 1].focus()
+				break
+			case 'Home':
+				this.options[0].focus()
+				break
+			case 'ArrowUp':
+				break
+			case 'ArrowDown':
+				break
+			default:
+				if (/\w+/.test(key)) {
+					// TODO
+				}
+		}
 	}
 
 	/**
@@ -452,6 +464,11 @@ export class SelectField extends HTMLElement {
 	/** @type {HTMLElement} */
 	get #$listbox() {
 		return this.#$('[role=listbox]')
+	}
+
+	/** @type {CustomStateSet} */
+	get #states() {
+		return this.#internals.states
 	}
 }
 

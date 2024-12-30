@@ -2,9 +2,9 @@
 
 import cssStyleSheet, { cAvatar, cAvatarLink } from '#uikit/component/avatar'
 
-import applyAttributes from '#lib/fn.applyAttributes.js'
 import createElement from '#lib/fn.createElement.js'
 import initShadowRoot from '#lib/fn.initShadowRoot.js'
+import updateAttributes from '#lib/fn.updateAttributes.js'
 
 export const tagName = cAvatar
 const template = `<div role=img><slot></slot></div>`
@@ -23,7 +23,7 @@ export class AvatarComponent extends HTMLElement {
 	constructor(attributes = {}) {
 		super()
 
-		applyAttributes(this, attributes)
+		updateAttributes(this, attributes)
 
 		this.#shadow_ = initShadowRoot.call(this, {
 			template,

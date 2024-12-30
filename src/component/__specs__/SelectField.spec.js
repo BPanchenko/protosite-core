@@ -1,4 +1,4 @@
-import applyAttributes from '#lib/fn.applyAttributes.js'
+import updateAttributes from '#lib/fn.updateAttributes.js'
 import '../__mocks__/window.mock'
 import SelectComponent from '../SelectField/index.js'
 
@@ -15,7 +15,7 @@ describe('[SelectComponent]', () => {
 		'Apohele Asteroid (Hazard)',
 	].forEach((value) => {
 		const $element = document.createElement('div')
-		applyAttributes($element, {
+		updateAttributes($element, {
 			role: 'option',
 			value,
 		})

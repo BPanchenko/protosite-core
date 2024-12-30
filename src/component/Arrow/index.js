@@ -2,9 +2,9 @@
 
 import cssStyleSheet, { cArrow } from '#uikit/component/arrow'
 
-import applyAttributes from '#lib/fn.applyAttributes.js'
 import checkFontFace from '#lib/fn.checkFontFace.js'
 import initShadowRoot from '#lib/fn.initShadowRoot.js'
+import updateAttributes from '#lib/fn.updateAttributes.js'
 
 export const tagName = cArrow
 const template = `<i data-glyph=arrow><slot>&nbsp;</slot></i>`
@@ -37,7 +37,7 @@ export class ArrowComponent extends HTMLElement {
 	constructor(attributes = {}) {
 		super()
 
-		applyAttributes(this, attributes)
+		updateAttributes(this, attributes)
 
 		this.#shadow_ = initShadowRoot.call(this, {
 			template,

@@ -24,7 +24,7 @@ export class FieldComponent extends HTMLElement {
 	/** @param {Field.Attributes} [attrs] */
 	constructor(attrs = {}) {
 		super()
-		this.#applyAttributes(attrs)
+		this.#updateAttributes(attrs)
 		this.#shadow = this.attachShadow({ mode: shadowMode })
 		this.#shadow.innerHTML = shadowHTML
 	}
@@ -76,7 +76,7 @@ export class FieldComponent extends HTMLElement {
 		return ~['radio', 'checkbox'].indexOf(this.type)
 	}
 
-	#applyAttributes(attrs = {}) {
+	#updateAttributes(attrs = {}) {
 		const valid = [
 			'label',
 			'list',

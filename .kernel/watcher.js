@@ -1,5 +1,6 @@
 import path from 'node:path'
 import process from 'node:process'
+import { execSync } from 'node:child_process'
 
 import Watcher from 'watcher'
 import { logger } from './logger.cjs'
@@ -25,6 +26,11 @@ const watcher = new Watcher(
 
 watcher.on('change', (filePath) => buildESM(filePath, config))
 watcher.on('ready', () => logger.info(`Watching the source code is running`))
+watcher.on('close', () => {
+	logger.info(`Watching is stopped`)
+	execSync('npm run build')
+	logger.info(`Assets rebuilt for Production`)
+})
 ;['SIGINT', 'SIGTERM', 'SIGQUIT'].forEach((sig) =>
 	process.on(sig, () => watcher.close()),
 )

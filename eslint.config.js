@@ -29,7 +29,7 @@ export default [
 	json.configs['recommended-with-comments'],
 	js.configs.recommended,
 	{
-		files: ['**/*.{js,cjs,mjs}'],
+		files: ['**/*.{js,cjs,mjs,ts}'],
 		languageOptions: {
 			globals: {
 				...mapValues(jestConfig.globals, () => 'readonly'),
@@ -91,8 +91,8 @@ export default [
 			'no-unused-vars': [
 				1,
 				{
-					argsIgnorePattern: '^_',
-					destructuredArrayIgnorePattern: '^_',
+					argsIgnorePattern: '._$',
+					destructuredArrayIgnorePattern: '._$',
 					reportUsedIgnorePattern: true,
 				},
 			],
@@ -114,7 +114,7 @@ export default [
 			'import/resolver': {
 				alias: {
 					map: [
-						['#lib', './src/lib'],
+						['#library', './src/lib'],
 						['#uikit', '@bpanchenko/uikit'],
 					],
 					extensions: ['.js', '.cjs', '.mjs', '.css', '.json'],

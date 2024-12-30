@@ -1,4 +1,4 @@
-import updateAttributes from '#lib/fn.updateAttributes.js'
+import updateAttributes from '#library/fn.updateAttributes.js'
 import '../__mocks__/window.mock'
 import SelectComponent from '../SelectField/index.js'
 

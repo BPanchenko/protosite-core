@@ -51,8 +51,8 @@ declare namespace Arrow {
 	}
 
 	interface WebComponent extends HTMLElement {
-		observedAttributes: string[]
+		observedAttributes: string[];
 
-		attributeChangedCallback(name: string, oldVal: string | null, newVal: string | null): void
+		attributeChangedCallback(name: string, oldVal: string | null, newVal: string | null): void;
 	}
 }

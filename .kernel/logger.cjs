@@ -79,7 +79,7 @@ logger.logSavedFile = (path, hrstart = start) => {
 logger.totalSavedFiles = (savingResults, hrstart = start) => {
 	const total = savingResults.length
 	const failures = savingResults.filter(
-		([_relChunkPath, status]) => status === 'fail',
+		([relChunkPath_, status]) => status === 'fail',
 	).length
 	const hasFail = Boolean(failures)
 	const time = roundNanoseconds(process.hrtime(hrstart)[1])

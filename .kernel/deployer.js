@@ -11,7 +11,7 @@ const asIs = globSync(['assets/*.{html,js,mjs}']).map((file) => [
 ])
 
 const files = new Map(
-	asIs.sort(([_a, a], [_b, b]) => (a < b ? -1 : a > b ? 1 : 0)),
+	asIs.sort(([a_, a], [b_, b]) => (a < b ? -1 : a > b ? 1 : 0)),
 )
 
 ;(async function deploy() {

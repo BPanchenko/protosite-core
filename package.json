@@ -4,27 +4,19 @@
   "description": "Web Application Core. It сontains a library of Web Components.",
   "homepage": "http://protosite.rocks",
   "type": "module",
-  "main": "./index.js",
-  "types": "./@types/index.d.ts",
+  "main": "./src/index.js",
+  "types": "./src/index.d.ts",
   "files": [
-    "index.js",
-    "@types/*",
-    "assets/*.html",
-    "assets/*.js",
+    "assets/*.d.ts",
     "assets/*.mjs",
     "src/*"
   ],
   "exports": {
-    "./component/*.js": "./src/components/*.js",
-    "./lib/*.js": "./src/lib/*.js",
-    "./arrow": "./assets/component.arrow.mjs",
-    "./avatar": "./assets/component.avatar.mjs",
-    "./select-field": "./assets/component.select-field.mjs",
-    "./*.js": "./src/*.js",
-    ".": "./index.js"
+    ".": "./src/index.js",
+    "./*": "./src/*"
   },
   "imports": {
-    "#lib/*": "./src/lib/*"
+    "#library/*": "./src/lib/*"
   },
   "scripts": {
     "build": "node ./.kernel/builder",

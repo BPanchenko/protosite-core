@@ -1,5 +1,5 @@
 import babelParser from '@babel/eslint-parser'
-import js from '@eslint/js'
+import eslint from '@eslint/js'
 
 import importPlugin from 'eslint-plugin-import'
 import jest from 'eslint-plugin-jest'
@@ -17,19 +17,54 @@ import mapValues from 'lodash/mapValues.js'
 import html from '@html-eslint/eslint-plugin'
 import htmlParser from '@html-eslint/parser'
 
+import typescriptParser from '@typescript-eslint/parser'
+import typescriptPlugin from '@typescript-eslint/eslint-plugin'
+
 export default [
 	{
 		ignores: [
 			'assets/*',
 			'!assets/__tests__/',
-			'src/components/field.js',
+			'src/component/FormField.js',
 			'node_modules/',
 		],
 	},
 	json.configs['recommended-with-comments'],
-	js.configs.recommended,
+	eslint.configs.recommended,
 	{
-		files: ['**/*.{js,cjs,mjs,ts}'],
+		files: ['**/*.ts'],
+		languageOptions: {
+			globals: {
+				...globals.browser,
+				...globals.node,
+			},
+			parser: typescriptParser,
+		},
+		plugins: {
+			'@typescript-eslint': typescriptPlugin,
+			import: importPlugin,
+			prettier,
+		},
+		rules: {
+			'no-unused-vars': 0,
+			'@typescript-eslint/no-unused-vars': 1,
+			'prettier/prettier': 1,
+			'sort-imports': [
+				1,
+				{
+					ignoreDeclarationSort: true,
+					memberSyntaxSortOrder: [
+						'none',
+						'single',
+						'all',
+						'multiple',
+					],
+				},
+			],
+		},
+	},
+	{
+		files: ['**/*.{js,cjs,mjs,mjs}'],
 		languageOptions: {
 			globals: {
 				...mapValues(jestConfig.globals, () => 'readonly'),
@@ -88,6 +123,7 @@ export default [
 				},
 			],
 			'no-prototype-builtins': 0,
+			'no-unused-private-class-members': 0,
 			'no-unused-vars': [
 				1,
 				{

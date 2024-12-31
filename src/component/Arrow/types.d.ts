@@ -41,7 +41,7 @@ declare namespace Arrow {
 
 		/**
 		 * Resizes the component. The default size is defined in UIKit.
-		 * 
+		 *
 		 * [UIKit Reference](http://protosite.rocks/components/avatar.html)
 		 */
 		size: 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
@@ -51,8 +51,14 @@ declare namespace Arrow {
 	}
 
 	interface WebComponent extends HTMLElement {
-		observedAttributes: string[];
+		observedAttributes: string[]
 
-		attributeChangedCallback(name: string, oldVal: string | null, newVal: string | null): void;
+		attributeChangedCallback(
+			name: string,
+			oldVal: string | null,
+			newVal: string | null,
+		): void
 	}
 }
+
+export = Arrow

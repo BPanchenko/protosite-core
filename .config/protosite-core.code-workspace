@@ -1,39 +1,39 @@
 {
-	"folders": [
-		{
-			"path": ".."
-		}
-	],
-	"settings": {
-		"editor.codeActionsOnSave": {
-			"source.fixAll": "explicit"
-		},
-		"editor.detectIndentation": false,
-		"editor.fontFamily": "'Clincher Code', monospace",
-		"editor.fontLigatures": true,
-		"editor.fontSize": 13,
-		"editor.formatOnPaste": false,
-		"editor.formatOnSave": true,
-		"editor.formatOnSaveMode": "file",
-		"editor.formatOnType": false,
-		"editor.insertSpaces": false,
-		"editor.tabSize": 4,
+  "folders": [
+    {
+      "path": "..",
+    },
+  ],
+  "settings": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+    },
+    "editor.detectIndentation": false,
+    "editor.fontFamily": "'Clincher Code', monospace",
+    "editor.fontLigatures": true,
+    "editor.fontSize": 13,
+    "editor.formatOnPaste": false,
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.formatOnType": false,
+    "editor.insertSpaces": false,
+    "editor.tabSize": 4,
 
-		"eslint.codeActionsOnSave.mode": "all",
-		"eslint.debug": true,
-		"eslint.enable": true,
-		"eslint.format.enable": true,
-		"eslint.run": "onSave",
-		"eslint.useFlatConfig": true,
-		"eslint.validate": ["javascript"],
-		"eslint.workingDirectories": [{ "mode": "auto" }],
+    "eslint.codeActionsOnSave.mode": "all",
+    "eslint.debug": true,
+    "eslint.enable": true,
+    "eslint.format.enable": true,
+    "eslint.run": "onSave",
+    "eslint.useFlatConfig": true,
+    "eslint.validate": ["javascript", "typescript"],
+    "eslint.workingDirectories": [{ "mode": "auto" }],
 
-		"files.autoSave": "onFocusChange",
+    "files.autoSave": "onFocusChange",
 
-		"[json]": {
-			"editor.detectIndentation": true,
-			"editor.tabSize": 2,
-			"editor.insertSpaces": true,
-		}
-	}
+    "[json]": {
+      "editor.detectIndentation": true,
+      "editor.tabSize": 2,
+      "editor.insertSpaces": true,
+    },
+  },
 }

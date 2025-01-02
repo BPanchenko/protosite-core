@@ -21,7 +21,9 @@ export abstract class StateAttribute extends AriaAttribute {
 				? 'true'
 				: 'false'
 		} else if (
-			['number', 'bigint', 'boolean', 'symbol'].includes(typeof value)
+			['number', 'bigint', 'boolean', 'symbol', 'object'].includes(
+				typeof value,
+			)
 		) {
 			return value ? 'true' : 'false'
 		} else {

@@ -1,3 +1,5 @@
+import getDeepPrototypeOf from '../fn.getDeepPrototypeOf'
+
 import type { Primitive } from '#types/primitive'
 
 export enum AriaCategory {
@@ -45,6 +47,13 @@ export abstract class AriaAttribute {
 		} else {
 			throw new Error(`Wrong attribute value: "${String(value)}"`)
 		}
+	}
+
+	takeAttr(node: Attr) {
+		const proto: AriaAttribute = getDeepPrototypeOf(this, AriaAttribute)
+		console.log(proto)
+		Object.setPrototypeOf(proto, node)
+		return this
 	}
 }
 

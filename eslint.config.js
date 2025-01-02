@@ -47,7 +47,24 @@ export default [
 		},
 		rules: {
 			'no-unused-vars': 0,
-			'@typescript-eslint/no-unused-vars': 1,
+			'@typescript-eslint/no-unused-vars': [
+				1,
+				{
+					args: 'all',
+					argsIgnorePattern: '_$',
+					caughtErrors: 'all',
+					caughtErrorsIgnorePattern: '_$',
+					destructuredArrayIgnorePattern: '_$',
+					varsIgnorePattern: '_$',
+					ignoreRestSiblings: true,
+				},
+			],
+			'no-redeclare': 0,
+			'@typescript-eslint/no-redeclare': [
+				1,
+				{ ignoreDeclarationMerge: true },
+			],
+
 			'prettier/prettier': 1,
 			'sort-imports': [
 				1,

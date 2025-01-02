@@ -25,7 +25,10 @@ const watcher = new Watcher(
 )
 
 watcher.on('change', (filePath) => buildESM(filePath, config))
-watcher.on('ready', () => logger.info(`Watching the source code is running`))
+watcher.on('ready', () => {
+	execSync('npm run build')
+	logger.info(`Watching the source code is running`)
+})
 watcher.on('close', () => {
 	logger.info(`Watching is stopped`)
 	execSync('npm run build')

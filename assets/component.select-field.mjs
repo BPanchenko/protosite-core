@@ -53,6 +53,12 @@ function initShadowRoot(options) {
 	return shadowRoot
 }
 
+const checkTruth = (value) => {
+    return typeof value === 'string'
+        ? ['on', 'true'].includes(value.trim().toLocaleLowerCase())
+        : Boolean(value);
+};
+
 /**
  * Checks if `value` is the
  * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
@@ -116,18 +122,14 @@ const updateAttributes = (element, objectOrAttrName, attrValue = null) => {
 	)
 };
 
-/// <reference path="./types.d.ts" />
-
-
 const tagName = 'c-select-field';
 
 /** @typedef {'--defined' | '--interactive' | '--loaded' } ComponentReadyState */
 /** @typedef {'collapsed' | 'expanded'} ListBoxState */
 /** @typedef {ComponentReadyState | ListBoxState } SelectFieldState */
 
-/** @typedef {{ label: string, value: string }} ListItem */
-/** @typedef {Map<WeakRef<Element>, ListItem>} RefOptionMap */
-/** @typedef {ListItem & { $element: HTMLElement}} SearchResult */
+/** @typedef {{ $element: HTMLElement, label: string, value: string }} Option */
+/** @typedef {Map<WeakRef<Option['$element']>, Option>} OptionCollection */
 
 class SelectField extends HTMLElement {
 	/** @type {AbortController} */
@@ -139,7 +141,7 @@ class SelectField extends HTMLElement {
 	/** @type {ElementInternals} */
 	#internals = this.attachInternals()
 
-	/** @type {RefOptionMap} */
+	/** @type {OptionCollection} */
 	#options = new Map()
 
 	/** @type {AbortController} */
@@ -148,14 +150,13 @@ class SelectField extends HTMLElement {
 	static formAssociated = true
 	static role = 'combobox'
 
-	/** @type Array<SelectField.Attributes> */
 	static observedAttributes = [
 		'aria-disabled',
 		'aria-expanded',
 		'aria-label',
 		'aria-multiselectable',
 		'aria-placeholder',
-		'aria-readonly',
+		'aria-required',
 		'name',
 		'value',
 	]
@@ -169,6 +170,7 @@ class SelectField extends HTMLElement {
 	static initAttributes(element, { internals, shadowRoot }) {
 		const data = {
 			'aria-atomic': true,
+			'aria-expanded': false,
 			role: SelectField.role,
 		};
 
@@ -226,13 +228,10 @@ class SelectField extends HTMLElement {
 			delegatesFocus: true,
 		});
 		SelectField.initAttributes(this, {
-			shadowRoot: this.#internals.shadowRoot,
+			shadowRoot: this.#$root,
 		});
 		this.#listenAssignedNodes();
 		this.#states.add('--defined');
-
-		console.dir(this);
-		console.log(this.#internals);
 	}
 
 	connectedCallback() {
@@ -249,7 +248,7 @@ class SelectField extends HTMLElement {
 		this.#states.add('--interactive');
 
 		// (3)
-		this.#internals.shadowRoot.querySelector('link').onload = () =>
+		this.#$root.querySelector('link').onload = () =>
 			this.#states.add('--loaded');
 	}
 
@@ -265,19 +264,28 @@ class SelectField extends HTMLElement {
 		if (false === this.isConnected) return
 		if (previous === updated) return
 
+		const isTruth = checkTruth(updated);
+
 		switch (name) {
 			case 'aria-disabled':
-				this.disabled =
-					(this.#internals.ariaDisabled = updated) === 'true';
+				if (isTruth) {
+					this.#states.add('disabled');
+					this.#interCont?.abort();
+				} else {
+					this.#states.delete('disabled');
+				}
+				this.#internals.ariaDisabled = updated;
 				break
 			case 'aria-expanded':
-				this.expanded =
-					(this.#internals.ariaExpanded = updated) === 'true';
+				this.#states.add(isTruth ? 'expanded' : 'collapsed');
+				this.#internals.ariaExpanded = updated;
 				break
 			case 'aria-label':
+				this.#internals.ariaLabel = updated;
 				this.#$status.ariaLabel = updated;
 				break
 			case 'aria-placeholder':
+				this.#internals.ariaPlaceholder = updated;
 				this.#$status.ariaPlaceholder = updated;
 				break
 			case 'value':
@@ -295,56 +303,69 @@ class SelectField extends HTMLElement {
 		this.value = state;
 	}
 
-	/**
-	 * Сall returns the first option for wich the query string is started substring of the label or value option.
-	 *
-	 * @param {string} query
-	 * @returns {SearchResult | null}
-	 */
-	#search(query) {
-		for (const [ref, option] of this.#options)
-			if (
-				0 === option.label.indexOf(query) ||
-				0 === option.value.indexOf(query)
-			)
-				return {
-					$element: ref.deref(),
-					...option,
-				}
-		return null
+	collapse() {
+		this.#states.delete('expanded');
+		updateAttributes(this, 'aria-expanded', false);
+	}
+
+	expand() {
+		this.#states.delete('collapsed');
+		updateAttributes(this, 'aria-expanded', true);
 	}
 
 	/**
-	 * Сall will find the first option wich value is fully equal to the query string.
-	 *
-	 * @param {string} query
-	 * @returns {SearchResult | null}
+	 * @param {HTMLElement | string} value
+	 * @returns {boolean}
 	 */
-	#findByValue(query) {
-		for (const [ref, option] of this.#options)
-			if (query === option.value)
-				return {
-					$element: ref.deref(),
-					...option,
-				}
-		return null
+	select(value) {
+		let option;
+		if (value instanceof HTMLElement) {
+			option = this.#options.get(value);
+		} else if (typeof value === 'string') {
+			option = this.#findByValue(value);
+		}
+		return Boolean(option) && this.#selectElement(option.$element)
 	}
 
 	/**
-	 * @param {ListBoxState} state - New value of state
-	 * @returns {ListBoxState} Current state after call
+	 * @param {HTMLElement} $element
 	 */
-	toggle(state = null) {
-		const current = state ?? (this.expanded ? 'collapsed' : 'expanded');
-		this[current] = true;
-		return current
+	#selectElement($element) {
+		const attribute = this.multiple ? 'aria-checked' : 'aria-selected';
+		$element.setAttribute(attribute, true);
 	}
 
-	/** @type {string} */
+	/** @type {boolean} */
+	get disabled() {
+		return (
+			this.#states.has('disabled') &&
+			checkTruth(this.#internals.ariaDisabled) &&
+			checkTruth(this.ariaDisabled)
+		)
+	}
+
+	/** @type {boolean} */
+	get expanded() {
+		return (
+			this.#states.has('expanded') &&
+			checkTruth(this.#internals.ariaExpanded) &&
+			checkTruth(this.ariaExpanded)
+		)
+	}
+
+	/** @type {boolean} */
+	get multiple() {
+		return checkTruth(this.#internals.ariaMultiSelectable)
+	}
+
+	/** @type {MapIterator<Option>} */
 	get options() {
-		const $$elements = new Set();
-		for (const [ref, option_] of this.#options) $$elements.add(ref.deref());
-		return null
+		return this.#options.values()
+	}
+
+	/** @type {boolean} */
+	get readonly() {
+		return checkTruth(this.#internals.ariaReadOnly)
 	}
 
 	/** @type {number} */
@@ -360,51 +381,45 @@ class SelectField extends HTMLElement {
 	/** @param {string} updated */
 	set value(updated) {
 		this.#internals.ariaValueNow = updated;
-		this.setAttribute('value', updated);
 
 		this.dispatchEvent(new Event('change'));
 	}
 
-	/** @type {boolean} */
-	get interacting() {
-		return (
-			Boolean(this.#interCont) &&
-			false === this.#interCont?.signal.aborted
-		)
+	/** @type {HTMLElement} */
+	get #$button() {
+		return this.#$root.querySelector('[role=button]')
 	}
 
-	/** @type {boolean} */
-	get disabled() {
-		return this.#internals.ariaDisabled === 'true'
+	/** @type {HTMLElement} */
+	get #$status() {
+		return this.#$button.querySelector('[role=status]')
 	}
 
-	/** @param {boolean} flag */
-	set disabled(flag) {
-		if (flag) {
-			this.#states.add('disabled');
-			this.#interCont?.abort();
-		} else if (this.#states.has('disabled')) {
-			this.#states.delete('disabled');
-		}
-
-		this.setAttribute('aria-disabled', flag);
+	/** @type {HTMLElement} */
+	get #$listbox() {
+		return this.#$root.querySelector('[role=listbox]')
 	}
 
-	/** @type {boolean} */
-	get expanded() {
-		return this.#internals.ariaExpanded === 'true'
+	/** @type {CustomStateSet} */
+	get #$root() {
+		return this.#internals.shadowRoot
 	}
 
-	/** @param {boolean} flag */
-	set expanded(flag) {
-		updateAttributes(this, 'aria-expanded', flag);
-		this.#states[flag ? 'add' : 'delete']('expanded');
-		this.#states[flag ? 'delete' : 'add']('collapsed');
+	/** @type {CustomStateSet} */
+	get #states() {
+		return this.#internals.states
 	}
 
-	/** @param {boolean} flag */
-	set collapsed(flag) {
-		this.expanded = false === flag;
+	/**
+	 * Сall will find the first option wich value is fully equal to the query string.
+	 *
+	 * @param {string} query
+	 * @returns {Option | null}
+	 */
+	#findByValue(query) {
+		for (const option of this.options)
+			if (query === option.value) return option
+		return null
 	}
 
 	/** @returns {AbortController} */
@@ -412,16 +427,16 @@ class SelectField extends HTMLElement {
 		this.#slotChangeCont?.abort();
 		this.#slotChangeCont = new AbortController();
 
-		/** @type {RefOptionMap} */
+		/** @type {OptionCollection} */
 		const list = this.#options;
 
+		/** @param {OptionCollection} list */
 		const cleanup = (list) =>
-			list.forEach((_, ref, map) => {
-				const $element = ref.deref();
-				Boolean(
-					$element.isConnected && $element.parentElement === this,
-				) || map.delete(ref);
-			});
+			list.forEach(
+				({ $element }, $ref, map) =>
+					($element.isConnected && $element.parentElement === this) ||
+					map.delete($ref),
+			);
 
 		this.#$listbox.children[0].addEventListener(
 			'slotchange',
@@ -432,8 +447,10 @@ class SelectField extends HTMLElement {
 						$element.hasAttribute('role') &&
 						$element.role === 'option'
 					) {
+						const $ref = new WeakRef($element);
 						const label = $element.ariaLabel || $element.textContent;
-						list.set(new WeakRef($element), {
+						list.set($ref, {
+							$element,
 							label,
 							value:
 								$element.value ||
@@ -500,7 +517,7 @@ class SelectField extends HTMLElement {
 			options,
 		);
 		this.addEventListener(
-			'keypress',
+			'keydown',
 			(event) => this.#onKeyPress(event),
 			options,
 		);
@@ -511,10 +528,9 @@ class SelectField extends HTMLElement {
 	#onFocus(event) {
 		this.#listenInteraction();
 
-		this.#internals.ariaActiveDescendantElement =
-			this.#internals.shadowRoot.activeElement;
+		this.#internals.ariaActiveDescendantElement = this.#$root.activeElement;
 
-		console.log('onFocus', event);
+		// console.log('onFocus', this.#internals)
 	}
 
 	#onFocusIn(event_) {}
@@ -522,30 +538,29 @@ class SelectField extends HTMLElement {
 	#onBlur(event_) {}
 
 	#onFocusOut(event_) {
-		this.toggle('collapsed');
+		this.collapse();
 		this.#interCont?.abort();
 	}
 
 	#onClickButton(event_) {
-		this.toggle();
+		this.#toggle();
 	}
 
 	#onClickListBox(event_) {}
 
 	#onKeyPress(event) {
 		const { key } = event;
+		const $focused = this.#internals.ariaActiveDescendantElement;
 
 		switch (key) {
-			case 'Backspace':
 			case 'Enter':
-				if (this.focused === this.#$button) {
-					this.toggle('expanded');
+				if ($focused === this.#$button) {
+					this.expand();
 				}
 				break
+			case 'Backspace':
 			case 'Escape':
-				if (this.focused !== this.#$button) {
-					this.toggle('collapsed');
-				}
+				this.collapse();
 				break
 			case 'End':
 				this.options[this.size - 1].focus();
@@ -554,26 +569,33 @@ class SelectField extends HTMLElement {
 				this.options[0].focus();
 				break
 		}
+
+		console.log('onKeyPress', key);
+		console.dir($focused);
+		console.dir(this.#internals);
 	}
 
-	/** @type {HTMLElement} */
-	get #$button() {
-		return this.#internals.shadowRoot.querySelector('[role=button]')
+	/**
+	 * Toggle the `aria-expanded` state
+	 */
+	#toggle() {
+		this.expanded ? this.collapse() : this.expand();
 	}
 
-	/** @type {HTMLElement} */
-	get #$status() {
-		return this.#$button.querySelector('[role=status]')
-	}
-
-	/** @type {HTMLElement} */
-	get #$listbox() {
-		return this.#internals.shadowRoot.querySelector('[role=listbox]')
-	}
-
-	/** @type {CustomStateSet} */
-	get #states() {
-		return this.#internals.states
+	/**
+	 * Сall returns the first option for wich the query string is started substring of the label or value option.
+	 *
+	 * @param {string} query
+	 * @returns {Option | null}
+	 */
+	#search(query) {
+		for (const option of this.options)
+			if (
+				0 === option.label.indexOf(query) ||
+				0 === option.value.indexOf(query)
+			)
+				return option
+		return null
 	}
 }
 

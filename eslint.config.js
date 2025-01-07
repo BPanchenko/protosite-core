@@ -167,6 +167,7 @@ export default [
 			'import/resolver': {
 				alias: {
 					map: [
+						['#element', './src/element'],
 						['#library', './src/lib'],
 						['#types', './src/types'],
 						['#uikit', '@bpanchenko/uikit'],

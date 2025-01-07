@@ -1,6 +1,6 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.11.33",
+  "version": "1.12.33",
   "description": "Web Application Core. It сontains a library of Web Components.",
   "homepage": "http://protosite.rocks",
   "type": "module",
@@ -16,6 +16,7 @@
     "./*": "./src/*"
   },
   "imports": {
+    "#element/*": "./src/element/*",
     "#library/*": "./src/lib/*",
     "#types/*": "./src/types/*"
   },

@@ -8,6 +8,7 @@ import pugPlugin from 'rollup-plugin-pug'
 import typescriptPlugin from '@rollup/plugin-typescript'
 
 const componentDir = path.join('src', 'component')
+const elementDir = path.join('src', 'element')
 const libraryDir = path.join('src', 'lib')
 
 export default function getConfig(options = {}) {
@@ -18,6 +19,7 @@ export default function getConfig(options = {}) {
 	return {
 		input: getFilesByPattern(
 			[
+				path.join(elementDir, 'Listbox.ts'),
 				path.join(componentDir, 'Arrow'),
 				path.join(componentDir, 'Avatar'),
 				path.join(componentDir, 'SelectField'),
@@ -29,16 +31,22 @@ export default function getConfig(options = {}) {
 			entryFileNames: ({ facadeModuleId }) => {
 				const { dir, name } = path.parse(facadeModuleId)
 				const extension = 'mjs'
-				const isWebComponent = dir.includes(componentDir)
+				const isComponent = dir.includes(componentDir)
+				const isElement = dir.includes(elementDir)
 
 				const moduleName =
 					name === 'index' ? last(dir.split(path.sep)) : name
 				const splittedName = moduleName.split('.')
 
 				const fileName = kebabCase(
-					isWebComponent ? moduleName : splittedName[1],
-				).replace('-component', '')
-				const prefix = isWebComponent ? 'component' : splittedName[0]
+					isComponent || isElement ? moduleName : splittedName[1],
+				)
+
+				const prefix = isComponent
+					? 'component'
+					: isElement
+						? 'element'
+						: splittedName[0]
 
 				return [prefix, fileName, extension].join('.')
 			},

@@ -85,7 +85,7 @@ const updateAttributes = (element, objectOrAttrName, attrValue = null) => {
 					? element.hasAttribute(key)
 						? (element.getAttributeNode(key).value = value)
 						: element.setAttribute(key, value)
-					: void 0,
+					: undefined,
 	);
 
 	return new Map(
@@ -105,7 +105,6 @@ class Listbox extends HTMLElement {
             id: element.id,
             role: Listbox.role,
         };
-        // [id]
         if (element.isConnected && false === Boolean(data.id)) {
             data.id = [Listbox.role, Math.round(performance.now())].join('-');
         }
@@ -115,14 +114,17 @@ class Listbox extends HTMLElement {
         super();
         _Listbox_instances.add(this);
         this.internals = this.attachInternals();
-        _Listbox_focusCont.set(this, void 0);
-        _Listbox_interCont.set(this, void 0);
+        _Listbox_focusCont.set(this, undefined);
+        _Listbox_interCont.set(this, undefined);
         Listbox.initAttributes(this);
-        console.log('Listbox.internals', this.internals);
     }
     connectedCallback() {
         Listbox.initAttributes(this);
         __classPrivateFieldGet(this, _Listbox_instances, "m", _Listbox_listenFocus).call(this);
+    }
+    disconnectedCallback() {
+        __classPrivateFieldGet(this, _Listbox_interCont, "f")?.abort();
+        __classPrivateFieldGet(this, _Listbox_focusCont, "f")?.abort();
     }
 }
 _Listbox_focusCont = new WeakMap(), _Listbox_interCont = new WeakMap(), _Listbox_instances = new WeakSet(), _Listbox_listenFocus = function _Listbox_listenFocus() {
@@ -136,15 +138,15 @@ _Listbox_focusCont = new WeakMap(), _Listbox_interCont = new WeakMap(), _Listbox
     return __classPrivateFieldGet(this, _Listbox_focusCont, "f");
 }, _Listbox_onBlur = function _Listbox_onBlur(event_) {
     __classPrivateFieldGet(this, _Listbox_interCont, "f")?.abort();
-    // this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
-    console.log('onBlur', this);
-}, _Listbox_onFocus = function _Listbox_onFocus(event_) {
-    // this.#listenInteraction()
-    // this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
-    console.log('onFocus', this);
-};
+}, _Listbox_onFocus = function _Listbox_onFocus(event_) { };
 Listbox.formAssociated = false;
 Listbox.role = 'listbox';
+Listbox.observedAttributes = [
+    'aria-disabled',
+    'aria-multiselectable',
+    'aria-required',
+    'name',
+];
 customElements.define(tagName, Listbox);
 const Listbox$1 = customElements.get(tagName);
 

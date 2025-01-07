@@ -42,7 +42,7 @@ export class Listbox extends HTMLElement implements CustomElement {
 
 	connectedCallback() {
 		Listbox.initAttributes(this)
-		this._listenFocus()
+		this.#listenFocus()
 	}
 
 	disconnectedCallback() {
@@ -50,7 +50,7 @@ export class Listbox extends HTMLElement implements CustomElement {
 		this.#focusCont?.abort()
 	}
 
-	private _listenFocus() {
+	#listenFocus() {
 		this.#focusCont?.abort()
 		this.#focusCont = new AbortController()
 
@@ -58,17 +58,17 @@ export class Listbox extends HTMLElement implements CustomElement {
 			signal: this.#focusCont.signal,
 		}
 
-		this.addEventListener('focus', (event) => this._onFocus(event), options)
-		this.addEventListener('blur', (event) => this._onBlur(event), options)
+		this.addEventListener('focus', (event) => this.#onFocus(event), options)
+		this.addEventListener('blur', (event) => this.#onBlur(event), options)
 
 		return this.#focusCont
 	}
 
-	private _onBlur(event_) {
+	#onBlur(event_) {
 		this.#interCont?.abort()
 	}
 
-	private _onFocus(event_) { }
+	#onFocus(event_) { }
 }
 
 customElements.define(tagName, Listbox)

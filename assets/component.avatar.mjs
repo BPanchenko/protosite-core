@@ -131,7 +131,7 @@ const updateAttributes = (element, objectOrAttrName, attrValue = null) => {
 					? element.hasAttribute(key)
 						? (element.getAttributeNode(key).value = value)
 						: element.setAttribute(key, value)
-					: void 0,
+					: undefined,
 	);
 
 	return new Map(

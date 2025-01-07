@@ -1,62 +1,36 @@
-const template = "<link href=\"http://assets.protosite.rocks/core/select-field.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:state(--defined)) {\n\tcontent-visibility: hidden;\n}\n:host(:state(--loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox_popover\" id=\"button\" role=\"button\" tabindex=\"0\"><div part=\"selectedcontent\" role=\"status\"></div></div><div aria-labelledby=\"button\" id=\"listbox_popover\" role=\"listbox\" part=\"listbox\" tabindex=\"0\"><slot></slot></div>";
+/******************************************************************************
+Copyright (c) Microsoft Corporation.
 
-const shadowModeByDefault =
-	typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE;
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted.
 
-/**
- * @param {Object} options
- * @param {DocumentFragment} [options.$template]
- * @param {string} [options.template]
- * @param {boolean} [options.delegatesFocus] - If true, when a non-focusable part of the shadow DOM is clicked, or .focus() is called on the host element, the first focusable part is given focus, and the shadow host is given any available :focus styling.
- * @param {"closed" | "open"} [options.mode] - When the mode of a shadow root is "closed", the shadowroot implementation internals are inaccessible and unchangeable.
- * @param {boolean} [options.serializable] - If set, the shadow root may be serialized by calling the Element.getHTML() or ShadowRoot.getHTML() methods with the options.serializableShadowRoots parameter set true.
- * @param {"manual" | "named"} [options.slotAssignment]
- * @returns {ShadowRoot}
- *
- * The function attaches a shadow DOM tree to the specified element and returns a reference to its ShadowRoot.
- *
- * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/attachShadow)
- *
- * [About `ShadowRoot.delegatesFocus` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus)
- *
- * [About `ShadowRoot.mode` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode)
- *
- * [About `ShadowRoot.serializable` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/serializable)
- *
- * [About `ShadowRoot.slotAssignment` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/slotAssignment)
- */
-function initShadowRoot(options) {
-	const {
-		$template,
-		template,
-		delegatesFocus = false,
-		mode = shadowModeByDefault,
-		serializable = false,
-	} = options;
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY
+AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM
+LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+***************************************************************************** */
+/* global Reflect, Promise, SuppressedError, Symbol, Iterator */
 
-	/** @type {ShadowRoot} */
-	const shadowRoot = this.attachShadow({
-		delegatesFocus,
-		mode,
-		serializable,
-	});
 
-	// 1.
-
-	if (DocumentFragment.prototype.isPrototypeOf($template))
-		shadowRoot.appendChild($template.cloneNode(true));
-
-	// 2.
-
-	if (typeof template === 'string') shadowRoot.setHTMLUnsafe(template);
-
-	return shadowRoot
+function __classPrivateFieldGet(receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
 }
 
-const checkTruth = (value) => {
-    return typeof value === 'string'
-        ? ['on', 'true'].includes(value.trim().toLocaleLowerCase())
-        : Boolean(value);
+function __classPrivateFieldSet(receiver, state, value, kind, f) {
+    if (kind === "m") throw new TypeError("Private method is not writable");
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a setter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot write private member to an object whose class did not declare it");
+    return (kind === "a" ? f.call(receiver, value) : f ? f.value = value : state.set(receiver, value)), value;
+}
+
+typeof SuppressedError === "function" ? SuppressedError : function (error, suppressed, message) {
+    var e = new Error(message);
+    return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
 
 /**
@@ -122,6 +96,119 @@ const updateAttributes = (element, objectOrAttrName, attrValue = null) => {
 	)
 };
 
+var _Listbox_instances, _Listbox_focusCont, _Listbox_interCont, _Listbox_listenFocus, _Listbox_onBlur, _Listbox_onFocus;
+const tagName$1 = 'e-listbox';
+class Listbox extends HTMLElement {
+    static initAttributes(element) {
+        const data = {
+            'aria-orientation': element.ariaOrientation ?? 'vertical',
+            id: element.id,
+            role: Listbox.role,
+        };
+        // [id]
+        if (element.isConnected && false === Boolean(data.id)) {
+            data.id = [Listbox.role, Math.round(performance.now())].join('-');
+        }
+        return updateAttributes(element, data);
+    }
+    constructor() {
+        super();
+        _Listbox_instances.add(this);
+        this.internals = this.attachInternals();
+        _Listbox_focusCont.set(this, void 0);
+        _Listbox_interCont.set(this, void 0);
+        Listbox.initAttributes(this);
+        console.log('Listbox.internals', this.internals);
+    }
+    connectedCallback() {
+        Listbox.initAttributes(this);
+        __classPrivateFieldGet(this, _Listbox_instances, "m", _Listbox_listenFocus).call(this);
+    }
+}
+_Listbox_focusCont = new WeakMap(), _Listbox_interCont = new WeakMap(), _Listbox_instances = new WeakSet(), _Listbox_listenFocus = function _Listbox_listenFocus() {
+    __classPrivateFieldGet(this, _Listbox_focusCont, "f")?.abort();
+    __classPrivateFieldSet(this, _Listbox_focusCont, new AbortController(), "f");
+    const options = {
+        signal: __classPrivateFieldGet(this, _Listbox_focusCont, "f").signal,
+    };
+    this.addEventListener('focus', (event) => __classPrivateFieldGet(this, _Listbox_instances, "m", _Listbox_onFocus).call(this, event), options);
+    this.addEventListener('blur', (event) => __classPrivateFieldGet(this, _Listbox_instances, "m", _Listbox_onBlur).call(this, event), options);
+    return __classPrivateFieldGet(this, _Listbox_focusCont, "f");
+}, _Listbox_onBlur = function _Listbox_onBlur(event_) {
+    __classPrivateFieldGet(this, _Listbox_interCont, "f")?.abort();
+    // this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
+    console.log('onBlur', this);
+}, _Listbox_onFocus = function _Listbox_onFocus(event_) {
+    // this.#listenInteraction()
+    // this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
+    console.log('onFocus', this);
+};
+Listbox.formAssociated = false;
+Listbox.role = 'listbox';
+customElements.define(tagName$1, Listbox);
+customElements.get(tagName$1);
+
+const shadowModeByDefault =
+	typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE;
+
+/**
+ * @param {Object} options
+ * @param {DocumentFragment} [options.$template]
+ * @param {string} [options.template]
+ * @param {boolean} [options.delegatesFocus] - If true, when a non-focusable part of the shadow DOM is clicked, or .focus() is called on the host element, the first focusable part is given focus, and the shadow host is given any available :focus styling.
+ * @param {"closed" | "open"} [options.mode] - When the mode of a shadow root is "closed", the shadowroot implementation internals are inaccessible and unchangeable.
+ * @param {boolean} [options.serializable] - If set, the shadow root may be serialized by calling the Element.getHTML() or ShadowRoot.getHTML() methods with the options.serializableShadowRoots parameter set true.
+ * @param {"manual" | "named"} [options.slotAssignment]
+ * @returns {ShadowRoot}
+ *
+ * The function attaches a shadow DOM tree to the specified element and returns a reference to its ShadowRoot.
+ *
+ * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/attachShadow)
+ *
+ * [About `ShadowRoot.delegatesFocus` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus)
+ *
+ * [About `ShadowRoot.mode` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode)
+ *
+ * [About `ShadowRoot.serializable` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/serializable)
+ *
+ * [About `ShadowRoot.slotAssignment` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/slotAssignment)
+ */
+function initShadowRoot(options) {
+	const {
+		$template,
+		template,
+		delegatesFocus = false,
+		mode = shadowModeByDefault,
+		serializable = false,
+	} = options;
+
+	/** @type {ShadowRoot} */
+	const shadowRoot = this.attachShadow({
+		delegatesFocus,
+		mode,
+		serializable,
+	});
+
+	// 1.
+
+	if (DocumentFragment.prototype.isPrototypeOf($template))
+		shadowRoot.appendChild($template.cloneNode(true));
+
+	// 2.
+
+	if (typeof template === 'string') shadowRoot.setHTMLUnsafe(template);
+
+	return shadowRoot
+}
+
+const checkTruth = (value) => {
+    return typeof value === 'string'
+        ? ['on', 'true'].includes(value.trim().toLocaleLowerCase())
+        : Boolean(value);
+};
+
+const template = "<link href=\"http://assets.protosite.rocks/core/select-field.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:state(--defined)) {\n\tcontent-visibility: hidden;\n}\n:host(:state(--loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox\" id=\"button\" role=\"button\" tabindex=\"0\"><div part=\"selected_content\" id=\"value_text\" role=\"status\"></div></div><e-listbox aria-labelledby=\"button\" id=\"listbox\" part=\"listbox\" tabindex=\"0\"><slot></slot></e-listbox>";
+
 const tagName = 'c-select-field';
 
 /** @typedef {'--defined' | '--interactive' | '--loaded' } ComponentReadyState */
@@ -132,6 +219,9 @@ const tagName = 'c-select-field';
 /** @typedef {Map<WeakRef<Option['$element']>, Option>} OptionCollection */
 
 class SelectField extends HTMLElement {
+	/** @type {Map<number, string>} */
+	#feed = new Map()
+
 	/** @type {AbortController} */
 	#focusCont
 
@@ -189,6 +279,14 @@ class SelectField extends HTMLElement {
 			}
 		}
 
+		// [id]
+
+		if (element.isConnected && false === Boolean(element.id)) {
+			data.id = [SelectField.role, Math.round(performance.now())].join(
+				'-',
+			);
+		}
+
 		// [tabindex]
 
 		if (
@@ -209,7 +307,7 @@ class SelectField extends HTMLElement {
 	 * @param {ElementInternals} [options.internals]
 	 * @param {ShadowRoot} [options.shadowRoot_]
 	 */
-	static initAccessibilityTree(element, { internals, shadowRoot_ }) {
+	static initAccessibilityTree(element, { internals, $listbox }) {
 		internals.ariaAtomic = true;
 		internals.ariaLive = 'polite';
 		internals.role = SelectField.role;
@@ -219,6 +317,8 @@ class SelectField extends HTMLElement {
 		internals.ariaRequired = element.ariaRequired === 'true';
 		internals.ariaHasPopup = 'listbox';
 		internals.ariaMultiSelectable = element.ariaMultiSelectable === 'true';
+
+		$listbox.ariaMultiSelectable = internals.ariaMultiSelectable;
 	}
 
 	constructor() {
@@ -240,6 +340,7 @@ class SelectField extends HTMLElement {
 			internals: this.#internals,
 		});
 		SelectField.initAccessibilityTree(this, {
+			$listbox: this.#$listbox,
 			internals: this.#internals,
 		});
 
@@ -260,11 +361,11 @@ class SelectField extends HTMLElement {
 
 	adoptedCallback() {}
 
-	attributeChangedCallback(name, previous, updated) {
+	attributeChangedCallback(name, previous, current) {
 		if (false === this.isConnected) return
-		if (previous === updated) return
+		if (previous === current) return
 
-		const isTruth = checkTruth(updated);
+		const isTruth = checkTruth(current);
 
 		switch (name) {
 			case 'aria-disabled':
@@ -274,22 +375,22 @@ class SelectField extends HTMLElement {
 				} else {
 					this.#states.delete('disabled');
 				}
-				this.#internals.ariaDisabled = updated;
+				this.#internals.ariaDisabled = current;
 				break
 			case 'aria-expanded':
 				this.#states.add(isTruth ? 'expanded' : 'collapsed');
-				this.#internals.ariaExpanded = updated;
+				this.#internals.ariaExpanded = current;
 				break
 			case 'aria-label':
-				this.#internals.ariaLabel = updated;
-				this.#$status.ariaLabel = updated;
+				this.#internals.ariaLabel = current;
+				this.#$status.ariaLabel = current;
 				break
 			case 'aria-placeholder':
-				this.#internals.ariaPlaceholder = updated;
-				this.#$status.ariaPlaceholder = updated;
+				this.#internals.ariaPlaceholder = current;
+				this.#$status.ariaPlaceholder = current;
 				break
 			case 'value':
-				this.value = updated;
+				this.value = current;
 				break
 		}
 	}
@@ -306,11 +407,13 @@ class SelectField extends HTMLElement {
 	collapse() {
 		this.#states.delete('expanded');
 		updateAttributes(this, 'aria-expanded', false);
+		this.#$button.focus();
 	}
 
 	expand() {
 		this.#states.delete('collapsed');
 		updateAttributes(this, 'aria-expanded', true);
+		this.#$listbox.focus();
 	}
 
 	/**
@@ -387,20 +490,20 @@ class SelectField extends HTMLElement {
 
 	/** @type {HTMLElement} */
 	get #$button() {
-		return this.#$root.querySelector('[role=button]')
+		return this.#$root.getElementById('button')
 	}
 
 	/** @type {HTMLElement} */
 	get #$status() {
-		return this.#$button.querySelector('[role=status]')
+		return this.#$root.getElementById('value_text')
 	}
 
 	/** @type {HTMLElement} */
 	get #$listbox() {
-		return this.#$root.querySelector('[role=listbox]')
+		return this.#$root.getElementById('listbox')
 	}
 
-	/** @type {CustomStateSet} */
+	/** @type {ShadowRoot} */
 	get #$root() {
 		return this.#internals.shadowRoot
 	}
@@ -474,25 +577,28 @@ class SelectField extends HTMLElement {
 		this.#focusCont = new AbortController();
 
 		const options = {
-			capture: false,
-			passive: true,
 			signal: this.#focusCont.signal,
 		};
 
 		this.addEventListener('focus', (event) => this.#onFocus(event), options);
-		this.addEventListener(
-			'focusin',
-			(event) => this.#onFocusIn(event),
-			options,
-		);
 		this.addEventListener('blur', (event) => this.#onBlur(event), options);
-		this.addEventListener(
-			'focusout',
-			(event) => this.#onFocusOut(event),
-			options,
-		);
 
 		return this.#focusCont
+	}
+
+	#onBlur() {
+		this.collapse();
+		this.#interCont?.abort();
+
+		// this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
+		console.log('onFocusOut', this.#internals);
+	}
+
+	#onFocus() {
+		this.#listenInteraction();
+
+		// this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
+		console.log('onFocusIn', this.#internals);
 	}
 
 	/** @returns {AbortController} */
@@ -501,52 +607,35 @@ class SelectField extends HTMLElement {
 		this.#interCont = new AbortController();
 
 		const options = {
-			capture: true,
+			capture: false,
 			passive: false,
 			signal: this.#interCont.signal,
 		};
 
-		this.#$button.addEventListener(
-			'click',
-			(event) => this.#onClickButton(event),
-			options,
-		);
-		this.#$listbox.addEventListener(
-			'click',
-			(event) => this.#onClickListBox(event),
-			options,
-		);
+		this.addEventListener('click', (event) => this.#onClick(event), options);
 		this.addEventListener(
 			'keydown',
 			(event) => this.#onKeyPress(event),
 			options,
 		);
 
+		this.addEventListener(
+			'focusin',
+			(event) => console.log('focus-in', event),
+			options,
+		);
+		this.addEventListener(
+			'focusout',
+			(event) => console.log('focus-out', event),
+			options,
+		);
+
 		return this.#interCont
 	}
 
-	#onFocus(event) {
-		this.#listenInteraction();
-
-		this.#internals.ariaActiveDescendantElement = this.#$root.activeElement;
-
-		// console.log('onFocus', this.#internals)
-	}
-
-	#onFocusIn(event_) {}
-
-	#onBlur(event_) {}
-
-	#onFocusOut(event_) {
-		this.collapse();
-		this.#interCont?.abort();
-	}
-
-	#onClickButton(event_) {
+	#onClick(event_) {
 		this.#toggle();
 	}
-
-	#onClickListBox(event_) {}
 
 	#onKeyPress(event) {
 		const { key } = event;
@@ -567,6 +656,12 @@ class SelectField extends HTMLElement {
 				break
 			case 'Home':
 				this.options[0].focus();
+				break
+			case 'ArrowUp':
+				this.collapse();
+				break
+			case 'ArrowDown':
+				this.expand();
 				break
 		}
 
@@ -600,7 +695,6 @@ class SelectField extends HTMLElement {
 }
 
 customElements.define(tagName, SelectField);
-
 const index = customElements.get(tagName);
 
 export { SelectField, index as default, tagName };

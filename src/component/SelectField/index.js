@@ -1,8 +1,10 @@
-import template from './template.pug'
+import '#element/Listbox.ts'
 
 import initShadowRoot from '#library/fn.initShadowRoot.js'
 import checkTruth from '#library/fn.checkTruth.ts'
 import updateAttributes from '#library/fn.updateAttributes.js'
+
+import template from './template.pug'
 
 export const tagName = 'c-select-field'
 
@@ -14,6 +16,9 @@ export const tagName = 'c-select-field'
 /** @typedef {Map<WeakRef<Option['$element']>, Option>} OptionCollection */
 
 export class SelectField extends HTMLElement {
+	/** @type {Map<number, string>} */
+	#feed = new Map()
+
 	/** @type {AbortController} */
 	#focusCont
 
@@ -71,6 +76,14 @@ export class SelectField extends HTMLElement {
 			}
 		}
 
+		// [id]
+
+		if (element.isConnected && false === Boolean(element.id)) {
+			data.id = [SelectField.role, Math.round(performance.now())].join(
+				'-',
+			)
+		}
+
 		// [tabindex]
 
 		if (
@@ -91,7 +104,7 @@ export class SelectField extends HTMLElement {
 	 * @param {ElementInternals} [options.internals]
 	 * @param {ShadowRoot} [options.shadowRoot_]
 	 */
-	static initAccessibilityTree(element, { internals, shadowRoot_ }) {
+	static initAccessibilityTree(element, { internals, $listbox }) {
 		internals.ariaAtomic = true
 		internals.ariaLive = 'polite'
 		internals.role = SelectField.role
@@ -101,6 +114,8 @@ export class SelectField extends HTMLElement {
 		internals.ariaRequired = element.ariaRequired === 'true'
 		internals.ariaHasPopup = 'listbox'
 		internals.ariaMultiSelectable = element.ariaMultiSelectable === 'true'
+
+		$listbox.ariaMultiSelectable = internals.ariaMultiSelectable
 	}
 
 	constructor() {
@@ -122,6 +137,7 @@ export class SelectField extends HTMLElement {
 			internals: this.#internals,
 		})
 		SelectField.initAccessibilityTree(this, {
+			$listbox: this.#$listbox,
 			internals: this.#internals,
 		})
 
@@ -142,11 +158,11 @@ export class SelectField extends HTMLElement {
 
 	adoptedCallback() {}
 
-	attributeChangedCallback(name, previous, updated) {
+	attributeChangedCallback(name, previous, current) {
 		if (false === this.isConnected) return
-		if (previous === updated) return
+		if (previous === current) return
 
-		const isTruth = checkTruth(updated)
+		const isTruth = checkTruth(current)
 
 		switch (name) {
 			case 'aria-disabled':
@@ -156,22 +172,22 @@ export class SelectField extends HTMLElement {
 				} else {
 					this.#states.delete('disabled')
 				}
-				this.#internals.ariaDisabled = updated
+				this.#internals.ariaDisabled = current
 				break
 			case 'aria-expanded':
 				this.#states.add(isTruth ? 'expanded' : 'collapsed')
-				this.#internals.ariaExpanded = updated
+				this.#internals.ariaExpanded = current
 				break
 			case 'aria-label':
-				this.#internals.ariaLabel = updated
-				this.#$status.ariaLabel = updated
+				this.#internals.ariaLabel = current
+				this.#$status.ariaLabel = current
 				break
 			case 'aria-placeholder':
-				this.#internals.ariaPlaceholder = updated
-				this.#$status.ariaPlaceholder = updated
+				this.#internals.ariaPlaceholder = current
+				this.#$status.ariaPlaceholder = current
 				break
 			case 'value':
-				this.value = updated
+				this.value = current
 				break
 			default:
 		}
@@ -189,11 +205,13 @@ export class SelectField extends HTMLElement {
 	collapse() {
 		this.#states.delete('expanded')
 		updateAttributes(this, 'aria-expanded', false)
+		this.#$button.focus()
 	}
 
 	expand() {
 		this.#states.delete('collapsed')
 		updateAttributes(this, 'aria-expanded', true)
+		this.#$listbox.focus()
 	}
 
 	/**
@@ -270,20 +288,20 @@ export class SelectField extends HTMLElement {
 
 	/** @type {HTMLElement} */
 	get #$button() {
-		return this.#$root.querySelector('[role=button]')
+		return this.#$root.getElementById('button')
 	}
 
 	/** @type {HTMLElement} */
 	get #$status() {
-		return this.#$button.querySelector('[role=status]')
+		return this.#$root.getElementById('value_text')
 	}
 
 	/** @type {HTMLElement} */
 	get #$listbox() {
-		return this.#$root.querySelector('[role=listbox]')
+		return this.#$root.getElementById('listbox')
 	}
 
-	/** @type {CustomStateSet} */
+	/** @type {ShadowRoot} */
 	get #$root() {
 		return this.#internals.shadowRoot
 	}
@@ -357,25 +375,28 @@ export class SelectField extends HTMLElement {
 		this.#focusCont = new AbortController()
 
 		const options = {
-			capture: false,
-			passive: true,
 			signal: this.#focusCont.signal,
 		}
 
 		this.addEventListener('focus', (event) => this.#onFocus(event), options)
-		this.addEventListener(
-			'focusin',
-			(event) => this.#onFocusIn(event),
-			options,
-		)
 		this.addEventListener('blur', (event) => this.#onBlur(event), options)
-		this.addEventListener(
-			'focusout',
-			(event) => this.#onFocusOut(event),
-			options,
-		)
 
 		return this.#focusCont
+	}
+
+	#onBlur() {
+		this.collapse()
+		this.#interCont?.abort()
+
+		// this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
+		console.log('onFocusOut', this.#internals)
+	}
+
+	#onFocus() {
+		this.#listenInteraction()
+
+		// this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
+		console.log('onFocusIn', this.#internals)
 	}
 
 	/** @returns {AbortController} */
@@ -384,52 +405,35 @@ export class SelectField extends HTMLElement {
 		this.#interCont = new AbortController()
 
 		const options = {
-			capture: true,
+			capture: false,
 			passive: false,
 			signal: this.#interCont.signal,
 		}
 
-		this.#$button.addEventListener(
-			'click',
-			(event) => this.#onClickButton(event),
-			options,
-		)
-		this.#$listbox.addEventListener(
-			'click',
-			(event) => this.#onClickListBox(event),
-			options,
-		)
+		this.addEventListener('click', (event) => this.#onClick(event), options)
 		this.addEventListener(
 			'keydown',
 			(event) => this.#onKeyPress(event),
 			options,
 		)
 
+		this.addEventListener(
+			'focusin',
+			(event) => console.log('focus-in', event),
+			options,
+		)
+		this.addEventListener(
+			'focusout',
+			(event) => console.log('focus-out', event),
+			options,
+		)
+
 		return this.#interCont
 	}
 
-	#onFocus(event) {
-		this.#listenInteraction()
-
-		this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
-
-		// console.log('onFocus', this.#internals)
-	}
-
-	#onFocusIn(event_) {}
-
-	#onBlur(event_) {}
-
-	#onFocusOut(event_) {
-		this.collapse()
-		this.#interCont?.abort()
-	}
-
-	#onClickButton(event_) {
+	#onClick(event_) {
 		this.#toggle()
 	}
-
-	#onClickListBox(event_) {}
 
 	#onKeyPress(event) {
 		const { key } = event
@@ -452,8 +456,10 @@ export class SelectField extends HTMLElement {
 				this.options[0].focus()
 				break
 			case 'ArrowUp':
+				this.collapse()
 				break
 			case 'ArrowDown':
+				this.expand()
 				break
 			default:
 				if (/\w+/.test(key)) {
@@ -491,5 +497,4 @@ export class SelectField extends HTMLElement {
 }
 
 customElements.define(tagName, SelectField)
-
 export default customElements.get(tagName)

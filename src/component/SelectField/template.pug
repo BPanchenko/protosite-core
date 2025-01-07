@@ -11,19 +11,19 @@ style(type="text/css").
 		content-visibility: visible;
 	}
 div(
-	aria-controls="listbox_popover"
+	aria-controls="listbox"
 	id="button"
 	role="button"
 	tabindex="0"
 )
 	div(
-		part="selectedcontent"
+		part="selected_content"
+		id="value_text"
 		role="status"
 	)
-div(
+e-listbox(
 	aria-labelledby="button",
-	id="listbox_popover",
-	role="listbox",
+	id="listbox",
 	part="listbox"
 	tabindex="0"
 )

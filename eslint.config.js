@@ -64,6 +64,7 @@ export default [
 				1,
 				{ ignoreDeclarationMerge: true },
 			],
+			'no-unused-private-class-members': 1,
 
 			'prettier/prettier': 1,
 			'sort-imports': [

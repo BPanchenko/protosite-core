@@ -4,14 +4,14 @@
     "noEmitOnError": true,
     "noImplicitAny": false,
     "outDir": "assets",
-    "removeComments": false,
-    "sourceMap": true,
-    "target": "ES2020",
     "paths": {
       "#element/*": ["./src/element/*"],
       "#library/*": ["./src/lib/*"],
       "#types/*": ["./src/types/*"]
-    }
+    },
+    "removeComments": true,
+    "target": "ES2020",
+    "lib": ["ES2021"]
   },
   "exclude": ["node_modules", "assets"],
   "include": ["src/**/*"],

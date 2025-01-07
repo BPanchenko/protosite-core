@@ -5,7 +5,7 @@ import kebabCase from 'lodash/kebabCase.js'
 import last from 'lodash/last.js'
 import path from 'node:path'
 import pugPlugin from 'rollup-plugin-pug'
-import typescriptPlugin from '@rollup/plugin-typescript'
+import tsPlugin from '@rollup/plugin-typescript'
 
 const componentDir = path.join('src', 'component')
 const elementDir = path.join('src', 'element')
@@ -62,7 +62,7 @@ export default function getConfig(options = {}) {
 			}),
 			nodeResolve({
 				custom: { 'node-resolve': { isRequire: false } },
-				extensions: ['.js', '.json', '.cjs', '.mjs', '.ts'],
+				extensions: ['.ts', '.js', '.json', '.cjs', '.mjs'],
 			}),
 			{
 				name: 'import-css-style-sheet',
@@ -84,7 +84,7 @@ export default function getConfig(options = {}) {
 			pugPlugin({
 				staticPattern: /\.pug$/,
 			}),
-			typescriptPlugin(),
+			tsPlugin(),
 		],
 	}
 }

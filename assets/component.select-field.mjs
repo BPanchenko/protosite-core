@@ -85,7 +85,7 @@ const updateAttributes = (element, objectOrAttrName, attrValue = null) => {
 					? element.hasAttribute(key)
 						? (element.getAttributeNode(key).value = value)
 						: element.setAttribute(key, value)
-					: void 0,
+					: undefined,
 	);
 
 	return new Map(
@@ -105,7 +105,6 @@ class Listbox extends HTMLElement {
             id: element.id,
             role: Listbox.role,
         };
-        // [id]
         if (element.isConnected && false === Boolean(data.id)) {
             data.id = [Listbox.role, Math.round(performance.now())].join('-');
         }
@@ -115,14 +114,17 @@ class Listbox extends HTMLElement {
         super();
         _Listbox_instances.add(this);
         this.internals = this.attachInternals();
-        _Listbox_focusCont.set(this, void 0);
-        _Listbox_interCont.set(this, void 0);
+        _Listbox_focusCont.set(this, undefined);
+        _Listbox_interCont.set(this, undefined);
         Listbox.initAttributes(this);
-        console.log('Listbox.internals', this.internals);
     }
     connectedCallback() {
         Listbox.initAttributes(this);
         __classPrivateFieldGet(this, _Listbox_instances, "m", _Listbox_listenFocus).call(this);
+    }
+    disconnectedCallback() {
+        __classPrivateFieldGet(this, _Listbox_interCont, "f")?.abort();
+        __classPrivateFieldGet(this, _Listbox_focusCont, "f")?.abort();
     }
 }
 _Listbox_focusCont = new WeakMap(), _Listbox_interCont = new WeakMap(), _Listbox_instances = new WeakSet(), _Listbox_listenFocus = function _Listbox_listenFocus() {
@@ -136,15 +138,15 @@ _Listbox_focusCont = new WeakMap(), _Listbox_interCont = new WeakMap(), _Listbox
     return __classPrivateFieldGet(this, _Listbox_focusCont, "f");
 }, _Listbox_onBlur = function _Listbox_onBlur(event_) {
     __classPrivateFieldGet(this, _Listbox_interCont, "f")?.abort();
-    // this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
-    console.log('onBlur', this);
-}, _Listbox_onFocus = function _Listbox_onFocus(event_) {
-    // this.#listenInteraction()
-    // this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
-    console.log('onFocus', this);
-};
+}, _Listbox_onFocus = function _Listbox_onFocus(event_) { };
 Listbox.formAssociated = false;
 Listbox.role = 'listbox';
+Listbox.observedAttributes = [
+    'aria-disabled',
+    'aria-multiselectable',
+    'aria-required',
+    'name',
+];
 customElements.define(tagName$1, Listbox);
 customElements.get(tagName$1);
 
@@ -201,499 +203,331 @@ function initShadowRoot(options) {
 	return shadowRoot
 }
 
+const checkFalsy = (value) => {
+    return typeof value === 'string'
+        ? ['off', 'false'].includes(value.trim().toLocaleLowerCase())
+        : false === Boolean(value);
+};
+
 const checkTruth = (value) => {
     return typeof value === 'string'
         ? ['on', 'true'].includes(value.trim().toLocaleLowerCase())
         : Boolean(value);
 };
 
+var ComponentReadyState;
+(function (ComponentReadyState) {
+    ComponentReadyState["Defined"] = "--defined";
+    ComponentReadyState["Interactive"] = "--interactive";
+    ComponentReadyState["Loaded"] = "--loaded";
+})(ComponentReadyState || (ComponentReadyState = {}));
+var ComboboxState;
+(function (ComboboxState) {
+    ComboboxState["Collapsed"] = "collapsed";
+    ComboboxState["Expanded"] = "expanded";
+})(ComboboxState || (ComboboxState = {}));
+var FieldState;
+(function (FieldState) {
+    FieldState["Disabled"] = "disabled";
+})(FieldState || (FieldState = {}));
+
 const template = "<link href=\"http://assets.protosite.rocks/core/select-field.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:state(--defined)) {\n\tcontent-visibility: hidden;\n}\n:host(:state(--loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox\" id=\"button\" role=\"button\" tabindex=\"0\"><div part=\"selected_content\" id=\"value_text\" role=\"status\"></div></div><e-listbox aria-labelledby=\"button\" id=\"listbox\" part=\"listbox\" tabindex=\"0\"><slot></slot></e-listbox>";
 
+var _SelectField_instances, _SelectField_focusCont, _SelectField_interCont, _SelectField_internals, _SelectField_options, _SelectField_slotChangeCont, _SelectField_selectElement, _SelectField_$button_get, _SelectField_$status_get, _SelectField_$listbox_get, _SelectField_$root_get, _SelectField_states_get, _SelectField_findByValue, _SelectField_listenAssignedNodes, _SelectField_listenFocus, _SelectField_onBlur, _SelectField_onFocus, _SelectField_listenInteraction, _SelectField_onClick, _SelectField_onKeyPress, _SelectField_toggle;
 const tagName = 'c-select-field';
-
-/** @typedef {'--defined' | '--interactive' | '--loaded' } ComponentReadyState */
-/** @typedef {'collapsed' | 'expanded'} ListBoxState */
-/** @typedef {ComponentReadyState | ListBoxState } SelectFieldState */
-
-/** @typedef {{ $element: HTMLElement, label: string, value: string }} Option */
-/** @typedef {Map<WeakRef<Option['$element']>, Option>} OptionCollection */
-
 class SelectField extends HTMLElement {
-	/** @type {Map<number, string>} */
-	#feed = new Map()
-
-	/** @type {AbortController} */
-	#focusCont
-
-	/** @type {AbortController} */
-	#interCont
-
-	/** @type {ElementInternals} */
-	#internals = this.attachInternals()
-
-	/** @type {OptionCollection} */
-	#options = new Map()
-
-	/** @type {AbortController} */
-	#slotChangeCont
-
-	static formAssociated = true
-	static role = 'combobox'
-
-	static observedAttributes = [
-		'aria-disabled',
-		'aria-expanded',
-		'aria-label',
-		'aria-multiselectable',
-		'aria-placeholder',
-		'aria-required',
-		'name',
-		'value',
-	]
-
-	/**
-	 * @param {SelectField} element
-	 * @param {Object} [options]
-	 * @param {ElementInternals} [options.internals]
-	 * @param {ShadowRoot} [options.shadowRoot]
-	 */
-	static initAttributes(element, { internals, shadowRoot }) {
-		const data = {
-			'aria-atomic': true,
-			'aria-expanded': false,
-			role: SelectField.role,
-		};
-
-		// [exportparts]
-
-		if (
-			false === element.hasAttribute('exportparts') &&
-			shadowRoot instanceof ShadowRoot
-		) {
-			const $$parts = shadowRoot.querySelectorAll('[part]').values();
-
-			if ($$parts.length) {
-				data.exportparts = Array.from($$parts)
-					.map(($elem) => $elem.part.toString())
-					.join(', ');
-			}
-		}
-
-		// [id]
-
-		if (element.isConnected && false === Boolean(element.id)) {
-			data.id = [SelectField.role, Math.round(performance.now())].join(
-				'-',
-			);
-		}
-
-		// [tabindex]
-
-		if (
-			element.isConnected &&
-			element.tabIndex < 0 &&
-			internals instanceof ElementInternals &&
-			internals.form instanceof HTMLElement
-		) {
-			data.tabindex = 0;
-		}
-
-		return updateAttributes(element, data)
-	}
-
-	/**
-	 * @param {SelectField} element
-	 * @param {Object} [options]
-	 * @param {ElementInternals} [options.internals]
-	 * @param {ShadowRoot} [options.shadowRoot_]
-	 */
-	static initAccessibilityTree(element, { internals, $listbox }) {
-		internals.ariaAtomic = true;
-		internals.ariaLive = 'polite';
-		internals.role = SelectField.role;
-
-		internals.ariaDisabled = element.ariaDisabled === 'true';
-		internals.ariaExpanded = element.ariaExpanded === 'true';
-		internals.ariaRequired = element.ariaRequired === 'true';
-		internals.ariaHasPopup = 'listbox';
-		internals.ariaMultiSelectable = element.ariaMultiSelectable === 'true';
-
-		$listbox.ariaMultiSelectable = internals.ariaMultiSelectable;
-	}
-
-	constructor() {
-		super();
-		initShadowRoot.call(this, {
-			template,
-			delegatesFocus: true,
-		});
-		SelectField.initAttributes(this, {
-			shadowRoot: this.#$root,
-		});
-		this.#listenAssignedNodes();
-		this.#states.add('--defined');
-	}
-
-	connectedCallback() {
-		// (1)
-		SelectField.initAttributes(this, {
-			internals: this.#internals,
-		});
-		SelectField.initAccessibilityTree(this, {
-			$listbox: this.#$listbox,
-			internals: this.#internals,
-		});
-
-		// (2)
-		this.#listenFocus();
-		this.#states.add('--interactive');
-
-		// (3)
-		this.#$root.querySelector('link').onload = () =>
-			this.#states.add('--loaded');
-	}
-
-	disconnectedCallback() {
-		this.#interCont?.abort();
-		this.#focusCont?.abort();
-		this.#slotChangeCont?.abort();
-	}
-
-	adoptedCallback() {}
-
-	attributeChangedCallback(name, previous, current) {
-		if (false === this.isConnected) return
-		if (previous === current) return
-
-		const isTruth = checkTruth(current);
-
-		switch (name) {
-			case 'aria-disabled':
-				if (isTruth) {
-					this.#states.add('disabled');
-					this.#interCont?.abort();
-				} else {
-					this.#states.delete('disabled');
-				}
-				this.#internals.ariaDisabled = current;
-				break
-			case 'aria-expanded':
-				this.#states.add(isTruth ? 'expanded' : 'collapsed');
-				this.#internals.ariaExpanded = current;
-				break
-			case 'aria-label':
-				this.#internals.ariaLabel = current;
-				this.#$status.ariaLabel = current;
-				break
-			case 'aria-placeholder':
-				this.#internals.ariaPlaceholder = current;
-				this.#$status.ariaPlaceholder = current;
-				break
-			case 'value':
-				this.value = current;
-				break
-		}
-	}
-
-	formAssociatedCallback(form_) {}
-	formDisabledCallback(disabled) {
-		this.setAttribute('aria-disabled', disabled);
-	}
-	formResetCallback() {}
-	formStateRestoreCallback(state, reason_) {
-		this.value = state;
-	}
-
-	collapse() {
-		this.#states.delete('expanded');
-		updateAttributes(this, 'aria-expanded', false);
-		this.#$button.focus();
-	}
-
-	expand() {
-		this.#states.delete('collapsed');
-		updateAttributes(this, 'aria-expanded', true);
-		this.#$listbox.focus();
-	}
-
-	/**
-	 * @param {HTMLElement | string} value
-	 * @returns {boolean}
-	 */
-	select(value) {
-		let option;
-		if (value instanceof HTMLElement) {
-			option = this.#options.get(value);
-		} else if (typeof value === 'string') {
-			option = this.#findByValue(value);
-		}
-		return Boolean(option) && this.#selectElement(option.$element)
-	}
-
-	/**
-	 * @param {HTMLElement} $element
-	 */
-	#selectElement($element) {
-		const attribute = this.multiple ? 'aria-checked' : 'aria-selected';
-		$element.setAttribute(attribute, true);
-	}
-
-	/** @type {boolean} */
-	get disabled() {
-		return (
-			this.#states.has('disabled') &&
-			checkTruth(this.#internals.ariaDisabled) &&
-			checkTruth(this.ariaDisabled)
-		)
-	}
-
-	/** @type {boolean} */
-	get expanded() {
-		return (
-			this.#states.has('expanded') &&
-			checkTruth(this.#internals.ariaExpanded) &&
-			checkTruth(this.ariaExpanded)
-		)
-	}
-
-	/** @type {boolean} */
-	get multiple() {
-		return checkTruth(this.#internals.ariaMultiSelectable)
-	}
-
-	/** @type {MapIterator<Option>} */
-	get options() {
-		return this.#options.values()
-	}
-
-	/** @type {boolean} */
-	get readonly() {
-		return checkTruth(this.#internals.ariaReadOnly)
-	}
-
-	/** @type {number} */
-	get size() {
-		return this.#options.size
-	}
-
-	/** @type {string} */
-	get value() {
-		return this.#internals.ariaValueNow
-	}
-
-	/** @param {string} updated */
-	set value(updated) {
-		this.#internals.ariaValueNow = updated;
-
-		this.dispatchEvent(new Event('change'));
-	}
-
-	/** @type {HTMLElement} */
-	get #$button() {
-		return this.#$root.getElementById('button')
-	}
-
-	/** @type {HTMLElement} */
-	get #$status() {
-		return this.#$root.getElementById('value_text')
-	}
-
-	/** @type {HTMLElement} */
-	get #$listbox() {
-		return this.#$root.getElementById('listbox')
-	}
-
-	/** @type {ShadowRoot} */
-	get #$root() {
-		return this.#internals.shadowRoot
-	}
-
-	/** @type {CustomStateSet} */
-	get #states() {
-		return this.#internals.states
-	}
-
-	/**
-	 * Сall will find the first option wich value is fully equal to the query string.
-	 *
-	 * @param {string} query
-	 * @returns {Option | null}
-	 */
-	#findByValue(query) {
-		for (const option of this.options)
-			if (query === option.value) return option
-		return null
-	}
-
-	/** @returns {AbortController} */
-	#listenAssignedNodes() {
-		this.#slotChangeCont?.abort();
-		this.#slotChangeCont = new AbortController();
-
-		/** @type {OptionCollection} */
-		const list = this.#options;
-
-		/** @param {OptionCollection} list */
-		const cleanup = (list) =>
-			list.forEach(
-				({ $element }, $ref, map) =>
-					($element.isConnected && $element.parentElement === this) ||
-					map.delete($ref),
-			);
-
-		this.#$listbox.children[0].addEventListener(
-			'slotchange',
-			(event) => {
-				const $$elements = event.target.assignedElements();
-				for (const $element of $$elements)
-					if (
-						$element.hasAttribute('role') &&
-						$element.role === 'option'
-					) {
-						const $ref = new WeakRef($element);
-						const label = $element.ariaLabel || $element.textContent;
-						list.set($ref, {
-							$element,
-							label,
-							value:
-								$element.value ||
-								$element.dataset.value ||
-								label,
-						});
-					} else $element.remove();
-				cleanup(list);
-			},
-			{
-				signal: this.#slotChangeCont.signal,
-			},
-		);
-
-		return this.#slotChangeCont
-	}
-
-	/** @returns {AbortController} */
-	#listenFocus() {
-		this.#focusCont?.abort();
-		this.#focusCont = new AbortController();
-
-		const options = {
-			signal: this.#focusCont.signal,
-		};
-
-		this.addEventListener('focus', (event) => this.#onFocus(event), options);
-		this.addEventListener('blur', (event) => this.#onBlur(event), options);
-
-		return this.#focusCont
-	}
-
-	#onBlur() {
-		this.collapse();
-		this.#interCont?.abort();
-
-		// this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
-		console.log('onFocusOut', this.#internals);
-	}
-
-	#onFocus() {
-		this.#listenInteraction();
-
-		// this.#internals.ariaActiveDescendantElement = this.#$root.activeElement
-		console.log('onFocusIn', this.#internals);
-	}
-
-	/** @returns {AbortController} */
-	#listenInteraction() {
-		this.#interCont?.abort();
-		this.#interCont = new AbortController();
-
-		const options = {
-			capture: false,
-			passive: false,
-			signal: this.#interCont.signal,
-		};
-
-		this.addEventListener('click', (event) => this.#onClick(event), options);
-		this.addEventListener(
-			'keydown',
-			(event) => this.#onKeyPress(event),
-			options,
-		);
-
-		this.addEventListener(
-			'focusin',
-			(event) => console.log('focus-in', event),
-			options,
-		);
-		this.addEventListener(
-			'focusout',
-			(event) => console.log('focus-out', event),
-			options,
-		);
-
-		return this.#interCont
-	}
-
-	#onClick(event_) {
-		this.#toggle();
-	}
-
-	#onKeyPress(event) {
-		const { key } = event;
-		const $focused = this.#internals.ariaActiveDescendantElement;
-
-		switch (key) {
-			case 'Enter':
-				if ($focused === this.#$button) {
-					this.expand();
-				}
-				break
-			case 'Backspace':
-			case 'Escape':
-				this.collapse();
-				break
-			case 'End':
-				this.options[this.size - 1].focus();
-				break
-			case 'Home':
-				this.options[0].focus();
-				break
-			case 'ArrowUp':
-				this.collapse();
-				break
-			case 'ArrowDown':
-				this.expand();
-				break
-		}
-
-		console.log('onKeyPress', key);
-		console.dir($focused);
-		console.dir(this.#internals);
-	}
-
-	/**
-	 * Toggle the `aria-expanded` state
-	 */
-	#toggle() {
-		this.expanded ? this.collapse() : this.expand();
-	}
-
-	/**
-	 * Сall returns the first option for wich the query string is started substring of the label or value option.
-	 *
-	 * @param {string} query
-	 * @returns {Option | null}
-	 */
-	#search(query) {
-		for (const option of this.options)
-			if (
-				0 === option.label.indexOf(query) ||
-				0 === option.value.indexOf(query)
-			)
-				return option
-		return null
-	}
+    static initAttributes(element, options) {
+        const data = {
+            'aria-atomic': true,
+            'aria-expanded': false,
+            exportparts: element.getAttribute('exportparts'),
+            id: element.id,
+            role: SelectField.role,
+            tabIndex: element.tabIndex,
+        };
+        const { internals, shadowRoot } = options;
+        if (checkFalsy(data.exportparts) && shadowRoot instanceof ShadowRoot) {
+            const $$parts = shadowRoot.querySelectorAll('[part]');
+            if ($$parts.length) {
+                data.exportparts = Array.from($$parts)
+                    .map(($elem) => $elem.part.toString())
+                    .join(', ');
+            }
+        }
+        if (checkFalsy(data.id) && element.isConnected) {
+            data.id = [SelectField.role, Math.round(performance.now())].join('-');
+        }
+        if (element.isConnected &&
+            data.tabIndex < 0 &&
+            internals instanceof ElementInternals &&
+            internals.form instanceof HTMLElement) {
+            data.tabIndex = 0;
+        }
+        return updateAttributes(element, data);
+    }
+    static initAccessibilityTree(element, options) {
+        const { internals, $listbox } = options;
+        internals.ariaAtomic = 'true';
+        internals.ariaLive = 'polite';
+        internals.role = SelectField.role;
+        internals.ariaDisabled = String(element.ariaDisabled === 'true');
+        internals.ariaExpanded = String(element.ariaExpanded === 'true');
+        internals.ariaRequired = String(element.ariaRequired === 'true');
+        internals.ariaHasPopup = 'listbox';
+        internals.ariaMultiSelectable = String(element.ariaMultiSelectable === 'true');
+        $listbox.ariaMultiSelectable = internals.ariaMultiSelectable;
+    }
+    constructor() {
+        super();
+        _SelectField_instances.add(this);
+        _SelectField_focusCont.set(this, undefined);
+        _SelectField_interCont.set(this, undefined);
+        _SelectField_internals.set(this, this.attachInternals());
+        _SelectField_options.set(this, new Map());
+        _SelectField_slotChangeCont.set(this, undefined);
+        initShadowRoot.call(this, {
+            template,
+            delegatesFocus: true,
+        });
+        SelectField.initAttributes(this, {
+            shadowRoot: __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$root_get),
+        });
+        ElementInternals;
+        __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_listenAssignedNodes).call(this);
+        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(ComponentReadyState.Defined);
+        ElementInternals;
+        ElementInternals;
+    }
+    connectedCallback() {
+        SelectField.initAttributes(this, {
+            internals: __classPrivateFieldGet(this, _SelectField_internals, "f"),
+        });
+        SelectField.initAccessibilityTree(this, {
+            $listbox: __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get),
+            internals: __classPrivateFieldGet(this, _SelectField_internals, "f"),
+        });
+        __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_listenFocus).call(this);
+        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(ComponentReadyState.Interactive);
+        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$root_get).querySelector('link').onload = () => __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(ComponentReadyState.Loaded);
+    }
+    disconnectedCallback() {
+        __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
+        __classPrivateFieldGet(this, _SelectField_focusCont, "f")?.abort();
+        __classPrivateFieldGet(this, _SelectField_slotChangeCont, "f")?.abort();
+    }
+    adoptedCallback() { }
+    attributeChangedCallback(name, previous, current) {
+        if (false === this.isConnected)
+            return;
+        if (previous === current)
+            return;
+        const isTruth = checkTruth(current);
+        switch (name) {
+            case 'aria-disabled':
+                if (isTruth) {
+                    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(FieldState.Disabled);
+                    __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
+                }
+                else {
+                    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(FieldState.Disabled);
+                }
+                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaDisabled = current;
+                break;
+            case 'aria-expanded':
+                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(isTruth ? ComboboxState.Expanded : ComboboxState.Collapsed);
+                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaExpanded = current;
+                break;
+            case 'aria-label':
+                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaLabel = current;
+                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get).ariaLabel = current;
+                break;
+            case 'aria-placeholder':
+                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaPlaceholder = current;
+                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get).ariaPlaceholder = current;
+                break;
+            case 'value':
+                this.value = current;
+                break;
+        }
+    }
+    formAssociatedCallback(form_) { }
+    formDisabledCallback(disabled) {
+        this.setAttribute('aria-disabled', disabled);
+    }
+    formResetCallback() { }
+    formStateRestoreCallback(state, reason_) {
+        this.value = state;
+    }
+    collapse() {
+        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(ComboboxState.Expanded);
+        updateAttributes(this, 'aria-expanded', false);
+        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$button_get).focus();
+    }
+    expand() {
+        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(ComboboxState.Collapsed);
+        updateAttributes(this, 'aria-expanded', true);
+        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).focus();
+    }
+    select(value) {
+        let option;
+        if (value instanceof HTMLElement) {
+            option = __classPrivateFieldGet(this, _SelectField_options, "f").get(value);
+        }
+        else if (typeof value === 'string') {
+            option = __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_findByValue).call(this, value);
+        }
+        return Boolean(option) && __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_selectElement).call(this, option.$element);
+    }
+    get disabled() {
+        return (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).has(FieldState.Disabled) &&
+            checkTruth(__classPrivateFieldGet(this, _SelectField_internals, "f").ariaDisabled) &&
+            checkTruth(this.ariaDisabled));
+    }
+    get expanded() {
+        return (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).has(ComboboxState.Expanded) &&
+            checkTruth(__classPrivateFieldGet(this, _SelectField_internals, "f").ariaExpanded) &&
+            checkTruth(this.ariaExpanded));
+    }
+    get multiple() {
+        return checkTruth(__classPrivateFieldGet(this, _SelectField_internals, "f").ariaMultiSelectable);
+    }
+    get options() {
+        return __classPrivateFieldGet(this, _SelectField_options, "f").values();
+    }
+    get readonly() {
+        return checkTruth(__classPrivateFieldGet(this, _SelectField_internals, "f").ariaReadOnly);
+    }
+    get size() {
+        return __classPrivateFieldGet(this, _SelectField_options, "f").size;
+    }
+    get value() {
+        return __classPrivateFieldGet(this, _SelectField_internals, "f").ariaValueNow;
+    }
+    set value(updated) {
+        __classPrivateFieldGet(this, _SelectField_internals, "f").ariaValueNow = updated;
+        this.dispatchEvent(new Event('change'));
+    }
 }
-
+_SelectField_focusCont = new WeakMap(), _SelectField_interCont = new WeakMap(), _SelectField_internals = new WeakMap(), _SelectField_options = new WeakMap(), _SelectField_slotChangeCont = new WeakMap(), _SelectField_instances = new WeakSet(), _SelectField_selectElement = function _SelectField_selectElement($element) {
+    const attribute = this.multiple ? 'aria-checked' : 'aria-selected';
+    $element.setAttribute(attribute, 'true');
+    return true;
+}, _SelectField_$button_get = function _SelectField_$button_get() {
+    return __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$root_get).getElementById('button');
+}, _SelectField_$status_get = function _SelectField_$status_get() {
+    return __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$root_get).getElementById('value_text');
+}, _SelectField_$listbox_get = function _SelectField_$listbox_get() {
+    return __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$root_get).getElementById('listbox');
+}, _SelectField_$root_get = function _SelectField_$root_get() {
+    return __classPrivateFieldGet(this, _SelectField_internals, "f").shadowRoot;
+}, _SelectField_states_get = function _SelectField_states_get() {
+    return __classPrivateFieldGet(this, _SelectField_internals, "f").states;
+}, _SelectField_findByValue = function _SelectField_findByValue(query) {
+    for (const option of __classPrivateFieldGet(this, _SelectField_options, "f")) {
+        if (query === option.value)
+            return option;
+    }
+    return null;
+}, _SelectField_listenAssignedNodes = function _SelectField_listenAssignedNodes() {
+    __classPrivateFieldGet(this, _SelectField_slotChangeCont, "f")?.abort();
+    __classPrivateFieldSet(this, _SelectField_slotChangeCont, new AbortController(), "f");
+    const list = __classPrivateFieldGet(this, _SelectField_options, "f");
+    const cleanup = (list) => list.forEach(({ $element }, $ref, map) => ($element.isConnected && $element.parentElement === this) ||
+        map.delete($ref));
+    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).children[0].addEventListener('slotchange', (event) => {
+        const $$elements = event.target.assignedElements();
+        for (const $element of $$elements)
+            if ($element.hasAttribute('role') &&
+                $element.role === 'option') {
+                const $ref = new WeakRef($element);
+                const label = $element.ariaLabel || $element.textContent;
+                list.set($ref, {
+                    $element,
+                    label,
+                    value: $element.getAttribute('value') ||
+                        $element.dataset.value ||
+                        (undefined !== $element['value'] &&
+                            $element.value) ||
+                        label,
+                });
+            }
+            else
+                $element.remove();
+        cleanup(list);
+    }, {
+        signal: __classPrivateFieldGet(this, _SelectField_slotChangeCont, "f").signal,
+    });
+    return __classPrivateFieldGet(this, _SelectField_slotChangeCont, "f");
+}, _SelectField_listenFocus = function _SelectField_listenFocus() {
+    __classPrivateFieldGet(this, _SelectField_focusCont, "f")?.abort();
+    __classPrivateFieldSet(this, _SelectField_focusCont, new AbortController(), "f");
+    const options = {
+        signal: __classPrivateFieldGet(this, _SelectField_focusCont, "f").signal,
+    };
+    this.addEventListener('focus', (event) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onFocus).call(this, event), options);
+    this.addEventListener('blur', (event) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onBlur).call(this, event), options);
+    return __classPrivateFieldGet(this, _SelectField_focusCont, "f");
+}, _SelectField_onBlur = function _SelectField_onBlur(event_) {
+    this.collapse();
+    __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
+}, _SelectField_onFocus = function _SelectField_onFocus(event_) {
+    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_listenInteraction).call(this);
+}, _SelectField_listenInteraction = function _SelectField_listenInteraction() {
+    __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
+    __classPrivateFieldSet(this, _SelectField_interCont, new AbortController(), "f");
+    const options = {
+        capture: false,
+        passive: false,
+        signal: __classPrivateFieldGet(this, _SelectField_interCont, "f").signal,
+    };
+    this.addEventListener('click', (event) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onClick).call(this, event), options);
+    this.addEventListener('keydown', (event) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onKeyPress).call(this, event), options);
+    this.addEventListener('focusin', (event) => { }, options);
+    this.addEventListener('focusout', (event) => { }, options);
+    return __classPrivateFieldGet(this, _SelectField_interCont, "f");
+}, _SelectField_onClick = function _SelectField_onClick(event_) {
+    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_toggle).call(this);
+}, _SelectField_onKeyPress = function _SelectField_onKeyPress(event) {
+    const { key } = event;
+    const $focused = __classPrivateFieldGet(this, _SelectField_internals, "f").ariaActiveDescendantElement;
+    switch (key) {
+        case 'Enter':
+            if ($focused === __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$button_get)) {
+                this.expand();
+            }
+            break;
+        case 'Backspace':
+        case 'Escape':
+            this.collapse();
+            break;
+        case 'End':
+            this.options[this.size - 1].focus();
+            break;
+        case 'Home':
+            this.options[0].focus();
+            break;
+        case 'ArrowUp':
+            this.collapse();
+            break;
+        case 'ArrowDown':
+            this.expand();
+            break;
+    }
+}, _SelectField_toggle = function _SelectField_toggle() {
+    this.expanded ? this.collapse() : this.expand();
+};
+SelectField.formAssociated = true;
+SelectField.role = 'combobox';
+SelectField.observedAttributes = [
+    'aria-disabled',
+    'aria-expanded',
+    'aria-label',
+    'aria-multiselectable',
+    'aria-placeholder',
+    'aria-required',
+    'name',
+    'value',
+];
 customElements.define(tagName, SelectField);
 const index = customElements.get(tagName);
 

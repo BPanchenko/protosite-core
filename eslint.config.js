@@ -25,7 +25,7 @@ export default [
 		ignores: [
 			'assets/*',
 			'!assets/__tests__/',
-			'src/component/FormField.js',
+			'source/component/FormField.js',
 			'node_modules/',
 		],
 	},
@@ -168,9 +168,9 @@ export default [
 			'import/resolver': {
 				alias: {
 					map: [
-						['#element', './src/element'],
-						['#library', './src/lib'],
-						['#types', './src/types'],
+						['#element', './source/element'],
+						['#library', './source/library'],
+						['#types', './source/types'],
 						['#uikit', '@bpanchenko/uikit'],
 					],
 					extensions: ['.js', '.cjs', '.mjs', '.css', '.json'],
@@ -181,7 +181,7 @@ export default [
 		},
 	},
 	{
-		files: ['src/**/__specs__/*.spec.js', 'assets/__tests__/*.test.js'],
+		files: ['source/**/__specs__/*.spec.js', 'assets/__tests__/*.test.js'],
 		languageOptions: {
 			globals: {
 				...globals.jest,

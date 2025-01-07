@@ -1,4 +1,4 @@
-export const tagName = 'c-option'
+const tagName = 'c-option'
 
 export class CustomOption extends HTMLOptionElement {
 	static oberverAttributes = ['value', 'aria-label', 'aria-description']

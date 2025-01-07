@@ -4,8 +4,8 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 const tplMap = new Map([
-	['tpl-fruits-option', 'src/component/__mocks__/fruits-option-template.pug'],
-	['tpl-select-field', 'src/component/select-field.pug'],
+	['tpl-fruits-option', 'source/component/__mocks__/fruits-option-template.pug'],
+	['tpl-select-field', 'source/component/select-field.pug'],
 ].map(([key, path]) => ([key, pug.compile(fs.readFileSync(
 	path.resolve(path),
 	{

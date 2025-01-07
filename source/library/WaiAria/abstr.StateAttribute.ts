@@ -1,5 +1,5 @@
-import checkTruth from '#library/fn.checkTruth'
-import checkFalsy from '#library/fn.checkFalsy'
+import checkTruth from '../fn.checkTruth'
+import checkFalsy from '../fn.checkFalsy'
 import { AriaAttribute } from './abstr.AriaAttribute'
 
 import type { Primitive } from '#types/primitive'

@@ -1,15 +1,12 @@
-/// <reference path="./types.d.ts" />
-
 import cssStyleSheet, { cAvatar, cAvatarLink } from '#uikit/component/avatar'
 
 import createElement from '#library/fn.createElement.js'
 import initShadowRoot from '#library/fn.initShadowRoot.js'
 import updateAttributes from '#library/fn.updateAttributes.js'
 
-export const tagName = cAvatar
+const tagName = cAvatar
 const template = `<div role=img><slot></slot></div>`
 
-/** @implements {Avatar.WebComponent} */
 export class AvatarComponent extends HTMLElement {
 	#$ = new Map()
 

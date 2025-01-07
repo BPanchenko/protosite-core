@@ -65,7 +65,7 @@ function isObject(value) {
 
 /**
  * @param {HTMLElement} element The element whose attributes will be modified
- * @param {Record<string, string> | string} objectOrAttrName List of key-value pairs that represent HTML attributes of the element
+ * @param {Record<string, boolean | number | string> | string} objectOrAttrName List of key-value pairs that represent HTML attributes of the element
  * @param {boolean | number | string} [attrValue] List of key-value pairs that represent HTML attributes of the element
  * @returns {Map<string, Attr>} Collection of element attributes after modification. Attributes are sorted by name.
  *
@@ -78,13 +78,13 @@ const updateAttributes = (element, objectOrAttrName, attrValue = null) => {
 
 	pairs.forEach(([key, value]) =>
 		value === null
-			? element.removeAttribute(key)
+			? element.removeAttribute(String(key))
 			: value instanceof Attr
 				? element.setAttributeNode(value)
 				: typeof key === 'string'
 					? element.hasAttribute(key)
-						? (element.getAttributeNode(key).value = value)
-						: element.setAttribute(key, value)
+						? (element.getAttributeNode(key).value = String(value))
+						: element.setAttribute(key, String(value))
 					: undefined,
 	);
 
@@ -531,4 +531,4 @@ SelectField.observedAttributes = [
 customElements.define(tagName, SelectField);
 const index = customElements.get(tagName);
 
-export { SelectField, index as default, tagName };
+export { SelectField, index as default };

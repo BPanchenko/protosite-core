@@ -1,10 +1,10 @@
 import '#element/Listbox.ts'
 
 import initShadowRoot from '#library/fn.initShadowRoot.js'
-import checkFalsy from '#library/fn.checkFalsy'
-import checkTruth from '#library/fn.checkTruth'
+import checkFalsy from '#library/fn.checkFalsy.js'
+import checkTruth from '#library/fn.checkTruth.js'
 import updateAttributes from '#library/fn.updateAttributes.js'
-import { ComboboxState, ComponentReadyState, FieldState } from '../settings'
+import { ComboboxState, ComponentReadyState, FieldState } from '../settings.js'
 
 import template from './template.pug'
 
@@ -13,12 +13,12 @@ import type {
 	InitAttributesOptions,
 	Option,
 	OptionCollection,
-} from './types'
+} from './types.js'
 
 import type { Listbox } from '#element/Listbox'
 import type { FormAssociatedCustomElement } from '#types/iface.FormAssociatedCustomElement'
 
-export const tagName = 'c-select-field'
+const tagName = 'c-select-field'
 
 export class SelectField
 	extends HTMLElement

@@ -17,7 +17,7 @@ const options = {
 const root = process.cwd()
 
 const watcher = new Watcher(
-	path.join(root, 'src'),
+	path.join(root, 'source'),
 	options,
 	(event, targetPath, targetPathNext) => {
 		logger.event(event, targetPath, targetPathNext ?? '')

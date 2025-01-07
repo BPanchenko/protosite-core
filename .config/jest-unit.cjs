@@ -13,7 +13,7 @@ const globals = {
 
 /** @type {import('jest').Config} */
 module.exports = {
-	rootDir: path.join(process.cwd(), 'src'),
+	rootDir: path.join(process.cwd(), 'source'),
 
 	bail: 2,
 	collectCoverageFrom: ['<rootDir>/component/*.js', '<rootDir>/lib/*.js'],

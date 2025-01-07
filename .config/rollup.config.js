@@ -7,9 +7,9 @@ import path from 'node:path'
 import pugPlugin from 'rollup-plugin-pug'
 import tsPlugin from '@rollup/plugin-typescript'
 
-const componentDir = path.join('src', 'component')
-const elementDir = path.join('src', 'element')
-const libraryDir = path.join('src', 'lib')
+const componentDir = path.join('source', 'component')
+const elementDir = path.join('source', 'element')
+const libraryDir = path.join('source', 'library')
 
 export default function getConfig(options = {}) {
 	const { mode = 'debug', root = process.cwd() } = options

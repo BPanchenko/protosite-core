@@ -28,14 +28,6 @@ declare namespace Avatar {
 		 */
 		target: '_blank' | '_self' | '_parent' | '_top'
 	}
-
-	interface WebComponent extends HTMLElement {
-		observedAttributes: string[]
-
-		attributeChangedCallback(
-			name: string,
-			oldVal: string | null,
-			newVal: string | null,
-		): void
-	}
 }
+
+export = Avatar

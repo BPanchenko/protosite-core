@@ -10,4 +10,4 @@ eslint.config.js
 
 # Исходники и ядро
 .kernel/
-src/
+source/

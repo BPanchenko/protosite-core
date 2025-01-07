@@ -1,34 +1,37 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.12.34",
+  "version": "1.12.35",
   "description": "Web Application Core. It сontains a library of Web Components.",
   "homepage": "http://protosite.rocks",
   "type": "module",
-  "main": "./src/index.js",
-  "types": "./src/index.d.ts",
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "files": [
-    "assets/*.d.ts",
     "assets/*.mjs",
-    "src/*"
+    "assets/*.mts",
+    "source/*",
+    "index.js",
+    "index.d.ts"
   ],
   "exports": {
-    ".": "./src/index.js",
-    "./*": "./src/*"
+    ".": "./index.js",
+    "./*": "./source/*"
   },
   "imports": {
-    "#element/*": "./src/element/*",
-    "#library/*": "./src/lib/*",
-    "#types/*": "./src/types/*"
+    "#element/*": "./source/element/*",
+    "#library/*": "./source/library/*",
+    "#types/*": "./source/types/*"
   },
   "scripts": {
     "build": "node ./.kernel/builder",
     "debug": "run-p server watch",
+    "postbuild": "npx -p typescript tsc --project tsconfig.assets.json",
     "deploy": "node ./.kernel/deployer.js",
     "lint": "eslint . --fix",
     "postpublish": "npm run deploy",
     "prebuild": "npm run rimraf",
     "prepublish": "npm run build",
-    "rimraf": "rimraf \"assets/*.{js,mjs,map}\" --glob",
+    "rimraf": "rimraf \"assets/*.{mjs,mts,map}\" --glob",
     "server": "node ./.kernel/server.cjs",
     "test:e2e": "jest --config=.config/jest-e2e.cjs",
     "test:unit": "jest --config=.config/jest-unit.cjs --watch",

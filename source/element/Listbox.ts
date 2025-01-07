@@ -1,7 +1,7 @@
-import updateAttributes from '#library/fn.updateAttributes.js'
+import updateAttributes from '../library/fn.updateAttributes.js'
 import type { CustomElement } from '#types/iface.CustomElement'
 
-export const tagName = 'e-listbox'
+const tagName = 'e-listbox'
 
 export class Listbox extends HTMLElement implements CustomElement {
 	readonly internals = this.attachInternals()

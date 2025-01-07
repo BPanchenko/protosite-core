@@ -49,16 +49,6 @@ declare namespace Arrow {
 		style: Style
 		weight: Weight
 	}
-
-	interface WebComponent extends HTMLElement {
-		observedAttributes: string[]
-
-		attributeChangedCallback(
-			name: string,
-			oldVal: string | null,
-			newVal: string | null,
-		): void
-	}
 }
 
 export = Arrow

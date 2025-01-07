@@ -1,22 +1,19 @@
-/// <reference path="./types.d.ts" />
-
 import cssStyleSheet, { cArrow } from '#uikit/component/arrow'
 
 import checkFontFace from '#library/fn.checkFontFace.js'
 import initShadowRoot from '#library/fn.initShadowRoot.js'
 import updateAttributes from '#library/fn.updateAttributes.js'
 
-export const tagName = cArrow
+const tagName = cArrow
 const template = `<i data-glyph=arrow><slot>&nbsp;</slot></i>`
 
 /**
  * @typedef {object} State
- * @property {Direction | Direction[]} direction
- * @property {Figure | Figure[]} figure
- * @property {Style | Style[]} style
+ * @property {Arrow.Direction | Arrow.Direction[]} direction
+ * @property {Arrow.Figure | Arrow.Figure[]} figure
+ * @property {Arrow.Style | Arrow.Style[]} style
  * */
 
-/** @implements {Arrow.WebComponent} */
 export class ArrowComponent extends HTMLElement {
 	/** @type {ShadowRoot} */
 	#shadow_

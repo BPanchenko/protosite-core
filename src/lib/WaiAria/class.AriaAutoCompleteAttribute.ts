@@ -9,6 +9,7 @@ import type { Primitive } from '#types/primitive'
 export class AriaAutoCompleteAttribute extends AriaAttribute {
 	static attributeName: string = 'aria-autocomplete'
 	static categoryName: AriaCategory = AriaCategory.Widget
+	static default: AriaAutoCompleteValue = 'none'
 	static propertyName: string = 'ariaAutoComplete'
 	static validValues: Array<string> = <const>[
 		'none',
@@ -16,10 +17,6 @@ export class AriaAutoCompleteAttribute extends AriaAttribute {
 		'list',
 		'both',
 	]
-
-	constructor(value: AriaAutoCompleteValue = 'none') {
-		super(value)
-	}
 
 	get name() {
 		return AriaAutoCompleteAttribute.attributeName

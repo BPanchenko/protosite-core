@@ -20,8 +20,6 @@ export class RoleAttribute extends AriaAttribute {
 	static propertyName: string = 'role'
 	static validValues = roles
 
-	protected _value: RoleAttributeValue
-
 	get name() {
 		return RoleAttribute.attributeName
 	}
@@ -45,10 +43,6 @@ export class RoleAttribute extends AriaAttribute {
 
 	get property() {
 		return RoleAttribute.propertyName
-	}
-
-	get value(): RoleAttributeValue {
-		return this._value
 	}
 
 	protected _parseValue(value: Primitive): RoleAttributeValue | never {

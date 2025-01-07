@@ -9,8 +9,13 @@ import type { Primitive } from '#types/primitive'
 export class AriaOrientationAttribute extends AriaAttribute {
 	static attributeName: string = 'aria-orientation'
 	static categoryName: AriaCategory = AriaCategory.Widget
+	static default: AriaOrientationValue = 'undefined'
 	static propertyName: string = 'ariaOrientation'
-	static validValues: Array<string> = <const>['horizontal', 'vertical']
+	static validValues: Array<string> = <const>[
+		'horizontal',
+		'vertical',
+		'undefined',
+	]
 
 	isHorz() {
 		return this.value === 'horizontal'

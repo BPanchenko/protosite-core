@@ -21,18 +21,30 @@ export abstract class AriaAttribute {
 	abstract get property(): string
 	abstract get name(): string
 
-	protected _value: AttributeValue
+	private _initial: AttributeValue
 
 	constructor(value: Primitive = null) {
 		this.value = value
 	}
 
-	get value(): AttributeValue {
-		return this._value
+	get initial(): AttributeValue {
+		return this._initial ?? null
 	}
 
-	set value(newValue: Primitive) {
-		this._value = this._parseValue(newValue)
+	get value(): AttributeValue {
+		return this.value ?? null
+	}
+
+	set value(source: Primitive) {
+		const previous = this.value
+		const current = this._parseValue(source)
+
+		if (current !== previous) {
+			if (previous === null) this._initial = current
+
+			const proto: AriaAttribute = getDeepPrototypeOf(this, AriaAttribute)
+			proto.value = current
+		}
 	}
 
 	protected _parseValue(value: Primitive): AttributeValue | never {
@@ -51,7 +63,7 @@ export abstract class AriaAttribute {
 
 	takeAttr(node: Attr) {
 		const proto: AriaAttribute = getDeepPrototypeOf(this, AriaAttribute)
-		console.log(proto)
+		node.value = proto.value
 		Object.setPrototypeOf(proto, node)
 		return this
 	}

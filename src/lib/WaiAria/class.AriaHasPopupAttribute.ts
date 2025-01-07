@@ -9,6 +9,7 @@ import type { Primitive } from '#types/primitive'
 export class AriaHasPopupAttribute extends AriaAttribute {
 	static attributeName: string = 'aria-haspopup'
 	static categoryName: AriaCategory = AriaCategory.Widget
+	static default: AriaHasPopupValue = 'false'
 	static propertyName: string = 'ariaHasPopup'
 	static validValues: Array<string> = <const>[
 		'dialog',

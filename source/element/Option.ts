@@ -46,11 +46,11 @@ export class OptionElement extends HTMLElement implements CustomElement {
 		OptionElement.initAttributes(this)
 	}
 
-	get label(): string {
+	get label(): string | null {
 		return this.ariaLabel || this.textContent
 	}
 
-	get value(): string {
+	get value(): string | null {
 		return this.dataset.value || this.getAttribute('value')
 	}
 }

@@ -1,6 +1,6 @@
 import { AriaAttribute, AriaCategory } from './abstr.AriaAttribute'
 
-import type { Primitive } from '#types/primitive'
+import type { Primitive } from '#types'
 
 /**
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-orientation)
@@ -40,8 +40,8 @@ export class AriaOrientationAttribute extends AriaAttribute {
 	}
 
 	protected _parseValue(value: Primitive): AriaOrientationValue | never {
-		if (value === null) {
-			return null
+		if (value === undefined) {
+			return 'undefined'
 		} else if (
 			typeof value === 'string' &&
 			AriaOrientationAttribute.validValues.includes(value)

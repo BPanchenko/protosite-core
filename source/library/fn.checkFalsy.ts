@@ -1,6 +1,6 @@
-import { Primitive } from '#types/primitive'
+import { Primitive } from '#types'
 
-export const checkFalsy = (value: Primitive): boolean => {
+export const checkFalsy = (value: Primitive | null): boolean => {
 	return typeof value === 'string'
 		? ['off', 'false'].includes(value.trim().toLocaleLowerCase())
 		: false === Boolean(value)

@@ -8,7 +8,10 @@ const copyProperty = (to, from, property, ignoreNonConfigurable) => {
 	}
 
 	const toDescriptor = Object.getOwnPropertyDescriptor(to, property)
-	const fromDescriptor = Object.getOwnPropertyDescriptor(from, property)
+	const fromDescriptor = Object.getOwnPropertyDescriptor(
+		from,
+		property,
+	) as PropertyDescriptor
 
 	if (
 		!canCopyProperty(toDescriptor, fromDescriptor) &&
@@ -47,11 +50,12 @@ const wrappedToString = (withName, fromBody) =>
 const toStringDescriptor = Object.getOwnPropertyDescriptor(
 	Function.prototype,
 	'toString',
-)
+) as PropertyDescriptor
+
 const toStringName = Object.getOwnPropertyDescriptor(
 	Function.prototype.toString,
 	'name',
-)
+) as PropertyDescriptor
 
 const changeToString = (to, from, name) => {
 	const withName = name === '' ? '' : `with ${name.trim()}() `

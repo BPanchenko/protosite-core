@@ -1,4 +1,4 @@
-function getDeepPrototypeOf(instance: object, constructor = null) {
+function getDeepPrototypeOf(instance: object, constructor: object = {}) {
 	let obj = instance
 	do {
 		obj = Object.getPrototypeOf(obj)

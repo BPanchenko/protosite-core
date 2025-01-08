@@ -3,19 +3,25 @@ function isObject(value) {
     return !!value && (type == 'object' || type == 'function');
 }
 
-function updateAttributes(element, objectOrAttrName, attrValue = null) {
+function updateAttributes(element, objectOrAttrName, attrValue) {
     const pairs = isObject(objectOrAttrName)
         ? Object.entries(objectOrAttrName)
         : [[objectOrAttrName, attrValue]];
-    pairs.forEach(([key, value]) => value === null
-        ? element.removeAttribute(String(key))
-        : value instanceof Attr
-            ? element.setAttributeNode(value)
-            : typeof key === 'string'
-                ? element.hasAttribute(key)
-                    ? (element.getAttributeNode(key).value = String(value))
-                    : element.setAttribute(key, String(value))
-                : undefined);
+    pairs.forEach(([key, value]) => {
+        const attrName = String(key);
+        if (value === null)
+            element.removeAttribute(attrName);
+        else if (value instanceof Attr)
+            element.setAttributeNode(value);
+        else {
+            const attr = element.getAttributeNode(attrName);
+            const attrValue = String(value);
+            if (attr !== null)
+                attr.value = attrValue;
+            else
+                element.setAttribute(attrName, attrValue);
+        }
+    });
     return new Map(element
         .getAttributeNames()
         .sort()

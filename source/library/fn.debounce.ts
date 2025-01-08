@@ -120,7 +120,7 @@ function debounce(
 		return timerId === undefined ? result : trailingEdge(now())
 	}
 
-	function debounced() {
+	function debounced(this: object) {
 		var time = now(),
 			isInvoking = shouldInvoke(time)
 

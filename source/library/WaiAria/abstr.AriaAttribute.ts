@@ -1,6 +1,6 @@
 import getDeepPrototypeOf from '../fn.getDeepPrototypeOf'
 
-import type { Primitive } from '#types/primitive'
+import type { Primitive } from '#types'
 
 export enum AriaCategory {
 	Composite = 'composite',
@@ -21,18 +21,18 @@ export abstract class AriaAttribute {
 	abstract get property(): string
 	abstract get name(): string
 
-	private _initial: AttributeValue
+	#initial: string
 
-	constructor(value: Primitive = null) {
+	constructor(value: Primitive) {
 		this.value = value
 	}
 
-	get initial(): AttributeValue {
-		return this._initial ?? null
+	get initial(): string {
+		return this.#initial
 	}
 
-	get value(): AttributeValue {
-		return this.value ?? null
+	get value(): string {
+		return this.value
 	}
 
 	set value(source: Primitive) {
@@ -40,7 +40,7 @@ export abstract class AriaAttribute {
 		const current = this._parseValue(source)
 
 		if (current !== previous) {
-			if (previous === null) this._initial = current
+			if (previous === null) this.#initial = current
 
 			const proto = getDeepPrototypeOf(
 				this,
@@ -50,15 +50,20 @@ export abstract class AriaAttribute {
 		}
 	}
 
-	protected _parseValue(value: Primitive): AttributeValue | never {
-		if (value === null) {
-			return null
-		} else if (typeof value === 'string') {
+	protected _parseValue(value: Primitive): string | never {
+		if (typeof value === 'string') {
 			return value.trim()
 		} else if (
-			['number', 'bigint', 'boolean', 'symbol'].includes(typeof value)
+			[
+				'undefined',
+				'string',
+				'number',
+				'boolean',
+				'symbol',
+				'bigint',
+			].includes(typeof value)
 		) {
-			return value.toString()
+			return String(value)
 		} else {
 			throw new Error(`Wrong attribute value: "${String(value)}"`)
 		}
@@ -71,5 +76,3 @@ export abstract class AriaAttribute {
 		return this
 	}
 }
-
-export type AttributeValue = string | null

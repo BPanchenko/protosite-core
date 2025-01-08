@@ -2,20 +2,20 @@
   "compileOnSave": true,
   "compilerOptions": {
     "allowJs": true,
-    "lib": ["ES2021"],
+    "lib": ["DOM", "ES2023"],
     "noEmitOnError": true,
     "noImplicitAny": false,
     "outDir": "assets",
     "paths": {
       "#element/*": ["./source/element/*"],
       "#library/*": ["./source/library/*"],
+      "#types": ["./source/types/index.d"],
       "#types/*": ["./source/types/*"],
       "#uikit/*": ["./node_modules/@bpanchenko/uikit/assets/*"]
     },
     "removeComments": true,
     "target": "ES2020"
   },
-  "exclude": ["node_modules", "assets"],
-  "include": ["source/**/*", "index.js"],
+  "include": ["source/**/*"],
   "moduleResolution": "nodenext"
 }

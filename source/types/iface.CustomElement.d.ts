@@ -1,4 +1,4 @@
-export interface CustomElement {
+export interface CustomElement extends HTMLElement {
 	adoptedCallback?: () => void
 	attributeChangedCallback?: (
 		name: string,
@@ -6,5 +6,5 @@ export interface CustomElement {
 		current: string | null,
 	) => void
 	connectedCallback(): void
-	disconnectedCallback(): void
+	disconnectedCallback?: () => void
 }

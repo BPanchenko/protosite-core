@@ -20,6 +20,7 @@
   "imports": {
     "#element/*": "./source/element/*",
     "#library/*": "./source/library/*",
+    "#types": "./source/types",
     "#types/*": "./source/types/*"
   },
   "scripts": {
@@ -54,6 +55,7 @@
     "@testing-library/jest-dom": "6.6.3",
     "@typescript-eslint/eslint-plugin": "8.19.1",
     "@typescript-eslint/parser": "8.19.1",
+    "@typescript/lib-dom": "npm:@types/web",
     "babel-cli": "6.26.0",
     "babel-jest": "29.7.0",
     "babel-plugin-transform-import-meta": "2.3.2",

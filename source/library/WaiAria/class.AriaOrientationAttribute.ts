@@ -25,6 +25,10 @@ export class AriaOrientationAttribute extends AriaAttribute {
 		return this.value === 'vertical'
 	}
 
+	isUndefined() {
+		return this.value === 'undefined'
+	}
+
 	get name() {
 		return AriaOrientationAttribute.attributeName
 	}

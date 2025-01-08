@@ -1,6 +1,3 @@
-const shadowModeByDefault =
-	typeof global.SHADOW_MODE === 'undefined' ? 'closed' : global.SHADOW_MODE
-
 type InitShadowRootOptions = {
 	$template?: DocumentFragment
 	template?: string
@@ -10,12 +7,12 @@ type InitShadowRootOptions = {
 	slotAssignment?: ShadowRoot['slotAssignment']
 }
 
-function initShadowRoot(options: InitShadowRootOptions) {
+function initShadowRoot(this: HTMLElement, options: InitShadowRootOptions) {
 	const {
 		$template,
 		template,
 		delegatesFocus = false,
-		mode = shadowModeByDefault,
+		mode = 'closed',
 		serializable = false,
 	} = options
 

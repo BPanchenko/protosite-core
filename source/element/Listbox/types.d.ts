@@ -2,9 +2,8 @@ import type { OptionElement } from '#element/Option'
 
 export interface Option {
 	$element: OptionElement | HTMLElement
-	label: string
-	value: string
-	index: number
+	label: string | null
+	value: string | null
 }
 
 export type OptionRef = WeakRef<Option['$element']>

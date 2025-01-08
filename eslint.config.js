@@ -64,6 +64,8 @@ export default [
 				1,
 				{ ignoreDeclarationMerge: true },
 			],
+			'no-dupe-class-members': 0,
+			'@typescript-eslint/no-dupe-class-members': 1,
 			'no-unused-private-class-members': 1,
 
 			'prettier/prettier': 1,

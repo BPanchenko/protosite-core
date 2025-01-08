@@ -1,6 +1,6 @@
-import checkTruth from '#library/fn.checkTruth.js'
-import initShadowRoot from '#library/fn.initShadowRoot.js'
-import updateAttributes from '#library/fn.updateAttributes.js'
+import checkFalsy from '#library/fn.checkFalsy'
+import checkTruth from '#library/fn.checkTruth'
+import updateAttributes from '#library/fn.updateAttributes'
 
 import type { FormAssociatedCustomElement } from '#types'
 import type {
@@ -66,9 +66,6 @@ export class ListboxElement
 
 	constructor() {
 		super()
-		initShadowRoot.call(this, {
-			template: '<slot></slot>',
-		})
 		ListboxElement.initAttributes(this)
 		this.#listenAssignedNodes()
 	}
@@ -117,7 +114,8 @@ export class ListboxElement
 	}
 
 	/**
-	 * Сall will find the first option wich value is fully equal to the query string.
+	 * Returns an Element object representing the element whose id property matches the specified string.
+	 * @todo Check requirements for returned result
 	 */
 	getByID(query: string): SearchResult {
 		for (const [$ref, option] of this.#options) {
@@ -131,7 +129,8 @@ export class ListboxElement
 	}
 
 	/**
-	 * Сall will find the first option wich value is fully equal to the query string.
+	 * Returns an first option wich value is fully equal to the query string.
+	 * @todo Check requirements for returned result
 	 */
 	findByValue(query: string): SearchResult {
 		for (const [$ref, option] of this.#options) {
@@ -145,29 +144,35 @@ export class ListboxElement
 	}
 
 	/**
-	 * Сall returns the first option for wich the query string is started substring of the label or value option.
+	 * Сall returns array of options for wich the query string is started substring of the label or value option.
+	 * @todo Check requirements for returned result
 	 */
-	search(query: string): SearchResult {
+	search(query: string) {
+		const result = new Set<SearchResult>()
 		for (const [$ref, option] of this.#options)
 			if (
-				0 === option.label.indexOf(query) ||
-				0 === option.value.indexOf(query)
+				0 === option.label?.indexOf(query) ||
+				0 === option.value?.indexOf(query)
 			)
-				return {
+				result.add({
 					$ref,
 					option,
-				}
-		return null
+				})
+		return result.size > 0 ? result : null
 	}
 
-	select(value: HTMLElement | OptionRef | string): boolean {
-		let $element: HTMLElement = null
+	select($element: HTMLElement | null): boolean
+	select(identifier: string): boolean
+	select($ref: OptionRef): boolean
+	select(listitem: unknown): boolean {
+		let $element: HTMLElement | null = null
 
-		if (value instanceof HTMLElement) $element = value
-		else if (value instanceof WeakRef)
-			$element = this.#options.get(value)?.$element
-		else if (typeof value === 'string')
-			$element = this.getByID(value)?.option.$element
+		if (listitem instanceof HTMLElement) $element = listitem
+		else if (listitem instanceof WeakRef) $element = listitem.deref()
+		else if (typeof listitem === 'string') {
+			const searchResult = this.getByID(listitem)
+			if (searchResult !== null) $element = searchResult.option.$element
+		}
 
 		if ($element !== null) {
 			if (this.multiple === false) this.unselect()
@@ -177,12 +182,24 @@ export class ListboxElement
 
 	unselect($element?: HTMLElement): boolean {
 		const $$selected =
-			$element instanceof HTMLElement ? [$element] : this.selectedElements
-		if ($$selected.length > 0) {
+			$element instanceof HTMLElement
+				? new Set([$element])
+				: this.selectedElements
+		if ($$selected.size > 0) {
 			$$selected.forEach(($element) =>
 				$element.setAttribute('aria-selected', 'false'),
 			)
 			return true
+		} else return false
+	}
+
+	#selectElement($element?: Option['$element']) {
+		if ($element !== undefined) {
+			const attr = $element.getAttributeNode('aria-selected')
+			this.#log('Select Element', $element, attr)
+			return attr !== null && checkFalsy(attr.value)
+				? ((attr.value = 'true'), true)
+				: false
 		} else return false
 	}
 
@@ -206,10 +223,10 @@ export class ListboxElement
 		return Array.from(this.#options.values())
 	}
 
-	get selectedElements(): Option[] {
-		const $$elements = []
+	get selectedElements() {
+		const $$elements = new Set<Option['$element']>()
 		for (const { $element } of this.#options.values())
-			if (checkTruth($element.ariaSelected)) $$elements.push($element)
+			if (checkTruth($element.ariaSelected)) $$elements.add($element)
 		return $$elements
 	}
 
@@ -237,13 +254,8 @@ export class ListboxElement
 					event.target as HTMLSlotElement
 				).assignedElements({ flatten: true }) as HTMLOptionElement[]
 
-				$$elements
-					.filter(
-						($element) =>
-							$element.hasAttribute('role') &&
-							$element.role === 'option',
-					)
-					.forEach(($element, index) => {
+				for (const $element of $$elements)
+					if ($element.role === 'option') {
 						const $ref = new WeakRef($element)
 						const label = $element.ariaLabel || $element.textContent
 						list.set($ref, {
@@ -254,11 +266,11 @@ export class ListboxElement
 								$element.dataset.value ||
 								$element.value ||
 								label,
-							index,
 						})
-					})
-
+					}
 				normalize(list)
+
+				this.#log('SlotChange Event', list)
 			},
 			{
 				signal: this.#slotChangeCont.signal,
@@ -276,24 +288,20 @@ export class ListboxElement
 			signal: this.#focusCont.signal,
 		}
 
-		this.addEventListener('focus', (event_) => this.#onFocus(), options)
-		this.addEventListener('blur', (event_) => this.#onBlur(), options)
-
-		this.addEventListener(
-			'slotchange',
-			(event) => console.log('slotchange', event),
-			options,
-		)
+		this.addEventListener('focus', (event) => this.#onFocus(event), options)
+		this.addEventListener('blur', (event) => this.#onBlur(event), options)
 
 		return this.#focusCont
 	}
 
-	#onBlur(): void {
+	#onBlur({ currentTarget, target }: FocusEvent) {
 		this.#interCont?.abort()
+		this.#log('Blur Event', { currentTarget, target })
 	}
 
-	#onFocus(): void {
+	#onFocus({ currentTarget, target }: FocusEvent) {
 		this.#listenInteraction()
+		this.#log('Focus Event', { currentTarget, target })
 	}
 
 	#listenInteraction(): AbortController {
@@ -316,12 +324,13 @@ export class ListboxElement
 		return this.#interCont
 	}
 
-	#onClick(event): void {
-		console.info('Listbox.onClick')
-		console.dir(event)
+	#onClick(event) {
+		this.#log('Click Event', event)
 	}
 
-	#onKeyPress(event): void {
+	#onKeyPress(event) {
+		this.#log('KeyPress Event', event)
+
 		const { key } = event
 
 		switch (key) {
@@ -345,11 +354,12 @@ export class ListboxElement
 		}
 	}
 
-	#selectElement($element?: HTMLElement) {
-		if ($element instanceof HTMLElement) {
-			$element.setAttribute('aria-selected', 'true')
-			return true
-		} else return false
+	#log(label: string, ...args) {
+		console.groupCollapsed(`ListboxElement: ${label}`)
+		console.debug(args)
+		console.table(this.#internals)
+		console.dirxml(this)
+		console.groupEnd()
 	}
 }
 

@@ -12,6 +12,7 @@ export class SelectField extends HTMLElement {
     formStateRestoreCallback(state: any, reason_: any): void;
     collapse(): void;
     expand(): void;
+    toggle(): void;
     get disabled(): boolean;
     get expanded(): boolean;
     get multiple(): boolean;

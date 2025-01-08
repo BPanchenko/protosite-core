@@ -19,15 +19,12 @@ export class ListboxElement extends HTMLElement {
         $ref: any;
         option: any;
     };
-    search(query: any): {
-        $ref: any;
-        option: any;
-    };
-    select(value: any): any;
+    search(query: any): Set<any>;
+    select(listitem: any): any;
     unselect($element: any): boolean;
     get multiple(): boolean;
     get options(): any[];
-    get selectedElements(): any[];
+    get selectedElements(): Set<any>;
     get size(): any;
 }
 export namespace ListboxElement {

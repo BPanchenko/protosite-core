@@ -14,17 +14,17 @@ div(
 	aria-controls="listbox"
 	id="button"
 	role="button"
-	tabindex="-1"
+	tabindex="0"
 )
 	div(
-		part="selected_content"
-		id="selected_content"
-		role="presentation"
+		part="selection_status"
+		id="status"
+		role="status"
 	)
 e-listbox(
 	aria-labelledby="button",
 	id="listbox",
 	part="listbox"
-	tabindex="0"
+	tabindex="1"
 )
 	slot

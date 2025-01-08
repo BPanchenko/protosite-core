@@ -1,4 +1,4 @@
-import '#element/Listbox.ts'
+import '#element/Listbox/index.js'
 
 import initShadowRoot from '#library/fn.initShadowRoot.js'
 import checkFalsy from '#library/fn.checkFalsy.js'
@@ -8,30 +8,32 @@ import { ComboboxState, ComponentReadyState, FieldState } from '../settings.js'
 
 import template from './template.pug'
 
-import type {
-	InitAccessibilityTreeOptions,
-	InitAttributesOptions,
-	Option,
-	OptionCollection,
-} from './types.js'
+import type { ListboxElement, Option } from '#element/Listbox/index'
+import type { FormAssociatedCustomElement } from '#types'
 
-import type { Listbox } from '#element/Listbox'
-import type { FormAssociatedCustomElement } from '#types/iface.FormAssociatedCustomElement'
+type InitAttributesOptions = {
+	shadowRoot?: ShadowRoot
+	internals?: ElementInternals
+}
 
-const tagName = 'c-select-field'
+type InitAccessibilityTreeOptions = {
+	$listbox: ListboxElement
+	internals: ElementInternals
+}
 
 export class SelectField
 	extends HTMLElement
 	implements FormAssociatedCustomElement {
 	// #feed = new Map<number, string>()
+	#internals: ElementInternals = this.attachInternals()
+
 	#focusCont: AbortController
 	#interCont: AbortController
-	#internals: ElementInternals = this.attachInternals()
-	#options: OptionCollection = new Map()
 	#slotChangeCont: AbortController
 
 	static formAssociated = true
 	static role = 'combobox'
+	static tagName = 'c-select-field'
 
 	static observedAttributes = [
 		'aria-disabled',
@@ -53,7 +55,7 @@ export class SelectField
 			'aria-expanded': false,
 			exportparts: element.getAttribute('exportparts'),
 			id: element.id,
-			role: SelectField.role,
+			role: this.role,
 			tabIndex: <number>element.tabIndex,
 		}
 
@@ -67,16 +69,14 @@ export class SelectField
 			if ($$parts.length) {
 				data.exportparts = Array.from($$parts)
 					.map(($elem) => $elem.part.toString())
-					.join(', ')
+					.join(' ')
 			}
 		}
 
 		// [id]
 
 		if (checkFalsy(data.id) && element.isConnected) {
-			data.id = [SelectField.role, Math.round(performance.now())].join(
-				'-',
-			)
+			data.id = [this.role, Math.round(performance.now())].join('-')
 		}
 
 		// [tabindex]
@@ -101,7 +101,7 @@ export class SelectField
 
 		internals.ariaAtomic = 'true'
 		internals.ariaLive = 'polite'
-		internals.role = SelectField.role
+		internals.role = this.role
 
 		internals.ariaDisabled = String(element.ariaDisabled === 'true')
 		internals.ariaExpanded = String(element.ariaExpanded === 'true')
@@ -123,11 +123,7 @@ export class SelectField
 		SelectField.initAttributes(this, {
 			shadowRoot: this.#$root,
 		})
-		ElementInternals
-		this.#listenAssignedNodes()
 		this.#states.add(ComponentReadyState.Defined)
-		ElementInternals
-		ElementInternals
 	}
 
 	connectedCallback() {
@@ -154,8 +150,6 @@ export class SelectField
 		this.#focusCont?.abort()
 		this.#slotChangeCont?.abort()
 	}
-
-	adoptedCallback() { }
 
 	attributeChangedCallback(name, previous, current) {
 		if (false === this.isConnected) return
@@ -215,23 +209,6 @@ export class SelectField
 		this.#$listbox.focus()
 	}
 
-	select(value: HTMLElement | string): boolean {
-		let option
-		if (value instanceof HTMLElement) {
-			// @ts-ignore
-			option = this.#options.get(value)
-		} else if (typeof value === 'string') {
-			option = this.#findByValue(value)
-		}
-		return Boolean(option) && this.#selectElement(option.$element)
-	}
-
-	#selectElement($element: HTMLElement) {
-		const attribute = this.multiple ? 'aria-checked' : 'aria-selected'
-		$element.setAttribute(attribute, 'true')
-		return true
-	}
-
 	get disabled(): boolean {
 		return (
 			this.#states.has(FieldState.Disabled) &&
@@ -252,8 +229,8 @@ export class SelectField
 		return checkTruth(this.#internals.ariaMultiSelectable)
 	}
 
-	get options(): MapIterator<Option> {
-		return this.#options.values()
+	get options(): Option[] {
+		return this.#$listbox.options
 	}
 
 	get readonly(): boolean {
@@ -261,7 +238,7 @@ export class SelectField
 	}
 
 	get size(): number {
-		return this.#options.size
+		return this.#$listbox.size
 	}
 
 	get value(): string {
@@ -282,8 +259,8 @@ export class SelectField
 		return this.#$root.getElementById('value_text')
 	}
 
-	get #$listbox(): Listbox {
-		return this.#$root.getElementById('listbox') as Listbox
+	get #$listbox(): ListboxElement {
+		return this.#$root.getElementById('listbox') as ListboxElement
 	}
 
 	get #$root(): ShadowRoot {
@@ -292,64 +269,6 @@ export class SelectField
 
 	get #states(): CustomStateSet {
 		return this.#internals.states
-	}
-
-	/**
-	 * Сall will find the first option wich value is fully equal to the query string.
-	 */
-	#findByValue(query: string): Option | null {
-		for (const option of this.#options) {
-			// @ts-ignore
-			if (query === option.value) return option
-		}
-		return null
-	}
-
-	#listenAssignedNodes(): AbortController {
-		this.#slotChangeCont?.abort()
-		this.#slotChangeCont = new AbortController()
-
-		const list = this.#options
-
-		const cleanup = (list: OptionCollection) =>
-			list.forEach(
-				({ $element }, $ref, map) =>
-					($element.isConnected && $element.parentElement === this) ||
-					map.delete($ref),
-			)
-
-		this.#$listbox.children[0].addEventListener(
-			'slotchange',
-			(event) => {
-				const $$elements = (
-					event.target as HTMLSlotElement
-				).assignedElements()
-				for (const $element of $$elements as HTMLElement[])
-					if (
-						$element.hasAttribute('role') &&
-						$element.role === 'option'
-					) {
-						const $ref = new WeakRef($element)
-						const label = $element.ariaLabel || $element.textContent
-						list.set($ref, {
-							$element,
-							label,
-							value:
-								$element.getAttribute('value') ||
-								$element.dataset.value ||
-								(undefined !== $element['value'] &&
-									($element as HTMLOptionElement).value) ||
-								label,
-						})
-					} else $element.remove()
-				cleanup(list)
-			},
-			{
-				signal: this.#slotChangeCont.signal,
-			},
-		)
-
-		return this.#slotChangeCont
 	}
 
 	#listenFocus(): AbortController {
@@ -392,8 +311,8 @@ export class SelectField
 			options,
 		)
 
-		this.addEventListener('focusin', (event) => { }, options)
-		this.addEventListener('focusout', (event) => { }, options)
+		this.addEventListener('focusin', (event_) => { }, options)
+		this.addEventListener('focusout', (event_) => { }, options)
 
 		return this.#interCont
 	}
@@ -418,10 +337,10 @@ export class SelectField
 				this.collapse()
 				break
 			case 'End':
-				this.options[this.size - 1].focus()
+				this.options[this.size - 1].$element.focus()
 				break
 			case 'Home':
-				this.options[0].focus()
+				this.options[0].$element.focus()
 				break
 			case 'ArrowUp':
 				this.collapse()
@@ -442,22 +361,7 @@ export class SelectField
 	#toggle(): void {
 		this.expanded ? this.collapse() : this.expand()
 	}
-
-	/**
-	 * Сall returns the first option for wich the query string is started substring of the label or value option.
-	 */
-	/**
-	 * #search(query: string): Option | null {
-		for (const option of this.options)
-			if (
-				0 === option.label.indexOf(query) ||
-				0 === option.value.indexOf(query)
-			)
-				return option
-		return null
-	}
-	 */
 }
 
-customElements.define(tagName, SelectField)
-export default customElements.get(tagName)
+customElements.define(SelectField.tagName, SelectField)
+export default customElements.get(SelectField.tagName)

@@ -3,7 +3,6 @@ export class SelectField extends HTMLElement {
     static initAccessibilityTree(element: any, options: any): void;
     connectedCallback(): void;
     disconnectedCallback(): void;
-    adoptedCallback(): void;
     attributeChangedCallback(name: any, previous: any, current: any): void;
     set value(updated: any);
     get value(): any;
@@ -13,7 +12,6 @@ export class SelectField extends HTMLElement {
     formStateRestoreCallback(state: any, reason_: any): void;
     collapse(): void;
     expand(): void;
-    select(value: any): any;
     get disabled(): boolean;
     get expanded(): boolean;
     get multiple(): boolean;
@@ -24,6 +22,7 @@ export class SelectField extends HTMLElement {
 export namespace SelectField {
     let formAssociated: boolean;
     let role: string;
+    let tagName: string;
     let observedAttributes: string[];
 }
 declare const index: CustomElementConstructor;

@@ -19,10 +19,10 @@ export default function getConfig(options = {}) {
 	return {
 		input: getFilesByPattern(
 			[
-				path.join(elementDir, 'Listbox.ts'),
 				path.join(componentDir, 'Arrow'),
 				path.join(componentDir, 'Avatar'),
 				path.join(componentDir, 'SelectField'),
+				path.join(elementDir, 'Listbox'),
 				path.join(libraryDir, 'fn.debounce.js'),
 				path.join(libraryDir, 'fn.throttle.js'),
 			].map((path) => path.replaceAll('\\', '/')),

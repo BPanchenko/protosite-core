@@ -33,6 +33,65 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
 
+const checkTruth = (value) => {
+    return typeof value === 'string'
+        ? ['on', 'true'].includes(value.trim().toLocaleLowerCase())
+        : Boolean(value);
+};
+
+const shadowModeByDefault =
+	typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE;
+
+/**
+ * @param {Object} options
+ * @param {DocumentFragment} [options.$template]
+ * @param {string} [options.template]
+ * @param {boolean} [options.delegatesFocus] - If true, when a non-focusable part of the shadow DOM is clicked, or .focus() is called on the host element, the first focusable part is given focus, and the shadow host is given any available :focus styling.
+ * @param {"closed" | "open"} [options.mode] - When the mode of a shadow root is "closed", the shadowroot implementation internals are inaccessible and unchangeable.
+ * @param {boolean} [options.serializable] - If set, the shadow root may be serialized by calling the Element.getHTML() or ShadowRoot.getHTML() methods with the options.serializableShadowRoots parameter set true.
+ * @param {"manual" | "named"} [options.slotAssignment]
+ * @returns {ShadowRoot}
+ *
+ * The function attaches a shadow DOM tree to the specified element and returns a reference to its ShadowRoot.
+ *
+ * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/attachShadow)
+ *
+ * [About `ShadowRoot.delegatesFocus` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus)
+ *
+ * [About `ShadowRoot.mode` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode)
+ *
+ * [About `ShadowRoot.serializable` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/serializable)
+ *
+ * [About `ShadowRoot.slotAssignment` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/slotAssignment)
+ */
+function initShadowRoot(options) {
+	const {
+		$template,
+		template,
+		delegatesFocus = false,
+		mode = shadowModeByDefault,
+		serializable = false,
+	} = options;
+
+	/** @type {ShadowRoot} */
+	const shadowRoot = this.attachShadow({
+		delegatesFocus,
+		mode,
+		serializable,
+	});
+
+	// 1.
+
+	if (DocumentFragment.prototype.isPrototypeOf($template))
+		shadowRoot.appendChild($template.cloneNode(true));
+
+	// 2.
+
+	if (typeof template === 'string') shadowRoot.setHTMLUnsafe(template);
+
+	return shadowRoot
+}
+
 /**
  * Checks if `value` is the
  * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
@@ -96,58 +155,239 @@ const updateAttributes = (element, objectOrAttrName, attrValue = null) => {
 	)
 };
 
-var _Listbox_instances, _Listbox_focusCont, _Listbox_interCont, _Listbox_listenFocus, _Listbox_onBlur, _Listbox_onFocus;
-const tagName = 'e-listbox';
-class Listbox extends HTMLElement {
-    static initAttributes(element) {
+var _ListboxElement_instances, _a, _ListboxElement_internals, _ListboxElement_index, _ListboxElement_options, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyPress, _ListboxElement_selectElement;
+class ListboxElement extends HTMLElement {
+    static initAttributes($element) {
         const data = {
-            'aria-orientation': element.ariaOrientation ?? 'vertical',
-            id: element.id,
-            role: Listbox.role,
+            'aria-orientation': $element.ariaOrientation ?? 'vertical',
+            id: $element.id,
+            role: this.role,
         };
-        if (element.isConnected && false === Boolean(data.id)) {
-            data.id = [Listbox.role, Math.round(performance.now())].join('-');
+        if ($element.isConnected && false === Boolean(data.id)) {
+            data.id = [this.role, Math.round(performance.now())].join('-');
         }
-        return updateAttributes(element, data);
+        return updateAttributes($element, data);
+    }
+    static initAttributesForOption($element) {
+        const data = {
+            'aria-selected': $element.ariaSelected ?? 'false',
+            id: $element.id,
+        };
+        if (false === Boolean(data.id)) {
+            data.id = [$element.role, Math.round(performance.now())].join('-');
+        }
     }
     constructor() {
         super();
-        _Listbox_instances.add(this);
-        this.internals = this.attachInternals();
-        _Listbox_focusCont.set(this, undefined);
-        _Listbox_interCont.set(this, undefined);
-        Listbox.initAttributes(this);
+        _ListboxElement_instances.add(this);
+        _ListboxElement_internals.set(this, this.attachInternals());
+        _ListboxElement_index.set(this, undefined);
+        _ListboxElement_options.set(this, new Map());
+        _ListboxElement_focusCont.set(this, undefined);
+        _ListboxElement_interCont.set(this, undefined);
+        _ListboxElement_slotChangeCont.set(this, undefined);
+        initShadowRoot.call(this, {
+            template: '<slot></slot>',
+        });
+        _a.initAttributes(this);
+        __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_listenAssignedNodes).call(this);
+    }
+    attributeChangedCallback(name, previous, current) {
+        if (false === this.isConnected)
+            return;
+        if (previous === current)
+            return;
+        checkTruth(current);
     }
     connectedCallback() {
-        Listbox.initAttributes(this);
-        __classPrivateFieldGet(this, _Listbox_instances, "m", _Listbox_listenFocus).call(this);
+        _a.initAttributes(this);
+        __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_listenFocus).call(this);
     }
     disconnectedCallback() {
-        __classPrivateFieldGet(this, _Listbox_interCont, "f")?.abort();
-        __classPrivateFieldGet(this, _Listbox_focusCont, "f")?.abort();
+        __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
+        __classPrivateFieldGet(this, _ListboxElement_focusCont, "f")?.abort();
+        __classPrivateFieldGet(this, _ListboxElement_slotChangeCont, "f")?.abort();
+    }
+    formAssociatedCallback(form_) { }
+    formDisabledCallback(state_) { }
+    formResetCallback() { }
+    formStateRestoreCallback(state_, reason_) { }
+    shift(offset) {
+        const updated = (((__classPrivateFieldGet(this, _ListboxElement_index, "f") + offset) % this.size) + this.size) % this.size;
+        return (this.activeElement = this.options[updated].$element);
+    }
+    getByID(query) {
+        for (const [$ref, option] of __classPrivateFieldGet(this, _ListboxElement_options, "f")) {
+            if (query === option.$element.id)
+                return {
+                    $ref,
+                    option,
+                };
+        }
+        return null;
+    }
+    findByValue(query) {
+        for (const [$ref, option] of __classPrivateFieldGet(this, _ListboxElement_options, "f")) {
+            if (query === option.value)
+                return {
+                    $ref,
+                    option,
+                };
+        }
+        return null;
+    }
+    search(query) {
+        for (const [$ref, option] of __classPrivateFieldGet(this, _ListboxElement_options, "f"))
+            if (0 === option.label.indexOf(query) ||
+                0 === option.value.indexOf(query))
+                return {
+                    $ref,
+                    option,
+                };
+        return null;
+    }
+    select(value) {
+        let $element = null;
+        if (value instanceof HTMLElement)
+            $element = value;
+        else if (value instanceof WeakRef)
+            $element = __classPrivateFieldGet(this, _ListboxElement_options, "f").get(value)?.$element;
+        else if (typeof value === 'string')
+            $element = this.getByID(value)?.option.$element;
+        if ($element !== null) {
+            if (this.multiple === false)
+                this.unselect();
+            return __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_selectElement).call(this, $element);
+        }
+        else
+            return false;
+    }
+    unselect($element) {
+        const $$selected = $element instanceof HTMLElement ? [$element] : this.selectedElements;
+        if ($$selected.length > 0) {
+            $$selected.forEach(($element) => $element.setAttribute('aria-selected', 'false'));
+            return true;
+        }
+        else
+            return false;
+    }
+    get activeElement() {
+        return __classPrivateFieldGet(this, _ListboxElement_internals, "f").ariaActiveDescendantElement;
+    }
+    set activeElement($element) {
+        __classPrivateFieldGet(this, _ListboxElement_internals, "f").ariaActiveDescendant = $element?.id;
+        __classPrivateFieldGet(this, _ListboxElement_internals, "f").ariaActiveDescendantElement = $element;
+    }
+    get multiple() {
+        return checkTruth(this.ariaMultiSelectable);
+    }
+    get options() {
+        return Array.from(__classPrivateFieldGet(this, _ListboxElement_options, "f").values());
+    }
+    get selectedElements() {
+        const $$elements = [];
+        for (const { $element } of __classPrivateFieldGet(this, _ListboxElement_options, "f").values())
+            if (checkTruth($element.ariaSelected))
+                $$elements.push($element);
+        return $$elements;
+    }
+    get size() {
+        return __classPrivateFieldGet(this, _ListboxElement_options, "f").size;
     }
 }
-_Listbox_focusCont = new WeakMap(), _Listbox_interCont = new WeakMap(), _Listbox_instances = new WeakSet(), _Listbox_listenFocus = function _Listbox_listenFocus() {
-    __classPrivateFieldGet(this, _Listbox_focusCont, "f")?.abort();
-    __classPrivateFieldSet(this, _Listbox_focusCont, new AbortController(), "f");
+_a = ListboxElement, _ListboxElement_internals = new WeakMap(), _ListboxElement_index = new WeakMap(), _ListboxElement_options = new WeakMap(), _ListboxElement_focusCont = new WeakMap(), _ListboxElement_interCont = new WeakMap(), _ListboxElement_slotChangeCont = new WeakMap(), _ListboxElement_instances = new WeakSet(), _ListboxElement_listenAssignedNodes = function _ListboxElement_listenAssignedNodes() {
+    __classPrivateFieldGet(this, _ListboxElement_slotChangeCont, "f")?.abort();
+    __classPrivateFieldSet(this, _ListboxElement_slotChangeCont, new AbortController(), "f");
+    const list = __classPrivateFieldGet(this, _ListboxElement_options, "f");
+    const normalize = (data) => data.forEach(({ $element }, $ref, data) => {
+        if ($element.isConnected && $element.parentElement === this)
+            _a.initAttributesForOption($element);
+        else
+            data.delete($ref);
+    });
+    this.addEventListener('slotchange', (event) => {
+        const $$elements = event.target.assignedElements({ flatten: true });
+        $$elements
+            .filter(($element) => $element.hasAttribute('role') &&
+            $element.role === 'option')
+            .forEach(($element, index) => {
+            const $ref = new WeakRef($element);
+            const label = $element.ariaLabel || $element.textContent;
+            list.set($ref, {
+                $element,
+                label,
+                value: $element.getAttribute('value') ||
+                    $element.dataset.value ||
+                    $element.value ||
+                    label,
+                index,
+            });
+        });
+        normalize(list);
+    }, {
+        signal: __classPrivateFieldGet(this, _ListboxElement_slotChangeCont, "f").signal,
+    });
+    return __classPrivateFieldGet(this, _ListboxElement_slotChangeCont, "f");
+}, _ListboxElement_listenFocus = function _ListboxElement_listenFocus() {
+    __classPrivateFieldGet(this, _ListboxElement_focusCont, "f")?.abort();
+    __classPrivateFieldSet(this, _ListboxElement_focusCont, new AbortController(), "f");
     const options = {
-        signal: __classPrivateFieldGet(this, _Listbox_focusCont, "f").signal,
+        signal: __classPrivateFieldGet(this, _ListboxElement_focusCont, "f").signal,
     };
-    this.addEventListener('focus', (event) => __classPrivateFieldGet(this, _Listbox_instances, "m", _Listbox_onFocus).call(this, event), options);
-    this.addEventListener('blur', (event) => __classPrivateFieldGet(this, _Listbox_instances, "m", _Listbox_onBlur).call(this, event), options);
-    return __classPrivateFieldGet(this, _Listbox_focusCont, "f");
-}, _Listbox_onBlur = function _Listbox_onBlur(event_) {
-    __classPrivateFieldGet(this, _Listbox_interCont, "f")?.abort();
-}, _Listbox_onFocus = function _Listbox_onFocus(event_) { };
-Listbox.formAssociated = false;
-Listbox.role = 'listbox';
-Listbox.observedAttributes = [
+    this.addEventListener('focus', (event_) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onFocus).call(this), options);
+    this.addEventListener('blur', (event_) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onBlur).call(this), options);
+    this.addEventListener('slotchange', (event) => console.log('slotchange', event), options);
+    return __classPrivateFieldGet(this, _ListboxElement_focusCont, "f");
+}, _ListboxElement_onBlur = function _ListboxElement_onBlur() {
+    __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
+}, _ListboxElement_onFocus = function _ListboxElement_onFocus() {
+    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_listenInteraction).call(this);
+}, _ListboxElement_listenInteraction = function _ListboxElement_listenInteraction() {
+    __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
+    __classPrivateFieldSet(this, _ListboxElement_interCont, new AbortController(), "f");
+    const options = {
+        capture: false,
+        passive: false,
+        signal: __classPrivateFieldGet(this, _ListboxElement_interCont, "f").signal,
+    };
+    this.addEventListener('click', (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, event), options);
+    this.addEventListener('keydown', (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onKeyPress).call(this, event), options);
+    return __classPrivateFieldGet(this, _ListboxElement_interCont, "f");
+}, _ListboxElement_onClick = function _ListboxElement_onClick(event) {
+    console.info('Listbox.onClick');
+    console.dir(event);
+}, _ListboxElement_onKeyPress = function _ListboxElement_onKeyPress(event) {
+    const { key } = event;
+    switch (key) {
+        case 'Enter':
+            this.select(this.activeElement);
+            break;
+        case 'End':
+            this.options[this.size - 1].$element.focus();
+            break;
+        case 'Home':
+            this.options[0].$element.focus();
+            break;
+    }
+}, _ListboxElement_selectElement = function _ListboxElement_selectElement($element) {
+    if ($element instanceof HTMLElement) {
+        $element.setAttribute('aria-selected', 'true');
+        return true;
+    }
+    else
+        return false;
+};
+ListboxElement.formAssociated = true;
+ListboxElement.role = 'listbox';
+ListboxElement.tagName = 'e-listbox';
+ListboxElement.observedAttributes = [
     'aria-disabled',
     'aria-multiselectable',
     'aria-required',
     'name',
+    'value',
 ];
-customElements.define(tagName, Listbox);
-const Listbox$1 = customElements.get(tagName);
+customElements.define(ListboxElement.tagName, ListboxElement);
+const index = customElements.get(ListboxElement.tagName);
 
-export { Listbox, Listbox$1 as default };
+export { ListboxElement, index as default };

@@ -1,4 +1,4 @@
-export const getDeepPrototypeOf = (instance, constructor = null) => {
+function getDeepPrototypeOf(instance: object, constructor = null) {
 	let obj = instance
 	do {
 		obj = Object.getPrototypeOf(obj)

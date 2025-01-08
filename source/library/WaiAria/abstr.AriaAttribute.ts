@@ -42,7 +42,10 @@ export abstract class AriaAttribute {
 		if (current !== previous) {
 			if (previous === null) this._initial = current
 
-			const proto: AriaAttribute = getDeepPrototypeOf(this, AriaAttribute)
+			const proto = getDeepPrototypeOf(
+				this,
+				AriaAttribute,
+			) as AriaAttribute
 			proto.value = current
 		}
 	}
@@ -62,7 +65,7 @@ export abstract class AriaAttribute {
 	}
 
 	takeAttr(node: Attr) {
-		const proto: AriaAttribute = getDeepPrototypeOf(this, AriaAttribute)
+		const proto = getDeepPrototypeOf(this, AriaAttribute) as AriaAttribute
 		node.value = proto.value
 		Object.setPrototypeOf(proto, node)
 		return this

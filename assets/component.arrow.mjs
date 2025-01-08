@@ -7,126 +7,46 @@ const cArrow = 'c-arrow';
 /** @type {CSSStyleSheet|null} */
 const cssStyleSheet = cssStyleSheet$1;
 
-const checkFontFace = (search) =>
-	document.fonts
-		.values()
-		.findIndex(({ fontFace }) => fontFace.family === search) > -1;
+const checkFontFace = (query) => Array.from(document.fonts.values()).findIndex((fontFace) => fontFace.family === query) > -1;
 
-const shadowModeByDefault =
-	typeof SHADOW_MODE === 'undefined' ? 'closed' : SHADOW_MODE;
-
-/**
- * @param {Object} options
- * @param {DocumentFragment} [options.$template]
- * @param {string} [options.template]
- * @param {boolean} [options.delegatesFocus] - If true, when a non-focusable part of the shadow DOM is clicked, or .focus() is called on the host element, the first focusable part is given focus, and the shadow host is given any available :focus styling.
- * @param {"closed" | "open"} [options.mode] - When the mode of a shadow root is "closed", the shadowroot implementation internals are inaccessible and unchangeable.
- * @param {boolean} [options.serializable] - If set, the shadow root may be serialized by calling the Element.getHTML() or ShadowRoot.getHTML() methods with the options.serializableShadowRoots parameter set true.
- * @param {"manual" | "named"} [options.slotAssignment]
- * @returns {ShadowRoot}
- *
- * The function attaches a shadow DOM tree to the specified element and returns a reference to its ShadowRoot.
- *
- * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/attachShadow)
- *
- * [About `ShadowRoot.delegatesFocus` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/delegatesFocus)
- *
- * [About `ShadowRoot.mode` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/mode)
- *
- * [About `ShadowRoot.serializable` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/serializable)
- *
- * [About `ShadowRoot.slotAssignment` property](https://developer.mozilla.org/en-US/docs/Web/API/ShadowRoot/slotAssignment)
- */
+const shadowModeByDefault = typeof global.SHADOW_MODE === 'undefined' ? 'closed' : global.SHADOW_MODE;
 function initShadowRoot(options) {
-	const {
-		$template,
-		template,
-		delegatesFocus = false,
-		mode = shadowModeByDefault,
-		serializable = false,
-	} = options;
-
-	/** @type {ShadowRoot} */
-	const shadowRoot = this.attachShadow({
-		delegatesFocus,
-		mode,
-		serializable,
-	});
-
-	// 1.
-
-	if (DocumentFragment.prototype.isPrototypeOf($template))
-		shadowRoot.appendChild($template.cloneNode(true));
-
-	// 2.
-
-	if (typeof template === 'string') shadowRoot.setHTMLUnsafe(template);
-
-	return shadowRoot
+    const { $template, template, delegatesFocus = false, mode = shadowModeByDefault, serializable = false, } = options;
+    const shadowRoot = this.attachShadow({
+        delegatesFocus,
+        mode,
+        serializable,
+    });
+    if ($template instanceof DocumentFragment)
+        shadowRoot.appendChild($template.cloneNode(true));
+    if (typeof template === 'string')
+        shadowRoot.setHTMLUnsafe(template);
+    return shadowRoot;
 }
 
-/**
- * Checks if `value` is the
- * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
- * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
- *
- * @static
- * @memberOf _
- * @since 0.1.0
- * @category Lang
- * @param {*} value The value to check.
- * @returns {boolean} Returns `true` if `value` is an object, else `false`.
- * @example
- *
- * _.isObject({});
- * // => true
- *
- * _.isObject([1, 2, 3]);
- * // => true
- *
- * _.isObject(_.noop);
- * // => true
- *
- * _.isObject(null);
- * // => false
- */
 function isObject(value) {
-	var type = typeof value;
-	return !!value && (type == 'object' || type == 'function')
+    var type = typeof value;
+    return !!value && (type == 'object' || type == 'function');
 }
 
-/**
- * @param {HTMLElement} element The element whose attributes will be modified
- * @param {Record<string, boolean | number | string> | string} objectOrAttrName List of key-value pairs that represent HTML attributes of the element
- * @param {boolean | number | string} [attrValue] List of key-value pairs that represent HTML attributes of the element
- * @returns {Map<string, Attr>} Collection of element attributes after modification. Attributes are sorted by name.
- *
- * [MDN Reference](https://developer.mozilla.org/docs/Web/API/Element/setAttribute)
- */
-const updateAttributes = (element, objectOrAttrName, attrValue = null) => {
-	const pairs = isObject(objectOrAttrName)
-		? Object.entries(objectOrAttrName)
-		: [[objectOrAttrName, attrValue]];
-
-	pairs.forEach(([key, value]) =>
-		value === null
-			? element.removeAttribute(String(key))
-			: value instanceof Attr
-				? element.setAttributeNode(value)
-				: typeof key === 'string'
-					? element.hasAttribute(key)
-						? (element.getAttributeNode(key).value = String(value))
-						: element.setAttribute(key, String(value))
-					: undefined,
-	);
-
-	return new Map(
-		element
-			.getAttributeNames()
-			.sort()
-			.map((name) => [name, element.getAttributeNode(name)]),
-	)
-};
+function updateAttributes(element, objectOrAttrName, attrValue = null) {
+    const pairs = isObject(objectOrAttrName)
+        ? Object.entries(objectOrAttrName)
+        : [[objectOrAttrName, attrValue]];
+    pairs.forEach(([key, value]) => value === null
+        ? element.removeAttribute(String(key))
+        : value instanceof Attr
+            ? element.setAttributeNode(value)
+            : typeof key === 'string'
+                ? element.hasAttribute(key)
+                    ? (element.getAttributeNode(key).value = String(value))
+                    : element.setAttribute(key, String(value))
+                : undefined);
+    return new Map(element
+        .getAttributeNames()
+        .sort()
+        .map((name) => [name, element.getAttributeNode(name)]));
+}
 
 const tagName = cArrow;
 const template = `<i data-glyph=arrow><slot>&nbsp;</slot></i>`;

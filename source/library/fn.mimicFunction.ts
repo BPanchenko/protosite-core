@@ -1,11 +1,8 @@
 const copyProperty = (to, from, property, ignoreNonConfigurable) => {
-	// `Function#length` should reflect the parameters of `to` not `from` since we keep its body.
-	// `Function#prototype` is non-writable and non-configurable so can never be modified.
 	if (property === 'length' || property === 'prototype') {
 		return
 	}
 
-	// `Function#arguments` and `Function#caller` should not be copied. They were reported to be present in `Reflect.ownKeys` for some devices in React Native (#41), so we explicitly ignore them here.
 	if (property === 'arguments' || property === 'caller') {
 		return
 	}
@@ -23,9 +20,6 @@ const copyProperty = (to, from, property, ignoreNonConfigurable) => {
 	Object.defineProperty(to, property, fromDescriptor)
 }
 
-// `Object.defineProperty()` throws if the property exists, is not configurable and either:
-// - one its descriptors is changed
-// - it is non-writable and its value is changed
 const canCopyProperty = function (toDescriptor, fromDescriptor) {
 	return (
 		toDescriptor === undefined ||
@@ -59,15 +53,11 @@ const toStringName = Object.getOwnPropertyDescriptor(
 	'name',
 )
 
-// We call `from.toString()` early (not lazily) to ensure `from` can be garbage collected.
-// We use `bind()` instead of a closure for the same reason.
-// Calling `from.toString()` early also allows caching it in case `to.toString()` is called several times.
 const changeToString = (to, from, name) => {
 	const withName = name === '' ? '' : `with ${name.trim()}() `
 	const newToString = wrappedToString.bind(null, withName, from.toString())
-	// Ensure `to.toString.toString` is non-enumerable and has the same `same`
 	Object.defineProperty(newToString, 'name', toStringName)
-	const { writable, enumerable, configurable } = toStringDescriptor // We destructure to avoid a potential `get` descriptor.
+	const { writable, enumerable, configurable } = toStringDescriptor
 	Object.defineProperty(to, 'toString', {
 		value: newToString,
 		writable,

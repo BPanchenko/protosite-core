@@ -1,5 +1,5 @@
 export class ListboxElement extends HTMLElement {
-    static initAttributes($element: any): Map<string, Attr>;
+    static initAttributes($element: any): Map<any, any>;
     static initAttributesForOption($element: any): void;
     attributeChangedCallback(name: any, previous: any, current: any): void;
     connectedCallback(): void;

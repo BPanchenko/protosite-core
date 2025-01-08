@@ -1,7 +1,7 @@
-import type { CustomElement } from '#types'
+import type { OptionElement } from '#element/Option'
 
 export interface Option {
-	$element: CustomElement | HTMLElement
+	$element: OptionElement | HTMLElement
 	label: string
 	value: string
 	index: number

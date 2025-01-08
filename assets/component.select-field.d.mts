@@ -1,5 +1,5 @@
 export class SelectField extends HTMLElement {
-    static initAttributes(element: any, options: any): Map<string, Attr>;
+    static initAttributes(element: any, options: any): Map<any, any>;
     static initAccessibilityTree(element: any, options: any): void;
     connectedCallback(): void;
     disconnectedCallback(): void;

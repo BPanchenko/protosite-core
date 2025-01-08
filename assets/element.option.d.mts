@@ -1,5 +1,5 @@
 export class OptionElement extends HTMLElement {
-    static initAttributes($element: any): Map<string, Attr>;
+    static initAttributes($element: any): Map<any, any>;
     connectedCallback(): void;
     get label(): string;
     get value(): string;

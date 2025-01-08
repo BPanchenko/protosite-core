@@ -23,6 +23,7 @@ export default function getConfig(options = {}) {
 				path.join(componentDir, 'Avatar'),
 				path.join(componentDir, 'SelectField'),
 				path.join(elementDir, 'Listbox'),
+				path.join(elementDir, 'Option.ts'),
 				path.join(libraryDir, 'fn.debounce.js'),
 				path.join(libraryDir, 'fn.throttle.js'),
 			].map((path) => path.replaceAll('\\', '/')),

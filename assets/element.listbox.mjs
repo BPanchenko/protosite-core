@@ -89,7 +89,7 @@ function updateAttributes(element, objectOrAttrName, attrValue) {
         .map((name) => [name, element.getAttributeNode(name)]));
 }
 
-var _ListboxElement_instances, _a, _ListboxElement_index, _ListboxElement_internals, _ListboxElement_options, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_selectElement, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyPress, _ListboxElement_log;
+var _ListboxElement_instances, _a, _ListboxElement_index, _ListboxElement_internals, _ListboxElement_options, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_selectElement, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyDown, _ListboxElement_log;
 const template = '<slot></slot>';
 class ListboxElement extends HTMLElement {
     static initAttributes($element) {
@@ -115,7 +115,7 @@ class ListboxElement extends HTMLElement {
     constructor() {
         super();
         _ListboxElement_instances.add(this);
-        _ListboxElement_index.set(this, undefined);
+        _ListboxElement_index.set(this, 0);
         _ListboxElement_internals.set(this, this.attachInternals());
         _ListboxElement_options.set(this, new Map());
         _ListboxElement_focusCont.set(this, undefined);
@@ -264,15 +264,15 @@ _a = ListboxElement, _ListboxElement_index = new WeakMap(), _ListboxElement_inte
     const options = {
         signal: __classPrivateFieldGet(this, _ListboxElement_focusCont, "f").signal,
     };
-    this.addEventListener('focus', (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onFocus).call(this, event), options);
-    this.addEventListener('blur', (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onBlur).call(this, event), options);
+    this.addEventListener('focus', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onFocus).call(this, e), options);
+    this.addEventListener('blur', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onBlur).call(this, e), options);
     return __classPrivateFieldGet(this, _ListboxElement_focusCont, "f");
-}, _ListboxElement_onBlur = function _ListboxElement_onBlur({ currentTarget, target }) {
+}, _ListboxElement_onBlur = function _ListboxElement_onBlur(event) {
     __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
-    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'Blur Event', { currentTarget, target });
-}, _ListboxElement_onFocus = function _ListboxElement_onFocus({ currentTarget, target }) {
+    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, `event:${event.type}`);
+}, _ListboxElement_onFocus = function _ListboxElement_onFocus(event) {
     __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_listenInteraction).call(this);
-    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'Focus Event', { currentTarget, target });
+    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, `event:${event.type}`);
 }, _ListboxElement_listenInteraction = function _ListboxElement_listenInteraction() {
     __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
     __classPrivateFieldSet(this, _ListboxElement_interCont, new AbortController(), "f");
@@ -281,22 +281,37 @@ _a = ListboxElement, _ListboxElement_index = new WeakMap(), _ListboxElement_inte
         passive: false,
         signal: __classPrivateFieldGet(this, _ListboxElement_interCont, "f").signal,
     };
-    this.addEventListener('click', (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, event), options);
-    this.addEventListener('keydown', (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onKeyPress).call(this, event), options);
+    this.addEventListener('click', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, e), options);
+    this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onKeyDown).call(this, e), options);
     return __classPrivateFieldGet(this, _ListboxElement_interCont, "f");
 }, _ListboxElement_onClick = function _ListboxElement_onClick(event) {
-    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'Click Event', event);
-}, _ListboxElement_onKeyPress = function _ListboxElement_onKeyPress(event) {
-    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'KeyPress Event', event);
-    const { key } = event;
-    switch (key) {
+    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, `event:${event.type}`);
+}, _ListboxElement_onKeyDown = function _ListboxElement_onKeyDown(event) {
+    switch (event.key) {
         case 'Enter':
             this.select(this.activeElement);
+            event.stopPropagation();
             break;
+        case 'End':
+            break;
+        case 'Home':
+            break;
+        case 'ArrowUp':
+            if (__classPrivateFieldGet(this, _ListboxElement_index, "f")) {
+                this.shift(-1);
+                event.stopPropagation();
+            }
+            break;
+        case 'ArrowDown':
+            break;
+        default:
+            if (/\w+/.test(event.key)) ;
+            return;
     }
+    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, `event:${event.type}`);
 }, _ListboxElement_log = function _ListboxElement_log(label, ...args) {
     console.groupCollapsed(`ListboxElement: ${label}`);
-    console.log('Arguments: ', args);
+    args.length > 0 && console.log('Arguments: ', args);
     console.table(__classPrivateFieldGet(this, _ListboxElement_options, "f"));
     console.debug(__classPrivateFieldGet(this, _ListboxElement_internals, "f"));
     console.dir(this);

@@ -33,6 +33,18 @@ typeof SuppressedError === "function" ? SuppressedError : function (error, suppr
     return e.name = "SuppressedError", e.error = error, e.suppressed = suppressed, e;
 };
 
+const checkFalsy = (value) => {
+    return typeof value === 'string'
+        ? ['off', 'false'].includes(value.trim().toLocaleLowerCase())
+        : false === Boolean(value);
+};
+
+const checkTruth = (value) => {
+    return typeof value === 'string'
+        ? ['on', 'true'].includes(value.trim().toLocaleLowerCase())
+        : Boolean(value);
+};
+
 function initShadowRoot(options) {
     const { $template, template, delegatesFocus = false, mode = 'closed', serializable = false, } = options;
     const shadowRoot = this.attachShadow({
@@ -46,18 +58,6 @@ function initShadowRoot(options) {
         shadowRoot.setHTMLUnsafe(template);
     return shadowRoot;
 }
-
-const checkFalsy = (value) => {
-    return typeof value === 'string'
-        ? ['off', 'false'].includes(value.trim().toLocaleLowerCase())
-        : false === Boolean(value);
-};
-
-const checkTruth = (value) => {
-    return typeof value === 'string'
-        ? ['on', 'true'].includes(value.trim().toLocaleLowerCase())
-        : Boolean(value);
-};
 
 function isObject(value) {
     var type = typeof value;
@@ -105,7 +105,8 @@ var FieldState;
     FieldState["Disabled"] = "disabled";
 })(FieldState || (FieldState = {}));
 
-var _ListboxElement_instances, _a, _ListboxElement_internals, _ListboxElement_index, _ListboxElement_options, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_selectElement, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyPress, _ListboxElement_log;
+var _ListboxElement_instances, _a, _ListboxElement_index, _ListboxElement_internals, _ListboxElement_options, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_selectElement, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyDown, _ListboxElement_log;
+const template$1 = '<slot></slot>';
 class ListboxElement extends HTMLElement {
     static initAttributes($element) {
         const data = {
@@ -118,7 +119,7 @@ class ListboxElement extends HTMLElement {
         }
         return updateAttributes($element, data);
     }
-    static initAttributesForOption($element) {
+    static initOptionAttributes($element) {
         const data = {
             'aria-selected': $element.ariaSelected ?? 'false',
             id: $element.id,
@@ -130,12 +131,15 @@ class ListboxElement extends HTMLElement {
     constructor() {
         super();
         _ListboxElement_instances.add(this);
+        _ListboxElement_index.set(this, 0);
         _ListboxElement_internals.set(this, this.attachInternals());
-        _ListboxElement_index.set(this, undefined);
         _ListboxElement_options.set(this, new Map());
         _ListboxElement_focusCont.set(this, undefined);
         _ListboxElement_interCont.set(this, undefined);
         _ListboxElement_slotChangeCont.set(this, undefined);
+        initShadowRoot.call(this, {
+            template: template$1,
+        });
         _a.initAttributes(this);
         __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_listenAssignedNodes).call(this);
     }
@@ -160,52 +164,37 @@ class ListboxElement extends HTMLElement {
     formResetCallback() { }
     formStateRestoreCallback(state_, reason_) { }
     shift(offset) {
-        const updated = (((__classPrivateFieldGet(this, _ListboxElement_index, "f") + offset) % this.size) + this.size) % this.size;
-        return (this.activeElement = this.options[updated].$element);
-    }
-    getByID(query) {
-        for (const [$ref, option] of __classPrivateFieldGet(this, _ListboxElement_options, "f")) {
-            if (query === option.$element.id)
-                return {
-                    $ref,
-                    option,
-                };
-        }
-        return null;
+        __classPrivateFieldSet(this, _ListboxElement_index, (((__classPrivateFieldGet(this, _ListboxElement_index, "f") + offset) % this.size) + this.size) % this.size, "f");
+        this.options[__classPrivateFieldGet(this, _ListboxElement_index, "f")].$ref.deref()?.focus();
+        return this;
     }
     findByValue(query) {
-        for (const [$ref, option] of __classPrivateFieldGet(this, _ListboxElement_options, "f")) {
+        for (const [id_, option] of __classPrivateFieldGet(this, _ListboxElement_options, "f")) {
             if (query === option.value)
-                return {
-                    $ref,
-                    option,
-                };
+                return option;
         }
         return null;
     }
     search(query) {
         const result = new Set();
-        for (const [$ref, option] of __classPrivateFieldGet(this, _ListboxElement_options, "f"))
+        for (const [id_, option] of __classPrivateFieldGet(this, _ListboxElement_options, "f"))
             if (0 === option.label?.indexOf(query) ||
                 0 === option.value?.indexOf(query))
-                result.add({
-                    $ref,
-                    option,
-                });
+                result.add(option);
         return result.size > 0 ? result : null;
     }
-    select(listitem) {
-        let $element = null;
-        if (listitem instanceof HTMLElement)
-            $element = listitem;
-        else if (listitem instanceof WeakRef)
-            $element = listitem.deref();
-        else if (typeof listitem === 'string') {
-            const searchResult = this.getByID(listitem);
-            if (searchResult !== null)
-                $element = searchResult.option.$element;
+    select(param) {
+        let $element;
+        if (param instanceof HTMLElement)
+            $element = param;
+        else if (param instanceof WeakRef)
+            $element = param.deref();
+        else if (typeof param === 'string' || typeof param === 'number') {
+            const option = __classPrivateFieldGet(this, _ListboxElement_options, "f").get(param);
+            if (option !== undefined)
+                $element = option.$ref.deref();
         }
-        if ($element !== null) {
+        if ($element !== undefined) {
             if (this.multiple === false)
                 this.unselect();
             return __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_selectElement).call(this, $element);
@@ -214,15 +203,16 @@ class ListboxElement extends HTMLElement {
             return false;
     }
     unselect($element) {
-        const $$selected = $element instanceof HTMLElement
-            ? new Set([$element])
-            : this.selectedElements;
-        if ($$selected.size > 0) {
-            $$selected.forEach(($element) => $element.setAttribute('aria-selected', 'false'));
+        if ($element instanceof HTMLElement) {
+            $element.setAttribute('aria-selected', 'false');
             return true;
         }
-        else
-            return false;
+        const $$selected = this.selectedElements;
+        if ($$selected && $$selected.length > 0) {
+            this.selectedElements.forEach(($element) => $element.setAttribute('aria-selected', 'false'));
+            return true;
+        }
+        return false;
     }
     get activeElement() {
         return __classPrivateFieldGet(this, _ListboxElement_internals, "f").ariaActiveDescendantElement;
@@ -238,17 +228,19 @@ class ListboxElement extends HTMLElement {
         return Array.from(__classPrivateFieldGet(this, _ListboxElement_options, "f").values());
     }
     get selectedElements() {
-        const $$elements = new Set();
-        for (const { $element } of __classPrivateFieldGet(this, _ListboxElement_options, "f").values())
-            if (checkTruth($element.ariaSelected))
-                $$elements.add($element);
-        return $$elements;
+        const $$elements = [];
+        for (const { $ref } of __classPrivateFieldGet(this, _ListboxElement_options, "f").values()) {
+            const $element = $ref.deref();
+            if ($element && checkTruth($element.ariaSelected))
+                $$elements.push($element);
+        }
+        return $$elements.length > 0 ? $$elements : null;
     }
     get size() {
         return __classPrivateFieldGet(this, _ListboxElement_options, "f").size;
     }
 }
-_a = ListboxElement, _ListboxElement_internals = new WeakMap(), _ListboxElement_index = new WeakMap(), _ListboxElement_options = new WeakMap(), _ListboxElement_focusCont = new WeakMap(), _ListboxElement_interCont = new WeakMap(), _ListboxElement_slotChangeCont = new WeakMap(), _ListboxElement_instances = new WeakSet(), _ListboxElement_selectElement = function _ListboxElement_selectElement($element) {
+_a = ListboxElement, _ListboxElement_index = new WeakMap(), _ListboxElement_internals = new WeakMap(), _ListboxElement_options = new WeakMap(), _ListboxElement_focusCont = new WeakMap(), _ListboxElement_interCont = new WeakMap(), _ListboxElement_slotChangeCont = new WeakMap(), _ListboxElement_instances = new WeakSet(), _ListboxElement_selectElement = function _ListboxElement_selectElement($element) {
     if ($element !== undefined) {
         const attr = $element.getAttributeNode('aria-selected');
         __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'Select Element', $element, attr);
@@ -261,30 +253,23 @@ _a = ListboxElement, _ListboxElement_internals = new WeakMap(), _ListboxElement_
 }, _ListboxElement_listenAssignedNodes = function _ListboxElement_listenAssignedNodes() {
     __classPrivateFieldGet(this, _ListboxElement_slotChangeCont, "f")?.abort();
     __classPrivateFieldSet(this, _ListboxElement_slotChangeCont, new AbortController(), "f");
-    const list = __classPrivateFieldGet(this, _ListboxElement_options, "f");
-    const normalize = (data) => data.forEach(({ $element }, $ref, data) => {
-        if ($element.isConnected && $element.parentElement === this)
-            _a.initAttributesForOption($element);
-        else
-            data.delete($ref);
-    });
     this.addEventListener('slotchange', (event) => {
+        __classPrivateFieldGet(this, _ListboxElement_options, "f").clear();
         const $$elements = event.target.assignedElements({ flatten: true });
-        for (const $element of $$elements)
+        $$elements.forEach(($element, idx) => {
             if ($element.role === 'option') {
-                const $ref = new WeakRef($element);
-                const label = $element.ariaLabel || $element.textContent;
-                list.set($ref, {
-                    $element,
-                    label,
-                    value: $element.getAttribute('value') ||
-                        $element.dataset.value ||
-                        $element.value ||
-                        label,
-                });
+                _a.initOptionAttributes($element);
+                const option = {
+                    $ref: new WeakRef($element),
+                    label: $element.ariaLabel || $element.textContent,
+                    value: $element.dataset.value ??
+                        $element.getAttribute('value'),
+                };
+                __classPrivateFieldGet(this, _ListboxElement_options, "f").set($element.id, option);
+                __classPrivateFieldGet(this, _ListboxElement_options, "f").set(idx, option);
             }
-        normalize(list);
-        __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'SlotChange Event', list);
+        });
+        __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'SlotChange Event');
     }, {
         signal: __classPrivateFieldGet(this, _ListboxElement_slotChangeCont, "f").signal,
     });
@@ -295,15 +280,15 @@ _a = ListboxElement, _ListboxElement_internals = new WeakMap(), _ListboxElement_
     const options = {
         signal: __classPrivateFieldGet(this, _ListboxElement_focusCont, "f").signal,
     };
-    this.addEventListener('focus', (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onFocus).call(this, event), options);
-    this.addEventListener('blur', (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onBlur).call(this, event), options);
+    this.addEventListener('focus', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onFocus).call(this, e), options);
+    this.addEventListener('blur', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onBlur).call(this, e), options);
     return __classPrivateFieldGet(this, _ListboxElement_focusCont, "f");
-}, _ListboxElement_onBlur = function _ListboxElement_onBlur({ currentTarget, target }) {
+}, _ListboxElement_onBlur = function _ListboxElement_onBlur(event) {
     __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
-    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'Blur Event', { currentTarget, target });
-}, _ListboxElement_onFocus = function _ListboxElement_onFocus({ currentTarget, target }) {
+    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, `event:${event.type}`);
+}, _ListboxElement_onFocus = function _ListboxElement_onFocus(event) {
     __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_listenInteraction).call(this);
-    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'Focus Event', { currentTarget, target });
+    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, `event:${event.type}`);
 }, _ListboxElement_listenInteraction = function _ListboxElement_listenInteraction() {
     __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
     __classPrivateFieldSet(this, _ListboxElement_interCont, new AbortController(), "f");
@@ -312,30 +297,40 @@ _a = ListboxElement, _ListboxElement_internals = new WeakMap(), _ListboxElement_
         passive: false,
         signal: __classPrivateFieldGet(this, _ListboxElement_interCont, "f").signal,
     };
-    this.addEventListener('click', (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, event), options);
-    this.addEventListener('keydown', (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onKeyPress).call(this, event), options);
+    this.addEventListener('click', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, e), options);
+    this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onKeyDown).call(this, e), options);
     return __classPrivateFieldGet(this, _ListboxElement_interCont, "f");
 }, _ListboxElement_onClick = function _ListboxElement_onClick(event) {
-    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'Click Event', event);
-}, _ListboxElement_onKeyPress = function _ListboxElement_onKeyPress(event) {
-    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'KeyPress Event', event);
-    const { key } = event;
-    switch (key) {
+    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, `event:${event.type}`);
+}, _ListboxElement_onKeyDown = function _ListboxElement_onKeyDown(event) {
+    switch (event.key) {
         case 'Enter':
             this.select(this.activeElement);
+            event.stopPropagation();
             break;
         case 'End':
-            this.options[this.size - 1].$element.focus();
             break;
         case 'Home':
-            this.options[0].$element.focus();
             break;
+        case 'ArrowUp':
+            if (__classPrivateFieldGet(this, _ListboxElement_index, "f")) {
+                this.shift(-1);
+                event.stopPropagation();
+            }
+            break;
+        case 'ArrowDown':
+            break;
+        default:
+            if (/\w+/.test(event.key)) ;
+            return;
     }
+    __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, `event:${event.type}`);
 }, _ListboxElement_log = function _ListboxElement_log(label, ...args) {
     console.groupCollapsed(`ListboxElement: ${label}`);
-    console.debug(args);
-    console.table(__classPrivateFieldGet(this, _ListboxElement_internals, "f"));
-    console.dirxml(this);
+    args.length > 0 && console.log('Arguments: ', args);
+    console.table(__classPrivateFieldGet(this, _ListboxElement_options, "f"));
+    console.debug(__classPrivateFieldGet(this, _ListboxElement_internals, "f"));
+    console.dir(this);
     console.groupEnd();
 };
 ListboxElement.formAssociated = true;
@@ -351,9 +346,9 @@ ListboxElement.observedAttributes = [
 customElements.define(ListboxElement.tagName, ListboxElement);
 customElements.get(ListboxElement.tagName);
 
-const template = "<link href=\"http://assets.protosite.rocks/core/select-field.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:state(--defined)) {\n\tcontent-visibility: hidden;\n}\n:host(:state(--loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox\" id=\"button\" role=\"button\" tabindex=\"0\"><div part=\"selection_status\" id=\"status\" role=\"status\"></div></div><e-listbox aria-labelledby=\"button\" id=\"listbox\" part=\"listbox\" tabindex=\"1\"><slot></slot></e-listbox>";
+const template = "<link href=\"http://assets.protosite.rocks/core/select-field.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:state(--defined)) {\n\tcontent-visibility: hidden;\n}\n:host(:state(--loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox\" id=\"button\" role=\"button\" tabindex=\"0\"><div aria-placeholder=\"Выбрать...\" part=\"selection_status\" id=\"status\" role=\"status\"></div></div><e-listbox aria-labelledby=\"button\" id=\"listbox\" part=\"listbox\" tabindex=\"1\"><slot></slot></e-listbox>";
 
-var _SelectField_instances, _SelectField_$root, _SelectField_internals, _SelectField_focusCont, _SelectField_interCont, _SelectField_slotChangeCont, _SelectField_$button_get, _SelectField_$status_get, _SelectField_$listbox_get, _SelectField_states_get, _SelectField_listenFocus, _SelectField_onBlur, _SelectField_onFocus, _SelectField_listenInteraction, _SelectField_onClick, _SelectField_onKeyPress, _SelectField_log;
+var _SelectField_instances, _SelectField_$root, _SelectField_internals, _SelectField_focusCont, _SelectField_interCont, _SelectField_slotChangeCont, _SelectField_$button_get, _SelectField_$status_get, _SelectField_$listbox_get, _SelectField_states_get, _SelectField_listenFocus, _SelectField_onBlur, _SelectField_onFocus, _SelectField_listenInteraction, _SelectField_onClick, _SelectField_onKeyDown, _SelectField_log;
 class SelectField extends HTMLElement {
     static initAttributes(element, options) {
         const data = {
@@ -414,6 +409,43 @@ class SelectField extends HTMLElement {
         __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(ComponentReadyState.Defined);
         __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, 'Defined');
     }
+    attributeChangedCallback(name, previous, current) {
+        if (false === this.isConnected)
+            return;
+        if (previous === current)
+            return;
+        const isTruth = checkTruth(current);
+        const isFalsy = checkFalsy(current);
+        switch (name) {
+            case 'aria-disabled':
+                if (isTruth) {
+                    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(FieldState.Disabled);
+                    __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
+                }
+                else {
+                    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(FieldState.Disabled);
+                }
+                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaDisabled = current;
+                break;
+            case 'aria-expanded':
+                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(isFalsy ? ComboboxState.Expanded : ComboboxState.Collapsed);
+                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(isTruth ? ComboboxState.Expanded : ComboboxState.Collapsed);
+                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaExpanded = current;
+                break;
+            case 'aria-label':
+                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaLabel = current;
+                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get) && (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get).ariaLabel = current);
+                break;
+            case 'aria-placeholder':
+                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaPlaceholder = current;
+                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get) && (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get).ariaPlaceholder = current);
+                break;
+            case 'value':
+                this.value = current;
+                break;
+        }
+        __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, 'Attribute Changed', name, previous, current);
+    }
     connectedCallback() {
         SelectField.initAttributes(this, {
             internals: __classPrivateFieldGet(this, _SelectField_internals, "f"),
@@ -434,41 +466,6 @@ class SelectField extends HTMLElement {
         __classPrivateFieldGet(this, _SelectField_focusCont, "f")?.abort();
         __classPrivateFieldGet(this, _SelectField_slotChangeCont, "f")?.abort();
     }
-    attributeChangedCallback(name, previous, current) {
-        __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, 'Attribute Changed', name, previous, current);
-        if (false === this.isConnected)
-            return;
-        if (previous === current)
-            return;
-        const isTruth = checkTruth(current);
-        switch (name) {
-            case 'aria-disabled':
-                if (isTruth) {
-                    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(FieldState.Disabled);
-                    __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
-                }
-                else {
-                    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(FieldState.Disabled);
-                }
-                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaDisabled = current;
-                break;
-            case 'aria-expanded':
-                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(isTruth ? ComboboxState.Expanded : ComboboxState.Collapsed);
-                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaExpanded = current;
-                break;
-            case 'aria-label':
-                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaLabel = current;
-                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get) && (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get).ariaLabel = current);
-                break;
-            case 'aria-placeholder':
-                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaPlaceholder = current;
-                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get) && (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get).ariaPlaceholder = current);
-                break;
-            case 'value':
-                this.value = current;
-                break;
-        }
-    }
     formAssociatedCallback(form_) { }
     formDisabledCallback(disabled) {
         this.setAttribute('aria-disabled', disabled);
@@ -478,17 +475,18 @@ class SelectField extends HTMLElement {
         this.value = state;
     }
     collapse() {
-        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(ComboboxState.Expanded);
+        if (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).has(ComboboxState.Collapsed))
+            return this;
         updateAttributes(this, 'aria-expanded', false);
-        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get) && (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).tabIndex = -1);
+        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$button_get)?.focus();
+        return this;
     }
     expand() {
-        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(ComboboxState.Collapsed);
+        if (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).has(ComboboxState.Expanded))
+            return this;
         updateAttributes(this, 'aria-expanded', true);
-        if (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get)) {
-            __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).tabIndex = 0;
-            __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).focus();
-        }
+        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).focus();
+        return this;
     }
     toggle() {
         this.expanded ? this.collapse() : this.expand();
@@ -533,7 +531,10 @@ _SelectField_$root = new WeakMap(), _SelectField_internals = new WeakMap(), _Sel
 }, _SelectField_$status_get = function _SelectField_$status_get() {
     return __classPrivateFieldGet(this, _SelectField_$root, "f").getElementById('status');
 }, _SelectField_$listbox_get = function _SelectField_$listbox_get() {
-    return __classPrivateFieldGet(this, _SelectField_$root, "f").getElementById('listbox');
+    const $element = __classPrivateFieldGet(this, _SelectField_$root, "f").getElementById('listbox');
+    if ($element === null)
+        throw new Error('Listbox element not found but required!');
+    return $element;
 }, _SelectField_states_get = function _SelectField_states_get() {
     return __classPrivateFieldGet(this, _SelectField_internals, "f").states;
 }, _SelectField_listenFocus = function _SelectField_listenFocus() {
@@ -542,55 +543,52 @@ _SelectField_$root = new WeakMap(), _SelectField_internals = new WeakMap(), _Sel
     const options = {
         signal: __classPrivateFieldGet(this, _SelectField_focusCont, "f").signal,
     };
-    this.addEventListener('focus', (event) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onFocus).call(this, event), options);
-    this.addEventListener('blur', (event) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onBlur).call(this, event), options);
+    this.addEventListener('focus', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onFocus).call(this, e), options);
+    this.addEventListener('blur', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onBlur).call(this, e), options);
     return __classPrivateFieldGet(this, _SelectField_focusCont, "f");
-}, _SelectField_onBlur = function _SelectField_onBlur({ currentTarget, target }) {
+}, _SelectField_onBlur = function _SelectField_onBlur(event) {
     this.collapse();
     __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, 'Blur Event', { currentTarget, target });
-}, _SelectField_onFocus = function _SelectField_onFocus({ currentTarget, target }) {
+    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, `event:${event.type}`);
+}, _SelectField_onFocus = function _SelectField_onFocus(event) {
     __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_listenInteraction).call(this);
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, 'Focus Event', { currentTarget, target });
+    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, `event:${event.type}`);
 }, _SelectField_listenInteraction = function _SelectField_listenInteraction() {
     __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
     __classPrivateFieldSet(this, _SelectField_interCont, new AbortController(), "f");
     const options = {
         capture: false,
-        passive: false,
+        passive: true,
         signal: __classPrivateFieldGet(this, _SelectField_interCont, "f").signal,
     };
-    this.addEventListener('click', (event) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onClick).call(this, event), options);
-    this.addEventListener('keydown', (event) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onKeyPress).call(this, event), options);
+    this.addEventListener('click', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onClick).call(this, e), options);
+    this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onKeyDown).call(this, e), options);
     return __classPrivateFieldGet(this, _SelectField_interCont, "f");
-}, _SelectField_onClick = function _SelectField_onClick({ currentTarget, target }) {
+}, _SelectField_onClick = function _SelectField_onClick(event) {
     this.toggle();
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, 'Click Event', { currentTarget, target });
-}, _SelectField_onKeyPress = function _SelectField_onKeyPress(event) {
-    const { key, currentTarget, target } = event;
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, 'KeyPress Event', event, { key, currentTarget, target });
-    const $focused = __classPrivateFieldGet(this, _SelectField_internals, "f").ariaActiveDescendantElement;
-    switch (key) {
-        case 'Enter':
-            if ($focused === __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$button_get)) {
-                this.expand();
-            }
-            break;
-        case 'ArrowUp':
-        case 'Backspace':
-        case 'Escape':
-            __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$button_get) && __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$button_get).focus();
-            this.collapse();
-            break;
+    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, `event:${event.type}`);
+}, _SelectField_onKeyDown = function _SelectField_onKeyDown(event) {
+    switch (event.key) {
         case 'ArrowDown':
+        case 'Enter':
             this.expand();
             break;
+        case 'ArrowUp':
+        case 'Escape':
+            this.collapse();
+            break;
+        case 'Backspace':
+            __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).unselect();
+            break;
+        default:
+            return;
     }
+    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, `event:${event.type}`);
 }, _SelectField_log = function _SelectField_log(label, ...args) {
     console.groupCollapsed(`SelectField: ${label}`);
-    console.debug(args);
-    console.table(__classPrivateFieldGet(this, _SelectField_internals, "f"));
-    console.dirxml(this);
+    args.length > 0 && console.log('Arguments: ', args);
+    console.debug(__classPrivateFieldGet(this, _SelectField_internals, "f"));
+    console.dir(this);
     console.groupEnd();
 };
 SelectField.formAssociated = true;

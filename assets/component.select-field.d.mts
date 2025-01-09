@@ -1,17 +1,17 @@
 export class SelectField extends HTMLElement {
     static initAttributes(element: any, options: any): Map<any, any>;
     static initAccessibilityTree(element: any, options: any): void;
-    connectedCallback(): void;
-    disconnectedCallback(): void;
     attributeChangedCallback(name: any, previous: any, current: any): void;
     set value(updated: any);
     get value(): any;
+    connectedCallback(): void;
+    disconnectedCallback(): void;
     formAssociatedCallback(form_: any): void;
     formDisabledCallback(disabled: any): void;
     formResetCallback(): void;
     formStateRestoreCallback(state: any, reason_: any): void;
-    collapse(): void;
-    expand(): void;
+    collapse(): this;
+    expand(): this;
     toggle(): void;
     get disabled(): boolean;
     get expanded(): boolean;

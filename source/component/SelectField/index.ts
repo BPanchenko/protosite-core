@@ -128,6 +128,49 @@ export class SelectField
 		this.#log('Defined')
 	}
 
+	attributeChangedCallback(name, previous, current) {
+		if (false === this.isConnected) return
+		if (previous === current) return
+
+		const isTruth = checkTruth(current)
+		const isFalsy = checkFalsy(current)
+
+		switch (name) {
+			case 'aria-disabled':
+				if (isTruth) {
+					this.#states.add(FieldState.Disabled)
+					this.#interCont?.abort()
+				} else {
+					this.#states.delete(FieldState.Disabled)
+				}
+				this.#internals.ariaDisabled = current
+				break
+			case 'aria-expanded':
+				this.#states.delete(
+					isFalsy ? ComboboxState.Expanded : ComboboxState.Collapsed,
+				)
+				this.#states.add(
+					isTruth ? ComboboxState.Expanded : ComboboxState.Collapsed,
+				)
+				this.#internals.ariaExpanded = current
+				break
+			case 'aria-label':
+				this.#internals.ariaLabel = current
+				this.#$status && (this.#$status.ariaLabel = current)
+				break
+			case 'aria-placeholder':
+				this.#internals.ariaPlaceholder = current
+				this.#$status && (this.#$status.ariaPlaceholder = current)
+				break
+			case 'value':
+				this.value = current
+				break
+			default:
+		}
+
+		this.#log('Attribute Changed', name, previous, current)
+	}
+
 	connectedCallback() {
 		// (1)
 		SelectField.initAttributes(this, {
@@ -156,45 +199,6 @@ export class SelectField
 		this.#slotChangeCont?.abort()
 	}
 
-	attributeChangedCallback(name, previous, current) {
-		this.#log('Attribute Changed', name, previous, current)
-
-		if (false === this.isConnected) return
-		if (previous === current) return
-
-		const isTruth = checkTruth(current)
-
-		switch (name) {
-			case 'aria-disabled':
-				if (isTruth) {
-					this.#states.add(FieldState.Disabled)
-					this.#interCont?.abort()
-				} else {
-					this.#states.delete(FieldState.Disabled)
-				}
-				this.#internals.ariaDisabled = current
-				break
-			case 'aria-expanded':
-				this.#states.add(
-					isTruth ? ComboboxState.Expanded : ComboboxState.Collapsed,
-				)
-				this.#internals.ariaExpanded = current
-				break
-			case 'aria-label':
-				this.#internals.ariaLabel = current
-				this.#$status && (this.#$status.ariaLabel = current)
-				break
-			case 'aria-placeholder':
-				this.#internals.ariaPlaceholder = current
-				this.#$status && (this.#$status.ariaPlaceholder = current)
-				break
-			case 'value':
-				this.value = current
-				break
-			default:
-		}
-	}
-
 	formAssociatedCallback(form_) { }
 	formDisabledCallback(disabled) {
 		this.setAttribute('aria-disabled', disabled)
@@ -205,18 +209,17 @@ export class SelectField
 	}
 
 	collapse() {
-		this.#states.delete(ComboboxState.Expanded)
+		if (this.#states.has(ComboboxState.Collapsed)) return this
 		updateAttributes(this, 'aria-expanded', false)
-		this.#$listbox && (this.#$listbox.tabIndex = -1)
+		this.#$button?.focus()
+		return this
 	}
 
 	expand() {
-		this.#states.delete(ComboboxState.Collapsed)
+		if (this.#states.has(ComboboxState.Expanded)) return this
 		updateAttributes(this, 'aria-expanded', true)
-		if (this.#$listbox) {
-			this.#$listbox.tabIndex = 0
-			this.#$listbox.focus()
-		}
+		this.#$listbox.focus()
+		return this
 	}
 
 	toggle() {
@@ -278,8 +281,11 @@ export class SelectField
 		return this.#$root.getElementById('status')
 	}
 
-	get #$listbox(): HTMLElement | null {
-		return this.#$root.getElementById('listbox')
+	get #$listbox(): ListboxElement | never {
+		const $element = this.#$root.getElementById('listbox') as ListboxElement
+		if ($element === null)
+			throw new Error('Listbox element not found but required!')
+		return $element
 	}
 
 	get #states(): CustomStateSet {
@@ -294,21 +300,21 @@ export class SelectField
 			signal: this.#focusCont.signal,
 		}
 
-		this.addEventListener('focus', (event) => this.#onFocus(event), options)
-		this.addEventListener('blur', (event) => this.#onBlur(event), options)
+		this.addEventListener('focus', (e) => this.#onFocus(e), options)
+		this.addEventListener('blur', (e) => this.#onBlur(e), options)
 
 		return this.#focusCont
 	}
 
-	#onBlur({ currentTarget, target }: FocusEvent) {
+	#onBlur(event: FocusEvent) {
 		this.collapse()
 		this.#interCont?.abort()
-		this.#log('Blur Event', { currentTarget, target })
+		this.#log(`event:${event.type}`)
 	}
 
-	#onFocus({ currentTarget, target }: FocusEvent) {
+	#onFocus(event: FocusEvent) {
 		this.#listenInteraction()
-		this.#log('Focus Event', { currentTarget, target })
+		this.#log(`event:${event.type}`)
 	}
 
 	#listenInteraction(): AbortController {
@@ -317,58 +323,44 @@ export class SelectField
 
 		const options = {
 			capture: false,
-			passive: false,
+			passive: true,
 			signal: this.#interCont.signal,
 		}
 
-		this.addEventListener('click', (event) => this.#onClick(event), options)
-		this.addEventListener(
-			'keydown',
-			(event) => this.#onKeyPress(event),
-			options,
-		)
+		this.addEventListener('click', (e) => this.#onClick(e), options)
+		this.addEventListener('keydown', (e) => this.#onKeyDown(e), options)
 
 		return this.#interCont
 	}
 
-	#onClick({ currentTarget, target }: MouseEvent) {
+	#onClick(event: MouseEvent) {
 		this.toggle()
-		this.#log('Click Event', { currentTarget, target })
+		this.#log(`event:${event.type}`)
 	}
 
-	#onKeyPress(event: KeyboardEvent) {
-		const { key, currentTarget, target } = event
-
-		this.#log('KeyPress Event', event, { key, currentTarget, target })
-
-		// @ts-ignore
-		const $focused = this.#internals.ariaActiveDescendantElement
-
-		switch (key) {
-			case 'Enter':
-				if ($focused === this.#$button) {
-					this.expand()
-				}
-				break
-			case 'ArrowUp':
-			case 'Backspace':
-			case 'Escape':
-				this.#$button && this.#$button.focus()
-				this.collapse()
-				break
+	#onKeyDown(event: KeyboardEvent) {
+		switch (event.key) {
 			case 'ArrowDown':
+			case 'Enter':
 				this.expand()
 				break
+			case 'ArrowUp':
+			case 'Escape':
+				this.collapse()
+				break
+			case 'Backspace':
+				this.#$listbox.unselect()
+				break
 			default:
-				if (/\w+/.test(key)) {
-					// TODO
-				}
+				return
 		}
+
+		this.#log(`event:${event.type}`)
 	}
 
 	#log(label: string, ...args) {
 		console.groupCollapsed(`SelectField: ${label}`)
-		console.log('Arguments: ', args)
+		args.length > 0 && console.log('Arguments: ', args)
 		console.debug(this.#internals)
 		console.dir(this)
 		console.groupEnd()

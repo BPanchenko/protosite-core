@@ -13,7 +13,7 @@ const template = '<slot></slot>'
 export class ListboxElement
 	extends HTMLElement
 	implements FormAssociatedCustomElement {
-	#index: number
+	#index: number = 0
 	#internals: ElementInternals = this.attachInternals()
 	#options: OptionCollection = new Map()
 
@@ -271,20 +271,20 @@ export class ListboxElement
 			signal: this.#focusCont.signal,
 		}
 
-		this.addEventListener('focus', (event) => this.#onFocus(event), options)
-		this.addEventListener('blur', (event) => this.#onBlur(event), options)
+		this.addEventListener('focus', (e) => this.#onFocus(e), options)
+		this.addEventListener('blur', (e) => this.#onBlur(e), options)
 
 		return this.#focusCont
 	}
 
-	#onBlur({ currentTarget, target }: FocusEvent) {
+	#onBlur(event: FocusEvent) {
 		this.#interCont?.abort()
-		this.#log('Blur Event', { currentTarget, target })
+		this.#log(`event:${event.type}`)
 	}
 
-	#onFocus({ currentTarget, target }: FocusEvent) {
+	#onFocus(event: FocusEvent) {
 		this.#listenInteraction()
-		this.#log('Focus Event', { currentTarget, target })
+		this.#log(`event:${event.type}`)
 	}
 
 	#listenInteraction(): AbortController {
@@ -297,47 +297,47 @@ export class ListboxElement
 			signal: this.#interCont.signal,
 		}
 
-		this.addEventListener('click', (event) => this.#onClick(event), options)
-		this.addEventListener(
-			'keydown',
-			(event) => this.#onKeyPress(event),
-			options,
-		)
+		this.addEventListener('click', (e) => this.#onClick(e), options)
+		this.addEventListener('keydown', (e) => this.#onKeyDown(e), options)
 
 		return this.#interCont
 	}
 
-	#onClick(event) {
-		this.#log('Click Event', event)
+	#onClick(event: MouseEvent) {
+		this.#log(`event:${event.type}`)
 	}
 
-	#onKeyPress(event) {
-		this.#log('KeyPress Event', event)
-
-		const { key } = event
-
-		switch (key) {
+	#onKeyDown(event: KeyboardEvent) {
+		switch (event.key) {
 			case 'Enter':
 				this.select(this.activeElement)
+				event.stopPropagation()
 				break
 			case 'End':
 				break
 			case 'Home':
 				break
 			case 'ArrowUp':
+				if (this.#index) {
+					this.shift(-1)
+					event.stopPropagation()
+				}
 				break
 			case 'ArrowDown':
 				break
 			default:
-				if (/\w+/.test(key)) {
+				if (/\w+/.test(event.key)) {
 					// TODO
 				}
+				return
 		}
+
+		this.#log(`event:${event.type}`)
 	}
 
 	#log(label: string, ...args) {
 		console.groupCollapsed(`ListboxElement: ${label}`)
-		console.log('Arguments: ', args)
+		args.length > 0 && console.log('Arguments: ', args)
 		console.table(this.#options)
 		console.debug(this.#internals)
 		console.dir(this)

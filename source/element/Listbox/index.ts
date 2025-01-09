@@ -1,22 +1,20 @@
 import checkFalsy from '#library/fn.checkFalsy'
 import checkTruth from '#library/fn.checkTruth'
+import initShadowRoot from '#library/fn.initShadowRoot'
 import updateAttributes from '#library/fn.updateAttributes'
 
 import type { FormAssociatedCustomElement } from '#types'
-import type {
-	Option,
-	OptionCollection,
-	OptionRef,
-	SearchResult,
-} from './types.js'
+import type { Option, OptionCollection, OptionRef } from './types'
 
 export type { Option }
+
+const template = '<slot></slot>'
 
 export class ListboxElement
 	extends HTMLElement
 	implements FormAssociatedCustomElement {
-	#internals: ElementInternals = this.attachInternals()
 	#index: number
+	#internals: ElementInternals = this.attachInternals()
 	#options: OptionCollection = new Map()
 
 	#focusCont: AbortController
@@ -51,7 +49,7 @@ export class ListboxElement
 		return updateAttributes($element, data)
 	}
 
-	static initAttributesForOption($element: Option['$element']) {
+	static initOptionAttributes($element: HTMLElement) {
 		const data = {
 			'aria-selected': $element.ariaSelected ?? 'false',
 			id: $element.id,
@@ -66,6 +64,9 @@ export class ListboxElement
 
 	constructor() {
 		super()
+		initShadowRoot.call(this, {
+			template,
+		})
 		ListboxElement.initAttributes(this)
 		this.#listenAssignedNodes()
 	}
@@ -107,38 +108,19 @@ export class ListboxElement
 	formResetCallback() { }
 	formStateRestoreCallback(state_, reason_) { }
 
-	shift(offset: number): HTMLElement {
-		const updated =
+	shift(offset: number) {
+		this.#index =
 			(((this.#index + offset) % this.size) + this.size) % this.size
-		return (this.activeElement = this.options[updated].$element)
-	}
-
-	/**
-	 * Returns an Element object representing the element whose id property matches the specified string.
-	 * @todo Check requirements for returned result
-	 */
-	getByID(query: string): SearchResult {
-		for (const [$ref, option] of this.#options) {
-			if (query === option.$element.id)
-				return {
-					$ref,
-					option,
-				}
-		}
-		return null
+		this.options[this.#index].$ref.deref()?.focus()
+		return this
 	}
 
 	/**
 	 * Returns an first option wich value is fully equal to the query string.
-	 * @todo Check requirements for returned result
 	 */
-	findByValue(query: string): SearchResult {
-		for (const [$ref, option] of this.#options) {
-			if (query === option.value)
-				return {
-					$ref,
-					option,
-				}
+	findByValue(query: string): Option | null {
+		for (const [id_, option] of this.#options) {
+			if (query === option.value) return option
 		}
 		return null
 	}
@@ -148,52 +130,56 @@ export class ListboxElement
 	 * @todo Check requirements for returned result
 	 */
 	search(query: string) {
-		const result = new Set<SearchResult>()
-		for (const [$ref, option] of this.#options)
+		const result = new Set<Option>()
+		for (const [id_, option] of this.#options)
 			if (
 				0 === option.label?.indexOf(query) ||
 				0 === option.value?.indexOf(query)
 			)
-				result.add({
-					$ref,
-					option,
-				})
+				result.add(option)
 		return result.size > 0 ? result : null
 	}
 
 	select($element: HTMLElement | null): boolean
-	select(identifier: string): boolean
 	select($ref: OptionRef): boolean
-	select(listitem: unknown): boolean {
-		let $element: HTMLElement | null = null
+	select(identifier: string): boolean
+	select(index: number): boolean
+	select(param: unknown): boolean {
+		let $element: HTMLElement | undefined
 
-		if (listitem instanceof HTMLElement) $element = listitem
-		else if (listitem instanceof WeakRef) $element = listitem.deref()
-		else if (typeof listitem === 'string') {
-			const searchResult = this.getByID(listitem)
-			if (searchResult !== null) $element = searchResult.option.$element
+		if (param instanceof HTMLElement) $element = param
+		else if (param instanceof WeakRef) $element = param.deref()
+		else if (typeof param === 'string' || typeof param === 'number') {
+			const option = this.#options.get(param)
+			if (option !== undefined) $element = option.$ref.deref()
 		}
 
-		if ($element !== null) {
+		if ($element !== undefined) {
 			if (this.multiple === false) this.unselect()
 			return this.#selectElement($element)
 		} else return false
 	}
 
 	unselect($element?: HTMLElement): boolean {
-		const $$selected =
-			$element instanceof HTMLElement
-				? new Set([$element])
-				: this.selectedElements
-		if ($$selected.size > 0) {
-			$$selected.forEach(($element) =>
+		// 1.
+		if ($element instanceof HTMLElement) {
+			$element.setAttribute('aria-selected', 'false')
+			return true
+		}
+
+		// 2.
+		const $$selected = this.selectedElements
+		if ($$selected && $$selected.length > 0) {
+			this.selectedElements.forEach(($element) =>
 				$element.setAttribute('aria-selected', 'false'),
 			)
 			return true
-		} else return false
+		}
+
+		return false
 	}
 
-	#selectElement($element?: Option['$element']) {
+	#selectElement($element?: HTMLElement) {
 		if ($element !== undefined) {
 			const attr = $element.getAttributeNode('aria-selected')
 			this.#log('Select Element', $element, attr)
@@ -224,10 +210,13 @@ export class ListboxElement
 	}
 
 	get selectedElements() {
-		const $$elements = new Set<Option['$element']>()
-		for (const { $element } of this.#options.values())
-			if (checkTruth($element.ariaSelected)) $$elements.add($element)
-		return $$elements
+		const $$elements: Array<HTMLElement> = []
+		for (const { $ref } of this.#options.values()) {
+			const $element = $ref.deref()
+			if ($element && checkTruth($element.ariaSelected))
+				$$elements.push($element)
+		}
+		return $$elements.length > 0 ? $$elements : null
 	}
 
 	get size(): number {
@@ -238,39 +227,33 @@ export class ListboxElement
 		this.#slotChangeCont?.abort()
 		this.#slotChangeCont = new AbortController()
 
-		const list = this.#options
-
-		const normalize = (data: OptionCollection) =>
-			data.forEach(({ $element }, $ref, data) => {
-				if ($element.isConnected && $element.parentElement === this)
-					ListboxElement.initAttributesForOption($element)
-				else data.delete($ref)
-			})
-
 		this.addEventListener(
 			'slotchange',
 			(event) => {
+				this.#options.clear()
+
 				const $$elements = (
 					event.target as HTMLSlotElement
-				).assignedElements({ flatten: true }) as HTMLOptionElement[]
+				).assignedElements({ flatten: true }) as HTMLElement[]
 
-				for (const $element of $$elements)
+				$$elements.forEach(($element, idx) => {
 					if ($element.role === 'option') {
-						const $ref = new WeakRef($element)
-						const label = $element.ariaLabel || $element.textContent
-						list.set($ref, {
-							$element,
-							label,
-							value:
-								$element.getAttribute('value') ||
-								$element.dataset.value ||
-								$element.value ||
-								label,
-						})
-					}
-				normalize(list)
+						ListboxElement.initOptionAttributes($element)
 
-				this.#log('SlotChange Event', list)
+						const option = {
+							$ref: new WeakRef($element),
+							label: $element.ariaLabel || $element.textContent,
+							value:
+								$element.dataset.value ??
+								$element.getAttribute('value'),
+						}
+
+						this.#options.set($element.id, option)
+						this.#options.set(idx, option)
+					}
+				})
+
+				this.#log('SlotChange Event')
 			},
 			{
 				signal: this.#slotChangeCont.signal,
@@ -338,10 +321,8 @@ export class ListboxElement
 				this.select(this.activeElement)
 				break
 			case 'End':
-				this.options[this.size - 1].$element.focus()
 				break
 			case 'Home':
-				this.options[0].$element.focus()
 				break
 			case 'ArrowUp':
 				break
@@ -356,9 +337,10 @@ export class ListboxElement
 
 	#log(label: string, ...args) {
 		console.groupCollapsed(`ListboxElement: ${label}`)
-		console.debug(args)
-		console.table(this.#internals)
-		console.dirxml(this)
+		console.log('Arguments: ', args)
+		console.table(this.#options)
+		console.debug(this.#internals)
+		console.dir(this)
 		console.groupEnd()
 	}
 }

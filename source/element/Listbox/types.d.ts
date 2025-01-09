@@ -1,14 +1,12 @@
-import type { OptionElement } from '#element/Option'
-
 export interface Option {
-	$element: OptionElement | HTMLElement
+	$ref: OptionRef
 	label: string | null
 	value: string | null
 }
 
-export type OptionRef = WeakRef<Option['$element']>
+export type OptionRef = WeakRef<HTMLElement>
 
-export type OptionCollection = Map<OptionRef, Option>
+export type OptionCollection = Map<string | number, Option>
 
 export type SearchResult = {
 	$ref: OptionRef

@@ -1,6 +1,6 @@
 export class ListboxElement extends HTMLElement {
     static initAttributes($element: any): Map<any, any>;
-    static initAttributesForOption($element: any): void;
+    static initOptionAttributes($element: any): void;
     attributeChangedCallback(name: any, previous: any, current: any): void;
     connectedCallback(): void;
     disconnectedCallback(): void;
@@ -8,23 +8,16 @@ export class ListboxElement extends HTMLElement {
     formDisabledCallback(state_: any): void;
     formResetCallback(): void;
     formStateRestoreCallback(state_: any, reason_: any): void;
-    shift(offset: any): any;
+    shift(offset: any): this;
+    findByValue(query: any): any;
+    search(query: any): Set<any>;
+    select(param: any): any;
+    unselect($element: any): boolean;
     set activeElement($element: any);
     get activeElement(): any;
-    getByID(query: any): {
-        $ref: any;
-        option: any;
-    };
-    findByValue(query: any): {
-        $ref: any;
-        option: any;
-    };
-    search(query: any): Set<any>;
-    select(listitem: any): any;
-    unselect($element: any): boolean;
     get multiple(): boolean;
     get options(): any[];
-    get selectedElements(): Set<any>;
+    get selectedElements(): any[];
     get size(): any;
 }
 export namespace ListboxElement {

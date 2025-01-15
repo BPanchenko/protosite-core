@@ -10,6 +10,7 @@
       "#element/*": ["./source/element/*"],
       "#library/*": ["./source/library/*"],
       "#types": ["./source/types/index.d"],
+      "#settings": ["./source/settings"],
       "#types/*": ["./source/types/*"],
       "#uikit/*": ["./node_modules/@bpanchenko/uikit/assets/*"]
     },

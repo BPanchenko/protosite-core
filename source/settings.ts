@@ -1,4 +1,5 @@
-export enum ComponentReadyState {
+export enum ComponentState {
+	Animation = '--animating',
 	Defined = '--defined',
 	Interactive = '--interactive',
 	Loaded = '--loaded',

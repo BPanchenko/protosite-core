@@ -19,13 +19,14 @@ type InitAccessibilityTreeOptions = {
 	internals: ElementInternals
 }
 
-export class SelectField extends HTMLElement {
+class SelectField extends HTMLElement {
 	#$root: ShadowRoot
 	#internals: ElementInternals = this.attachInternals()
 	#observer: MutationObserver | undefined
 
 	#focusCont: AbortController
 	#interCont: AbortController
+	#passingCont: AbortController
 	#slotChangeCont: AbortController
 
 	static formAssociated = true
@@ -109,6 +110,7 @@ export class SelectField extends HTMLElement {
 		).toString()
 
 		$listbox.ariaMultiSelectable = internals.ariaMultiSelectable
+		$status.ariaLabel = element.ariaLabel
 		$status.ariaPlaceholder = element.ariaPlaceholder
 	}
 
@@ -122,8 +124,6 @@ export class SelectField extends HTMLElement {
 			shadowRoot: this.#$root,
 		})
 		this.#states.add(ComponentState.Defined)
-
-		this.#log('Defined')
 	}
 
 	attributeChangedCallback(name, previous, current) {
@@ -141,7 +141,7 @@ export class SelectField extends HTMLElement {
 				} else {
 					this.#states.delete(FieldState.Disabled)
 				}
-				this.#internals.ariaDisabled = current
+				this.#internals.ariaDisabled = isTruth.toString()
 				break
 			case 'aria-expanded':
 				this.#states.delete(
@@ -151,10 +151,6 @@ export class SelectField extends HTMLElement {
 					isTruth ? ComboboxState.Expanded : ComboboxState.Collapsed,
 				)
 				this.#internals.ariaExpanded = isTruth.toString()
-				break
-			case 'aria-label':
-				this.#internals.ariaLabel = current
-				this.#$status.ariaLabel = current
 				break
 			case 'aria-multiselectable':
 				this.#internals.ariaMultiSelectable = isTruth.toString()
@@ -178,6 +174,7 @@ export class SelectField extends HTMLElement {
 
 		// (2)
 		this.#listenFocus()
+		this.#listenInput()
 		this.#listenMutations()
 		this.#states.add(ComponentState.Interactive)
 
@@ -189,13 +186,14 @@ export class SelectField extends HTMLElement {
 	}
 
 	disconnectedCallback() {
-		this.#interCont?.abort()
 		this.#focusCont?.abort()
-		this.#slotChangeCont?.abort()
+		this.#interCont?.abort()
 		this.#observer?.disconnect()
+		this.#passingCont?.abort()
+		this.#slotChangeCont?.abort()
 	}
 
-	closePicker() {
+	hidePicker() {
 		if (this.#states.has(ComboboxState.Collapsed)) return this
 		updateAttributes(this, 'aria-expanded', false)
 		this.#$button.focus()
@@ -230,13 +228,11 @@ export class SelectField extends HTMLElement {
 	}
 
 	get name(): string | null {
-		return (this.getAttribute('name') || this.dataset.name) ?? null
+		return (this.dataset.name || this.getAttribute('name')) ?? null
 	}
 
-	get options(): Option[] | undefined {
-		return this.#$listbox instanceof ListboxElement
-			? this.#$listbox.options
-			: undefined
+	get options(): Option[] {
+		return this.#$listbox.options
 	}
 
 	get readonly(): boolean {
@@ -286,6 +282,41 @@ export class SelectField extends HTMLElement {
 		return this.#internals.states
 	}
 
+	#listenInput(): AbortController {
+		this.#passingCont?.abort()
+		this.#passingCont = new AbortController()
+
+		const options = {
+			capture: false,
+			passive: true,
+			signal: this.#passingCont.signal,
+		}
+
+		this.#$listbox.addEventListener(
+			'beforeinput',
+			(e) => this.#passEventAlong(e),
+			options,
+		)
+
+		this.#$listbox.addEventListener(
+			'input',
+			(e: InputEvent) => {
+				this.#onInput(e)
+				this.#passEventAlong(e)
+			},
+			options,
+		)
+
+		return this.#passingCont
+	}
+
+	#onInput(event_: InputEvent) {
+		const { label, value } = this.options[this.#$listbox.selectedIndex]
+		this.#internals.setFormValue(value)
+		this.#$status.innerText = label ?? ''
+		value !== null && this.hidePicker()
+	}
+
 	#listenFocus(): AbortController {
 		this.#focusCont?.abort()
 		this.#focusCont = new AbortController()
@@ -301,7 +332,7 @@ export class SelectField extends HTMLElement {
 	}
 
 	#onBlur(event: FocusEvent) {
-		this.closePicker()
+		this.hidePicker()
 		this.#interCont?.abort()
 		this.#log(`event:${event.type}`)
 	}
@@ -350,7 +381,7 @@ export class SelectField extends HTMLElement {
 	}
 
 	#onClick(event: MouseEvent) {
-		this.expanded ? this.closePicker() : this.showPicker()
+		this.expanded ? this.hidePicker() : this.showPicker()
 		this.#log(`event:${event.type}`)
 	}
 
@@ -362,7 +393,7 @@ export class SelectField extends HTMLElement {
 				break
 			case 'ArrowUp':
 			case 'Escape':
-				this.closePicker()
+				this.hidePicker()
 				break
 			default:
 				return
@@ -384,17 +415,10 @@ export class SelectField extends HTMLElement {
 						)
 						: null
 
-					switch (mutation.attributeName) {
-						case 'aria-activedescendant':
-							if (attributeValue === null) {
-								this.removeAttribute('aria-activedescendant')
-							} else {
-								this.setAttribute(
-									'aria-activedescendant',
-									attributeValue,
-								)
-							}
-							break
+					if (attributeName && attributeValue) {
+						this.setAttribute(attributeName, attributeValue)
+					} else if (attributeName) {
+						this.removeAttribute(attributeName)
 					}
 				}
 			}),
@@ -402,7 +426,7 @@ export class SelectField extends HTMLElement {
 
 		this.#observer.observe(this.#$listbox, {
 			attributes: true,
-			attributeFilter: ['aria-activedescendant'],
+			attributeFilter: ['aria-activedescendant', 'aria-owns'],
 		})
 
 		return this
@@ -415,7 +439,17 @@ export class SelectField extends HTMLElement {
 		console.dir(this)
 		console.groupEnd()
 	}
+
+	#passEventAlong(shadowEvent: InputEvent): this {
+		const { bubbles, data, type } = shadowEvent
+		const EventConstructor = Object.getPrototypeOf(shadowEvent).constructor
+		const event = new EventConstructor(type, { bubbles, data })
+		this.dispatchEvent(event)
+		return this
+	}
 }
 
 customElements.define(SelectField.tagName, SelectField)
+
+export { ListboxElement, SelectField }
 export default customElements.get(SelectField.tagName)

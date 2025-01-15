@@ -6,10 +6,10 @@ export enum ComponentState {
 }
 
 export enum ComboboxState {
-	Collapsed = 'collapsed',
-	Expanded = 'expanded',
+	Collapsed = '--collapsed',
+	Expanded = '--expanded',
 }
 
 export enum FieldState {
-	Disabled = 'disabled',
+	Disabled = '--disabled',
 }

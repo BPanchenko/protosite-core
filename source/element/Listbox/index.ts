@@ -10,13 +10,14 @@ import type { Option } from './types'
 
 export type { Option }
 
-const template = '<div part="container"><slot></slot></div>'
+const template = '<slot part="container"></slot>'
 
 export class ListboxElement extends HTMLElement {
 	#activeIndex: number = -1
 	#selectedIndex: number = -1
 	#internals: ElementInternals = this.attachInternals()
 	#hashmap: Map<string, Option> = new Map()
+	#ownsIDs: string[] | null = null
 
 	#focusCont: AbortController
 	#interCont: AbortController
@@ -36,11 +37,12 @@ export class ListboxElement extends HTMLElement {
 	]
 
 	static initAttributes($element: ListboxElement) {
-		const data = {
+		const attrs = {
 			'aria-orientation': $element.ariaOrientation ?? 'vertical',
+			exportparts: 'container',
 			role: this.role,
 		}
-		return updateAttributes($element, data)
+		return updateAttributes($element, attrs)
 	}
 
 	static initAccessibilityTree(
@@ -169,21 +171,25 @@ export class ListboxElement extends HTMLElement {
 	}
 
 	#initOptionAttributes($element: HTMLElement) {
-		const data = {
+		const attrs = {
 			'aria-selected': $element.ariaSelected ?? 'false',
 			id: $element.id,
 		}
 
 		// [id]
 
-		if (false === Boolean(data.id)) {
-			data.id = generateID({
+		if (false === Boolean(attrs.id)) {
+			attrs.id = generateID({
 				prefix: 'option',
-				checklist: this.optionIDs,
+				checklist: this.#ownsIDs,
 			})
 		}
 
-		return updateAttributes($element, data)
+		// [onclick]
+
+		$element.onclick = (event: MouseEvent) => this.#onClick(event)
+
+		return updateAttributes($element, attrs)
 	}
 
 	#selectElement($element?: HTMLElement) {
@@ -257,10 +263,6 @@ export class ListboxElement extends HTMLElement {
 		return checkTruth(this.ariaMultiSelectable)
 	}
 
-	get optionIDs(): string[] {
-		return Array.from(this.#hashmap.keys())
-	}
-
 	get options(): Option[] {
 		return Array.from(this.#hashmap.values())
 	}
@@ -270,6 +272,16 @@ export class ListboxElement extends HTMLElement {
 	}
 
 	set selectedIndex(value: number) {
+		// 1.
+		const previos =
+			this.selectedIndex === -1
+				? null
+				: this.options[this.selectedIndex].value
+		this.dispatchEvent(
+			new InputEvent('beforeinput', { bubbles: true, data: previos }),
+		)
+
+		// 2.
 		let index: number
 		if (value === -1) {
 			index = value
@@ -281,6 +293,12 @@ export class ListboxElement extends HTMLElement {
 			this.#selectElement($element)
 		}
 		this.#selectedIndex = index
+
+		// 3.
+		const current = index === -1 ? null : this.options[index].value
+		this.dispatchEvent(
+			new InputEvent('input', { bubbles: true, data: current }),
+		)
 	}
 
 	get selectedOptions(): HTMLElement[] | null {
@@ -313,12 +331,13 @@ export class ListboxElement extends HTMLElement {
 		this.addEventListener(
 			'slotchange',
 			(event) => {
-				this.#hashmap.clear()
-
+				// 1.
 				const $$elements = (
 					event.target as HTMLSlotElement
 				).assignedElements({ flatten: true }) as HTMLElement[]
 
+				// 2.
+				this.#hashmap.clear()
 				$$elements.forEach(($element) => {
 					if ($element.role === 'option') {
 						this.#initOptionAttributes($element)
@@ -335,7 +354,14 @@ export class ListboxElement extends HTMLElement {
 					}
 				})
 
-				this.#log('SlotChange Event')
+				// 3.
+				if (this.#hashmap.size > 0) {
+					this.#ownsIDs = Array.from(this.#hashmap.keys())
+					this.setAttribute('aria-owns', this.#ownsIDs.join(' '))
+				} else {
+					this.#ownsIDs = null
+					this.removeAttribute('aria-owns')
+				}
 			},
 			{
 				signal: this.#slotChangeCont.signal,
@@ -387,7 +413,9 @@ export class ListboxElement extends HTMLElement {
 
 	#onClick(event: MouseEvent) {
 		event.stopPropagation()
-		console.dir(event)
+		const $target = event.currentTarget as HTMLElement
+		this.selectedIndex = this.activeIndex =
+			this.#ownsIDs?.indexOf($target.id) ?? -1
 		this.#log(`event:${event.type}`)
 	}
 

@@ -18,7 +18,6 @@ export class ListboxElement extends HTMLElement {
     get disabled(): boolean;
     get length(): any;
     get multiple(): boolean;
-    get optionIDs(): any[];
     get options(): any[];
     set selectedIndex(value: any);
     get selectedIndex(): any;

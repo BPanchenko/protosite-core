@@ -115,23 +115,24 @@ var ComponentState;
 })(ComponentState || (ComponentState = {}));
 var ComboboxState;
 (function (ComboboxState) {
-    ComboboxState["Collapsed"] = "collapsed";
-    ComboboxState["Expanded"] = "expanded";
+    ComboboxState["Collapsed"] = "--collapsed";
+    ComboboxState["Expanded"] = "--expanded";
 })(ComboboxState || (ComboboxState = {}));
 var FieldState;
 (function (FieldState) {
-    FieldState["Disabled"] = "disabled";
+    FieldState["Disabled"] = "--disabled";
 })(FieldState || (FieldState = {}));
 
-var _ListboxElement_instances, _ListboxElement_activeIndex, _ListboxElement_selectedIndex, _ListboxElement_internals, _ListboxElement_hashmap, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_initOptionAttributes, _ListboxElement_selectElement, _ListboxElement_unselect, _ListboxElement_states_get, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyDown, _ListboxElement_log;
-const template = '<div part="container"><slot></slot></div>';
+var _ListboxElement_instances, _ListboxElement_activeIndex, _ListboxElement_selectedIndex, _ListboxElement_internals, _ListboxElement_hashmap, _ListboxElement_ownsIDs, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_initOptionAttributes, _ListboxElement_selectElement, _ListboxElement_unselect, _ListboxElement_states_get, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyDown, _ListboxElement_log;
+const template = '<slot part="container"></slot>';
 class ListboxElement extends HTMLElement {
     static initAttributes($element) {
-        const data = {
+        const attrs = {
             'aria-orientation': $element.ariaOrientation ?? 'vertical',
+            exportparts: 'container',
             role: this.role,
         };
-        return updateAttributes($element, data);
+        return updateAttributes($element, attrs);
     }
     static initAccessibilityTree(element, internals) {
         internals.ariaAtomic = 'true';
@@ -148,6 +149,7 @@ class ListboxElement extends HTMLElement {
         _ListboxElement_selectedIndex.set(this, -1);
         _ListboxElement_internals.set(this, this.attachInternals());
         _ListboxElement_hashmap.set(this, new Map());
+        _ListboxElement_ownsIDs.set(this, null);
         _ListboxElement_focusCont.set(this, undefined);
         _ListboxElement_interCont.set(this, undefined);
         _ListboxElement_slotChangeCont.set(this, undefined);
@@ -272,9 +274,6 @@ class ListboxElement extends HTMLElement {
     get multiple() {
         return checkTruth(this.ariaMultiSelectable);
     }
-    get optionIDs() {
-        return Array.from(__classPrivateFieldGet(this, _ListboxElement_hashmap, "f").keys());
-    }
     get options() {
         return Array.from(__classPrivateFieldGet(this, _ListboxElement_hashmap, "f").values());
     }
@@ -282,6 +281,10 @@ class ListboxElement extends HTMLElement {
         return __classPrivateFieldGet(this, _ListboxElement_selectedIndex, "f");
     }
     set selectedIndex(value) {
+        const previos = this.selectedIndex === -1
+            ? null
+            : this.options[this.selectedIndex].value;
+        this.dispatchEvent(new InputEvent('beforeinput', { bubbles: true, data: previos }));
         let index;
         if (value === -1) {
             index = value;
@@ -295,6 +298,8 @@ class ListboxElement extends HTMLElement {
             __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_selectElement).call(this, $element);
         }
         __classPrivateFieldSet(this, _ListboxElement_selectedIndex, index, "f");
+        const current = index === -1 ? null : this.options[index].value;
+        this.dispatchEvent(new InputEvent('input', { bubbles: true, data: current }));
     }
     get selectedOptions() {
         const $$elements = [];
@@ -315,18 +320,19 @@ class ListboxElement extends HTMLElement {
         return values ? (this.multiple ? values : values[0]) : null;
     }
 }
-_ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new WeakMap(), _ListboxElement_internals = new WeakMap(), _ListboxElement_hashmap = new WeakMap(), _ListboxElement_focusCont = new WeakMap(), _ListboxElement_interCont = new WeakMap(), _ListboxElement_slotChangeCont = new WeakMap(), _ListboxElement_instances = new WeakSet(), _ListboxElement_initOptionAttributes = function _ListboxElement_initOptionAttributes($element) {
-    const data = {
+_ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new WeakMap(), _ListboxElement_internals = new WeakMap(), _ListboxElement_hashmap = new WeakMap(), _ListboxElement_ownsIDs = new WeakMap(), _ListboxElement_focusCont = new WeakMap(), _ListboxElement_interCont = new WeakMap(), _ListboxElement_slotChangeCont = new WeakMap(), _ListboxElement_instances = new WeakSet(), _ListboxElement_initOptionAttributes = function _ListboxElement_initOptionAttributes($element) {
+    const attrs = {
         'aria-selected': $element.ariaSelected ?? 'false',
         id: $element.id,
     };
-    if (false === Boolean(data.id)) {
-        data.id = generateID({
+    if (false === Boolean(attrs.id)) {
+        attrs.id = generateID({
             prefix: 'option',
-            checklist: this.optionIDs,
+            checklist: __classPrivateFieldGet(this, _ListboxElement_ownsIDs, "f"),
         });
     }
-    return updateAttributes($element, data);
+    $element.onclick = (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, event);
+    return updateAttributes($element, attrs);
 }, _ListboxElement_selectElement = function _ListboxElement_selectElement($element) {
     if ($element !== undefined) {
         const attr = $element.getAttributeNode('aria-selected');
@@ -354,8 +360,8 @@ _ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new
     __classPrivateFieldGet(this, _ListboxElement_slotChangeCont, "f")?.abort();
     __classPrivateFieldSet(this, _ListboxElement_slotChangeCont, new AbortController(), "f");
     this.addEventListener('slotchange', (event) => {
-        __classPrivateFieldGet(this, _ListboxElement_hashmap, "f").clear();
         const $$elements = event.target.assignedElements({ flatten: true });
+        __classPrivateFieldGet(this, _ListboxElement_hashmap, "f").clear();
         $$elements.forEach(($element) => {
             if ($element.role === 'option') {
                 __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_initOptionAttributes).call(this, $element);
@@ -368,7 +374,14 @@ _ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new
                 __classPrivateFieldGet(this, _ListboxElement_hashmap, "f").set($element.id, option);
             }
         });
-        __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, 'SlotChange Event');
+        if (__classPrivateFieldGet(this, _ListboxElement_hashmap, "f").size > 0) {
+            __classPrivateFieldSet(this, _ListboxElement_ownsIDs, Array.from(__classPrivateFieldGet(this, _ListboxElement_hashmap, "f").keys()), "f");
+            this.setAttribute('aria-owns', __classPrivateFieldGet(this, _ListboxElement_ownsIDs, "f").join(' '));
+        }
+        else {
+            __classPrivateFieldSet(this, _ListboxElement_ownsIDs, null, "f");
+            this.removeAttribute('aria-owns');
+        }
     }, {
         signal: __classPrivateFieldGet(this, _ListboxElement_slotChangeCont, "f").signal,
     });
@@ -402,7 +415,9 @@ _ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new
     return __classPrivateFieldGet(this, _ListboxElement_interCont, "f");
 }, _ListboxElement_onClick = function _ListboxElement_onClick(event) {
     event.stopPropagation();
-    console.dir(event);
+    const $target = event.currentTarget;
+    this.selectedIndex = this.activeIndex =
+        __classPrivateFieldGet(this, _ListboxElement_ownsIDs, "f")?.indexOf($target.id) ?? -1;
     __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, `event:${event.type}`);
 }, _ListboxElement_onKeyDown = function _ListboxElement_onKeyDown(event) {
     switch (event.key) {

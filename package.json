@@ -1,7 +1,13 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.13.37",
+  "version": "1.13.38",
   "description": "Web Application Core. It сontains a library of Web Components.",
+  "keywords": [
+    "web components",
+    "custom elements",
+    "unit testing",
+    "end to end testing"
+  ],
   "homepage": "http://protosite.rocks",
   "type": "module",
   "main": "./index.js",
@@ -105,12 +111,5 @@
     "url": "https://bpanchenko.ru"
   },
   "repository": "https://github.com/BPanchenko/protosite-core",
-  "license": "LGPL-3.0-only",
-  "keywords": [
-    "web-components",
-    "custom-elements",
-    "unit-testing",
-    "end-to-end-testing",
-    "shadow-dom"
-  ]
+  "license": "LGPL-3.0-only"
 }

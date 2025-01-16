@@ -406,12 +406,11 @@ _ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new
 }, _ListboxElement_listenInteraction = function _ListboxElement_listenInteraction() {
     __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
     __classPrivateFieldSet(this, _ListboxElement_interCont, new AbortController(), "f");
-    this.addEventListener('click', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, e), {
+    const options = {
         signal: __classPrivateFieldGet(this, _ListboxElement_interCont, "f").signal,
-    });
-    this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onKeyDown).call(this, e), {
-        signal: __classPrivateFieldGet(this, _ListboxElement_interCont, "f").signal,
-    });
+    };
+    this.addEventListener('click', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, e), options);
+    this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onKeyDown).call(this, e), options);
     return __classPrivateFieldGet(this, _ListboxElement_interCont, "f");
 }, _ListboxElement_onClick = function _ListboxElement_onClick(event) {
     event.stopPropagation();
@@ -483,7 +482,7 @@ customElements.get(ListboxElement.tagName);
 
 const template = "<link href=\"http://assets.protosite.rocks/core/select-field.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:state(--defined)) {\n\tcontent-visibility: hidden;\n}\n:host(:state(--loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox\" id=\"button\" role=\"button\" tabindex=\"0\"><div aria-placeholder=\"Выбрать...\" part=\"selectedcontent\" id=\"status\" role=\"status\"></div></div><e-listbox aria-labelledby=\"button\" id=\"listbox\" part=\"listbox\" tabindex=\"1\"><slot></slot></e-listbox>";
 
-var _SelectField_instances, _SelectField_$root, _SelectField_internals, _SelectField_observer, _SelectField_focusCont, _SelectField_interCont, _SelectField_passingCont, _SelectField_slotChangeCont, _SelectField_$button_get, _SelectField_$status_get, _SelectField_$listbox_get, _SelectField_states_get, _SelectField_listenInput, _SelectField_onInput, _SelectField_listenFocus, _SelectField_onBlur, _SelectField_onFocus, _SelectField_listenInteraction, _SelectField_onAnimationEnd, _SelectField_onAnimationStart, _SelectField_onClick, _SelectField_onKeyDown, _SelectField_listenMutations, _SelectField_log, _SelectField_passEventAlong;
+var _SelectField_instances, _SelectField_$root, _SelectField_internals, _SelectField_observer, _SelectField_focusCont, _SelectField_interCont, _SelectField_passingCont, _SelectField_slotChangeCont, _SelectField_$button_get, _SelectField_$status_get, _SelectField_$listbox_get, _SelectField_states_get, _SelectField_listenInput, _SelectField_onInput, _SelectField_listenFocus, _SelectField_onBlur, _SelectField_onFocus, _SelectField_listenInteraction, _SelectField_onAnimationEnd, _SelectField_onClick, _SelectField_onKeyDown, _SelectField_listenMutations, _SelectField_log, _SelectField_passEventAlong;
 class SelectField extends HTMLElement {
     static initAttributes(element, options) {
         const data = {
@@ -709,9 +708,9 @@ _SelectField_$root = new WeakMap(), _SelectField_internals = new WeakMap(), _Sel
         passive: true,
         signal: __classPrivateFieldGet(this, _SelectField_interCont, "f").signal,
     };
+    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).addEventListener('animationend', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onAnimationEnd).call(this, e), options);
     this.addEventListener('click', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onClick).call(this, e), options);
     this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onKeyDown).call(this, e), options);
-    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).addEventListener('animationstart', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onAnimationStart).call(this, e), options);
     return __classPrivateFieldGet(this, _SelectField_interCont, "f");
 }, _SelectField_onAnimationEnd = function _SelectField_onAnimationEnd(event) {
     __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(ComponentState.Animation);
@@ -719,12 +718,6 @@ _SelectField_$root = new WeakMap(), _SelectField_internals = new WeakMap(), _Sel
         __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).focus();
     else
         __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$button_get).focus();
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_listenInteraction).call(this);
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, `event:${event.type}`);
-}, _SelectField_onAnimationStart = function _SelectField_onAnimationStart(event) {
-    __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
-    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(ComponentState.Animation);
-    event.target.onanimationend = (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onAnimationEnd).call(this, e);
     __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, `event:${event.type}`);
 }, _SelectField_onClick = function _SelectField_onClick(event) {
     this.expanded ? this.hidePicker() : this.showPicker();
@@ -790,4 +783,3 @@ customElements.define(SelectField.tagName, SelectField);
 const index = customElements.get(SelectField.tagName);
 
 export { ListboxElement, SelectField, index as default };
-//# sourceMappingURL=component.select-field.mjs.map

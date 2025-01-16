@@ -406,12 +406,11 @@ _ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new
 }, _ListboxElement_listenInteraction = function _ListboxElement_listenInteraction() {
     __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
     __classPrivateFieldSet(this, _ListboxElement_interCont, new AbortController(), "f");
-    this.addEventListener('click', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, e), {
+    const options = {
         signal: __classPrivateFieldGet(this, _ListboxElement_interCont, "f").signal,
-    });
-    this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onKeyDown).call(this, e), {
-        signal: __classPrivateFieldGet(this, _ListboxElement_interCont, "f").signal,
-    });
+    };
+    this.addEventListener('click', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, e), options);
+    this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onKeyDown).call(this, e), options);
     return __classPrivateFieldGet(this, _ListboxElement_interCont, "f");
 }, _ListboxElement_onClick = function _ListboxElement_onClick(event) {
     event.stopPropagation();

@@ -400,13 +400,12 @@ export class ListboxElement extends HTMLElement {
 		this.#interCont?.abort()
 		this.#interCont = new AbortController()
 
-		this.addEventListener('click', (e) => this.#onClick(e), {
+		const options = {
 			signal: this.#interCont.signal,
-		})
+		}
 
-		this.addEventListener('keydown', (e) => this.#onKeyDown(e), {
-			signal: this.#interCont.signal,
-		})
+		this.addEventListener('click', (e) => this.#onClick(e), options)
+		this.addEventListener('keydown', (e) => this.#onKeyDown(e), options)
 
 		return this.#interCont
 	}

@@ -352,14 +352,14 @@ class SelectField extends HTMLElement {
 			signal: this.#interCont.signal,
 		}
 
-		this.addEventListener('click', (e) => this.#onClick(e), options)
-		this.addEventListener('keydown', (e) => this.#onKeyDown(e), options)
-
 		this.#$listbox.addEventListener(
-			'animationstart',
-			(e) => this.#onAnimationStart(e),
+			'animationend',
+			(e) => this.#onAnimationEnd(e),
 			options,
 		)
+
+		this.addEventListener('click', (e) => this.#onClick(e), options)
+		this.addEventListener('keydown', (e) => this.#onKeyDown(e), options)
 
 		return this.#interCont
 	}
@@ -368,15 +368,6 @@ class SelectField extends HTMLElement {
 		this.#states.delete(ComponentState.Animation)
 		if (this.#states.has(ComboboxState.Expanded)) this.#$listbox.focus()
 		else this.#$button.focus()
-		this.#listenInteraction()
-		this.#log(`event:${event.type}`)
-	}
-
-	#onAnimationStart(event: AnimationEvent) {
-		this.#interCont?.abort()
-		this.#states.add(ComponentState.Animation)
-			; (event.target as HTMLElement).onanimationend = (e) =>
-				this.#onAnimationEnd(e)
 		this.#log(`event:${event.type}`)
 	}
 

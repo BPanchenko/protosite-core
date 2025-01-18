@@ -19,7 +19,7 @@ type InitAccessibilityTreeOptions = {
 	internals: ElementInternals
 }
 
-class SelectField extends HTMLElement {
+class SelectComponent extends HTMLElement {
 	#$root: ShadowRoot
 	#internals: ElementInternals = this.attachInternals()
 	#observer: MutationObserver | undefined
@@ -31,7 +31,7 @@ class SelectField extends HTMLElement {
 
 	static formAssociated = true
 	static role = 'combobox'
-	static tagName = 'c-select-field'
+	static tagName = 'c-select'
 
 	static observedAttributes = [
 		'aria-disabled',
@@ -41,7 +41,7 @@ class SelectField extends HTMLElement {
 	]
 
 	static initAttributes(
-		element: SelectField,
+		element: SelectComponent,
 		options: InitAttributesOptions,
 	) {
 		const data = {
@@ -88,7 +88,7 @@ class SelectField extends HTMLElement {
 	}
 
 	static initAccessibilityTree(
-		element: SelectField,
+		element: SelectComponent,
 		options: InitAccessibilityTreeOptions,
 	) {
 		const { internals, $listbox, $status } = options
@@ -120,7 +120,7 @@ class SelectField extends HTMLElement {
 			template,
 			delegatesFocus: true,
 		})
-		SelectField.initAttributes(this, {
+		SelectComponent.initAttributes(this, {
 			shadowRoot: this.#$root,
 		})
 		this.#states.add(ComponentState.Defined)
@@ -163,10 +163,10 @@ class SelectField extends HTMLElement {
 
 	connectedCallback() {
 		// (1)
-		SelectField.initAttributes(this, {
+		SelectComponent.initAttributes(this, {
 			internals: this.#internals,
 		})
-		SelectField.initAccessibilityTree(this, {
+		SelectComponent.initAccessibilityTree(this, {
 			$listbox: this.#$listbox,
 			$status: this.#$status,
 			internals: this.#internals,
@@ -424,7 +424,7 @@ class SelectField extends HTMLElement {
 	}
 
 	#log(label: string, ...args) {
-		console.groupCollapsed(`SelectField: ${label}`)
+		console.groupCollapsed(`SelectComponent: ${label}`)
 		args.length > 0 && console.log('Arguments: ', args)
 		console.debug(this.#internals)
 		console.dir(this)
@@ -440,7 +440,7 @@ class SelectField extends HTMLElement {
 	}
 }
 
-customElements.define(SelectField.tagName, SelectField)
+customElements.define(SelectComponent.tagName, SelectComponent)
 
-export { ListboxElement, SelectField }
-export default customElements.get(SelectField.tagName)
+export { ListboxElement, SelectComponent }
+export default customElements.get(SelectComponent.tagName)

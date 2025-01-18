@@ -1,6 +1,6 @@
-import updateAttributes from '#library/fn.updateAttributes.js'
+import updateAttributes from '#library/fn.updateAttributes.ts'
 import '../__mocks__/window.mock'
-import SelectComponent from '../SelectField/index.js'
+import SelectComponent from '../Select/index.ts'
 
 describe('[SelectComponent]', () => {
 	const optionsContainer = document.createDocumentFragment()

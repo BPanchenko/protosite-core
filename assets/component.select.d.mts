@@ -30,7 +30,7 @@ export namespace ListboxElement {
     let tagName: string;
     let observedAttributes: string[];
 }
-export class SelectField extends HTMLElement {
+export class SelectComponent extends HTMLElement {
     static initAttributes(element: any, options: any): Map<any, any>;
     static initAccessibilityTree(element: any, options: any): void;
     attributeChangedCallback(name: any, previous: any, current: any): void;
@@ -49,7 +49,7 @@ export class SelectField extends HTMLElement {
     get type(): string;
     get value(): any;
 }
-export namespace SelectField {
+export namespace SelectComponent {
     let formAssociated_1: boolean;
     export { formAssociated_1 as formAssociated };
     let role_1: string;

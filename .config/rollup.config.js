@@ -21,7 +21,7 @@ export default function getConfig(options = {}) {
 			[
 				path.join(componentDir, 'Arrow'),
 				path.join(componentDir, 'Avatar'),
-				path.join(componentDir, 'SelectField'),
+				path.join(componentDir, 'Select'),
 				path.join(elementDir, 'Listbox'),
 				path.join(elementDir, 'Option.ts'),
 				path.join(libraryDir, 'fn.debounce.ts'),

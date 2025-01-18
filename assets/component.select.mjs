@@ -482,8 +482,8 @@ customElements.get(ListboxElement.tagName);
 
 const template = "<link href=\"http://assets.protosite.rocks/core/select-field.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:state(--defined)) {\n\tcontent-visibility: hidden;\n}\n:host(:state(--loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox\" id=\"button\" role=\"button\" tabindex=\"0\"><div aria-placeholder=\"Выбрать...\" part=\"selectedcontent\" id=\"status\" role=\"status\"></div></div><e-listbox aria-labelledby=\"button\" id=\"listbox\" part=\"listbox\" tabindex=\"1\"><slot></slot></e-listbox>";
 
-var _SelectField_instances, _SelectField_$root, _SelectField_internals, _SelectField_observer, _SelectField_focusCont, _SelectField_interCont, _SelectField_passingCont, _SelectField_slotChangeCont, _SelectField_$button_get, _SelectField_$status_get, _SelectField_$listbox_get, _SelectField_states_get, _SelectField_listenInput, _SelectField_onInput, _SelectField_listenFocus, _SelectField_onBlur, _SelectField_onFocus, _SelectField_listenInteraction, _SelectField_onAnimationEnd, _SelectField_onClick, _SelectField_onKeyDown, _SelectField_listenMutations, _SelectField_log, _SelectField_passEventAlong;
-class SelectField extends HTMLElement {
+var _SelectComponent_instances, _SelectComponent_$root, _SelectComponent_internals, _SelectComponent_observer, _SelectComponent_focusCont, _SelectComponent_interCont, _SelectComponent_passingCont, _SelectComponent_slotChangeCont, _SelectComponent_$button_get, _SelectComponent_$status_get, _SelectComponent_$listbox_get, _SelectComponent_states_get, _SelectComponent_listenInput, _SelectComponent_onInput, _SelectComponent_listenFocus, _SelectComponent_onBlur, _SelectComponent_onFocus, _SelectComponent_listenInteraction, _SelectComponent_onAnimationEnd, _SelectComponent_onClick, _SelectComponent_onKeyDown, _SelectComponent_listenMutations, _SelectComponent_log, _SelectComponent_passEventAlong;
+class SelectComponent extends HTMLElement {
     static initAttributes(element, options) {
         const data = {
             'aria-atomic': true,
@@ -529,22 +529,22 @@ class SelectField extends HTMLElement {
     }
     constructor() {
         super();
-        _SelectField_instances.add(this);
-        _SelectField_$root.set(this, undefined);
-        _SelectField_internals.set(this, this.attachInternals());
-        _SelectField_observer.set(this, undefined);
-        _SelectField_focusCont.set(this, undefined);
-        _SelectField_interCont.set(this, undefined);
-        _SelectField_passingCont.set(this, undefined);
-        _SelectField_slotChangeCont.set(this, undefined);
-        __classPrivateFieldSet(this, _SelectField_$root, initShadowRoot.call(this, {
+        _SelectComponent_instances.add(this);
+        _SelectComponent_$root.set(this, undefined);
+        _SelectComponent_internals.set(this, this.attachInternals());
+        _SelectComponent_observer.set(this, undefined);
+        _SelectComponent_focusCont.set(this, undefined);
+        _SelectComponent_interCont.set(this, undefined);
+        _SelectComponent_passingCont.set(this, undefined);
+        _SelectComponent_slotChangeCont.set(this, undefined);
+        __classPrivateFieldSet(this, _SelectComponent_$root, initShadowRoot.call(this, {
             template,
             delegatesFocus: true,
         }), "f");
-        SelectField.initAttributes(this, {
-            shadowRoot: __classPrivateFieldGet(this, _SelectField_$root, "f"),
+        SelectComponent.initAttributes(this, {
+            shadowRoot: __classPrivateFieldGet(this, _SelectComponent_$root, "f"),
         });
-        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(ComponentState.Defined);
+        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add(ComponentState.Defined);
     }
     attributeChangedCallback(name, previous, current) {
         if (false === this.isConnected)
@@ -556,173 +556,173 @@ class SelectField extends HTMLElement {
         switch (name) {
             case 'aria-disabled':
                 if (isTruth) {
-                    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(FieldState.Disabled);
-                    __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
+                    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add(FieldState.Disabled);
+                    __classPrivateFieldGet(this, _SelectComponent_interCont, "f")?.abort();
                 }
                 else {
-                    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(FieldState.Disabled);
+                    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).delete(FieldState.Disabled);
                 }
-                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaDisabled = isTruth.toString();
+                __classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaDisabled = isTruth.toString();
                 break;
             case 'aria-expanded':
-                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(isFalsy ? ComboboxState.Expanded : ComboboxState.Collapsed);
-                __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(isTruth ? ComboboxState.Expanded : ComboboxState.Collapsed);
-                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaExpanded = isTruth.toString();
+                __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).delete(isFalsy ? ComboboxState.Expanded : ComboboxState.Collapsed);
+                __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add(isTruth ? ComboboxState.Expanded : ComboboxState.Collapsed);
+                __classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaExpanded = isTruth.toString();
                 break;
             case 'aria-multiselectable':
-                __classPrivateFieldGet(this, _SelectField_internals, "f").ariaMultiSelectable = isTruth.toString();
+                __classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaMultiSelectable = isTruth.toString();
                 break;
         }
-        __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, 'Attribute Changed', name, previous, current);
+        __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_log).call(this, 'Attribute Changed', name, previous, current);
     }
     connectedCallback() {
-        SelectField.initAttributes(this, {
-            internals: __classPrivateFieldGet(this, _SelectField_internals, "f"),
+        SelectComponent.initAttributes(this, {
+            internals: __classPrivateFieldGet(this, _SelectComponent_internals, "f"),
         });
-        SelectField.initAccessibilityTree(this, {
-            $listbox: __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get),
-            $status: __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get),
-            internals: __classPrivateFieldGet(this, _SelectField_internals, "f"),
+        SelectComponent.initAccessibilityTree(this, {
+            $listbox: __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get),
+            $status: __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$status_get),
+            internals: __classPrivateFieldGet(this, _SelectComponent_internals, "f"),
         });
-        __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_listenFocus).call(this);
-        __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_listenInput).call(this);
-        __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_listenMutations).call(this);
-        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(ComponentState.Interactive);
-        const link = __classPrivateFieldGet(this, _SelectField_$root, "f").querySelector('link');
-        link && (link.onload = () => __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).add(ComponentState.Loaded));
-        __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, 'Connected Callback');
+        __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_listenFocus).call(this);
+        __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_listenInput).call(this);
+        __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_listenMutations).call(this);
+        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add(ComponentState.Interactive);
+        const link = __classPrivateFieldGet(this, _SelectComponent_$root, "f").querySelector('link');
+        link && (link.onload = () => __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add(ComponentState.Loaded));
+        __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_log).call(this, 'Connected Callback');
     }
     disconnectedCallback() {
-        __classPrivateFieldGet(this, _SelectField_focusCont, "f")?.abort();
-        __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
-        __classPrivateFieldGet(this, _SelectField_observer, "f")?.disconnect();
-        __classPrivateFieldGet(this, _SelectField_passingCont, "f")?.abort();
-        __classPrivateFieldGet(this, _SelectField_slotChangeCont, "f")?.abort();
+        __classPrivateFieldGet(this, _SelectComponent_focusCont, "f")?.abort();
+        __classPrivateFieldGet(this, _SelectComponent_interCont, "f")?.abort();
+        __classPrivateFieldGet(this, _SelectComponent_observer, "f")?.disconnect();
+        __classPrivateFieldGet(this, _SelectComponent_passingCont, "f")?.abort();
+        __classPrivateFieldGet(this, _SelectComponent_slotChangeCont, "f")?.abort();
     }
     hidePicker() {
-        if (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).has(ComboboxState.Collapsed))
+        if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(ComboboxState.Collapsed))
             return this;
         updateAttributes(this, 'aria-expanded', false);
-        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$button_get).focus();
+        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$button_get).focus();
         return this;
     }
     showPicker() {
-        if (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).has(ComboboxState.Expanded))
+        if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(ComboboxState.Expanded))
             return this;
         updateAttributes(this, 'aria-expanded', true);
-        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).focus();
+        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).focus();
         return this;
     }
     get disabled() {
-        return (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).has(FieldState.Disabled) &&
-            checkTruth(__classPrivateFieldGet(this, _SelectField_internals, "f").ariaDisabled) &&
+        return (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(FieldState.Disabled) &&
+            checkTruth(__classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaDisabled) &&
             checkTruth(this.ariaDisabled));
     }
     get expanded() {
-        return (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).has(ComboboxState.Expanded) &&
-            checkTruth(__classPrivateFieldGet(this, _SelectField_internals, "f").ariaExpanded) &&
+        return (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(ComboboxState.Expanded) &&
+            checkTruth(__classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaExpanded) &&
             checkTruth(this.ariaExpanded));
     }
     get multiple() {
-        return checkTruth(__classPrivateFieldGet(this, _SelectField_internals, "f").ariaMultiSelectable);
+        return checkTruth(__classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaMultiSelectable);
     }
     get name() {
         return (this.dataset.name || this.getAttribute('name')) ?? null;
     }
     get options() {
-        return __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).options;
+        return __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).options;
     }
     get readonly() {
-        return checkTruth(__classPrivateFieldGet(this, _SelectField_internals, "f").ariaReadOnly);
+        return checkTruth(__classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaReadOnly);
     }
     get required() {
-        return checkTruth(__classPrivateFieldGet(this, _SelectField_internals, "f").ariaRequired);
+        return checkTruth(__classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaRequired);
     }
     get length() {
-        return __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).length;
+        return __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).length;
     }
     get type() {
         return 'select' + (this.multiple ? '-multiple' : '-one');
     }
     get value() {
-        return __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).value;
+        return __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).value;
     }
 }
-_SelectField_$root = new WeakMap(), _SelectField_internals = new WeakMap(), _SelectField_observer = new WeakMap(), _SelectField_focusCont = new WeakMap(), _SelectField_interCont = new WeakMap(), _SelectField_passingCont = new WeakMap(), _SelectField_slotChangeCont = new WeakMap(), _SelectField_instances = new WeakSet(), _SelectField_$button_get = function _SelectField_$button_get() {
-    const $element = __classPrivateFieldGet(this, _SelectField_$root, "f").getElementById('button');
+_SelectComponent_$root = new WeakMap(), _SelectComponent_internals = new WeakMap(), _SelectComponent_observer = new WeakMap(), _SelectComponent_focusCont = new WeakMap(), _SelectComponent_interCont = new WeakMap(), _SelectComponent_passingCont = new WeakMap(), _SelectComponent_slotChangeCont = new WeakMap(), _SelectComponent_instances = new WeakSet(), _SelectComponent_$button_get = function _SelectComponent_$button_get() {
+    const $element = __classPrivateFieldGet(this, _SelectComponent_$root, "f").getElementById('button');
     if ($element === null)
         throw new Error('Button element not found but required!');
     return $element;
-}, _SelectField_$status_get = function _SelectField_$status_get() {
-    const $element = __classPrivateFieldGet(this, _SelectField_$root, "f").getElementById('status');
+}, _SelectComponent_$status_get = function _SelectComponent_$status_get() {
+    const $element = __classPrivateFieldGet(this, _SelectComponent_$root, "f").getElementById('status');
     if ($element === null)
         throw new Error('Element of the selected content not found but required!');
     return $element;
-}, _SelectField_$listbox_get = function _SelectField_$listbox_get() {
-    const $element = __classPrivateFieldGet(this, _SelectField_$root, "f").getElementById('listbox');
+}, _SelectComponent_$listbox_get = function _SelectComponent_$listbox_get() {
+    const $element = __classPrivateFieldGet(this, _SelectComponent_$root, "f").getElementById('listbox');
     if ($element === null)
         throw new Error('Listbox element not found but required!');
     return $element;
-}, _SelectField_states_get = function _SelectField_states_get() {
-    return __classPrivateFieldGet(this, _SelectField_internals, "f").states;
-}, _SelectField_listenInput = function _SelectField_listenInput() {
-    __classPrivateFieldGet(this, _SelectField_passingCont, "f")?.abort();
-    __classPrivateFieldSet(this, _SelectField_passingCont, new AbortController(), "f");
+}, _SelectComponent_states_get = function _SelectComponent_states_get() {
+    return __classPrivateFieldGet(this, _SelectComponent_internals, "f").states;
+}, _SelectComponent_listenInput = function _SelectComponent_listenInput() {
+    __classPrivateFieldGet(this, _SelectComponent_passingCont, "f")?.abort();
+    __classPrivateFieldSet(this, _SelectComponent_passingCont, new AbortController(), "f");
     const options = {
         capture: false,
         passive: true,
-        signal: __classPrivateFieldGet(this, _SelectField_passingCont, "f").signal,
+        signal: __classPrivateFieldGet(this, _SelectComponent_passingCont, "f").signal,
     };
-    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).addEventListener('beforeinput', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_passEventAlong).call(this, e), options);
-    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).addEventListener('input', (e) => {
-        __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onInput).call(this, e);
-        __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_passEventAlong).call(this, e);
+    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).addEventListener('beforeinput', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_passEventAlong).call(this, e), options);
+    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).addEventListener('input', (e) => {
+        __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onInput).call(this, e);
+        __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_passEventAlong).call(this, e);
     }, options);
-    return __classPrivateFieldGet(this, _SelectField_passingCont, "f");
-}, _SelectField_onInput = function _SelectField_onInput(event_) {
-    const { label, value } = this.options[__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).selectedIndex];
-    __classPrivateFieldGet(this, _SelectField_internals, "f").setFormValue(value);
-    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$status_get).innerText = label ?? '';
+    return __classPrivateFieldGet(this, _SelectComponent_passingCont, "f");
+}, _SelectComponent_onInput = function _SelectComponent_onInput(event_) {
+    const { label, value } = this.options[__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).selectedIndex];
+    __classPrivateFieldGet(this, _SelectComponent_internals, "f").setFormValue(value);
+    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$status_get).innerText = label ?? '';
     value !== null && this.hidePicker();
-}, _SelectField_listenFocus = function _SelectField_listenFocus() {
-    __classPrivateFieldGet(this, _SelectField_focusCont, "f")?.abort();
-    __classPrivateFieldSet(this, _SelectField_focusCont, new AbortController(), "f");
+}, _SelectComponent_listenFocus = function _SelectComponent_listenFocus() {
+    __classPrivateFieldGet(this, _SelectComponent_focusCont, "f")?.abort();
+    __classPrivateFieldSet(this, _SelectComponent_focusCont, new AbortController(), "f");
     const options = {
-        signal: __classPrivateFieldGet(this, _SelectField_focusCont, "f").signal,
+        signal: __classPrivateFieldGet(this, _SelectComponent_focusCont, "f").signal,
     };
-    this.addEventListener('focus', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onFocus).call(this, e), options);
-    this.addEventListener('blur', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onBlur).call(this, e), options);
-    return __classPrivateFieldGet(this, _SelectField_focusCont, "f");
-}, _SelectField_onBlur = function _SelectField_onBlur(event) {
+    this.addEventListener('focus', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onFocus).call(this, e), options);
+    this.addEventListener('blur', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onBlur).call(this, e), options);
+    return __classPrivateFieldGet(this, _SelectComponent_focusCont, "f");
+}, _SelectComponent_onBlur = function _SelectComponent_onBlur(event) {
     this.hidePicker();
-    __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, `event:${event.type}`);
-}, _SelectField_onFocus = function _SelectField_onFocus(event) {
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_listenInteraction).call(this);
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, `event:${event.type}`);
-}, _SelectField_listenInteraction = function _SelectField_listenInteraction() {
-    __classPrivateFieldGet(this, _SelectField_interCont, "f")?.abort();
-    __classPrivateFieldSet(this, _SelectField_interCont, new AbortController(), "f");
+    __classPrivateFieldGet(this, _SelectComponent_interCont, "f")?.abort();
+    __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_log).call(this, `event:${event.type}`);
+}, _SelectComponent_onFocus = function _SelectComponent_onFocus(event) {
+    __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_listenInteraction).call(this);
+    __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_log).call(this, `event:${event.type}`);
+}, _SelectComponent_listenInteraction = function _SelectComponent_listenInteraction() {
+    __classPrivateFieldGet(this, _SelectComponent_interCont, "f")?.abort();
+    __classPrivateFieldSet(this, _SelectComponent_interCont, new AbortController(), "f");
     const options = {
         capture: false,
         passive: true,
-        signal: __classPrivateFieldGet(this, _SelectField_interCont, "f").signal,
+        signal: __classPrivateFieldGet(this, _SelectComponent_interCont, "f").signal,
     };
-    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).addEventListener('animationend', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onAnimationEnd).call(this, e), options);
-    this.addEventListener('click', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onClick).call(this, e), options);
-    this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_onKeyDown).call(this, e), options);
-    return __classPrivateFieldGet(this, _SelectField_interCont, "f");
-}, _SelectField_onAnimationEnd = function _SelectField_onAnimationEnd(event) {
-    __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).delete(ComponentState.Animation);
-    if (__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_states_get).has(ComboboxState.Expanded))
-        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get).focus();
+    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).addEventListener('animationend', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onAnimationEnd).call(this, e), options);
+    this.addEventListener('click', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onClick).call(this, e), options);
+    this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onKeyDown).call(this, e), options);
+    return __classPrivateFieldGet(this, _SelectComponent_interCont, "f");
+}, _SelectComponent_onAnimationEnd = function _SelectComponent_onAnimationEnd(event) {
+    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).delete(ComponentState.Animation);
+    if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(ComboboxState.Expanded))
+        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).focus();
     else
-        __classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$button_get).focus();
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, `event:${event.type}`);
-}, _SelectField_onClick = function _SelectField_onClick(event) {
+        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$button_get).focus();
+    __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_log).call(this, `event:${event.type}`);
+}, _SelectComponent_onClick = function _SelectComponent_onClick(event) {
     this.expanded ? this.hidePicker() : this.showPicker();
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, `event:${event.type}`);
-}, _SelectField_onKeyDown = function _SelectField_onKeyDown(event) {
+    __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_log).call(this, `event:${event.type}`);
+}, _SelectComponent_onKeyDown = function _SelectComponent_onKeyDown(event) {
     switch (event.key) {
         case 'ArrowDown':
         case 'Enter':
@@ -735,10 +735,10 @@ _SelectField_$root = new WeakMap(), _SelectField_internals = new WeakMap(), _Sel
         default:
             return;
     }
-    __classPrivateFieldGet(this, _SelectField_instances, "m", _SelectField_log).call(this, `event:${event.type}`, __classPrivateFieldGet(this, _SelectField_$root, "f").activeElement);
-}, _SelectField_listenMutations = function _SelectField_listenMutations() {
-    __classPrivateFieldGet(this, _SelectField_observer, "f")?.disconnect();
-    __classPrivateFieldSet(this, _SelectField_observer, new MutationObserver((mutationList) => mutationList.forEach((mutation) => {
+    __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_log).call(this, `event:${event.type}`, __classPrivateFieldGet(this, _SelectComponent_$root, "f").activeElement);
+}, _SelectComponent_listenMutations = function _SelectComponent_listenMutations() {
+    __classPrivateFieldGet(this, _SelectComponent_observer, "f")?.disconnect();
+    __classPrivateFieldSet(this, _SelectComponent_observer, new MutationObserver((mutationList) => mutationList.forEach((mutation) => {
         if (mutation.type === 'attributes') {
             const { attributeName } = mutation;
             const attributeValue = attributeName
@@ -752,34 +752,34 @@ _SelectField_$root = new WeakMap(), _SelectField_internals = new WeakMap(), _Sel
             }
         }
     })), "f");
-    __classPrivateFieldGet(this, _SelectField_observer, "f").observe(__classPrivateFieldGet(this, _SelectField_instances, "a", _SelectField_$listbox_get), {
+    __classPrivateFieldGet(this, _SelectComponent_observer, "f").observe(__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get), {
         attributes: true,
         attributeFilter: ['aria-activedescendant', 'aria-owns'],
     });
     return this;
-}, _SelectField_log = function _SelectField_log(label, ...args) {
-    console.groupCollapsed(`SelectField: ${label}`);
+}, _SelectComponent_log = function _SelectComponent_log(label, ...args) {
+    console.groupCollapsed(`SelectComponent: ${label}`);
     args.length > 0 && console.log('Arguments: ', args);
-    console.debug(__classPrivateFieldGet(this, _SelectField_internals, "f"));
+    console.debug(__classPrivateFieldGet(this, _SelectComponent_internals, "f"));
     console.dir(this);
     console.groupEnd();
-}, _SelectField_passEventAlong = function _SelectField_passEventAlong(shadowEvent) {
+}, _SelectComponent_passEventAlong = function _SelectComponent_passEventAlong(shadowEvent) {
     const { bubbles, data, type } = shadowEvent;
     const EventConstructor = Object.getPrototypeOf(shadowEvent).constructor;
     const event = new EventConstructor(type, { bubbles, data });
     this.dispatchEvent(event);
     return this;
 };
-SelectField.formAssociated = true;
-SelectField.role = 'combobox';
-SelectField.tagName = 'c-select-field';
-SelectField.observedAttributes = [
+SelectComponent.formAssociated = true;
+SelectComponent.role = 'combobox';
+SelectComponent.tagName = 'c-select';
+SelectComponent.observedAttributes = [
     'aria-disabled',
     'aria-expanded',
     'aria-multiselectable',
     'aria-required',
 ];
-customElements.define(SelectField.tagName, SelectField);
-const index = customElements.get(SelectField.tagName);
+customElements.define(SelectComponent.tagName, SelectComponent);
+const index = customElements.get(SelectComponent.tagName);
 
-export { ListboxElement, SelectField, index as default };
+export { ListboxElement, SelectComponent, index as default };

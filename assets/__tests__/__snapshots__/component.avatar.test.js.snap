@@ -7,7 +7,7 @@ exports[`AvatarComponent Page Markup 1`] = `
 		<link href="http://assets.protosite.rocks/uikit/utilities.css" rel="stylesheet" type="text/css">
 		<link href="http://assets.protosite.rocks/uikit/component/panel.css" rel="stylesheet" type="text/css">
 		
-		<script src="../avatar-component.mjs" type="module"></script>
+		<script src="../component.avatar.mjs" type="module"></script>
 	</head>
 	<body class="t-document">
 		<main class="u-container" data-testid="container">

@@ -1,8 +1,8 @@
 import cssStyleSheet, { cAvatar, cAvatarLink } from '#uikit/component/avatar'
 
-import createElement from '#library/fn.createElement.js'
-import initShadowRoot from '#library/fn.initShadowRoot.js'
-import updateAttributes from '#library/fn.updateAttributes.js'
+import createElement from '#library/fn.createElement.ts'
+import initShadowRoot from '#library/fn.initShadowRoot.ts'
+import updateAttributes from '#library/fn.updateAttributes.ts'
 
 const tagName = cAvatar
 const template = `<div role=img><slot></slot></div>`

@@ -29,11 +29,11 @@ class SelectComponent extends HTMLElement {
 	#passingCont: AbortController
 	#slotChangeCont: AbortController
 
-	static formAssociated = true
-	static role = 'combobox'
-	static tagName = 'c-select'
+	static readonly formAssociated = true
+	static readonly role = 'combobox'
+	static readonly tagName = 'c-select'
 
-	static observedAttributes = [
+	static readonly observedAttributes = [
 		'aria-disabled',
 		'aria-expanded',
 		'aria-multiselectable',

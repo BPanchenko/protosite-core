@@ -1,20 +1,19 @@
-import cssStyleSheet, { cAvatar, cAvatarLink } from '#uikit/component/avatar'
+import cssStyleSheet from '#uikit/shadow-host/component.avatar.mjs'
 
 import createElement from '#library/fn.createElement.ts'
 import initShadowRoot from '#library/fn.initShadowRoot.ts'
 import updateAttributes from '#library/fn.updateAttributes.ts'
 
-const tagName = cAvatar
-const template = `<div role=img><slot></slot></div>`
+const template = `<div part=root><slot></slot></div>`
 
 export class AvatarComponent extends HTMLElement {
 	#$ = new Map()
 
 	/** @type {ShadowRoot} */
-	#shadow_
+	#shadowRoot
 
-	static observedAttributes = ['img', 'size', 'href', 'target']
-	static sizes = ['sm', 'md', 'lg', 'xl', 'xxs', 'xs', 'xxl']
+	static observedAttributes = ['src', 'href', 'target']
+	static tagName = 'c-avatar'
 
 	/** @param {Avatar.Attributes} [attributes] */
 	constructor(attributes = {}) {
@@ -22,7 +21,7 @@ export class AvatarComponent extends HTMLElement {
 
 		updateAttributes(this, attributes)
 
-		this.#shadow_ = initShadowRoot.call(this, {
+		this.#shadowRoot = initShadowRoot.call(this, {
 			template,
 			delegatesFocus: true,
 			serializable: true,
@@ -37,40 +36,20 @@ export class AvatarComponent extends HTMLElement {
 				this.#renderLink()
 				this.#renderImage()
 				break
-			case 'size':
-				this.#applySize()
-				break
-			case 'img':
+			case 'src':
 				this.#renderImage()
 				break
 		}
 	}
 
 	connectedCallback() {
-		this.#shadow_.adoptedStyleSheets.push(cssStyleSheet)
+		this.#shadowRoot.adoptedStyleSheets.push(cssStyleSheet)
 
-		this.#applySize()
 		this.#renderLink()
 		this.#renderImage()
 	}
 
-	#applySize() {
-		const size = this.getAttribute('size')
-		if (size) {
-			console.assert(
-				AvatarComponent.sizes.includes(size),
-				`Wrong size: "${size}"`,
-			)
-			this.#root.classList.add('s-' + size)
-		} else {
-			AvatarComponent.sizes.forEach((size) =>
-				this.#root.classList.remove('s-' + size),
-			)
-		}
-	}
-
 	#renderLink() {
-		const className = cAvatarLink
 		const href = this.getAttribute('href')
 		const target = this.getAttribute('target') ?? '_self'
 		if (href) {
@@ -79,10 +58,7 @@ export class AvatarComponent extends HTMLElement {
 				$link.setAttribute('href', href)
 				$link.setAttribute('target', target)
 			} else {
-				this.#$.set(
-					'link',
-					createElement('a', { className, href, target }),
-				)
+				this.#$.set('link', createElement('a', { href, target }))
 				this.appendChild(this.#$.get('link'))
 			}
 		} else if (this.#$.has('link')) {
@@ -92,14 +68,14 @@ export class AvatarComponent extends HTMLElement {
 	}
 
 	#renderImage() {
-		const source = this.getAttribute('img')
+		const source = this.getAttribute('src')
 		if (source) {
 			if (this.#hasParentPanel) {
-				this.#root.style.backgroundImage = `url(${source})`
+				this.#$root.style.backgroundImage = `url(${source})`
 			} else {
 				if (this.#$.has('image'))
 					this.#$.get('image').setAttribute('src', source)
-				else this.#$.set('image', createElement('img', { src: source }))
+				else this.#$.set('image', createElement('src', { src: source }))
 				if (this.#$.has('link'))
 					this.#$.get('link').appendChild(this.#$.get('image'))
 				else this.appendChild(this.#$.get('image'))
@@ -108,7 +84,7 @@ export class AvatarComponent extends HTMLElement {
 			this.#$.get('image').remove()
 			this.#$.delete('image')
 		} else {
-			delete this.#root.style.backgroundImage
+			delete this.#$root.style.backgroundImage
 		}
 	}
 
@@ -116,11 +92,11 @@ export class AvatarComponent extends HTMLElement {
 		return this.closest('.c-panel') !== null
 	}
 
-	get #root() {
-		return this.#shadow_.firstChild
+	get #$root() {
+		return this.#shadowRoot.firstChild
 	}
 }
 
-customElements.define(tagName, AvatarComponent)
+customElements.define(AvatarComponent.tagName, AvatarComponent)
 
-export default customElements.get(tagName)
+export default customElements.get(AvatarComponent.tagName)

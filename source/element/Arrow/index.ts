@@ -1,6 +1,6 @@
 import initShadowRoot from '#library/fn.initShadowRoot'
 
-import cssStyleSheet from '#uikit/component/arrow.mjs'
+import cssStyleSheet from '#uikit/shadow-host/element.arrow.mjs'
 import {
 	validDirectionValues,
 	validFigureValues,

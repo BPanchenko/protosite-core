@@ -8,48 +8,55 @@ exports[`ArrowComponent Page Markup 1`] = `
 		<link href="http://assets.protosite.rocks/uikit/utilities.css" rel="stylesheet" type="text/css">
 		<link href="http://assets.protosite.rocks/uikit/component/panel.css" rel="stylesheet" type="text/css">
 		
-		<script src="../arrow-component.mjs" type="module"></script>
+		<script src="../element.arrow.mjs" type="module"></script>
 	</head>
 	<body class="t-document">
 		<main class="u-container" data-testid="container">
 			<section class="c-panel">
-				<c-arrow direction="left" figure="fill" size="md"></c-arrow>
-				<c-arrow direction="top-left" figure="fill" style="acute" size="md"></c-arrow>
-				<c-arrow direction="top" figure="fill" style="large-acute" size="md"></c-arrow>
-				<c-arrow direction="top-right" figure="fill" style="angled" size="md"></c-arrow>
-				<c-arrow direction="right" figure="fill" style="large-angled" size="md"></c-arrow>
-				<c-arrow direction="bottom-right" figure="line" style="large-acute" size="md"></c-arrow>
-				<c-arrow direction="bottom" figure="line" style="large-oblique" size="md"></c-arrow>
-				<c-arrow direction="bottom-left" figure="line" style="oblique" size="md"></c-arrow>
-				<c-arrow direction="right" figure="angle-thick-left-bottom-line" size="md"></c-arrow>
-				<c-arrow direction="right" figure="angle-right-bottom-fill" size="md"></c-arrow>
+				<c-arrow glyph-direction="left" glyph-figure="fill" size="md"></c-arrow>
+				<c-arrow glyph-direction="top-left" glyph-figure="fill" glyph-style="acute" size="md"></c-arrow>
+				<c-arrow glyph-direction="top" glyph-figure="fill" glyph-style="large-acute" size="md"></c-arrow>
+				<c-arrow glyph-direction="top-right" glyph-figure="fill" glyph-style="angled" size="md"></c-arrow>
+				<c-arrow glyph-direction="right" glyph-figure="fill" glyph-style="large-angled" size="md"></c-arrow>
+				<c-arrow glyph-direction="bottom-right" glyph-figure="line" glyph-style="large-acute" size="md"></c-arrow>
+				<c-arrow glyph-direction="bottom" glyph-figure="line" glyph-style="large-oblique" size="md"></c-arrow>
+				<c-arrow glyph-direction="bottom-left" glyph-figure="line" glyph-style="oblique" size="md"></c-arrow>
+				<c-arrow glyph-direction="right" glyph-figure="angle-thick-left-bottom-line" size="md"></c-arrow>
+				<c-arrow glyph-direction="right" glyph-figure="angle-right-bottom-fill" size="md"></c-arrow>
 			</section>
 			<section class="c-panel">
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="xxs"></c-arrow>
+
 
 
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique"></c-arrow>
 
 
+
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="xs"></c-arrow>
+
 
 
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="sm"></c-arrow>
 
 
+
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="md"></c-arrow>
+
 
 
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="lg"></c-arrow>
 
 
+
 				&nbsp;
 				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="xl"></c-arrow>
+
 
 
 				&nbsp;

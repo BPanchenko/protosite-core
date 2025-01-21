@@ -7,9 +7,9 @@ import path from 'node:path'
 import pugPlugin from 'rollup-plugin-pug'
 import tsPlugin from '@rollup/plugin-typescript'
 
+const _libraryDir = path.join('source', 'library')
 const componentDir = path.join('source', 'component')
 const elementDir = path.join('source', 'element')
-const libraryDir = path.join('source', 'library')
 
 export default function getConfig(options = {}) {
 	const { mode = 'debug', root = process.cwd() } = options
@@ -19,13 +19,11 @@ export default function getConfig(options = {}) {
 	return {
 		input: getFilesByPattern(
 			[
-				path.join(componentDir, 'Arrow'),
 				path.join(componentDir, 'Avatar'),
 				path.join(componentDir, 'Select'),
+				path.join(elementDir, 'Arrow'),
 				path.join(elementDir, 'Listbox'),
 				path.join(elementDir, 'Option.ts'),
-				path.join(libraryDir, 'fn.debounce.ts'),
-				path.join(libraryDir, 'fn.throttle.ts'),
 			].map((path) => path.replaceAll('\\', '/')),
 		),
 		output: {

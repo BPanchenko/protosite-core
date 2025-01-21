@@ -149,6 +149,7 @@ export default [
 				{
 					argsIgnorePattern: '._$',
 					destructuredArrayIgnorePattern: '._$',
+					varsIgnorePattern: '^_',
 					reportUsedIgnorePattern: true,
 				},
 			],

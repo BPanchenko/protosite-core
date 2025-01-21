@@ -25,11 +25,11 @@ export class ListboxElement extends HTMLElement {
 
 	ariaActiveDescendantElement: HTMLElement | null = null
 
-	static formAssociated = true
-	static role = 'listbox'
-	static tagName = 'e-listbox'
+	static readonly formAssociated = true
+	static readonly role = 'listbox'
+	static readonly tagName = 'e-listbox'
 
-	static observedAttributes = [
+	static readonly observedAttributes = [
 		'aria-activedescendant',
 		'aria-disabled',
 		'aria-multiselectable',

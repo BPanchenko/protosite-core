@@ -3,7 +3,7 @@ import updateAttributes from '#library/fn.updateAttributes.js'
 import type { CustomElement } from '#types'
 
 export class OptionElement extends HTMLElement implements CustomElement {
-	static oberverAttributes = [
+	static readonly oberverAttributes = [
 		'aria-busy',
 		'aria-checked',
 		'aria-disabled',
@@ -18,8 +18,8 @@ export class OptionElement extends HTMLElement implements CustomElement {
 		'value',
 	]
 
-	static role = 'option'
-	static tagName = 'e-option'
+	static readonly role = 'option'
+	static readonly tagName = 'e-option'
 
 	static initAttributes($element: OptionElement) {
 		const data = {

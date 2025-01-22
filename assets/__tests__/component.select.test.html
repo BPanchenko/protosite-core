@@ -49,11 +49,16 @@
 				gap: 8vmin;
 				justify-content: space-around;
 				align-items: center;
+
+				.c-panel {
+					text-align: center;
+				}
+
+				.c-panel:not([aria-hidden=true]) + .c-panel {
+					margin-top: unset;
+				}
 			}
 
-			.c-panel {
-				text-align: center;
-			}
 
 			hr:first-of-type {
 				margin-block-start: 8dvh;
@@ -113,7 +118,7 @@
 							aria-placeholder="Цветок на выбор"
 							name="flower-name"
 						>
-							<div role="option" value="Anemone" aria-selected="true">Анемон</div>
+							<div role="option" value="Anemone">Анемон</div>
 							<div role="option" value="Allium">Аллиум</div>
 							<div role="option" value="Amaryllis">Амариллис</div>
 							<div role="option" value="Pineapple">Ананас</div>

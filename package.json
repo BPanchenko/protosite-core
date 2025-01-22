@@ -32,10 +32,9 @@
   "scripts": {
     "build": "node ./.kernel/builder",
     "debug": "run-p server watch",
-    "postbuild": "npx -p typescript tsc --project tsconfig.assets.json",
+    "postbuild": "npx -p typescript tsc --project tsconfig.assets.json && npm run deploy",
     "deploy": "node ./.kernel/deployer.js",
     "lint": "eslint . --fix",
-    "postpublish": "npm run deploy",
     "prebuild": "npm run rimraf",
     "prepublish": "npm run build",
     "rimraf": "rimraf \"assets/*.{mjs,mts,map}\" --glob",

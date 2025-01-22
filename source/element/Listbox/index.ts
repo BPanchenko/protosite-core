@@ -121,7 +121,9 @@ export class ListboxElement extends HTMLElement {
 
 	formAssociatedCallback(form_) { }
 	formDisabledCallback(state_) { }
-	formResetCallback() { }
+	formResetCallback() {
+		this.selectedIndex = this.#selectedIndexByDefault
+	}
 	formStateRestoreCallback(state_, reason_) { }
 
 	/**

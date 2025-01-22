@@ -193,6 +193,10 @@ class SelectComponent extends HTMLElement {
 		this.#slotChangeCont?.abort()
 	}
 
+	formResetCallback() {
+		this.#$listbox.formResetCallback()
+	}
+
 	hidePicker() {
 		if (this.#states.has(ComboboxState.Collapsed)) return this
 		updateAttributes(this, 'aria-expanded', false)

@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectField Page Markup 1`] = `
+"<!DOCTYPE html><html lang="ru"><head>
+		<title>[TEST FORM OBJECT] Select Field Form ⁕ Protosite Core</title>
+
+		<link rel="preload" href="http://assets.protosite.rocks/core/select-field.css" as="style">
+		<link rel="preload" href="http://assets.protosite.rocks/fonts/iconic/iconic-sm.ttf" as="font" type="font/ttf" crossorigin="">
+
+		<link href="http://assets.protosite.rocks/fonts/iconic/stylesheet.css" rel="stylesheet" type="text/css">
+		<link href="http://assets.protosite.rocks/uikit/document.css" rel="stylesheet" type="text/css">
+		<link href="http://assets.protosite.rocks/uikit/utilities.css" rel="stylesheet" type="text/css">
+		<link href="http://assets.protosite.rocks/uikit/component/panel.css" rel="stylesheet" type="text/css">
+		
+		<script src="../component.select.mjs" type="module"></script>
+		<style>
+			.u-container {
+				padding-block-start: 25dvh;
+			}
+
+			.u-grid {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 8vmin;
+				justify-content: space-around;
+				align-items: center;
+
+				.c-panel {
+					text-align: center;
+				}
+
+				.c-panel:not([aria-hidden=true]) + .c-panel {
+					margin-top: unset;
+				}
+			}
+
+
+			hr:first-of-type {
+				margin-block-start: 8dvh;
+			}
+		</style>
+	</head>
+	<body class="t-document">
+		<main class="u-container" data-testid="container">
+			<form enctype="text/plain" data-testid="main-form">
+				<div class="u-grid">
+					<section class="c-panel s-clean">
+						<c-select aria-label="Выбран:" aria-placeholder="Фрукт на выбор" name="fruit-name" aria-atomic="true" aria-expanded="false" exportparts="selectedcontent listbox" id="" role="combobox" tabindex="0" aria-owns="option-9792bm option-4ceak5 option-9m97ht option-9pk7oa option-h6xe1k option-ke5keh option-5koh15 option-etpmxx option-chotmh option-8c95b9 option-4x5427 option-a9e8yk option-pam39e option-9hbe5m option-97cphc option-2y825b option-m9ph4x option-7pkmky option-44y6hk option-tat1y8 option-o1byhe option-5h3hcy option-54568y option-a295a1 option-2mm374 option-o8m59y option-aax6po option-my8b6h option-hb3t9a option-5b1cba option-8xx4xe option-6992a6 option-pk1p5h option-k3mopc option-5881mb">
+							<div role="option" value="Durian" aria-selected="false" id="option-9792bm">Дуриан</div>
+							<div role="option" value="Mangosteen" aria-selected="false" id="option-4ceak5">Мангостин</div>
+							<div role="option" value="Lychee" aria-selected="false" id="option-9m97ht">Личи</div>
+							<div role="option" value="Jackfruit" aria-selected="false" id="option-9pk7oa">Джекфрут</div>
+							<div role="option" value="Papaya" aria-selected="false" id="option-h6xe1k">Папайя</div>
+							<div role="option" value="Mango" aria-selected="false" id="option-ke5keh">Манго</div>
+							<div role="option" value="Rambutan" aria-selected="false" id="option-5koh15">Рамбутан</div>
+							<div role="option" value="Longan" aria-selected="false" id="option-etpmxx">Лонган</div>
+							<div role="option" value="Carambola" aria-selected="false" id="option-chotmh">Карамбола</div>
+							<div role="option" value="Pitaya" aria-selected="false" id="option-8c95b9">Питайя</div>
+							<div role="option" value="Ackee" aria-selected="false" id="option-4x5427">Аки</div>
+							<div role="option" value="Chompoo" aria-selected="false" id="option-a9e8yk">Чомпу</div>
+							<div role="option" value="Sugar Apple" aria-selected="false" id="option-pam39e">Сахарное яблоко</div>
+							<div role="option" value="Sapodilla" aria-selected="false" id="option-9hbe5m">Саподилла</div>
+							<div role="option" value="Guava" aria-selected="false" id="option-97cphc">Гуава</div>
+							<div role="option" value="Kiwano" aria-selected="false" id="option-2y825b">Кивано</div>
+							<div role="option" value="Bael" aria-selected="false" id="option-m9ph4x">Баиль</div>
+							<div role="option" value="Salak" aria-selected="false" id="option-7pkmky">Салак</div>
+							<div role="option" value="Bambangan" aria-selected="false" id="option-44y6hk">Бам-балан</div>
+							<div role="option" value="Ambarella" aria-selected="false" id="option-tat1y8">Амбарелла</div>
+							<div role="option" value="Citron" aria-selected="false" id="option-o1byhe">Цитрон</div>
+							<div role="option" value="Kumquat" aria-selected="false" id="option-5h3hcy">Кумкват</div>
+							<div role="option" value="Marula" aria-selected="false" id="option-54568y">Марула</div>
+							<div role="option" value="Tamarind" aria-selected="false" id="option-a295a1">Тамаринд</div>
+							<div role="option" value="Miracle Fruit" aria-selected="false" id="option-2mm374">Магический фрукт</div>
+							<div role="option" value="Noni" aria-selected="false" id="option-o8m59y">Нони</div>
+							<div role="option" value="Soursop" aria-selected="false" id="option-aax6po">Сметанное яблоко</div>
+							<div role="option" value="Naranjilla" aria-selected="false" id="option-my8b6h">Наранхилла</div>
+							<div role="option" value="Mamey" aria-selected="false" id="option-hb3t9a">Мамея</div>
+							<div role="option" value="Pepino Dulce" aria-selected="false" id="option-5b1cba">Пепино</div>
+							<div role="option" value="Milky Fruit" aria-selected="false" id="option-8xx4xe">Милкифрут</div>
+							<div role="option" value="Marang" aria-selected="false" id="option-6992a6">Маранг</div>
+							<div role="option" value="Cupuasu" aria-selected="false" id="option-pk1p5h">Купуасу</div>
+							<div role="option" value="Curuba" aria-selected="false" id="option-k3mopc">Куруба</div>
+							<div role="option" value="Jabuticaba" aria-selected="false" id="option-5881mb">Жаботикаба</div>
+						</c-select>
+					</section>
+					<section class="c-panel">
+						<c-select aria-label="Выбран:" aria-placeholder="Цветок на выбор" name="flower-name" aria-atomic="true" aria-expanded="false" exportparts="selectedcontent listbox" id="" role="combobox" tabindex="0" aria-owns="option-6phk4t option-8ktbhp option-eh8ety option-3867ch option-3oy859 option-ay4cxp option-o865hy option-pt47xa option-58pt15 option-47hkp8 option-o9bpkm option-m86e68 option-b79891 option-4y87yh option-5k86yp option-me7bm4 option-bxe5ph option-oyx687 option-7c11kp option-7tcx33 option-8cmoo1 option-k8potx option-cb7a69 option-4ma42o option-ce11cx option-epe24p option-9oytk1 option-acap8b option-3exype option-3b8oee option-5k93bp option-p45251 option-6akkat option-yy7bty option-my7t62 option-xah87b option-kc9m16 option-37h2op option-3kp9e3 option-4m9y8e">
+							<div role="option" value="Anemone" aria-selected="false" id="option-6phk4t">Анемон</div>
+							<div role="option" value="Allium" aria-selected="false" id="option-8ktbhp">Аллиум</div>
+							<div role="option" value="Amaryllis" aria-selected="false" id="option-eh8ety">Амариллис</div>
+							<div role="option" value="Pineapple" aria-selected="false" id="option-3867ch">Ананас</div>
+							<div role="option" value="Aster" aria-selected="false" id="option-3oy859">Астер</div>
+							<div role="option" value="Astilba" aria-selected="false" id="option-ay4cxp">Астильба</div>
+							<div role="option" value="Brassica" aria-selected="false" id="option-o865hy">Брассика</div>
+							<div role="option" value="Bouvardia" aria-selected="false" id="option-pt47xa">Бувардия</div>
+							<div role="option" value="Wanda" aria-selected="false" id="option-58pt15">Ванда</div>
+							<div role="option" value="Veronika" aria-selected="false" id="option-47hkp8">Вероника</div>
+							<div role="option" value="Viburnum" aria-selected="false" id="option-o9bpkm">Вибурнум</div>
+							<div role="option" value="Genista" aria-selected="false" id="option-m86e68">Гениста</div>
+							<div role="option" value="Hydrangea" aria-selected="false" id="option-b79891">Гортензия</div>
+							<div role="option" value="Hypericum" aria-selected="false" id="option-4y87yh">Гиперикум</div>
+							<div role="option" value="Hyacinth" aria-selected="false" id="option-5k86yp">Гиацинт</div>
+							<div role="option" value="Delphinium" aria-selected="false" id="option-me7bm4">Дельфиниум</div>
+							<div role="option" value="Calla Lilies" aria-selected="false" id="option-bxe5ph">Каллы</div>
+							<div role="option" value="Kohia" aria-selected="false" id="option-oyx687">Кохия</div>
+							<div role="option" value="Clematis" aria-selected="false" id="option-7c11kp">Клематис</div>
+							<div role="option" value="Leukadendron" aria-selected="false" id="option-7tcx33">Леукадендрон</div>
+							<div role="option" value="Leukospermum" aria-selected="false" id="option-8cmoo1">Леукоспермум</div>
+							<div role="option" value="Limonium" aria-selected="false" id="option-k8potx">Лимониум</div>
+							<div role="option" value="Mattiola" aria-selected="false" id="option-cb7a69">Маттиола</div>
+							<div role="option" value="Mimosa" aria-selected="false" id="option-4ma42o">Мимоза</div>
+							<div role="option" value="Ozothamnus" aria-selected="false" id="option-ce11cx">Озотамнус</div>
+							<div role="option" value="Ornithogalum" aria-selected="false" id="option-epe24p">Орнитогалум</div>
+							<div role="option" value="Skimiya" aria-selected="false" id="option-9oytk1">Скимия</div>
+							<div role="option" value="Solidago" aria-selected="false" id="option-acap8b">Солидаго</div>
+							<div role="option" value="Strelitzia" aria-selected="false" id="option-3exype">Стрелиция</div>
+							<div role="option" value="Sunflower" aria-selected="false" id="option-3b8oee">Подсолнух</div>
+							<div role="option" value="Protea" aria-selected="false" id="option-5k93bp">Протея</div>
+							<div role="option" value="Wheat" aria-selected="false" id="option-p45251">Пшеница</div>
+							<div role="option" value="Ranunculus" aria-selected="false" id="option-6akkat">Ранункулюс</div>
+							<div role="option" value="Thanacetum" aria-selected="false" id="option-yy7bty">Танацетум</div>
+							<div role="option" value="Tweedy" aria-selected="false" id="option-my7t62">Твидия</div>
+							<div role="option" value="Trachelium" aria-selected="false" id="option-xah87b">Трахелиум</div>
+							<div role="option" value="Celosia" aria-selected="false" id="option-kc9m16">Целозия</div>
+							<div role="option" value="Freesia" aria-selected="false" id="option-37h2op">Фрезия</div>
+							<div role="option" value="Heleborus" aria-selected="false" id="option-3kp9e3">Хелеборус</div>
+							<div role="option" value="Eringium" aria-selected="false" id="option-4m9y8e">Эрингиум</div>
+						</c-select>
+					</section>
+				</div>
+				<hr>
+				<output data-testid="output"></output>
+				<hr>
+				<section class="c-panel s-clean u-text-center">
+					<button data-testid="submitter" type="submit">Вывести данные формы</button>
+					<button type="reset">Сбросить форму</button>
+				</section>
+			</form>
+			<script>
+				const $component = document.querySelector('[data-testid=target-component]')
+				const $form = document.querySelector('[data-testid=main-form]')
+				const $output = document.querySelector('[data-testid=output]')
+				const $submitter = $form.querySelector('[data-testid=submitter]')
+
+				$form.addEventListener('submit', event => {
+					event.preventDefault()
+					const $data = document.createElement('pre')
+					const formData = new FormData($form, $submitter)
+
+					console.log($form.elements)
+					console.log(Array.from(formData.keys()), Array.from(formData.values()))
+
+					for (const [key, value] of formData) {
+						$data.textContent += \`\${key}: \${value}\\n\`;
+					}
+					$output.prepend($data)
+				})
+			</script>
+		</main>
+	
+
+</body></html>"
+`;

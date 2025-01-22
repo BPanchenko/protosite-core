@@ -12,7 +12,7 @@ exports[`AvatarComponent Page Markup 1`] = `
 	<body class="t-document">
 		<main class="u-container" data-testid="container">
 			<section class="c-panel s-clean">
-				<c-avatar img="http://protosite.rocks/pictures/ava.gif" size="lg" href="https://drawteam.ru/" target="_blank" data-testid="avatar-1"><a class="c-avatar__link" href="https://drawteam.ru/" target="_blank"></a></c-avatar>
+				<c-avatar img="http://protosite.rocks/pictures/ava.gif" size="lg" href="https://drawteam.ru/" target="_blank" data-testid="avatar-1"><a href="https://drawteam.ru/" target="_blank"></a></c-avatar>
 			</section>
 			<section class="c-panel">
 				<c-avatar img="http://protosite.rocks/pictures/ava-1.gif" size="xxs"></c-avatar>
@@ -20,7 +20,7 @@ exports[`AvatarComponent Page Markup 1`] = `
 				<c-avatar img="http://protosite.rocks/pictures/ava-4.gif" size="sm"></c-avatar>
 			</section>
 			<br>
-			<c-avatar img="http://protosite.rocks/pictures/ava-2.gif" size="md"><img src="http://protosite.rocks/pictures/ava-2.gif"></c-avatar>
+			<c-avatar img="http://protosite.rocks/pictures/ava-2.gif" size="md"></c-avatar>
 			<br>
 			<br>
 			<section class="c-panel">

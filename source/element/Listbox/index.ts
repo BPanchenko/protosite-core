@@ -15,6 +15,8 @@ const template = '<slot part="container"></slot>'
 export class ListboxElement extends HTMLElement {
 	#activeIndex: number = -1
 	#selectedIndex: number = -1
+	#selectedIndexByDefault: number = -1
+
 	#internals: ElementInternals = this.attachInternals()
 	#hashmap: Map<string, Option> = new Map()
 	#ownsIDs: string[] | null = null
@@ -192,6 +194,17 @@ export class ListboxElement extends HTMLElement {
 		return updateAttributes($element, attrs)
 	}
 
+	#initSelectedIndexByDefault() {
+		this.selectedIndex = this.#selectedIndexByDefault =
+			this.options.findIndex((option) => {
+				console.log(option.$ref.deref()?.getAttribute('aria-selected'))
+				return checkTruth(
+					option.$ref.deref()?.getAttribute('aria-selected'),
+				)
+			})
+		return this
+	}
+
 	#selectElement($element?: HTMLElement) {
 		if ($element !== undefined) {
 			const attr = $element.getAttributeNode('aria-selected')
@@ -362,6 +375,9 @@ export class ListboxElement extends HTMLElement {
 					this.#ownsIDs = null
 					this.removeAttribute('aria-owns')
 				}
+
+				// 4.
+				this.#initSelectedIndexByDefault()
 			},
 			{
 				signal: this.#slotChangeCont.signal,

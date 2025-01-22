@@ -123,7 +123,7 @@ var FieldState;
     FieldState["Disabled"] = "--disabled";
 })(FieldState || (FieldState = {}));
 
-var _ListboxElement_instances, _ListboxElement_activeIndex, _ListboxElement_selectedIndex, _ListboxElement_internals, _ListboxElement_hashmap, _ListboxElement_ownsIDs, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_initOptionAttributes, _ListboxElement_selectElement, _ListboxElement_unselect, _ListboxElement_states_get, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyDown, _ListboxElement_log;
+var _ListboxElement_instances, _ListboxElement_activeIndex, _ListboxElement_selectedIndex, _ListboxElement_selectedIndexByDefault, _ListboxElement_internals, _ListboxElement_hashmap, _ListboxElement_ownsIDs, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_initOptionAttributes, _ListboxElement_initSelectedIndexByDefault, _ListboxElement_selectElement, _ListboxElement_unselect, _ListboxElement_states_get, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyDown, _ListboxElement_log;
 const template = '<slot part="container"></slot>';
 class ListboxElement extends HTMLElement {
     static initAttributes($element) {
@@ -147,6 +147,7 @@ class ListboxElement extends HTMLElement {
         _ListboxElement_instances.add(this);
         _ListboxElement_activeIndex.set(this, -1);
         _ListboxElement_selectedIndex.set(this, -1);
+        _ListboxElement_selectedIndexByDefault.set(this, -1);
         _ListboxElement_internals.set(this, this.attachInternals());
         _ListboxElement_hashmap.set(this, new Map());
         _ListboxElement_ownsIDs.set(this, null);
@@ -204,7 +205,9 @@ class ListboxElement extends HTMLElement {
     }
     formAssociatedCallback(form_) { }
     formDisabledCallback(state_) { }
-    formResetCallback() { }
+    formResetCallback() {
+        this.selectedIndex = __classPrivateFieldGet(this, _ListboxElement_selectedIndexByDefault, "f");
+    }
     formStateRestoreCallback(state_, reason_) { }
     findByValue(query) {
         for (const [id_, option] of __classPrivateFieldGet(this, _ListboxElement_hashmap, "f")) {
@@ -320,7 +323,7 @@ class ListboxElement extends HTMLElement {
         return values ? (this.multiple ? values : values[0]) : null;
     }
 }
-_ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new WeakMap(), _ListboxElement_internals = new WeakMap(), _ListboxElement_hashmap = new WeakMap(), _ListboxElement_ownsIDs = new WeakMap(), _ListboxElement_focusCont = new WeakMap(), _ListboxElement_interCont = new WeakMap(), _ListboxElement_slotChangeCont = new WeakMap(), _ListboxElement_instances = new WeakSet(), _ListboxElement_initOptionAttributes = function _ListboxElement_initOptionAttributes($element) {
+_ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new WeakMap(), _ListboxElement_selectedIndexByDefault = new WeakMap(), _ListboxElement_internals = new WeakMap(), _ListboxElement_hashmap = new WeakMap(), _ListboxElement_ownsIDs = new WeakMap(), _ListboxElement_focusCont = new WeakMap(), _ListboxElement_interCont = new WeakMap(), _ListboxElement_slotChangeCont = new WeakMap(), _ListboxElement_instances = new WeakSet(), _ListboxElement_initOptionAttributes = function _ListboxElement_initOptionAttributes($element) {
     const attrs = {
         'aria-selected': $element.ariaSelected ?? 'false',
         id: $element.id,
@@ -333,6 +336,12 @@ _ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new
     }
     $element.onclick = (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, event);
     return updateAttributes($element, attrs);
+}, _ListboxElement_initSelectedIndexByDefault = function _ListboxElement_initSelectedIndexByDefault() {
+    this.selectedIndex = __classPrivateFieldSet(this, _ListboxElement_selectedIndexByDefault, this.options.findIndex((option) => {
+        console.log(option.$ref.deref()?.getAttribute('aria-selected'));
+        return checkTruth(option.$ref.deref()?.getAttribute('aria-selected'));
+    }), "f");
+    return this;
 }, _ListboxElement_selectElement = function _ListboxElement_selectElement($element) {
     if ($element !== undefined) {
         const attr = $element.getAttributeNode('aria-selected');
@@ -382,6 +391,7 @@ _ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new
             __classPrivateFieldSet(this, _ListboxElement_ownsIDs, null, "f");
             this.removeAttribute('aria-owns');
         }
+        __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_initSelectedIndexByDefault).call(this);
     }, {
         signal: __classPrivateFieldGet(this, _ListboxElement_slotChangeCont, "f").signal,
     });

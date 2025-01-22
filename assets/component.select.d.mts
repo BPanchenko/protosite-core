@@ -8,6 +8,8 @@ export class ListboxElement extends HTMLElement {
     formAssociatedCallback(form_: any): void;
     formDisabledCallback(state_: any): void;
     formResetCallback(): void;
+    set selectedIndex(value: any);
+    get selectedIndex(): any;
     formStateRestoreCallback(state_: any, reason_: any): void;
     findByValue(query: any): any;
     search(query: any): Set<any>;
@@ -19,8 +21,6 @@ export class ListboxElement extends HTMLElement {
     get length(): any;
     get multiple(): boolean;
     get options(): any[];
-    set selectedIndex(value: any);
-    get selectedIndex(): any;
     get selectedOptions(): any[];
     get value(): string | string[];
 }
@@ -36,6 +36,7 @@ export class SelectComponent extends HTMLElement {
     attributeChangedCallback(name: any, previous: any, current: any): void;
     connectedCallback(): void;
     disconnectedCallback(): void;
+    formResetCallback(): void;
     hidePicker(): this;
     showPicker(): this;
     get disabled(): boolean;

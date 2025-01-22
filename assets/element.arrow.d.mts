@@ -1,5 +1,5 @@
 export class ArrowElement extends HTMLElement {
-    attributeChangedCallback(name: any, previous: any, current: any): void;
+    attributeChangedCallback(name_: any, previous: any, current: any): void;
     connectedCallback(): void;
 }
 export namespace ArrowElement {

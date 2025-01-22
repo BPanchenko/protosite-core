@@ -1,6 +1,6 @@
 import initShadowRoot from '#library/fn.initShadowRoot'
 
-import cssStyleSheet from '#uikit/shadow-host/element.arrow.mjs'
+import * as css from '#uikit/shadow-host/element.arrow.mjs'
 import {
 	validDirectionValues,
 	validFigureValues,
@@ -8,7 +8,13 @@ import {
 	validWeightValues,
 } from './manual'
 
-const template = `<div data-glyph=arrow part=icon></div><slot></slot>`
+const isExistingGlyph = (name: string): boolean =>
+	Array.from(css.styleSheet.cssRules).some(
+		(rule) =>
+			(rule as CSSStyleRule).selectorText === `[data-glyph="${name}"]`,
+	)
+
+const template = `<div data-glyph=arrow class="${css.eIcon}"></div><slot></slot>`
 
 export class ArrowElement extends HTMLElement {
 	#shadowRoot: ShadowRoot
@@ -37,24 +43,14 @@ export class ArrowElement extends HTMLElement {
 		})
 	}
 
-	attributeChangedCallback(name, previous, current) {
-		if (this.isConnected === false) return
+	attributeChangedCallback(name_, previous, current) {
 		if (previous === current) return
-
-		switch (name) {
-			case 'font':
-			case 'size':
-				this[name] = current
-				break
-			default:
-				this.#applyGlyph()
-		}
+		this.#applyGlyph()
 	}
 
 	connectedCallback() {
-		this.#shadowRoot.adoptedStyleSheets.push(cssStyleSheet)
+		this.#shadowRoot.adoptedStyleSheets.push(css.styleSheet)
 		this.setAttribute('role', ArrowElement.role)
-		this.#applyGlyph()
 	}
 
 	#applyGlyph() {
@@ -69,25 +65,31 @@ export class ArrowElement extends HTMLElement {
 
 		if (weight !== null) {
 			if (isValidWeight(weight)) glyphNameParts.push(weight)
-			else throw new TypeError(`Unsupported Weight "${weight}"`)
+			else throw new TypeError(`Invalid Weight: ${weight}`)
 		}
 
 		if (direction !== null) {
 			if (isValidDirection(direction)) glyphNameParts.push(direction)
-			else throw new TypeError(`Unsupported Direction "${direction}"`)
+			else throw new TypeError(`Invalid Direction: ${direction}`)
 		}
 
 		if (figure !== null) {
 			if (isValidFigure(figure)) glyphNameParts.push(figure)
-			else throw new TypeError(`Unsupported Figure "${figure}"`)
+			else throw new TypeError(`Invalid Figure: ${figure}`)
 		}
 
 		if (style !== null) {
 			if (isValidStyle(style)) glyphNameParts.push(style)
-			else throw new TypeError(`Unsupported Style "${style}"`)
+			else throw new TypeError(`Invalid Style: ${style}`)
 		}
 
-		this.#$icon.dataset.glyph = glyphNameParts.join('-')
+		const glyphName = glyphNameParts.join('-')
+		console.assert(
+			isExistingGlyph(glyphName),
+			`Unsupported Glyph: ${glyphName}`,
+		)
+
+		this.#$icon.dataset.glyph = glyphName
 	}
 
 	get #$icon(): HTMLDivElement {

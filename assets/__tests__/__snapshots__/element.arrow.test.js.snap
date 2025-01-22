@@ -13,54 +13,33 @@ exports[`ArrowComponent Page Markup 1`] = `
 	<body class="t-document">
 		<main class="u-container" data-testid="container">
 			<section class="c-panel">
-				<c-arrow glyph-direction="left" glyph-figure="fill" size="md"></c-arrow>
-				<c-arrow glyph-direction="top-left" glyph-figure="fill" glyph-style="acute" size="md"></c-arrow>
-				<c-arrow glyph-direction="top" glyph-figure="fill" glyph-style="large-acute" size="md"></c-arrow>
-				<c-arrow glyph-direction="top-right" glyph-figure="fill" glyph-style="angled" size="md"></c-arrow>
-				<c-arrow glyph-direction="right" glyph-figure="fill" glyph-style="large-angled" size="md"></c-arrow>
-				<c-arrow glyph-direction="bottom-right" glyph-figure="line" glyph-style="large-acute" size="md"></c-arrow>
-				<c-arrow glyph-direction="bottom" glyph-figure="line" glyph-style="large-oblique" size="md"></c-arrow>
-				<c-arrow glyph-direction="bottom-left" glyph-figure="line" glyph-style="oblique" size="md"></c-arrow>
-				<c-arrow glyph-direction="right" glyph-figure="angle-thick-left-bottom-line" size="md"></c-arrow>
-				<c-arrow glyph-direction="right" glyph-figure="angle-right-bottom-fill" size="md"></c-arrow>
+				<e-arrow glyph-direction="left" glyph-figure="fill" class="s-md" role="img"></e-arrow>
+				<e-arrow glyph-direction="top-left" glyph-figure="fill" glyph-style="acute" class="s-md" role="img"></e-arrow>
+				<e-arrow glyph-direction="top" glyph-figure="fill" glyph-style="large-acute" class="s-md" role="img"></e-arrow>
+				<e-arrow glyph-direction="top-right" glyph-figure="fill" glyph-style="angled" class="s-md" role="img"></e-arrow>
+				<e-arrow glyph-direction="right" glyph-figure="fill" glyph-style="large-angled" class="s-md" role="img"></e-arrow>
+				<e-arrow glyph-direction="bottom-right" glyph-figure="line" glyph-style="large-acute" class="s-md" role="img"></e-arrow>
+				<e-arrow glyph-direction="bottom" glyph-figure="line" glyph-style="large-oblique" class="s-md" role="img"></e-arrow>
+				<e-arrow glyph-direction="bottom-left" glyph-figure="line" glyph-style="oblique" class="s-md" role="img"></e-arrow>
+				<e-arrow glyph-direction="right" glyph-figure="angle-thick-left-bottom-line" class="s-md" role="img"></e-arrow>
+				<e-arrow glyph-direction="right" glyph-figure="angle-right-bottom-fill" class="s-md" role="img"></e-arrow>
 			</section>
 			<section class="c-panel">
-				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="xxs"></c-arrow>
-
-
-
+				<e-arrow glyph-weight="thick" glyph-direction="top-left" glyph-figure="line" glyph-style="large-oblique" class="s-xxs" role="img"></e-arrow>
 				&nbsp;
-				<c-arrow glyph="arrow-thick-top-left-line-large-oblique"></c-arrow>
-
-
-
+				<e-arrow glyph-weight="thick" glyph-direction="top-left" glyph-figure="line" glyph-style="large-oblique" role="img"></e-arrow>
 				&nbsp;
-				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="xs"></c-arrow>
-
-
-
+				<e-arrow glyph-weight="thick" glyph-direction="top-left" glyph-figure="line" glyph-style="large-oblique" class="s-xs" role="img"></e-arrow>
 				&nbsp;
-				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="sm"></c-arrow>
-
-
-
+				<e-arrow glyph-weight="thick" glyph-direction="top-left" glyph-figure="line" glyph-style="large-oblique" class="s-sm" role="img"></e-arrow>
 				&nbsp;
-				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="md"></c-arrow>
-
-
-
+				<e-arrow glyph-weight="thick" glyph-direction="top-left" glyph-figure="line" glyph-style="large-oblique" class="s-md" role="img"></e-arrow>
 				&nbsp;
-				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="lg"></c-arrow>
-
-
-
+				<e-arrow glyph-weight="thick" glyph-direction="top-left" glyph-figure="line" glyph-style="large-oblique" class="s-lg" role="img"></e-arrow>
 				&nbsp;
-				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="xl"></c-arrow>
-
-
-
+				<e-arrow glyph-weight="thick" glyph-direction="top-left" glyph-figure="line" glyph-style="large-oblique" class="s-xl" role="img"></e-arrow>
 				&nbsp;
-				<c-arrow glyph="arrow-thick-top-left-line-large-oblique" size="xxl"></c-arrow>
+				<e-arrow glyph-weight="thick" glyph-direction="top-left" glyph-figure="line" glyph-style="large-oblique" class="s-xxl" role="img"></e-arrow>
 			</section>
 		</main>
 	

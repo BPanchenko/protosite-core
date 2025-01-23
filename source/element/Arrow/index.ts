@@ -8,13 +8,14 @@ import {
 	validWeightValues,
 } from './manual'
 
-const isExistingGlyph = (name: string): boolean =>
-	Array.from(css.styleSheet.cssRules).some(
-		(rule) =>
-			(rule as CSSStyleRule).selectorText === `[data-glyph="${name}"]`,
-	)
+const isExistingGlyph = (name: string): boolean => {
+	for (const rule of css.styleSheet.cssRules)
+		if ((rule as CSSStyleRule).selectorText === `[data-glyph="${name}"]`)
+			return true
+	return false
+}
 
-const template = `<div data-glyph=arrow class="${css.eIcon}"></div><slot></slot>`
+const template = `<div data-glyph=arrow class="${css.icon}"></div><slot></slot>`
 
 export class ArrowElement extends HTMLElement {
 	#shadowRoot: ShadowRoot

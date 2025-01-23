@@ -337,10 +337,7 @@ _ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new
     $element.onclick = (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, event);
     return updateAttributes($element, attrs);
 }, _ListboxElement_initSelectedIndexByDefault = function _ListboxElement_initSelectedIndexByDefault() {
-    this.selectedIndex = __classPrivateFieldSet(this, _ListboxElement_selectedIndexByDefault, this.options.findIndex((option) => {
-        console.log(option.$ref.deref()?.getAttribute('aria-selected'));
-        return checkTruth(option.$ref.deref()?.getAttribute('aria-selected'));
-    }), "f");
+    this.selectedIndex = __classPrivateFieldSet(this, _ListboxElement_selectedIndexByDefault, this.options.findIndex((option) => checkTruth(option.$ref.deref()?.getAttribute('aria-selected'))), "f");
     return this;
 }, _ListboxElement_selectElement = function _ListboxElement_selectElement($element) {
     if ($element !== undefined) {
@@ -490,9 +487,9 @@ ListboxElement.observedAttributes = [
 customElements.define(ListboxElement.tagName, ListboxElement);
 customElements.get(ListboxElement.tagName);
 
-const template = "<link href=\"http://assets.protosite.rocks/core/component.select.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:state(--defined)) {\n\tcontent-visibility: hidden;\n}\n:host(:state(--loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox\" id=\"button\" role=\"button\" tabindex=\"0\"><div aria-placeholder=\"Выбрать...\" part=\"selectedcontent\" id=\"status\" role=\"status\"></div></div><e-listbox aria-labelledby=\"button\" id=\"listbox\" part=\"listbox\" tabindex=\"1\"><slot></slot></e-listbox>";
+const template = "<link href=\"http://assets.protosite.rocks/core/component.select.css\" rel=\"stylesheet\" type=\"text/css\"><style type=\"text/css\">:host(:state(--defined)) {\n\tcontent-visibility: hidden;\n}\n:host(:state(--loaded)) {\n\tcontent-visibility: visible;\n}</style><div aria-controls=\"listbox\" id=\"button\" role=\"button\" tabindex=\"0\"><div aria-placeholder=\"Выбрать...\" part=\"selectedcontent\" id=\"status\" role=\"status\"></div></div><e-listbox aria-labelledby=\"button\" id=\"picker\" part=\"listbox\" tabindex=\"1\"><slot></slot></e-listbox>";
 
-var _SelectComponent_instances, _SelectComponent_$root, _SelectComponent_internals, _SelectComponent_observer, _SelectComponent_focusCont, _SelectComponent_interCont, _SelectComponent_passingCont, _SelectComponent_slotChangeCont, _SelectComponent_$button_get, _SelectComponent_$status_get, _SelectComponent_$listbox_get, _SelectComponent_states_get, _SelectComponent_listenInput, _SelectComponent_onInput, _SelectComponent_listenFocus, _SelectComponent_onBlur, _SelectComponent_onFocus, _SelectComponent_listenInteraction, _SelectComponent_onAnimationEnd, _SelectComponent_onClick, _SelectComponent_onKeyDown, _SelectComponent_listenMutations, _SelectComponent_log, _SelectComponent_passEventAlong;
+var _SelectComponent_instances, _SelectComponent_$root, _SelectComponent_internals, _SelectComponent_observer, _SelectComponent_focusCont, _SelectComponent_interCont, _SelectComponent_passingCont, _SelectComponent_slotChangeCont, _SelectComponent_$button_get, _SelectComponent_$status_get, _SelectComponent_$picker_get, _SelectComponent_states_get, _SelectComponent_listenInput, _SelectComponent_onInput, _SelectComponent_listenFocus, _SelectComponent_onBlur, _SelectComponent_onFocus, _SelectComponent_listenInteraction, _SelectComponent_onAnimationEnd, _SelectComponent_onClick, _SelectComponent_onKeyDown, _SelectComponent_listenMutations, _SelectComponent_log, _SelectComponent_passEventAlong;
 class SelectComponent extends HTMLElement {
     static initAttributes(element, options) {
         const data = {
@@ -590,7 +587,7 @@ class SelectComponent extends HTMLElement {
             internals: __classPrivateFieldGet(this, _SelectComponent_internals, "f"),
         });
         SelectComponent.initAccessibilityTree(this, {
-            $listbox: __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get),
+            $listbox: __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get),
             $status: __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$status_get),
             internals: __classPrivateFieldGet(this, _SelectComponent_internals, "f"),
         });
@@ -610,20 +607,19 @@ class SelectComponent extends HTMLElement {
         __classPrivateFieldGet(this, _SelectComponent_slotChangeCont, "f")?.abort();
     }
     formResetCallback() {
-        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).formResetCallback();
+        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).formResetCallback();
     }
     hidePicker() {
         if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(ComboboxState.Collapsed))
             return this;
         updateAttributes(this, 'aria-expanded', false);
-        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$button_get).focus();
         return this;
     }
     showPicker() {
         if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(ComboboxState.Expanded))
             return this;
         updateAttributes(this, 'aria-expanded', true);
-        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).focus();
+        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).focus();
         return this;
     }
     get disabled() {
@@ -643,7 +639,7 @@ class SelectComponent extends HTMLElement {
         return (this.dataset.name || this.getAttribute('name')) ?? null;
     }
     get options() {
-        return __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).options;
+        return __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).options;
     }
     get readonly() {
         return checkTruth(__classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaReadOnly);
@@ -652,13 +648,13 @@ class SelectComponent extends HTMLElement {
         return checkTruth(__classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaRequired);
     }
     get length() {
-        return __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).length;
+        return __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).length;
     }
     get type() {
         return 'select' + (this.multiple ? '-multiple' : '-one');
     }
     get value() {
-        return __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).value;
+        return __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).value;
     }
 }
 _SelectComponent_$root = new WeakMap(), _SelectComponent_internals = new WeakMap(), _SelectComponent_observer = new WeakMap(), _SelectComponent_focusCont = new WeakMap(), _SelectComponent_interCont = new WeakMap(), _SelectComponent_passingCont = new WeakMap(), _SelectComponent_slotChangeCont = new WeakMap(), _SelectComponent_instances = new WeakSet(), _SelectComponent_$button_get = function _SelectComponent_$button_get() {
@@ -671,8 +667,8 @@ _SelectComponent_$root = new WeakMap(), _SelectComponent_internals = new WeakMap
     if ($element === null)
         throw new Error('Element of the selected content not found but required!');
     return $element;
-}, _SelectComponent_$listbox_get = function _SelectComponent_$listbox_get() {
-    const $element = __classPrivateFieldGet(this, _SelectComponent_$root, "f").getElementById('listbox');
+}, _SelectComponent_$picker_get = function _SelectComponent_$picker_get() {
+    const $element = __classPrivateFieldGet(this, _SelectComponent_$root, "f").getElementById('picker');
     if ($element === null)
         throw new Error('Listbox element not found but required!');
     return $element;
@@ -686,14 +682,14 @@ _SelectComponent_$root = new WeakMap(), _SelectComponent_internals = new WeakMap
         passive: true,
         signal: __classPrivateFieldGet(this, _SelectComponent_passingCont, "f").signal,
     };
-    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).addEventListener('beforeinput', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_passEventAlong).call(this, e), options);
-    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).addEventListener('input', (e) => {
+    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).addEventListener('beforeinput', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_passEventAlong).call(this, e), options);
+    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).addEventListener('input', (e) => {
         __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onInput).call(this, e);
         __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_passEventAlong).call(this, e);
     }, options);
     return __classPrivateFieldGet(this, _SelectComponent_passingCont, "f");
 }, _SelectComponent_onInput = function _SelectComponent_onInput(event_) {
-    const { label, value } = this.options[__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).selectedIndex];
+    const { label = null, value = null } = this.options[__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).selectedIndex] ?? {};
     __classPrivateFieldGet(this, _SelectComponent_internals, "f").setFormValue(value);
     __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$status_get).innerText = label ?? '';
     value !== null && this.hidePicker();
@@ -721,14 +717,14 @@ _SelectComponent_$root = new WeakMap(), _SelectComponent_internals = new WeakMap
         passive: true,
         signal: __classPrivateFieldGet(this, _SelectComponent_interCont, "f").signal,
     };
-    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).addEventListener('animationend', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onAnimationEnd).call(this, e), options);
+    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).addEventListener('animationend', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onAnimationEnd).call(this, e), options);
     this.addEventListener('click', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onClick).call(this, e), options);
     this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onKeyDown).call(this, e), options);
     return __classPrivateFieldGet(this, _SelectComponent_interCont, "f");
 }, _SelectComponent_onAnimationEnd = function _SelectComponent_onAnimationEnd(event) {
     __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).delete(ComponentState.Animation);
     if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(ComboboxState.Expanded))
-        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get).focus();
+        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).focus();
     else
         __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$button_get).focus();
     __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_log).call(this, `event:${event.type}`);
@@ -743,6 +739,7 @@ _SelectComponent_$root = new WeakMap(), _SelectComponent_internals = new WeakMap
             break;
         case 'ArrowUp':
         case 'Escape':
+            __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$button_get).focus();
             this.hidePicker();
             break;
         default:
@@ -765,7 +762,7 @@ _SelectComponent_$root = new WeakMap(), _SelectComponent_internals = new WeakMap
             }
         }
     })), "f");
-    __classPrivateFieldGet(this, _SelectComponent_observer, "f").observe(__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$listbox_get), {
+    __classPrivateFieldGet(this, _SelectComponent_observer, "f").observe(__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get), {
         attributes: true,
         attributeFilter: ['aria-activedescendant', 'aria-owns'],
     });

@@ -337,10 +337,7 @@ _ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new
     $element.onclick = (event) => __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_onClick).call(this, event);
     return updateAttributes($element, attrs);
 }, _ListboxElement_initSelectedIndexByDefault = function _ListboxElement_initSelectedIndexByDefault() {
-    this.selectedIndex = __classPrivateFieldSet(this, _ListboxElement_selectedIndexByDefault, this.options.findIndex((option) => {
-        console.log(option.$ref.deref()?.getAttribute('aria-selected'));
-        return checkTruth(option.$ref.deref()?.getAttribute('aria-selected'));
-    }), "f");
+    this.selectedIndex = __classPrivateFieldSet(this, _ListboxElement_selectedIndexByDefault, this.options.findIndex((option) => checkTruth(option.$ref.deref()?.getAttribute('aria-selected'))), "f");
     return this;
 }, _ListboxElement_selectElement = function _ListboxElement_selectElement($element) {
     if ($element !== undefined) {

@@ -198,12 +198,9 @@ export class ListboxElement extends HTMLElement {
 
 	#initSelectedIndexByDefault() {
 		this.selectedIndex = this.#selectedIndexByDefault =
-			this.options.findIndex((option) => {
-				console.log(option.$ref.deref()?.getAttribute('aria-selected'))
-				return checkTruth(
-					option.$ref.deref()?.getAttribute('aria-selected'),
-				)
-			})
+			this.options.findIndex((option) =>
+				checkTruth(option.$ref.deref()?.getAttribute('aria-selected')),
+			)
 		return this
 	}
 

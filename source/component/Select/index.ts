@@ -167,7 +167,7 @@ class SelectComponent extends HTMLElement {
 			internals: this.#internals,
 		})
 		SelectComponent.initAccessibilityTree(this, {
-			$listbox: this.#$listbox,
+			$listbox: this.#$picker,
 			$status: this.#$status,
 			internals: this.#internals,
 		})
@@ -194,20 +194,19 @@ class SelectComponent extends HTMLElement {
 	}
 
 	formResetCallback() {
-		this.#$listbox.formResetCallback()
+		this.#$picker.formResetCallback()
 	}
 
 	hidePicker() {
 		if (this.#states.has(ComboboxState.Collapsed)) return this
 		updateAttributes(this, 'aria-expanded', false)
-		this.#$button.focus()
 		return this
 	}
 
 	showPicker() {
 		if (this.#states.has(ComboboxState.Expanded)) return this
 		updateAttributes(this, 'aria-expanded', true)
-		this.#$listbox.focus()
+		this.#$picker.focus()
 		return this
 	}
 
@@ -236,7 +235,7 @@ class SelectComponent extends HTMLElement {
 	}
 
 	get options(): Option[] {
-		return this.#$listbox.options
+		return this.#$picker.options
 	}
 
 	get readonly(): boolean {
@@ -248,7 +247,7 @@ class SelectComponent extends HTMLElement {
 	}
 
 	get length(): number {
-		return this.#$listbox.length
+		return this.#$picker.length
 	}
 
 	get type(): string {
@@ -256,7 +255,7 @@ class SelectComponent extends HTMLElement {
 	}
 
 	get value(): string | string[] | null {
-		return this.#$listbox.value
+		return this.#$picker.value
 	}
 
 	get #$button(): HTMLElement | never {
@@ -275,8 +274,8 @@ class SelectComponent extends HTMLElement {
 		return $element
 	}
 
-	get #$listbox(): ListboxElement | never {
-		const $element = this.#$root.getElementById('listbox') as ListboxElement
+	get #$picker(): ListboxElement | never {
+		const $element = this.#$root.getElementById('picker') as ListboxElement
 		if ($element === null)
 			throw new Error('Listbox element not found but required!')
 		return $element
@@ -296,13 +295,13 @@ class SelectComponent extends HTMLElement {
 			signal: this.#passingCont.signal,
 		}
 
-		this.#$listbox.addEventListener(
+		this.#$picker.addEventListener(
 			'beforeinput',
 			(e) => this.#passEventAlong(e),
 			options,
 		)
 
-		this.#$listbox.addEventListener(
+		this.#$picker.addEventListener(
 			'input',
 			(e: InputEvent) => {
 				this.#onInput(e)
@@ -315,7 +314,8 @@ class SelectComponent extends HTMLElement {
 	}
 
 	#onInput(event_: InputEvent) {
-		const { label, value } = this.options[this.#$listbox.selectedIndex]
+		const { label = null, value = null } =
+			this.options[this.#$picker.selectedIndex] ?? {}
 		this.#internals.setFormValue(value)
 		this.#$status.innerText = label ?? ''
 		value !== null && this.hidePicker()
@@ -356,7 +356,7 @@ class SelectComponent extends HTMLElement {
 			signal: this.#interCont.signal,
 		}
 
-		this.#$listbox.addEventListener(
+		this.#$picker.addEventListener(
 			'animationend',
 			(e) => this.#onAnimationEnd(e),
 			options,
@@ -370,7 +370,7 @@ class SelectComponent extends HTMLElement {
 
 	#onAnimationEnd(event: AnimationEvent) {
 		this.#states.delete(ComponentState.Animation)
-		if (this.#states.has(ComboboxState.Expanded)) this.#$listbox.focus()
+		if (this.#states.has(ComboboxState.Expanded)) this.#$picker.focus()
 		else this.#$button.focus()
 		this.#log(`event:${event.type}`)
 	}
@@ -388,6 +388,7 @@ class SelectComponent extends HTMLElement {
 				break
 			case 'ArrowUp':
 			case 'Escape':
+				this.#$button.focus()
 				this.hidePicker()
 				break
 			default:
@@ -419,7 +420,7 @@ class SelectComponent extends HTMLElement {
 			}),
 		)
 
-		this.#observer.observe(this.#$listbox, {
+		this.#observer.observe(this.#$picker, {
 			attributes: true,
 			attributeFilter: ['aria-activedescendant', 'aria-owns'],
 		})

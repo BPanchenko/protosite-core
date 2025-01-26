@@ -265,9 +265,17 @@ class ListboxElement extends HTMLElement {
 
 		const $current = list[current].$ref.deref()
 		if ($current !== undefined) {
-			$current.setAttribute('aria-current', 'true')
+			// 1.
 			this.#activeIndex = current
 			this.setAttribute('aria-activedescendant', $current.id)
+			// 2.
+			$current.setAttribute('aria-current', 'true')
+			if (this.#states.has(CustomState.Scrolled))
+				$current.scrollIntoView({
+					behavior: 'smooth',
+					block: 'center',
+					inline: 'center',
+				})
 		} else {
 			this.#activeIndex = -1
 			this.removeAttribute('aria-activedescendant')

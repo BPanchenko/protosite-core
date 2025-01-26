@@ -34,7 +34,7 @@ class SelectComponent extends HTMLElement {
 	static readonly role = 'combobox'
 	static readonly tagName = 'c-select'
 
-	static readonly observedAttributes = [
+	static readonly observedAttributes = <const>[
 		'aria-disabled',
 		'aria-expanded',
 		'aria-multiselectable',
@@ -127,7 +127,11 @@ class SelectComponent extends HTMLElement {
 		this.#states.add(CustomState.Defined)
 	}
 
-	attributeChangedCallback(name, previous, current) {
+	attributeChangedCallback(
+		name: string,
+		previous: string | null,
+		current: string | null,
+	) {
 		if (false === this.isConnected) return
 		if (previous === current) return
 

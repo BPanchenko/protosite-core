@@ -33,7 +33,7 @@ class ListboxElement extends HTMLElement {
 	static readonly role = 'listbox'
 	static readonly tagName = 'e-listbox'
 
-	static readonly observedAttributes = [
+	static readonly observedAttributes = <const>[
 		'aria-activedescendant',
 		'aria-disabled',
 		'aria-multiselectable',

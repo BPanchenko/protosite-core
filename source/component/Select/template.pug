@@ -10,22 +10,19 @@ style(type="text/css").
 	:host(:state(--loaded)) {
 		content-visibility: visible;
 	}
-div(
+div#button(
 	aria-controls="listbox"
-	id="button"
 	role="button"
-	tabindex="0"
+	tabindex=0
 )
-	div(
+	div#status(
 		aria-placeholder="Выбрать..."
 		part="selectedcontent"
-		id="status"
 		role="status"
 	)
-e-listbox(
+e-listbox#picker(
 	aria-labelledby="button"
-	id="picker"
 	part="listbox"
-	tabindex="0"
+	tabindex=0
 )
 	slot

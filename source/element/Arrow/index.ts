@@ -20,7 +20,7 @@ const template = `<div data-glyph=arrow class="${css.icon}"></div><slot></slot>`
 export class ArrowElement extends HTMLElement {
 	#shadowRoot: ShadowRoot
 
-	static readonly observedAttributes: string[] = [
+	static readonly observedAttributes: string[] = <const>[
 		'glyph-direction',
 		'glyph-figure',
 		'glyph-style',

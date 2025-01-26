@@ -1,11 +1,12 @@
 export class AvatarComponent extends HTMLElement {
-    static observedAttributes: string[];
-    static tagName: string;
-    /** @param {Avatar.Attributes} [attributes] */
-    constructor(attributes?: Avatar.Attributes);
-    attributeChangedCallback(name: any): void;
+    static initAttributes(element: any): Map<any, any>;
+    attributeChangedCallback(name: any, previous: any, current: any): void;
     connectedCallback(): void;
-    #private;
+}
+export namespace AvatarComponent {
+    let observedAttributes: string[];
+    let role: string;
+    let tagName: string;
 }
 declare const index: CustomElementConstructor;
 export { index as default };

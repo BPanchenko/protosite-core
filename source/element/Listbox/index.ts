@@ -439,7 +439,6 @@ class ListboxElement extends HTMLElement {
 
 	#onFocus(event: FocusEvent) {
 		this.#listenInteraction()
-		if (this.#activeIndex < 0) this.#activeIndex = 0
 		this.#log(`event:${event.type}`)
 	}
 

@@ -89,18 +89,6 @@ function updateAttributes(element, objectOrAttrName, attrValue) {
         .map((name) => [name, element.getAttributeNode(name)]));
 }
 
-var CustomState;
-(function (CustomState) {
-    CustomState["Animation"] = "--animating";
-    CustomState["Collapsed"] = "--collapsed";
-    CustomState["Defined"] = "--defined";
-    CustomState["Disabled"] = "--disabled";
-    CustomState["Expanded"] = "--expanded";
-    CustomState["Interactive"] = "--interactive";
-    CustomState["Loaded"] = "--loaded";
-    CustomState["Scrolled"] = "--scrolled";
-})(CustomState || (CustomState = {}));
-
 const chars = 'abekmhopctyx123456789';
 const generateID = (properties) => {
     const { prefix, suffix, length = 6, checklist } = properties;
@@ -157,7 +145,7 @@ class ListboxElement extends HTMLElement {
         });
         ListboxElement.initAttributes(this);
         __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_listenAssignedNodes).call(this);
-        __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add(CustomState.Defined);
+        __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add("--defined");
     }
     attributeChangedCallback(name, previous, current) {
         if (false === this.isConnected)
@@ -174,11 +162,11 @@ class ListboxElement extends HTMLElement {
                 break;
             case 'aria-disabled':
                 if (isTruth) {
-                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add(CustomState.Disabled);
+                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add("--disabled");
                     __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
                 }
                 else {
-                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).delete(CustomState.Disabled);
+                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).delete("--disabled");
                 }
                 __classPrivateFieldGet(this, _ListboxElement_internals, "f").ariaDisabled = current;
                 break;
@@ -253,9 +241,9 @@ class ListboxElement extends HTMLElement {
             : __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_$container_get).scrollWidth;
         const hasScrollBar = scrollSize > clientSize;
         if (hasScrollBar)
-            __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add(CustomState.Scrolled);
+            __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add("--scrolled");
         else
-            __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).delete(CustomState.Scrolled);
+            __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).delete("--scrolled");
     }
     get activeIndex() {
         return __classPrivateFieldGet(this, _ListboxElement_activeIndex, "f");
@@ -271,7 +259,7 @@ class ListboxElement extends HTMLElement {
             __classPrivateFieldSet(this, _ListboxElement_activeIndex, current, "f");
             this.setAttribute('aria-activedescendant', $current.id);
             $current.setAttribute('aria-current', 'true');
-            if (__classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).has(CustomState.Scrolled))
+            if (__classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).has("--scrolled"))
                 $current.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center',
@@ -285,7 +273,7 @@ class ListboxElement extends HTMLElement {
         }
     }
     get disabled() {
-        return (__classPrivateFieldGet(this, _ListboxElement_internals, "f").states.has(CustomState.Disabled) &&
+        return (__classPrivateFieldGet(this, _ListboxElement_internals, "f").states.has("--disabled") &&
             checkTruth(__classPrivateFieldGet(this, _ListboxElement_internals, "f").ariaDisabled) &&
             checkTruth(this.ariaDisabled));
     }
@@ -569,7 +557,7 @@ class SelectComponent extends HTMLElement {
         SelectComponent.initAttributes(this, {
             shadowRoot: __classPrivateFieldGet(this, _SelectComponent_$root, "f"),
         });
-        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add(CustomState.Defined);
+        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add("--defined");
     }
     attributeChangedCallback(name, previous, current) {
         if (false === this.isConnected)
@@ -581,17 +569,17 @@ class SelectComponent extends HTMLElement {
         switch (name) {
             case 'aria-disabled':
                 if (isTruth) {
-                    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add(CustomState.Disabled);
+                    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add("--disabled");
                     __classPrivateFieldGet(this, _SelectComponent_interCont, "f")?.abort();
                 }
                 else {
-                    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).delete(CustomState.Disabled);
+                    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).delete("--disabled");
                 }
                 __classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaDisabled = isTruth.toString();
                 break;
             case 'aria-expanded':
-                __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).delete(isFalsy ? CustomState.Expanded : CustomState.Collapsed);
-                __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add(isTruth ? CustomState.Expanded : CustomState.Collapsed);
+                __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).delete(isFalsy ? "--expanded" : "--collapsed");
+                __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add(isTruth ? "--expanded" : "--collapsed");
                 __classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaExpanded = isTruth.toString();
                 break;
             case 'aria-multiselectable':
@@ -612,9 +600,9 @@ class SelectComponent extends HTMLElement {
         __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_listenFocus).call(this);
         __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_listenInput).call(this);
         __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_listenMutations).call(this);
-        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add(CustomState.Interactive);
+        __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add("--interactive");
         const link = __classPrivateFieldGet(this, _SelectComponent_$root, "f").querySelector('link');
-        link && (link.onload = () => __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add(CustomState.Loaded));
+        link && (link.onload = () => __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).add("--loaded"));
         __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_log).call(this, 'Connected Callback');
     }
     disconnectedCallback() {
@@ -628,13 +616,13 @@ class SelectComponent extends HTMLElement {
         __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).formResetCallback();
     }
     hidePicker() {
-        if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(CustomState.Collapsed))
+        if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has("--collapsed"))
             return this;
         updateAttributes(this, 'aria-expanded', false);
         return this;
     }
     showPicker() {
-        if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(CustomState.Expanded))
+        if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has("--expanded"))
             return this;
         updateAttributes(this, 'aria-expanded', true);
         __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).focus();
@@ -642,12 +630,12 @@ class SelectComponent extends HTMLElement {
         return this;
     }
     get disabled() {
-        return (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(CustomState.Disabled) &&
+        return (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has("--disabled") &&
             checkTruth(__classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaDisabled) &&
             checkTruth(this.ariaDisabled));
     }
     get expanded() {
-        return (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(CustomState.Expanded) &&
+        return (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has("--expanded") &&
             checkTruth(__classPrivateFieldGet(this, _SelectComponent_internals, "f").ariaExpanded) &&
             checkTruth(this.ariaExpanded));
     }
@@ -741,8 +729,8 @@ _SelectComponent_$root = new WeakMap(), _SelectComponent_internals = new WeakMap
     this.addEventListener('keydown', (e) => __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_onKeyDown).call(this, e), options);
     return __classPrivateFieldGet(this, _SelectComponent_interCont, "f");
 }, _SelectComponent_onAnimationEnd = function _SelectComponent_onAnimationEnd(event) {
-    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).delete(CustomState.Animation);
-    if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has(CustomState.Expanded))
+    __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).delete("--animating");
+    if (__classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_states_get).has("--expanded"))
         __classPrivateFieldGet(this, _SelectComponent_instances, "a", _SelectComponent_$picker_get).focus();
     __classPrivateFieldGet(this, _SelectComponent_instances, "m", _SelectComponent_log).call(this, `event:${event.type}`);
 }, _SelectComponent_onClick = function _SelectComponent_onClick(event) {

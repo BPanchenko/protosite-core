@@ -1,4 +1,4 @@
-export enum CustomState {
+const enum CustomState {
 	Animation = '--animating',
 	Collapsed = '--collapsed',
 	Defined = '--defined',
@@ -8,3 +8,5 @@ export enum CustomState {
 	Loaded = '--loaded',
 	Scrolled = '--scrolled',
 }
+
+export default CustomState

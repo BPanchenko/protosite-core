@@ -3,11 +3,16 @@ import checkTruth from '#library/fn.checkTruth'
 import generateID from '#library/fn.generateID'
 import initShadowRoot from '#library/fn.initShadowRoot'
 import updateAttributes from '#library/fn.updateAttributes'
-import { CustomState } from '#settings'
 
-import type { Option } from './types'
+import CustomState from '#library/enum.custom-state'
 
 import template from './template.pug'
+
+interface Option {
+	$ref: WeakRef<HTMLElement>
+	label: string | null
+	value: string | null
+}
 
 class ListboxElement extends HTMLElement {
 	#activeIndex: number = -1

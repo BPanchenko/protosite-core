@@ -106,18 +106,6 @@ function updateAttributes(element, objectOrAttrName, attrValue) {
         .map((name) => [name, element.getAttributeNode(name)]));
 }
 
-var CustomState;
-(function (CustomState) {
-    CustomState["Animation"] = "--animating";
-    CustomState["Collapsed"] = "--collapsed";
-    CustomState["Defined"] = "--defined";
-    CustomState["Disabled"] = "--disabled";
-    CustomState["Expanded"] = "--expanded";
-    CustomState["Interactive"] = "--interactive";
-    CustomState["Loaded"] = "--loaded";
-    CustomState["Scrolled"] = "--scrolled";
-})(CustomState || (CustomState = {}));
-
 const template = "<style type=\"text/css\">:host::part(container) {\n\tdisplay: block;\n\toverflow: hidden;\n}\n\n:host(:state(--scrolled))::part(container) {\n\tscroll-behavior: smooth;\n\tscroll-snap-stop: always;\n}\n\n:host([aria-orientation='vertical']:state(--scrolled))::part(container) {\n\toverflow-y: scroll;\n}\n\n:host([aria-orientation='horizontal']:state(--scrolled))::part(container) {\n\toverflow-x: scroll;\n}\n</style><slot part=\"container\"></slot>";
 
 var _ListboxElement_instances, _ListboxElement_activeIndex, _ListboxElement_selectedIndex, _ListboxElement_selectedIndexByDefault, _ListboxElement_internals, _ListboxElement_hashmap, _ListboxElement_ownsIDs, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_initOptionAttributes, _ListboxElement_initSelectedIndexByDefault, _ListboxElement_selectElement, _ListboxElement_unselect, _ListboxElement_states_get, _ListboxElement_$container_get, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyDown, _ListboxElement_log;
@@ -157,7 +145,7 @@ class ListboxElement extends HTMLElement {
         });
         ListboxElement.initAttributes(this);
         __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_listenAssignedNodes).call(this);
-        __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add(CustomState.Defined);
+        __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add("--defined");
     }
     attributeChangedCallback(name, previous, current) {
         if (false === this.isConnected)
@@ -174,11 +162,11 @@ class ListboxElement extends HTMLElement {
                 break;
             case 'aria-disabled':
                 if (isTruth) {
-                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add(CustomState.Disabled);
+                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add("--disabled");
                     __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
                 }
                 else {
-                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).delete(CustomState.Disabled);
+                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).delete("--disabled");
                 }
                 __classPrivateFieldGet(this, _ListboxElement_internals, "f").ariaDisabled = current;
                 break;
@@ -253,9 +241,9 @@ class ListboxElement extends HTMLElement {
             : __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_$container_get).scrollWidth;
         const hasScrollBar = scrollSize > clientSize;
         if (hasScrollBar)
-            __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add(CustomState.Scrolled);
+            __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add("--scrolled");
         else
-            __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).delete(CustomState.Scrolled);
+            __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).delete("--scrolled");
     }
     get activeIndex() {
         return __classPrivateFieldGet(this, _ListboxElement_activeIndex, "f");
@@ -271,7 +259,7 @@ class ListboxElement extends HTMLElement {
             __classPrivateFieldSet(this, _ListboxElement_activeIndex, current, "f");
             this.setAttribute('aria-activedescendant', $current.id);
             $current.setAttribute('aria-current', 'true');
-            if (__classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).has(CustomState.Scrolled))
+            if (__classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).has("--scrolled"))
                 $current.scrollIntoView({
                     behavior: 'smooth',
                     block: 'center',
@@ -285,7 +273,7 @@ class ListboxElement extends HTMLElement {
         }
     }
     get disabled() {
-        return (__classPrivateFieldGet(this, _ListboxElement_internals, "f").states.has(CustomState.Disabled) &&
+        return (__classPrivateFieldGet(this, _ListboxElement_internals, "f").states.has("--disabled") &&
             checkTruth(__classPrivateFieldGet(this, _ListboxElement_internals, "f").ariaDisabled) &&
             checkTruth(this.ariaDisabled));
     }

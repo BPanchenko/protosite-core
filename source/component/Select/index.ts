@@ -3,7 +3,8 @@ import checkTruth from '#library/fn.checkTruth'
 import initShadowRoot from '#library/fn.initShadowRoot'
 import updateAttributes from '#library/fn.updateAttributes'
 
-import { CustomState } from '#settings'
+import CustomState from '#library/enum.custom-state'
+
 import { ListboxElement, type Option } from '#element/Listbox/index'
 
 import template from './template.pug'

@@ -6,12 +6,12 @@ import type { Primitive } from '#types'
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-autocomplete)
  */
 
-export class AriaAutoCompleteAttribute extends AriaAttribute {
-	static attributeName: string = 'aria-autocomplete'
-	static categoryName: AriaCategory = AriaCategory.Widget
-	static default: AriaAutoCompleteValue = 'none'
-	static propertyName: string = 'ariaAutoComplete'
-	static validValues: Array<string> = <const>[
+class AriaAutoCompleteAttribute extends AriaAttribute {
+	static readonly attributeName: string = 'aria-autocomplete'
+	static readonly categoryName: AriaCategory = AriaCategory.Widget
+	static readonly default: AriaAutoCompleteValue = 'none'
+	static readonly propertyName: string = 'ariaAutoComplete'
+	static readonly validValues: Array<string> = <const>[
 		'none',
 		'inline',
 		'list',
@@ -42,3 +42,5 @@ export class AriaAutoCompleteAttribute extends AriaAttribute {
 
 export type AriaAutoCompleteValue =
 	(typeof AriaAutoCompleteAttribute.validValues)[number]
+
+export default AriaAutoCompleteAttribute

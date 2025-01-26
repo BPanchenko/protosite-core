@@ -5,10 +5,10 @@ import { StateAttribute } from './abstr.StateAttribute'
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-required)
  */
 
-export class AriaRequiredAttribute extends StateAttribute {
-	static attributeName: string = 'aria-required'
-	static categoryName: AriaCategory = AriaCategory.Widget
-	static propertyName: string = 'ariaRequired'
+class AriaRequiredAttribute extends StateAttribute {
+	static readonly attributeName: string = 'aria-required'
+	static readonly categoryName: AriaCategory = AriaCategory.Widget
+	static readonly propertyName: string = 'ariaRequired'
 
 	get name() {
 		return AriaRequiredAttribute.attributeName
@@ -20,3 +20,5 @@ export class AriaRequiredAttribute extends StateAttribute {
 		return AriaRequiredAttribute.propertyName
 	}
 }
+
+export default AriaRequiredAttribute

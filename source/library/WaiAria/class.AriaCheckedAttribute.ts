@@ -8,12 +8,12 @@ import type { Primitive } from '#types'
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-checked)
  */
 
-export class AriaCheckedAttribute extends AriaAttribute {
-	static attributeName: string = 'aria-checked'
-	static categoryName: AriaCategory = AriaCategory.Widget
-	static default: AriaCheckedValue = 'undefined'
-	static propertyName: string = 'ariaChecked'
-	static validValues: Array<string> = <const>[
+class AriaCheckedAttribute extends AriaAttribute {
+	static readonly attributeName: string = 'aria-checked'
+	static readonly categoryName: AriaCategory = AriaCategory.Widget
+	static readonly default: AriaCheckedValue = 'undefined'
+	static readonly propertyName: string = 'ariaChecked'
+	static readonly validValues: Array<string> = <const>[
 		'false',
 		'true',
 		'mixed',
@@ -59,3 +59,5 @@ export class AriaCheckedAttribute extends AriaAttribute {
 }
 
 export type AriaCheckedValue = (typeof AriaCheckedAttribute.validValues)[number]
+
+export default AriaCheckedAttribute

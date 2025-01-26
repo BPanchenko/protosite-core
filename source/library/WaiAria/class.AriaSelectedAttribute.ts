@@ -5,10 +5,10 @@ import { StateAttribute } from './abstr.StateAttribute'
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-selected)
  */
 
-export class AriaSelectedAttribute extends StateAttribute {
-	static attributeName: string = 'aria-selected'
-	static categoryName: AriaCategory = AriaCategory.Widget
-	static propertyName: string = 'ariaSelected'
+class AriaSelectedAttribute extends StateAttribute {
+	static readonly attributeName: string = 'aria-selected'
+	static readonly categoryName: AriaCategory = AriaCategory.Widget
+	static readonly propertyName: string = 'ariaSelected'
 
 	get name() {
 		return AriaSelectedAttribute.attributeName
@@ -20,3 +20,5 @@ export class AriaSelectedAttribute extends StateAttribute {
 		return AriaSelectedAttribute.propertyName
 	}
 }
+
+export default AriaSelectedAttribute

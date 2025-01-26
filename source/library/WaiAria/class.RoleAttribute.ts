@@ -15,10 +15,10 @@ import type { Primitive } from '#types'
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-autocomplete)
  */
 
-export class RoleAttribute extends AriaAttribute {
-	static attributeName: string = 'role'
-	static propertyName: string = 'role'
-	static validValues = roles
+class RoleAttribute extends AriaAttribute {
+	static readonly attributeName: string = 'role'
+	static readonly propertyName: string = 'role'
+	static readonly validValues = roles
 
 	get name() {
 		return RoleAttribute.attributeName
@@ -65,3 +65,5 @@ export type StructureRole = (typeof structureRoles)[number]
 export type WidgetRole = (typeof widgetRoles)[number]
 export type WindowRole = (typeof windowRoles)[number]
 export type RoleAttributeValue = (typeof roles)[number]
+
+export default RoleAttribute

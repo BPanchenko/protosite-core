@@ -5,8 +5,8 @@ import { AriaAttribute } from './abstr.AriaAttribute'
 import type { Primitive } from '#types'
 
 export abstract class StateAttribute extends AriaAttribute {
-	static default: StateAttributeValue = 'false'
-	static validValues = <const>['false', 'true']
+	static readonly default: StateAttributeValue = 'false'
+	static readonly validValues = <const>['false', 'true']
 
 	isFalsy() {
 		return checkFalsy(this.value)

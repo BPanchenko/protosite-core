@@ -5,10 +5,10 @@ import { StateAttribute } from './abstr.StateAttribute'
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-multiselectable)
  */
 
-export class AriaMultiSelectableAttribute extends StateAttribute {
-	static attributeName: string = 'aria-multiselectable'
-	static categoryName: AriaCategory = AriaCategory.Widget
-	static propertyName: string = 'ariaMultiSelectable'
+class AriaMultiSelectableAttribute extends StateAttribute {
+	static readonly attributeName: string = 'aria-multiselectable'
+	static readonly categoryName: AriaCategory = AriaCategory.Widget
+	static readonly propertyName: string = 'ariaMultiSelectable'
 
 	get name() {
 		return AriaMultiSelectableAttribute.attributeName
@@ -20,3 +20,5 @@ export class AriaMultiSelectableAttribute extends StateAttribute {
 		return AriaMultiSelectableAttribute.propertyName
 	}
 }
+
+export default AriaMultiSelectableAttribute

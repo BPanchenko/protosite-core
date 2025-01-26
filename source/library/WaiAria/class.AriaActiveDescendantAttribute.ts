@@ -4,10 +4,10 @@ import { AriaAttribute, AriaCategory } from './abstr.AriaAttribute'
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-activedescendant)
  */
 
-export class AriaActiveDescendantAttribute extends AriaAttribute {
-	static attributeName = 'aria-activedescendant'
-	static categoryName = AriaCategory.Relationship
-	static propertyName = 'ariaActiveDescendant'
+class AriaActiveDescendantAttribute extends AriaAttribute {
+	static readonly attributeName = 'aria-activedescendant'
+	static readonly categoryName = AriaCategory.Relationship
+	static readonly propertyName = 'ariaActiveDescendant'
 
 	get name() {
 		return AriaActiveDescendantAttribute.attributeName
@@ -19,3 +19,5 @@ export class AriaActiveDescendantAttribute extends AriaAttribute {
 		return AriaActiveDescendantAttribute.propertyName
 	}
 }
+
+export default AriaActiveDescendantAttribute

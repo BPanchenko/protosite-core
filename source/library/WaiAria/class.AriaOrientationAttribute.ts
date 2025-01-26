@@ -6,12 +6,12 @@ import type { Primitive } from '#types'
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-orientation)
  */
 
-export class AriaOrientationAttribute extends AriaAttribute {
-	static attributeName: string = 'aria-orientation'
-	static categoryName: AriaCategory = AriaCategory.Widget
-	static default: AriaOrientationValue = 'undefined'
-	static propertyName: string = 'ariaOrientation'
-	static validValues: Array<string> = <const>[
+class AriaOrientationAttribute extends AriaAttribute {
+	static readonly attributeName: string = 'aria-orientation'
+	static readonly categoryName: AriaCategory = AriaCategory.Widget
+	static readonly default: AriaOrientationValue = 'undefined'
+	static readonly propertyName: string = 'ariaOrientation'
+	static readonly validValues: Array<string> = <const>[
 		'horizontal',
 		'vertical',
 		'undefined',
@@ -55,3 +55,5 @@ export class AriaOrientationAttribute extends AriaAttribute {
 
 export type AriaOrientationValue =
 	(typeof AriaOrientationAttribute.validValues)[number]
+
+export default AriaOrientationAttribute

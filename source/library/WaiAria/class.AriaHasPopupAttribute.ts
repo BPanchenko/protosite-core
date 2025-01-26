@@ -6,12 +6,12 @@ import type { Primitive } from '#types'
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-haspopup)
  */
 
-export class AriaHasPopupAttribute extends AriaAttribute {
-	static attributeName: string = 'aria-haspopup'
-	static categoryName: AriaCategory = AriaCategory.Widget
-	static default: AriaHasPopupValue = 'false'
-	static propertyName: string = 'ariaHasPopup'
-	static validValues: Array<string> = <const>[
+class AriaHasPopupAttribute extends AriaAttribute {
+	static readonly attributeName: string = 'aria-haspopup'
+	static readonly categoryName: AriaCategory = AriaCategory.Widget
+	static readonly default: AriaHasPopupValue = 'false'
+	static readonly propertyName: string = 'ariaHasPopup'
+	static readonly validValues: Array<string> = <const>[
 		'dialog',
 		'false',
 		'grid',
@@ -53,3 +53,5 @@ export class AriaHasPopupAttribute extends AriaAttribute {
 
 export type AriaHasPopupValue =
 	(typeof AriaHasPopupAttribute.validValues)[number]
+
+export default AriaHasPopupAttribute

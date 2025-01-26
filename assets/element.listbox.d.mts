@@ -17,6 +17,7 @@ export class ListboxElement extends HTMLElement {
     shift(offset: any): this;
     set activeIndex(value: any);
     get activeIndex(): any;
+    updateScrollbar(): void;
     get disabled(): boolean;
     get length(): any;
     get multiple(): boolean;

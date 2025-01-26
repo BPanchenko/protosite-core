@@ -106,25 +106,21 @@ function updateAttributes(element, objectOrAttrName, attrValue) {
         .map((name) => [name, element.getAttributeNode(name)]));
 }
 
-var ComponentState;
-(function (ComponentState) {
-    ComponentState["Animation"] = "--animating";
-    ComponentState["Defined"] = "--defined";
-    ComponentState["Interactive"] = "--interactive";
-    ComponentState["Loaded"] = "--loaded";
-})(ComponentState || (ComponentState = {}));
-var ComboboxState;
-(function (ComboboxState) {
-    ComboboxState["Collapsed"] = "--collapsed";
-    ComboboxState["Expanded"] = "--expanded";
-})(ComboboxState || (ComboboxState = {}));
-var FieldState;
-(function (FieldState) {
-    FieldState["Disabled"] = "--disabled";
-})(FieldState || (FieldState = {}));
+var CustomState;
+(function (CustomState) {
+    CustomState["Animation"] = "--animating";
+    CustomState["Collapsed"] = "--collapsed";
+    CustomState["Defined"] = "--defined";
+    CustomState["Disabled"] = "--disabled";
+    CustomState["Expanded"] = "--expanded";
+    CustomState["Interactive"] = "--interactive";
+    CustomState["Loaded"] = "--loaded";
+    CustomState["Scrolled"] = "--scrolled";
+})(CustomState || (CustomState = {}));
 
-var _ListboxElement_instances, _ListboxElement_activeIndex, _ListboxElement_selectedIndex, _ListboxElement_selectedIndexByDefault, _ListboxElement_internals, _ListboxElement_hashmap, _ListboxElement_ownsIDs, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_initOptionAttributes, _ListboxElement_initSelectedIndexByDefault, _ListboxElement_selectElement, _ListboxElement_unselect, _ListboxElement_states_get, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyDown, _ListboxElement_log;
-const template = '<slot part="container"></slot>';
+const template = "<style type=\"text/css\">:host::part(container) {\n\tdisplay: block;\n\toverflow: hidden;\n}\n\n:host(:state(--scrolled))::part(container) {\n\tscroll-behavior: smooth;\n\tscroll-snap-stop: always;\n}\n\n:host([aria-orientation='vertical']:state(--scrolled))::part(container) {\n\toverflow-y: scroll;\n}\n\n:host([aria-orientation='horizontal']:state(--scrolled))::part(container) {\n\toverflow-x: scroll;\n}\n</style><slot part=\"container\"></slot>";
+
+var _ListboxElement_instances, _ListboxElement_activeIndex, _ListboxElement_selectedIndex, _ListboxElement_selectedIndexByDefault, _ListboxElement_internals, _ListboxElement_hashmap, _ListboxElement_ownsIDs, _ListboxElement_focusCont, _ListboxElement_interCont, _ListboxElement_slotChangeCont, _ListboxElement_initOptionAttributes, _ListboxElement_initSelectedIndexByDefault, _ListboxElement_selectElement, _ListboxElement_unselect, _ListboxElement_states_get, _ListboxElement_$container_get, _ListboxElement_listenAssignedNodes, _ListboxElement_listenFocus, _ListboxElement_onBlur, _ListboxElement_onFocus, _ListboxElement_listenInteraction, _ListboxElement_onClick, _ListboxElement_onKeyDown, _ListboxElement_log;
 class ListboxElement extends HTMLElement {
     static initAttributes($element) {
         const attrs = {
@@ -139,8 +135,9 @@ class ListboxElement extends HTMLElement {
         internals.ariaLive = 'polite';
         internals.role = this.role;
         internals.ariaDisabled = checkTruth(element.ariaDisabled).toString();
-        internals.ariaRequired = checkTruth(element.ariaRequired).toString();
+        internals.ariaOrientation = element.ariaOrientation;
         internals.ariaMultiSelectable = checkTruth(element.ariaMultiSelectable).toString();
+        internals.ariaRequired = checkTruth(element.ariaRequired).toString();
     }
     constructor() {
         super();
@@ -160,6 +157,7 @@ class ListboxElement extends HTMLElement {
         });
         ListboxElement.initAttributes(this);
         __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_listenAssignedNodes).call(this);
+        __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add(CustomState.Defined);
     }
     attributeChangedCallback(name, previous, current) {
         if (false === this.isConnected)
@@ -176,11 +174,11 @@ class ListboxElement extends HTMLElement {
                 break;
             case 'aria-disabled':
                 if (isTruth) {
-                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add(FieldState.Disabled);
+                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add(CustomState.Disabled);
                     __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();
                 }
                 else {
-                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).delete(FieldState.Disabled);
+                    __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).delete(CustomState.Disabled);
                 }
                 __classPrivateFieldGet(this, _ListboxElement_internals, "f").ariaDisabled = current;
                 break;
@@ -245,6 +243,20 @@ class ListboxElement extends HTMLElement {
                 this.length;
         return this;
     }
+    updateScrollbar() {
+        const isVertical = __classPrivateFieldGet(this, _ListboxElement_internals, "f").ariaOrientation === 'vertical';
+        const clientSize = isVertical
+            ? __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_$container_get).clientHeight
+            : __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_$container_get).clientWidth;
+        const scrollSize = isVertical
+            ? __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_$container_get).scrollHeight
+            : __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_$container_get).scrollWidth;
+        const hasScrollBar = scrollSize > clientSize;
+        if (hasScrollBar)
+            __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).add(CustomState.Scrolled);
+        else
+            __classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).delete(CustomState.Scrolled);
+    }
     get activeIndex() {
         return __classPrivateFieldGet(this, _ListboxElement_activeIndex, "f");
     }
@@ -256,9 +268,15 @@ class ListboxElement extends HTMLElement {
             list[previos].$ref.deref()?.setAttribute('aria-current', 'false');
         const $current = list[current].$ref.deref();
         if ($current !== undefined) {
-            $current.setAttribute('aria-current', 'true');
             __classPrivateFieldSet(this, _ListboxElement_activeIndex, current, "f");
             this.setAttribute('aria-activedescendant', $current.id);
+            $current.setAttribute('aria-current', 'true');
+            if (__classPrivateFieldGet(this, _ListboxElement_instances, "a", _ListboxElement_states_get).has(CustomState.Scrolled))
+                $current.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                    inline: 'center',
+                });
         }
         else {
             __classPrivateFieldSet(this, _ListboxElement_activeIndex, -1, "f");
@@ -267,7 +285,7 @@ class ListboxElement extends HTMLElement {
         }
     }
     get disabled() {
-        return (__classPrivateFieldGet(this, _ListboxElement_internals, "f").states.has(FieldState.Disabled) &&
+        return (__classPrivateFieldGet(this, _ListboxElement_internals, "f").states.has(CustomState.Disabled) &&
             checkTruth(__classPrivateFieldGet(this, _ListboxElement_internals, "f").ariaDisabled) &&
             checkTruth(this.ariaDisabled));
     }
@@ -362,6 +380,8 @@ _ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new
     return false;
 }, _ListboxElement_states_get = function _ListboxElement_states_get() {
     return __classPrivateFieldGet(this, _ListboxElement_internals, "f").states;
+}, _ListboxElement_$container_get = function _ListboxElement_$container_get() {
+    return __classPrivateFieldGet(this, _ListboxElement_internals, "f").shadowRoot?.querySelector('[part=container]');
 }, _ListboxElement_listenAssignedNodes = function _ListboxElement_listenAssignedNodes() {
     __classPrivateFieldGet(this, _ListboxElement_slotChangeCont, "f")?.abort();
     __classPrivateFieldSet(this, _ListboxElement_slotChangeCont, new AbortController(), "f");
@@ -407,8 +427,6 @@ _ListboxElement_activeIndex = new WeakMap(), _ListboxElement_selectedIndex = new
     __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, `event:${event.type}`);
 }, _ListboxElement_onFocus = function _ListboxElement_onFocus(event) {
     __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_listenInteraction).call(this);
-    if (__classPrivateFieldGet(this, _ListboxElement_activeIndex, "f") < 0)
-        __classPrivateFieldSet(this, _ListboxElement_activeIndex, 0, "f");
     __classPrivateFieldGet(this, _ListboxElement_instances, "m", _ListboxElement_log).call(this, `event:${event.type}`);
 }, _ListboxElement_listenInteraction = function _ListboxElement_listenInteraction() {
     __classPrivateFieldGet(this, _ListboxElement_interCont, "f")?.abort();

@@ -1,15 +1,10 @@
-export enum ComponentState {
+export enum CustomState {
 	Animation = '--animating',
+	Collapsed = '--collapsed',
 	Defined = '--defined',
+	Disabled = '--disabled',
+	Expanded = '--expanded',
 	Interactive = '--interactive',
 	Loaded = '--loaded',
-}
-
-export enum ComboboxState {
-	Collapsed = '--collapsed',
-	Expanded = '--expanded',
-}
-
-export enum FieldState {
-	Disabled = '--disabled',
+	Scrolled = '--scrolled',
 }

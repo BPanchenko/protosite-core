@@ -3,7 +3,7 @@ import checkTruth from '#library/fn.checkTruth'
 import initShadowRoot from '#library/fn.initShadowRoot'
 import updateAttributes from '#library/fn.updateAttributes'
 
-import { ComboboxState, ComponentState, FieldState } from '#settings'
+import { CustomState } from '#settings'
 import { ListboxElement, type Option } from '#element/Listbox/index'
 
 import template from './template.pug'
@@ -123,7 +123,7 @@ class SelectComponent extends HTMLElement {
 		SelectComponent.initAttributes(this, {
 			shadowRoot: this.#$root,
 		})
-		this.#states.add(ComponentState.Defined)
+		this.#states.add(CustomState.Defined)
 	}
 
 	attributeChangedCallback(name, previous, current) {
@@ -136,19 +136,19 @@ class SelectComponent extends HTMLElement {
 		switch (name) {
 			case 'aria-disabled':
 				if (isTruth) {
-					this.#states.add(FieldState.Disabled)
+					this.#states.add(CustomState.Disabled)
 					this.#interCont?.abort()
 				} else {
-					this.#states.delete(FieldState.Disabled)
+					this.#states.delete(CustomState.Disabled)
 				}
 				this.#internals.ariaDisabled = isTruth.toString()
 				break
 			case 'aria-expanded':
 				this.#states.delete(
-					isFalsy ? ComboboxState.Expanded : ComboboxState.Collapsed,
+					isFalsy ? CustomState.Expanded : CustomState.Collapsed,
 				)
 				this.#states.add(
-					isTruth ? ComboboxState.Expanded : ComboboxState.Collapsed,
+					isTruth ? CustomState.Expanded : CustomState.Collapsed,
 				)
 				this.#internals.ariaExpanded = isTruth.toString()
 				break
@@ -176,11 +176,11 @@ class SelectComponent extends HTMLElement {
 		this.#listenFocus()
 		this.#listenInput()
 		this.#listenMutations()
-		this.#states.add(ComponentState.Interactive)
+		this.#states.add(CustomState.Interactive)
 
 		// (3)
 		const link = this.#$root.querySelector('link')
-		link && (link.onload = () => this.#states.add(ComponentState.Loaded))
+		link && (link.onload = () => this.#states.add(CustomState.Loaded))
 
 		this.#log('Connected Callback')
 	}
@@ -198,13 +198,13 @@ class SelectComponent extends HTMLElement {
 	}
 
 	hidePicker() {
-		if (this.#states.has(ComboboxState.Collapsed)) return this
+		if (this.#states.has(CustomState.Collapsed)) return this
 		updateAttributes(this, 'aria-expanded', false)
 		return this
 	}
 
 	showPicker() {
-		if (this.#states.has(ComboboxState.Expanded)) return this
+		if (this.#states.has(CustomState.Expanded)) return this
 		updateAttributes(this, 'aria-expanded', true)
 		this.#$picker.focus()
 		return this
@@ -212,7 +212,7 @@ class SelectComponent extends HTMLElement {
 
 	get disabled(): boolean {
 		return (
-			this.#states.has(FieldState.Disabled) &&
+			this.#states.has(CustomState.Disabled) &&
 			checkTruth(this.#internals.ariaDisabled) &&
 			checkTruth(this.ariaDisabled)
 		)
@@ -220,7 +220,7 @@ class SelectComponent extends HTMLElement {
 
 	get expanded(): boolean {
 		return (
-			this.#states.has(ComboboxState.Expanded) &&
+			this.#states.has(CustomState.Expanded) &&
 			checkTruth(this.#internals.ariaExpanded) &&
 			checkTruth(this.ariaExpanded)
 		)
@@ -369,9 +369,8 @@ class SelectComponent extends HTMLElement {
 	}
 
 	#onAnimationEnd(event: AnimationEvent) {
-		this.#states.delete(ComponentState.Animation)
-		if (this.#states.has(ComboboxState.Expanded)) this.#$picker.focus()
-		else this.#$button.focus()
+		this.#states.delete(CustomState.Animation)
+		if (this.#states.has(CustomState.Expanded)) this.#$picker.focus()
 		this.#log(`event:${event.type}`)
 	}
 

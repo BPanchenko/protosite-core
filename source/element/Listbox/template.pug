@@ -1,0 +1,20 @@
+style(type="text/css").
+	:host::part(container) {
+		display: block;
+		overflow: hidden;
+	}
+	
+	:host(:state(--scrolled))::part(container) {
+		scroll-behavior: smooth;
+		scroll-snap-stop: always;
+	}
+
+	:host([aria-orientation='vertical']:state(--scrolled))::part(container) {
+		overflow-y: scroll;
+	}
+
+	:host([aria-orientation='horizontal']:state(--scrolled))::part(container) {
+		overflow-x: scroll;
+	}
+
+slot(part="container")

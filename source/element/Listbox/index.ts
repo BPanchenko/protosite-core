@@ -3,16 +3,13 @@ import checkTruth from '#library/fn.checkTruth'
 import generateID from '#library/fn.generateID'
 import initShadowRoot from '#library/fn.initShadowRoot'
 import updateAttributes from '#library/fn.updateAttributes'
-
-import { FieldState } from '#settings'
+import { CustomState } from '#settings'
 
 import type { Option } from './types'
 
-export type { Option }
+import template from './template.pug'
 
-const template = '<slot part="container"></slot>'
-
-export class ListboxElement extends HTMLElement {
+class ListboxElement extends HTMLElement {
 	#activeIndex: number = -1
 	#selectedIndex: number = -1
 	#selectedIndexByDefault: number = -1
@@ -56,10 +53,11 @@ export class ListboxElement extends HTMLElement {
 		internals.role = this.role
 
 		internals.ariaDisabled = checkTruth(element.ariaDisabled).toString()
-		internals.ariaRequired = checkTruth(element.ariaRequired).toString()
+		internals.ariaOrientation = element.ariaOrientation
 		internals.ariaMultiSelectable = checkTruth(
 			element.ariaMultiSelectable,
 		).toString()
+		internals.ariaRequired = checkTruth(element.ariaRequired).toString()
 	}
 
 	constructor() {
@@ -69,6 +67,7 @@ export class ListboxElement extends HTMLElement {
 		})
 		ListboxElement.initAttributes(this)
 		this.#listenAssignedNodes()
+		this.#states.add(CustomState.Defined)
 	}
 
 	attributeChangedCallback(name, previous, current) {
@@ -88,10 +87,10 @@ export class ListboxElement extends HTMLElement {
 				break
 			case 'aria-disabled':
 				if (isTruth) {
-					this.#states.add(FieldState.Disabled)
+					this.#states.add(CustomState.Disabled)
 					this.#interCont?.abort()
 				} else {
-					this.#states.delete(FieldState.Disabled)
+					this.#states.delete(CustomState.Disabled)
 				}
 				this.#internals.ariaDisabled = current
 				break
@@ -172,6 +171,25 @@ export class ListboxElement extends HTMLElement {
 			(((this.#activeIndex + offset) % this.length) + this.length) %
 			this.length
 		return this
+	}
+
+	updateScrollbar() {
+		// 1. Scrollbar exist or not
+
+		const isVertical = this.#internals.ariaOrientation === 'vertical'
+
+		const clientSize = isVertical
+			? this.#$container.clientHeight
+			: this.#$container.clientWidth
+
+		const scrollSize = isVertical
+			? this.#$container.scrollHeight
+			: this.#$container.scrollWidth
+
+		const hasScrollBar = scrollSize > clientSize
+
+		if (hasScrollBar) this.#states.add(CustomState.Scrolled)
+		else this.#states.delete(CustomState.Scrolled)
 	}
 
 	#initOptionAttributes($element: HTMLElement) {
@@ -261,7 +279,7 @@ export class ListboxElement extends HTMLElement {
 
 	get disabled(): boolean {
 		return (
-			this.#internals.states.has(FieldState.Disabled) &&
+			this.#internals.states.has(CustomState.Disabled) &&
 			checkTruth(this.#internals.ariaDisabled) &&
 			checkTruth(this.ariaDisabled)
 		)
@@ -334,6 +352,12 @@ export class ListboxElement extends HTMLElement {
 
 	get #states(): CustomStateSet {
 		return this.#internals.states
+	}
+
+	get #$container(): HTMLElement {
+		return this.#internals.shadowRoot?.querySelector(
+			'[part=container]',
+		) as HTMLElement
 	}
 
 	#listenAssignedNodes(): AbortController {
@@ -490,4 +514,6 @@ export class ListboxElement extends HTMLElement {
 }
 
 customElements.define(ListboxElement.tagName, ListboxElement)
+
+export { ListboxElement, type Option }
 export default customElements.get(ListboxElement.tagName)

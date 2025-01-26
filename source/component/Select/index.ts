@@ -207,6 +207,7 @@ class SelectComponent extends HTMLElement {
 		if (this.#states.has(CustomState.Expanded)) return this
 		updateAttributes(this, 'aria-expanded', true)
 		this.#$picker.focus()
+		this.#$picker.updateScrollbar()
 		return this
 	}
 

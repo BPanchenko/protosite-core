@@ -1,6 +1,6 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.14.48",
+  "version": "1.14.49",
   "description": "Web Application Core. It сontains a library of Web Components.",
   "keywords": [
     "web components",
@@ -18,11 +18,12 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "files": [
+    "@types/*",
     "assets/*.mjs",
     "assets/*.mts",
     "source/*",
-    "index.js",
-    "index.d.ts"
+    "index.d.ts",
+    "index.js"
   ],
   "exports": {
     ".": "./index.js",
@@ -31,8 +32,8 @@
   "imports": {
     "#element/*": "./source/element/*",
     "#library/*": "./source/library/*",
-    "#types": "./source/types",
-    "#types/*": "./source/types/*"
+    "#types": "./index.d.ts",
+    "#type/*": "./@types/*"
   },
   "scripts": {
     "build": "npx webpack build --config ./.config/webpack.config.ts --mode production",
@@ -46,6 +47,7 @@
     "test": "npm run test:unit && npm run test:e2e",
     "test:e2e": "jest --config=.config/jest-e2e.cjs",
     "test:unit": "jest --config=.config/jest-unit.cjs --watch",
+    "typing": "npx -p typescript tsc --project ./.config/tsconfig.declaration.json",
     "watch": "npx webpack watch --config ./.config/webpack.config.ts --color --analyze --progress --stats"
   },
   "devDependencies": {

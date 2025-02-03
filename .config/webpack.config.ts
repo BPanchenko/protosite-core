@@ -43,7 +43,7 @@ const config: Configuration = {
 		],
 	},
 	resolve: {
-		extensions: ['.ts', '.js', '.cjs', '.mjs'],
+		extensions: ['.ts', '.js', '.d.ts', '.cjs', '.d.cts', '.mjs', '.d.mts'],
 		alias: {
 			'#uikit': ['@bpanchenko/uikit'],
 		},

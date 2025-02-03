@@ -1,4 +1,4 @@
-import { Primitive } from '#types'
+import type { Primitive } from '#type/manual'
 
 export const checkFalsy = (value: Primitive | null): boolean => {
 	return typeof value === 'string'

@@ -1,6 +1,6 @@
 import getDeepPrototypeOf from '../fn.getDeepPrototypeOf'
 
-import type { Primitive } from '#types'
+import type { Primitive } from '#type/manual.d.ts'
 
 export enum AriaCategory {
 	Composite = 'composite',

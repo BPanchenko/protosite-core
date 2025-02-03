@@ -1,29 +1,19 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "alwaysStrict": true,
-    "esModuleInterop": true,
+    "declarationDir": "@types",
+    "emitDeclarationOnly": true,
     "lib": ["DOM", "ES2023"],
     "module": "ES2020",
     "moduleResolution": "bundler",
-    "noEmit": true,
-    "noEmitOnError": true,
-    "noImplicitAny": false,
-    "noImplicitThis": true,
-    "outDir": "assets",
     "paths": {
       "#element/*": ["./source/element/*"],
       "#library/*": ["./source/library/*"],
       "#type/*": ["./@types/*"],
       "#uikit/*": ["./node_modules/@bpanchenko/uikit/assets/*"]
     },
-    "removeComments": true,
-    "resolveJsonModule": true,
     "rootDir": ".",
-    "strictNullChecks": true,
     "target": "ES2020"
   },
-  "include": ["source/**/*", "@types/**/*"]
+  "include": ["./source/component/**/*.d.ts", "./source/element/**/*.d.ts"]
 }

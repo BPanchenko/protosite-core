@@ -1,7 +1,8 @@
 import path from 'node:path'
-import webpack from 'webpack'
 
-const config: webpack.Configuration = {
+import type { Configuration } from 'webpack'
+
+const config: Configuration = {
 	mode: 'development',
 	context: process.cwd(),
 	entry: {

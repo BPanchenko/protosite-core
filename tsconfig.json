@@ -1,10 +1,17 @@
 {
-  "compileOnSave": true,
   "compilerOptions": {
     "allowJs": true,
+    "allowSyntheticDefaultImports": true,
+    "declaration": true,
+    "alwaysStrict": true,
+    "esModuleInterop": true,
     "lib": ["DOM", "ES2023"],
+    "module": "ES2020",
+    "moduleResolution": "bundler",
+    "noEmit": true,
     "noEmitOnError": true,
     "noImplicitAny": false,
+    "noImplicitThis": true,
     "outDir": "assets",
     "paths": {
       "#element/*": ["./source/element/*"],
@@ -14,11 +21,10 @@
       "#uikit/*": ["./node_modules/@bpanchenko/uikit/assets/*"]
     },
     "removeComments": true,
-    "target": "ES2020",
+    "resolveJsonModule": true,
+    "rootDir": ".",
     "strictNullChecks": true,
-    "alwaysStrict": true,
-    "noImplicitThis": true
+    "target": "ES2020"
   },
-  "include": ["source/**/*"],
-  "moduleResolution": "nodenext"
+  "include": ["source/**/*"]
 }

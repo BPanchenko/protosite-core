@@ -1,4 +1,4 @@
-import updateAttributes from '#library/fn.updateAttributes.js'
+import updateAttributes from '#library/fn.updateAttributes'
 
 import type { CustomElement } from '#types'
 

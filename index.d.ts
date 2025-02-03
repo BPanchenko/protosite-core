@@ -1,7 +1,0 @@
-export * from './assets/component.arrow.d.mjs'
-export * from './assets/component.avatar.d.mjs'
-export * from './assets/component.select-field.d.mjs'
-export * from './assets/element.listbox.d.mjs'
-export * from './assets/element.option.d.mjs'
-export * from './assets/fn.debounce.d.mjs'
-export * from './assets/fn.throttle.d.mjs'

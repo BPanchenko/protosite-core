@@ -1,10 +1,23 @@
 {
-	"targets": {
-		"esmodules": true,
-		"node": "current",
-		"safari": "tp"
-	},
-	"sourceType": "module",
-	"plugins": ["babel-plugin-transform-import-meta"],
-	"presets": ["@babel/preset-env"]
+  "sourceType": "module",
+  "plugins": [
+    "babel-plugin-transform-import-meta",
+    "@babel/plugin-transform-typescript"
+  ],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "entry",
+        "corejs": "3.22"
+      }
+    ],
+    [
+      "@babel/preset-typescript",
+      {
+        "allowDeclareFields": true,
+        "optimizeConstEnums": true
+      }
+    ]
+  ]
 }

@@ -4,7 +4,7 @@ exports[`ArrowComponent Page Markup 1`] = `
 "<!DOCTYPE html><html lang="ru"><head>
 		<title>[TEST] Arrow Component ⁕ Protosite Core</title>
 		<link href="http://assets.protosite.rocks/fonts/iconic/stylesheet.css" rel="stylesheet" type="text/css">
-		<link href="http://assets.protosite.rocks/uikit/document.css" rel="stylesheet" type="text/css">
+		<link href="http://assets.protosite.rocks/uikit/elements.css" rel="stylesheet" type="text/css">
 		<link href="http://assets.protosite.rocks/uikit/utilities.css" rel="stylesheet" type="text/css">
 		<link href="http://assets.protosite.rocks/uikit/component/panel.css" rel="stylesheet" type="text/css">
 		

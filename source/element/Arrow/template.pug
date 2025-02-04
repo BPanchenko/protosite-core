@@ -1,0 +1,29 @@
+link#link-styling(
+	fetchpriority="low"
+	href="http://assets.protosite.rocks/core/element.arrow.css"
+	media="screen"
+	rel="stylesheet"
+	type="text/css"
+	title="Visual Rules for Arrow Element"
+)
+link#link-glyph-collection(
+	fetchpriority="low"
+	href="http://assets.protosite.rocks/uikit/element/icon.glyphs-arrow.css"
+	media="screen"
+	rel="stylesheet"
+	type="text/css"
+	title="Visual Symbol defines by the glyph name that passed to the data attribute"
+)
+style(type="text/css").
+	:host(:state(--defined)) {
+		content-visibility: hidden;
+	}
+	:host(:state(--loaded)) {
+		content-visibility: visible;
+	}
+div#icon-container(
+	class="icon"
+	data-glyph="arrow"
+	role="presentation"
+)
+slot

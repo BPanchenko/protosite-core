@@ -13,8 +13,9 @@ const config: Configuration = {
 		'element.option': './source/element/Option.ts',
 	},
 	output: {
-		path: path.resolve(process.cwd(), 'assets'),
 		filename: '[name].mjs',
+		path: path.resolve(process.cwd(), 'assets'),
+		publicPath: 'http://assets.protosite.rocks/core/',
 	},
 	module: {
 		rules: [

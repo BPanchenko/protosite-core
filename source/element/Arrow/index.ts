@@ -1,6 +1,6 @@
+import CustomState from '#library/enum.custom-state'
 import initShadowRoot from '#library/fn.initShadowRoot'
 
-import * as css from '#uikit/shadow-host/element.arrow.mjs'
 import {
 	validDirectionValues,
 	validFigureValues,
@@ -8,17 +8,27 @@ import {
 	validWeightValues,
 } from './manual'
 
-const isExistingGlyph = (name: string): boolean => {
-	for (const rule of css.styleSheet.cssRules)
-		if ((rule as CSSStyleRule).selectorText === `[data-glyph="${name}"]`)
-			return true
+import template from './template.pug'
+
+const isExistingGlyph = (
+	name: string,
+	styleSheet: CSSStyleSheet | null,
+): boolean => {
+	if (styleSheet === null || false === Boolean(styleSheet?.cssRules)) {
+		return true
+	} else
+		for (const rule of styleSheet.cssRules)
+			if (
+				(rule as CSSStyleRule).selectorText === `[data-glyph="${name}"]`
+			)
+				return true
 	return false
 }
 
-const template = `<div data-glyph=arrow class="${css.icon}"></div><slot></slot>`
-
 export class ArrowElement extends HTMLElement {
+	#internals: ElementInternals = this.attachInternals()
 	#shadowRoot: ShadowRoot
+	#styleSheet: CSSStyleSheet | null
 
 	static readonly observedAttributes: string[] = <const>[
 		'glyph-direction',
@@ -37,11 +47,8 @@ export class ArrowElement extends HTMLElement {
 
 	constructor() {
 		super()
-		this.#shadowRoot = initShadowRoot.call(this, {
-			template,
-			delegatesFocus: true,
-			serializable: true,
-		})
+		this.#shadowRoot = initShadowRoot.call(this, { template })
+		this.#states.add(CustomState.Defined)
 	}
 
 	attributeChangedCallback(name_, previous, current) {
@@ -50,8 +57,14 @@ export class ArrowElement extends HTMLElement {
 	}
 
 	connectedCallback() {
-		this.#shadowRoot.adoptedStyleSheets.push(css.styleSheet)
+		// (1)
 		this.setAttribute('role', ArrowElement.role)
+
+		// (2)
+		this.#$linkStyle.onload = ({ currentTarget }) => {
+			this.#styleSheet = (currentTarget as HTMLLinkElement).sheet
+			this.#states.add(CustomState.Loaded)
+		}
 	}
 
 	#applyGlyph() {
@@ -86,7 +99,7 @@ export class ArrowElement extends HTMLElement {
 
 		const glyphName = glyphNameParts.join('-')
 		console.assert(
-			isExistingGlyph(glyphName),
+			isExistingGlyph(glyphName, this.#styleSheet),
 			`Unsupported Glyph: ${glyphName}`,
 		)
 
@@ -94,7 +107,19 @@ export class ArrowElement extends HTMLElement {
 	}
 
 	get #$icon(): HTMLDivElement {
-		return this.#shadowRoot.firstChild as HTMLDivElement
+		return this.#shadowRoot.getElementById(
+			'icon-container',
+		) as HTMLDivElement
+	}
+
+	get #$linkStyle(): HTMLLinkElement {
+		return this.#shadowRoot.getElementById(
+			'link-styling',
+		) as HTMLLinkElement
+	}
+
+	get #states(): CustomStateSet {
+		return this.#internals.states
 	}
 }
 

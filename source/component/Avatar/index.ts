@@ -3,7 +3,7 @@ import updateAttributes from '#library/fn.updateAttributes'
 
 import CustomState from '#library/enum.custom-state'
 
-import cssStyleSheet from '#uikit/shadow-host/component.avatar.mjs'
+import cssStyleSheet from '#uikit/shadow-dom/component.avatar.mjs'
 import template from './template.pug'
 
 export class AvatarComponent extends HTMLElement {

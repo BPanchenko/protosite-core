@@ -1,12 +1,12 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.14.51",
+  "version": "1.14.52",
   "description": "Web Application Core. It сontains a library of Web Components.",
   "keywords": [
-    "web components",
-    "custom elements",
-    "unit testing",
-    "end to end testing"
+    "WEB Components",
+    "Custom Elements",
+    "Unit testing",
+    "End-to-End testing"
   ],
   "homepage": "http://protosite.rocks",
   "browserslist": [
@@ -18,10 +18,8 @@
   "main": "./index.js",
   "types": "./index.d.ts",
   "files": [
-    "@types/*",
     "assets/*.mjs",
     "assets/*.mts",
-    "source/*",
     "index.d.ts",
     "index.js"
   ],
@@ -122,6 +120,5 @@
     "email": "boris.v.panchenko@mail.ru",
     "url": "https://bpanchenko.ru"
   },
-  "repository": "https://github.com/BPanchenko/protosite-core",
   "license": "LGPL-3.0-only"
 }

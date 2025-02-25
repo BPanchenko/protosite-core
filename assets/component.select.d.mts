@@ -1,4 +1,4 @@
-import type { ListboxElement, Option } from './element.listbox'
+import type { ListboxElement, Option } from './element.listbox.d.mts'
 type InitAttributesOptions = {
 	shadowRoot?: ShadowRoot
 	internals?: ElementInternals

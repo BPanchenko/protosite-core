@@ -1,6 +1,3 @@
-export type * from './@types/iface.CustomElement'
-export type * from './@types/iface.FormAssociatedCustomElement'
-export type * from './@types/manual'
 export type * from './assets/component.avatar.d.mts'
 export type * from './assets/component.select.d.mts'
 export type * from './assets/element.arrow.d.mts'

@@ -1,8 +1,7 @@
 import path from 'node:path'
 
-import type { Configuration } from 'webpack'
-
-const config: Configuration = {
+/** @type {import('webpack').Configuration} */
+export default {
 	mode: 'development',
 	context: process.cwd(),
 	entry: {
@@ -50,5 +49,3 @@ const config: Configuration = {
 		},
 	},
 }
-
-export default config

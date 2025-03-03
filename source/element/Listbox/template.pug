@@ -1,25 +1,36 @@
-style(type="text/css").
+style(
+	title="Shadow Dom Layout"
+	type="text/css"
+).
+	:host(:state(--defined)),
 	:host::part(container) {
 		display: block;
-		overflow: hidden;
 	}
 	
 	:host([aria-hidden='true'])::part(container) {
 		visibility: hidden;
 	}
 	
-	:host(:not([aria-hidden='true']):state(--scrolled))::part(container) {
+style(
+	title="Scrollbars"
+	type="text/css"
+).
+	:host(:state(--scrolled))::part(container) {
+		overflow: auto;
 		scroll-behavior: smooth;
 		scroll-snap-stop: always;
-		overflow: visible;
 	}
 
-	:host([aria-orientation='vertical']:not([aria-hidden='true']):state(--scrolled))::part(container) {
+	:host([aria-orientation='vertical']:state(--scrolled))::part(container) {
 		overflow: hidden scroll;
 	}
 
-	:host([aria-orientation='horizontal']:not([aria-hidden='true']):state(--scrolled))::part(container) {
+	:host([aria-orientation='horizontal']:state(--scrolled))::part(container) {
 		overflow: scroll hidden;
+	}
+	
+	:host([aria-hidden='true'])::part(container) {
+		overflow: hidden;
 	}
 
 slot(part="container")

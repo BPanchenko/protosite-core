@@ -37,7 +37,9 @@ class AriaOrientationAttribute extends AriaAttribute {
 		return AriaOrientationAttribute.propertyName
 	}
 
-	protected _parseValue(value: Primitive): AriaOrientationValue | never {
+	protected _parseValue(
+		value: AriaAttributeInputValue,
+	): AriaOrientationValue | never {
 		if (value === undefined) {
 			return 'undefined'
 		} else if (

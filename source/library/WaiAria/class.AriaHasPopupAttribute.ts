@@ -1,7 +1,5 @@
 import { AriaAttribute, AriaCategory } from './abstr.AriaAttribute'
 
-import type { Primitive } from '#type/manual.d.ts'
-
 /**
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-haspopup)
  */
@@ -39,7 +37,9 @@ class AriaHasPopupAttribute extends AriaAttribute {
 		return AriaHasPopupAttribute.propertyName
 	}
 
-	protected _parseValue(value: Primitive): AriaHasPopupValue | never {
+	protected _parseValue(
+		value: AriaAttributeInputValue,
+	): AriaHasPopupValue | never {
 		if (
 			typeof value === 'string' &&
 			AriaHasPopupAttribute.validValues.includes(value)

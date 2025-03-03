@@ -1,11 +1,9 @@
 import isObject from './fn.isObject'
 
-import type { Primitive } from '#type/manual.d.ts'
-
 function updateAttributes(
 	element: HTMLElement,
 	objectOrAttrName: string | object,
-	attrValue?: Primitive | null,
+	attrValue?: Primitive,
 ): Map<string, Attr | null> {
 	const pairs = isObject(objectOrAttrName)
 		? Object.entries(objectOrAttrName)

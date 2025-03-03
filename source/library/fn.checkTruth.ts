@@ -1,4 +1,4 @@
-const checkTruth = (value: Primitive | null): boolean => {
+const checkTruth = (value: Primitive): boolean => {
 	return typeof value === 'string'
 		? ['on', 'true'].includes(value.trim().toLocaleLowerCase())
 		: Boolean(value)

@@ -2,8 +2,6 @@ import { AriaAttribute, AriaCategory } from './abstr.AriaAttribute'
 import checkFalsy from '../fn.checkFalsy'
 import checkTruth from '../fn.checkTruth'
 
-import type { Primitive } from '#type/manual.d.ts'
-
 /**
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-checked)
  */
@@ -46,7 +44,7 @@ class AriaCheckedAttribute extends AriaAttribute {
 		return AriaCheckedAttribute.propertyName
 	}
 
-	protected _parseValue(value: Primitive): string | never {
+	protected _parseValue(value: AriaAttributeInputValue): string | never {
 		if (
 			typeof value === 'string' &&
 			AriaCheckedAttribute.validValues.includes(value)

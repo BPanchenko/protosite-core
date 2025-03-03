@@ -1,7 +1,5 @@
 import getDeepPrototypeOf from '../fn.getDeepPrototypeOf'
 
-import type { Primitive } from '#type/manual.d.ts'
-
 export enum AriaCategory {
 	Composite = 'composite',
 	Landmark = 'landmark',
@@ -23,7 +21,7 @@ export abstract class AriaAttribute {
 
 	#initial: string
 
-	constructor(value: Primitive) {
+	constructor(value: AriaAttributeInputValue) {
 		this.value = value
 	}
 
@@ -35,7 +33,7 @@ export abstract class AriaAttribute {
 		return this.value
 	}
 
-	set value(source: Primitive) {
+	set value(source: AriaAttributeInputValue) {
 		const previous = this.value
 		const current = this._parseValue(source)
 
@@ -50,7 +48,7 @@ export abstract class AriaAttribute {
 		}
 	}
 
-	protected _parseValue(value: Primitive): string | never {
+	protected _parseValue(value: AriaAttributeInputValue): string | never {
 		if (typeof value === 'string') {
 			return value.trim()
 		} else if (

@@ -3,4 +3,13 @@ declare module '*.pug' {
 	export default template
 }
 
-declare type Primitive = undefined | string | number | boolean | symbol | bigint
+declare type AriaAttributeInputValue = undefined | string | number | boolean
+
+declare type Primitive =
+	| null
+	| undefined
+	| string
+	| number
+	| boolean
+	| symbol
+	| bigint

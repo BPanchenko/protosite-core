@@ -9,8 +9,6 @@ import {
 	windowRoles,
 } from './manual.roles'
 
-import type { Primitive } from '#type/manual.d.ts'
-
 /**
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-autocomplete)
  */
@@ -45,7 +43,9 @@ class RoleAttribute extends AriaAttribute {
 		return RoleAttribute.propertyName
 	}
 
-	protected _parseValue(value: Primitive): RoleAttributeValue | never {
+	protected _parseValue(
+		value: AriaAttributeInputValue,
+	): RoleAttributeValue | never {
 		if (typeof value === 'string') {
 			for (const validRole of RoleAttribute.validValues)
 				if (validRole === value) return validRole

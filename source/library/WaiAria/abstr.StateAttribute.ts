@@ -2,8 +2,6 @@ import checkTruth from '../fn.checkTruth'
 import checkFalsy from '../fn.checkFalsy'
 import { AriaAttribute } from './abstr.AriaAttribute'
 
-import type { Primitive } from '#type/manual.d.ts'
-
 export abstract class StateAttribute extends AriaAttribute {
 	static readonly default: StateAttributeValue = 'false'
 	static readonly validValues = <const>['false', 'true']
@@ -16,7 +14,9 @@ export abstract class StateAttribute extends AriaAttribute {
 		return checkTruth(this.value)
 	}
 
-	protected _parseValue(value: Primitive): StateAttributeValue | never {
+	protected _parseValue(
+		value: AriaAttributeInputValue,
+	): StateAttributeValue | never {
 		if (typeof value === 'string') {
 			return ['on', 'true'].includes(value.trim().toLocaleLowerCase())
 				? 'true'

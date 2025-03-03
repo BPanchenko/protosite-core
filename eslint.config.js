@@ -46,7 +46,13 @@ export default [
 			prettier,
 		},
 		rules: {
-			'no-unused-vars': 0,
+			'@typescript-eslint/no-dupe-class-members': 1,
+			'@typescript-eslint/no-redeclare': [
+				1,
+				{
+					ignoreDeclarationMerge: true,
+				},
+			],
 			'@typescript-eslint/no-unused-vars': [
 				1,
 				{
@@ -55,19 +61,15 @@ export default [
 					caughtErrors: 'all',
 					caughtErrorsIgnorePattern: '_$',
 					destructuredArrayIgnorePattern: '_$',
-					varsIgnorePattern: '_$',
 					ignoreRestSiblings: true,
+					varsIgnorePattern: '_$',
 				},
 			],
-			'no-redeclare': 0,
-			'@typescript-eslint/no-redeclare': [
-				1,
-				{ ignoreDeclarationMerge: true },
-			],
 			'no-dupe-class-members': 0,
-			'@typescript-eslint/no-dupe-class-members': 1,
+			'no-redeclare': 0,
+			'no-undef': 0,
 			'no-unused-private-class-members': 1,
-
+			'no-unused-vars': 0,
 			'prettier/prettier': 1,
 			'sort-imports': [
 				1,

@@ -509,7 +509,5 @@ class ListboxElement extends HTMLElement {
 	}
 }
 
-customElements.define(ListboxElement.tagName, ListboxElement)
-
-export { ListboxElement, type Option }
-export default customElements.get(ListboxElement.tagName)
+export type { ListboxElement, Option }
+export default ListboxElement

@@ -1,6 +1,0 @@
-export type * from './assets/component.avatar.d.mts'
-export type * from './assets/component.select.d.mts'
-export type * from './assets/element.arrow.d.mts'
-export type * from './assets/element.listbox.d.mts'
-export type * from './assets/element.option.d.mts'
-export type * from './assets/element.option.d.mts'

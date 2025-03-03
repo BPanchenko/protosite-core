@@ -2,30 +2,22 @@ import CustomState from '#library/enum.custom-state'
 import initShadowRoot from '#library/fn.initShadowRoot'
 
 import {
+	isExistingGlyph,
+	isValidDirection,
+	isValidFigure,
+	isValidStyle,
+	isValidWeight,
 	validDirectionValues,
 	validFigureValues,
 	validStyleValues,
 	validWeightValues,
-} from './manual'
+} from './library'
 
 import template from './template.pug'
 
-const isExistingGlyph = (
-	name: string,
-	styleSheet: CSSStyleSheet | null,
-): boolean => {
-	if (styleSheet === null || false === Boolean(styleSheet?.cssRules)) {
-		return true
-	} else
-		for (const rule of styleSheet.cssRules)
-			if (
-				(rule as CSSStyleRule).selectorText === `[data-glyph="${name}"]`
-			)
-				return true
-	return false
-}
+import type { Direction, Figure, Style, Weight } from './types.d.ts'
 
-export class ArrowElement extends HTMLElement {
+class ArrowElement extends HTMLElement {
 	#internals: ElementInternals = this.attachInternals()
 	#shadowRoot: ShadowRoot
 	#styleSheet: CSSStyleSheet | null
@@ -123,26 +115,11 @@ export class ArrowElement extends HTMLElement {
 	}
 }
 
-export type Direction = (typeof validDirectionValues)[number]
-export type Figure = (typeof validFigureValues)[number]
-export type Style = (typeof validStyleValues)[number]
-export type Weight = (typeof validWeightValues)[number]
-
-export const isValidDirection = (value: string): value is Direction => {
-	return ArrowElement.directions.includes(value as Direction)
+export default ArrowElement
+export type {
+	ArrowElement as ArrowCustomElement,
+	Direction as ArrowDirection,
+	Figure as ArrowFigure,
+	Style as ArrowStyle,
+	Weight as ArrowWeight,
 }
-
-export const isValidFigure = (value: string): value is Figure => {
-	return ArrowElement.figures.includes(value as Figure)
-}
-
-export const isValidStyle = (value: string): value is Style => {
-	return ArrowElement.styles.includes(value as Style)
-}
-
-export const isValidWeight = (value: string): value is Weight => {
-	return ArrowElement.weights.includes(value as Weight)
-}
-
-customElements.define(ArrowElement.tagName, ArrowElement)
-export default customElements.get(ArrowElement.tagName)

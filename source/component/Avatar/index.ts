@@ -1,3 +1,5 @@
+/// <reference path="../../globals.d.ts" />
+
 import initShadowRoot from '#library/fn.initShadowRoot'
 import updateAttributes from '#library/fn.updateAttributes'
 
@@ -6,7 +8,7 @@ import CustomState from '#library/enum.custom-state'
 import cssStyleSheet from '#uikit/shadow-dom/component.avatar.mjs'
 import template from './template.pug'
 
-export class AvatarComponent extends HTMLElement {
+class AvatarComponent extends HTMLElement {
 	#shadowRoot: ShadowRoot
 	#internals: ElementInternals = this.attachInternals()
 
@@ -82,6 +84,5 @@ export class AvatarComponent extends HTMLElement {
 	}
 }
 
-customElements.define(AvatarComponent.tagName, AvatarComponent)
-
-export default customElements.get(AvatarComponent.tagName)
+export type { AvatarComponent }
+export default AvatarComponent

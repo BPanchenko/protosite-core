@@ -2,12 +2,12 @@ import checkFalsy from '#library/fn.checkFalsy'
 import checkTruth from '#library/fn.checkTruth'
 import initShadowRoot from '#library/fn.initShadowRoot'
 import updateAttributes from '#library/fn.updateAttributes'
-
 import CustomState from '#library/enum.custom-state'
 
-import { ListboxElement, type Option } from '#element/Listbox/index'
-
 import template from './template.pug'
+
+import type { ListboxElement, Option } from '#element/Listbox/index'
+import type { CustomElement } from '#type/iface.CustomElement'
 
 type InitAttributesOptions = {
 	shadowRoot?: ShadowRoot
@@ -20,7 +20,7 @@ type InitAccessibilityTreeOptions = {
 	internals: ElementInternals
 }
 
-class SelectComponent extends HTMLElement {
+class SelectComponent extends HTMLElement implements CustomElement {
 	#$root: ShadowRoot
 	#internals: ElementInternals = this.attachInternals()
 	#observer: MutationObserver | undefined
@@ -229,8 +229,8 @@ class SelectComponent extends HTMLElement {
 		return checkTruth(this.#internals.ariaMultiSelectable)
 	}
 
-	get name(): string | null {
-		return (this.dataset.name || this.getAttribute('name')) ?? null
+	get name(): string {
+		return (this.dataset.name || this.getAttribute('name')) ?? ''
 	}
 
 	get options(): Option[] {
@@ -448,7 +448,5 @@ class SelectComponent extends HTMLElement {
 	}
 }
 
-customElements.define(SelectComponent.tagName, SelectComponent)
-
-export { ListboxElement, SelectComponent }
-export default customElements.get(SelectComponent.tagName)
+export type { Option, SelectComponent }
+export default SelectComponent

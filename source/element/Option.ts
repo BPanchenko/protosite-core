@@ -2,7 +2,7 @@ import updateAttributes from '#library/fn.updateAttributes'
 
 import type { CustomElement } from '#type/iface.CustomElement'
 
-export class OptionElement extends HTMLElement implements CustomElement {
+class OptionElement extends HTMLElement implements CustomElement {
 	static readonly oberverAttributes = [
 		'aria-busy',
 		'aria-checked',
@@ -55,5 +55,5 @@ export class OptionElement extends HTMLElement implements CustomElement {
 	}
 }
 
-customElements.define(OptionElement.tagName, OptionElement)
-export default customElements.get(OptionElement.tagName)
+export type { OptionElement }
+export default OptionElement

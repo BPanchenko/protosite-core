@@ -1,7 +1,5 @@
 import { AriaAttribute, AriaCategory } from './abstr.AriaAttribute'
 
-import type { Primitive } from '#type/manual'
-
 /**
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-orientation)
  */

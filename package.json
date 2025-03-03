@@ -8,15 +8,9 @@
     "Unit testing",
     "End-to-End testing"
   ],
-  "homepage": "http://protosite.rocks",
-  "browserslist": [
-    "> 0.5%",
-    "last 2 versions",
-    "not dead"
-  ],
   "type": "module",
-  "main": "./index.js",
-  "types": "./index.d.ts",
+  "main": "./assets/index.js",
+  "types": "./assets/index.d.ts",
   "files": [
     "assets/*.mjs",
     "assets/*.mts",
@@ -24,30 +18,30 @@
     "index.js"
   ],
   "exports": {
-    ".": "./index.js",
+    ".": "./assets/index.js",
     "./*": "./source/*"
   },
   "imports": {
     "#element/*": "./source/element/*",
     "#library/*": "./source/library/*",
-    "#types": "./index.d.ts",
-    "#type/*": "./@types/*"
+    "#type/*": "./@types/*",
+    "#uikit/*": "@bpanchenko/uikit/*"
   },
   "scripts": {
-    "build": "npx webpack build --config ./.config/webpack.config.js --mode production",
+    "build": "npx webpack build --disable-interpret -c ./.config/webpack.production.ts",
+    "clean": "rimraf \"assets/*.{mjs,map}\" --glob",
     "debug": "run-p server watch",
     "deploy": "node ./.kernel/deployer.js",
     "lint": "eslint . --fix",
-    "postbuild": "npm run deploy",
-    "prebuild": "npm run rimraf",
+    "postpublishOnly": "npm run deploy",
+    "prebuild": "npm run clean",
     "prepublishOnly": "npm run build",
-    "rimraf": "rimraf \"assets/*.{mjs,mts,map}\" --glob",
     "server": "node ./.kernel/server.cjs",
+    "test": "npm run test:unit && npm run test:e2e",
     "test:e2e": "jest --config=.config/jest-e2e.cjs",
     "test:unit": "jest --config=.config/jest-unit.cjs --watch",
-    "test": "npm run test:unit && npm run test:e2e",
     "typing": "npx -p typescript tsc --project ./.config/tsconfig.declaration.json",
-    "watch": "npx webpack watch --config ./.config/webpack.config.js --color --analyze --progress --stats"
+    "watch": "npx webpack watch --color --analyze --progress --stats -c ./.config/webpack.development.ts"
   },
   "devDependencies": {
     "@babel/core": "7.26.9",
@@ -64,6 +58,7 @@
     "@stylistic/eslint-plugin-js": "4.0.1",
     "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.6.3",
+    "@types/lodash": "4.17.16",
     "@typescript-eslint/eslint-plugin": "8.25.0",
     "@typescript-eslint/parser": "8.25.0",
     "@typescript/lib-dom": "npm:@types/web",
@@ -110,6 +105,7 @@
     "rimraf": "6.0.1",
     "setimmediate": "1.0.5",
     "style-loader": "4.0.0",
+    "ts-loader": "9.5.2",
     "typescript": "5.7.3",
     "webpack": "5.98.0",
     "webpack-bundle-analyzer": "4.10.2",
@@ -120,5 +116,11 @@
     "email": "boris.v.panchenko@mail.ru",
     "url": "https://bpanchenko.ru"
   },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "homepage": "http://protosite.rocks",
   "license": "LGPL-3.0-only"
 }

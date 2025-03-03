@@ -1,3 +1,4 @@
+import startsWith from 'lodash/startsWith'
 import checkFalsy from '#library/fn.checkFalsy'
 import checkTruth from '#library/fn.checkTruth'
 import generateID from '#library/fn.generateID'
@@ -13,6 +14,10 @@ interface Option {
 	label: string | null
 	value: string | null
 }
+
+const optionStartsWith = ({ label, value }: Option, search: string): boolean =>
+	(typeof label === 'string' && startsWith(label, search)) ||
+	(typeof value === 'string' && startsWith(value, search))
 
 class ListboxElement extends HTMLElement {
 	#activeIndex: number = -1
@@ -145,11 +150,7 @@ class ListboxElement extends HTMLElement {
 	search(query: string) {
 		const result = new Set<Option>()
 		for (const [id_, option] of this.#hashmap)
-			if (
-				0 === option.label?.indexOf(query) ||
-				0 === option.value?.indexOf(query)
-			)
-				result.add(option)
+			if (optionStartsWith(option, query)) result.add(option)
 		return result.size > 0 ? result : null
 	}
 
@@ -307,6 +308,10 @@ class ListboxElement extends HTMLElement {
 		return Array.from(this.#hashmap.values())
 	}
 
+	get owns() {
+		return this.#ownsIDs
+	}
+
 	get selectedIndex(): number {
 		return this.#selectedIndex
 	}
@@ -460,7 +465,7 @@ class ListboxElement extends HTMLElement {
 		event.stopPropagation()
 		const $target = event.currentTarget as HTMLElement
 		this.selectedIndex = this.activeIndex =
-			this.#ownsIDs?.indexOf($target.id) ?? -1
+			this.owns !== null ? this.owns.indexOf($target.id) : -1
 	}
 
 	#onKeyDown(event: KeyboardEvent) {

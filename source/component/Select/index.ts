@@ -156,6 +156,7 @@ class SelectComponent extends HTMLElement {
 					isTruth ? CustomState.Expanded : CustomState.Collapsed,
 				)
 				this.#internals.ariaExpanded = isTruth.toString()
+				this.#updateChildNodes()
 				break
 			case 'aria-multiselectable':
 				this.#internals.ariaMultiSelectable = isTruth.toString()
@@ -206,8 +207,6 @@ class SelectComponent extends HTMLElement {
 	showPicker() {
 		if (this.#states.has(CustomState.Expanded)) return
 		updateAttributes(this, 'aria-expanded', true)
-		this.#$picker.focus()
-		this.#$picker.updateScrollbar()
 	}
 
 	get disabled(): boolean {
@@ -354,21 +353,11 @@ class SelectComponent extends HTMLElement {
 			signal: this.#interCont.signal,
 		}
 
-		this.#$picker.addEventListener(
-			'animationend',
-			(e) => this.#onAnimationEnd(e),
-			options,
-		)
-
 		this.addEventListener('click', (e) => this.#onClick(e), options)
 		this.addEventListener('keydown', (e) => this.#onKeyDown(e), options)
+		this.#listenPickerAnimation(this.#interCont.signal)
 
 		return this.#interCont
-	}
-
-	#onAnimationEnd(event_: AnimationEvent) {
-		this.#states.delete(CustomState.Animation)
-		if (this.#states.has(CustomState.Expanded)) this.#$picker.focus()
 	}
 
 	#onClick(event_: MouseEvent) {
@@ -421,12 +410,41 @@ class SelectComponent extends HTMLElement {
 		return this
 	}
 
+	#listenPickerAnimation(signal?: AbortSignal): void {
+		this.#$picker.addEventListener(
+			'animationend',
+			(e) => this.#onAnimationEnd(e),
+			{
+				signal,
+			},
+		)
+	}
+
+	#onAnimationEnd(event_: AnimationEvent) {
+		this.#states.delete(CustomState.Animation)
+		this.#updateChildNodes()
+	}
+
 	#passEventAlong(shadowEvent: InputEvent): this {
 		const { bubbles, data, type } = shadowEvent
 		const EventConstructor = Object.getPrototypeOf(shadowEvent).constructor
 		const event = new EventConstructor(type, { bubbles, data })
 		this.dispatchEvent(event)
 		return this
+	}
+
+	#updateChildNodes(): void {
+		const expanded = this.#states.has(CustomState.Expanded)
+		const collapsed = this.#states.has(CustomState.Collapsed)
+
+		if (expanded) {
+			this.#$picker.focus()
+			this.#$picker.updateScrollbar()
+		} else {
+			this.#$button.focus()
+		}
+
+		this.#$picker.ariaHidden = collapsed.toString()
 	}
 }
 

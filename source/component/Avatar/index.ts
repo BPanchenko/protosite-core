@@ -5,7 +5,6 @@ import updateAttributes from '#library/fn.updateAttributes'
 
 import CustomState from '#library/enum.custom-state'
 
-import cssStyleSheet from '#uikit/shadow-dom/component.avatar.mjs'
 import template from './template.pug'
 
 class AvatarComponent extends HTMLElement {
@@ -62,10 +61,6 @@ class AvatarComponent extends HTMLElement {
 		else if (current === null) $child.removeAttribute(name)
 		else if (name === 'tabindex') $child.setAttribute(name, '0')
 		else $child.setAttribute(name, current)
-	}
-
-	connectedCallback() {
-		this.#shadowRoot.adoptedStyleSheets.push(cssStyleSheet)
 	}
 
 	get #$link(): HTMLElement {

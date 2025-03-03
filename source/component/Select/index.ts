@@ -162,8 +162,6 @@ class SelectComponent extends HTMLElement {
 				break
 			default:
 		}
-
-		this.#log('Attribute Changed', name, previous, current)
 	}
 
 	connectedCallback() {
@@ -186,8 +184,6 @@ class SelectComponent extends HTMLElement {
 		// (3)
 		const link = this.#$root.querySelector('link')
 		link && (link.onload = () => this.#states.add(CustomState.Loaded))
-
-		this.#log('Connected Callback')
 	}
 
 	disconnectedCallback() {
@@ -203,17 +199,15 @@ class SelectComponent extends HTMLElement {
 	}
 
 	hidePicker() {
-		if (this.#states.has(CustomState.Collapsed)) return this
+		if (this.#states.has(CustomState.Collapsed)) return
 		updateAttributes(this, 'aria-expanded', false)
-		return this
 	}
 
 	showPicker() {
-		if (this.#states.has(CustomState.Expanded)) return this
+		if (this.#states.has(CustomState.Expanded)) return
 		updateAttributes(this, 'aria-expanded', true)
 		this.#$picker.focus()
 		this.#$picker.updateScrollbar()
-		return this
 	}
 
 	get disabled(): boolean {
@@ -291,6 +285,29 @@ class SelectComponent extends HTMLElement {
 		return this.#internals.states
 	}
 
+	#listenFocus(): AbortController {
+		this.#focusCont?.abort()
+		this.#focusCont = new AbortController()
+
+		const options = {
+			signal: this.#focusCont.signal,
+		}
+
+		this.addEventListener('focus', (e) => this.#onFocus(e), options)
+		this.addEventListener('blur', (e) => this.#onBlur(e), options)
+
+		return this.#focusCont
+	}
+
+	#onBlur(event_: FocusEvent) {
+		this.hidePicker()
+		this.#interCont?.abort()
+	}
+
+	#onFocus(event_: FocusEvent) {
+		this.#listenInteraction()
+	}
+
 	#listenInput(): AbortController {
 		this.#passingCont?.abort()
 		this.#passingCont = new AbortController()
@@ -327,31 +344,6 @@ class SelectComponent extends HTMLElement {
 		value !== null && this.hidePicker()
 	}
 
-	#listenFocus(): AbortController {
-		this.#focusCont?.abort()
-		this.#focusCont = new AbortController()
-
-		const options = {
-			signal: this.#focusCont.signal,
-		}
-
-		this.addEventListener('focus', (e) => this.#onFocus(e), options)
-		this.addEventListener('blur', (e) => this.#onBlur(e), options)
-
-		return this.#focusCont
-	}
-
-	#onBlur(event: FocusEvent) {
-		this.hidePicker()
-		this.#interCont?.abort()
-		this.#log(`event:${event.type}`)
-	}
-
-	#onFocus(event: FocusEvent) {
-		this.#listenInteraction()
-		this.#log(`event:${event.type}`)
-	}
-
 	#listenInteraction(): AbortController {
 		this.#interCont?.abort()
 		this.#interCont = new AbortController()
@@ -374,15 +366,13 @@ class SelectComponent extends HTMLElement {
 		return this.#interCont
 	}
 
-	#onAnimationEnd(event: AnimationEvent) {
+	#onAnimationEnd(event_: AnimationEvent) {
 		this.#states.delete(CustomState.Animation)
 		if (this.#states.has(CustomState.Expanded)) this.#$picker.focus()
-		this.#log(`event:${event.type}`)
 	}
 
-	#onClick(event: MouseEvent) {
+	#onClick(event_: MouseEvent) {
 		this.expanded ? this.hidePicker() : this.showPicker()
-		this.#log(`event:${event.type}`)
 	}
 
 	#onKeyDown(event: KeyboardEvent) {
@@ -399,8 +389,6 @@ class SelectComponent extends HTMLElement {
 			default:
 				return
 		}
-
-		this.#log(`event:${event.type}`, this.#$root.activeElement)
 	}
 
 	#listenMutations(): this {
@@ -431,14 +419,6 @@ class SelectComponent extends HTMLElement {
 		})
 
 		return this
-	}
-
-	#log(label: string, ...args) {
-		console.groupCollapsed(`SelectComponent: ${label}`)
-		args.length > 0 && console.log('Arguments: ', args)
-		console.debug(this.#internals)
-		console.dir(this)
-		console.groupEnd()
 	}
 
 	#passEventAlong(shadowEvent: InputEvent): this {

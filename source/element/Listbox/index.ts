@@ -107,8 +107,6 @@ class ListboxElement extends HTMLElement {
 				break
 			default:
 		}
-
-		this.#log('Attribute Changed', name, previous, current)
 	}
 
 	connectedCallback() {
@@ -230,7 +228,6 @@ class ListboxElement extends HTMLElement {
 	#selectElement($element?: HTMLElement) {
 		if ($element !== undefined) {
 			const attr = $element.getAttributeNode('aria-selected')
-			this.#log('select element', $element, attr)
 			return attr !== null && checkFalsy(attr.value)
 				? ((attr.value = 'true'), true)
 				: false
@@ -437,14 +434,12 @@ class ListboxElement extends HTMLElement {
 		return this.#focusCont
 	}
 
-	#onBlur(event: FocusEvent) {
+	#onBlur(event_: FocusEvent) {
 		this.#interCont?.abort()
-		this.#log(`event:${event.type}`)
 	}
 
-	#onFocus(event: FocusEvent) {
+	#onFocus(event_: FocusEvent) {
 		this.#listenInteraction()
-		this.#log(`event:${event.type}`)
 	}
 
 	#listenInteraction(): AbortController {
@@ -466,7 +461,6 @@ class ListboxElement extends HTMLElement {
 		const $target = event.currentTarget as HTMLElement
 		this.selectedIndex = this.activeIndex =
 			this.#ownsIDs?.indexOf($target.id) ?? -1
-		this.#log(`event:${event.type}`)
 	}
 
 	#onKeyDown(event: KeyboardEvent) {
@@ -507,21 +501,6 @@ class ListboxElement extends HTMLElement {
 				}
 				return
 		}
-
-		this.#log(
-			`event:${event.type}`,
-			this.#internals.shadowRoot?.activeElement,
-			this.#activeIndex,
-		)
-	}
-
-	#log(label: string, ...args) {
-		console.groupCollapsed(`ListboxElement: ${label}`)
-		args.length > 0 && console.log('Arguments: ', args)
-		console.table(this.#hashmap)
-		console.debug(this.#internals)
-		console.dir(this)
-		console.groupEnd()
 	}
 }
 

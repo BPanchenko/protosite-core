@@ -1,8 +1,9 @@
-const _ = require('lodash')
 const dateFormat = require('date-format')
 const logger = require('node-color-log')
 const process = require('node:process')
 const util = require('node:util')
+
+const { curry, isArrayLikeObject, isElement, isObjectLike } = require('lodash')
 
 const roundNanoseconds = (value) => Math.round(value / 1000000) / 1000
 
@@ -23,20 +24,25 @@ const start = process.hrtime()
 logger.setDate(() => dateFormat('hh:mm:ss.SSS', new Date()))
 
 const debug = (...args) => {
-	const last = _.last(args)
-	const mode = ['success', 'debug', 'info', 'warn', 'error'].includes(last)
-		? last
-		: 'debug'
+	const lastArgumentIsDebuggingMode = [
+		'success',
+		'debug',
+		'info',
+		'warn',
+		'error',
+	].includes(args.at(-1))
 
-	let curriedLogger = _.curry(logger[mode].bind(logger), args.length)
+	const mode = lastArgumentIsDebuggingMode ? args.pop() : 'debug'
+
+	let curriedLogger = curry(logger[mode].bind(logger), args.length)
 
 	args.forEach((arg) => {
 		let parsed = arg
-		if (_.isArrayLikeObject(arg)) {
+		if (isArrayLikeObject(arg)) {
 			parsed = util.inspect(Array.from(arg), inspectOptions)
-		} else if (_.isElement(arg)) {
+		} else if (isElement(arg)) {
 			parsed = util.inspect(arg, inspectOptions)
-		} else if (_.isObjectLike(arg)) {
+		} else if (isObjectLike(arg)) {
 			parsed = util.inspect(arg, inspectOptions)
 		}
 		curriedLogger = curriedLogger(parsed)

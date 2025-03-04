@@ -11,7 +11,7 @@
       "format": "esm"
     },
     "source/library/fn.updateAttributes.ts": {
-      "bytes": 933,
+      "bytes": 879,
       "imports": [
         {
           "path": "source/library/fn.isObject.ts",
@@ -31,7 +31,7 @@
       "imports": []
     },
     "source/component/Avatar/index.ts": {
-      "bytes": 2026,
+      "bytes": 2004,
       "imports": [
         {
           "path": "source/library/fn.initShadowRoot.ts",
@@ -57,12 +57,12 @@
       "format": "esm"
     },
     "source/library/fn.checkFalsy.ts": {
-      "bytes": 278,
+      "bytes": 222,
       "imports": [],
       "format": "esm"
     },
     "source/library/fn.checkTruth.ts": {
-      "bytes": 266,
+      "bytes": 210,
       "imports": [],
       "format": "esm"
     },
@@ -71,7 +71,7 @@
       "imports": []
     },
     "source/component/Select/index.ts": {
-      "bytes": 10878,
+      "bytes": 10958,
       "imports": [
         {
           "path": "source/library/fn.checkFalsy.ts",
@@ -106,8 +106,8 @@
       ],
       "format": "esm"
     },
-    "source/element/Arrow/manual.ts": {
-      "bytes": 663,
+    "source/element/Arrow/library.ts": {
+      "bytes": 1611,
       "imports": [],
       "format": "esm"
     },
@@ -116,7 +116,7 @@
       "imports": []
     },
     "source/element/Arrow/index.ts": {
-      "bytes": 4074,
+      "bytes": 3187,
       "imports": [
         {
           "path": "source/library/enum.custom-state.ts",
@@ -129,9 +129,9 @@
           "original": "#library/fn.initShadowRoot"
         },
         {
-          "path": "source/element/Arrow/manual.ts",
+          "path": "source/element/Arrow/library.ts",
           "kind": "import-statement",
-          "original": "./manual"
+          "original": "./library"
         },
         {
           "path": "source/element/Arrow/template.pug",
@@ -424,7 +424,7 @@
       "format": "esm"
     },
     "source/element/Option.ts": {
-      "bytes": 1361,
+      "bytes": 1296,
       "imports": [
         {
           "path": "source/library/fn.updateAttributes.ts",
@@ -439,7 +439,6 @@
     "assets/component.avatar.mjs": {
       "imports": [],
       "exports": [
-        "AvatarComponent",
         "default"
       ],
       "entryPoint": "source/component/Avatar/index.ts",
@@ -460,10 +459,10 @@
           "bytesInOutput": 2386
         },
         "source/component/Avatar/index.ts": {
-          "bytesInOutput": 904
+          "bytesInOutput": 837
         }
       },
-      "bytes": 4249
+      "bytes": 4161
     },
     "assets/component.select.mjs": {
       "imports": [],
@@ -494,20 +493,15 @@
           "bytesInOutput": 558
         },
         "source/component/Select/index.ts": {
-          "bytesInOutput": 5237
+          "bytesInOutput": 5235
         }
       },
-      "bytes": 6912
+      "bytes": 6910
     },
     "assets/element.arrow.mjs": {
       "imports": [],
       "exports": [
-        "ArrowElement",
-        "default",
-        "isValidDirection",
-        "isValidFigure",
-        "isValidStyle",
-        "isValidWeight"
+        "default"
       ],
       "entryPoint": "source/element/Arrow/index.ts",
       "inputs": {
@@ -517,17 +511,17 @@
         "source/library/fn.initShadowRoot.ts": {
           "bytesInOutput": 278
         },
-        "source/element/Arrow/manual.ts": {
-          "bytesInOutput": 422
+        "source/element/Arrow/library.ts": {
+          "bytesInOutput": 628
         },
         "source/element/Arrow/template.pug": {
           "bytesInOutput": 700
         },
         "source/element/Arrow/index.ts": {
-          "bytesInOutput": 1518
+          "bytesInOutput": 1211
         }
       },
-      "bytes": 3258
+      "bytes": 3061
     },
     "assets/element.listbox.mjs": {
       "imports": [],
@@ -629,7 +623,6 @@
     "assets/element.option.mjs": {
       "imports": [],
       "exports": [
-        "OptionElement",
         "default"
       ],
       "entryPoint": "source/element/Option.ts",
@@ -641,10 +634,10 @@
           "bytesInOutput": 339
         },
         "source/element/Option.ts": {
-          "bytesInOutput": 749
+          "bytesInOutput": 682
         }
       },
-      "bytes": 1206
+      "bytes": 1120
     }
   }
 }

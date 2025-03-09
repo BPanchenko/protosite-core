@@ -3,7 +3,7 @@ const path = require('node:path')
 
 /** @type {import('jest').Config} */
 module.exports = {
-	rootDir: path.join(process.cwd(), 'assets'),
+	rootDir: path.join(process.cwd(), 'e2e-env'),
 	globals,
 	collectCoverageFrom: ['<rootDir>/*-component.js'],
 	coverageDirectory: '<rootDir>/__coverage__',

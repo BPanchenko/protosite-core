@@ -5,5 +5,5 @@
 
 /.config/ftp.json
 /.vscode
-/assets/__tests__/__image_snapshots__/__diff_output__
+/e2e-env/__tests__/__image_snapshots__/__diff_output__
 /node_modules

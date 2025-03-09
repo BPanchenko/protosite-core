@@ -3,7 +3,7 @@ import { fileURLToPath } from 'node:url'
 
 import pug from 'pug'
 
-const options = {
+export const options = {
 	filters: {
 		'css-loader': (innerContent, { module }) => {
 			const filePath = fileURLToPath(
@@ -15,7 +15,7 @@ const options = {
 	},
 }
 
-const esbuildPlugin = () => ({
+export const esbuildPlugin = () => ({
 	name: 'pug-compiler',
 	setup(build) {
 		build.onLoad({ filter: /\.pug$/ }, ({ path }) => {

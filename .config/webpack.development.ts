@@ -1,4 +1,5 @@
 import path from 'node:path'
+import { options as pugOptions } from '../.kernel/compiler.pug.js'
 import type { Configuration } from 'webpack'
 
 const config: Configuration = {
@@ -33,6 +34,7 @@ const config: Configuration = {
 				options: {
 					esModule: true,
 					mode: 'render',
+					filters: pugOptions.filters,
 				},
 				test: /\.pug$/,
 			},
@@ -42,7 +44,7 @@ const config: Configuration = {
 			},
 			{
 				test: /\.ts$/,
-				use: ['ts-loader', 'babel-loader'],
+				use: ['ts-loader'],
 			},
 		],
 	},
@@ -51,8 +53,7 @@ const config: Configuration = {
 	},
 	output: {
 		filename: '[name].mjs',
-		path: path.resolve(process.cwd(), 'assets'),
-		publicPath: 'http://assets.protosite.rocks/core/',
+		path: path.resolve(process.cwd(), 'e2e-env'),
 		module: true,
 	},
 	resolve: {

@@ -1,48 +1,48 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.15.54",
-  "description": "Web Application Core. It сontains a library of Web Components.",
-  "keywords": [
-    "WEB Components",
-    "Custom Elements",
-    "Unit testing",
-    "End-to-End testing"
-  ],
+  "version": "1.15.55",
   "type": "module",
-  "main": "./assets/index.js",
-  "types": "./assets/index.d.ts",
+  "main": "./bundle/index.js",
+  "types": "./bundle/index.d.ts",
   "files": [
-    "assets/*.mjs",
-    "assets/*.mts",
-    "index.d.ts",
-    "index.js"
+    "bundle/*"
   ],
   "exports": {
-    ".": "./assets/index.js",
-    "./*": "./source/*"
+    ".": "./bundle/index.js",
+    "./esm/*": "./bundle/*",
+    "./arrow-element": "./bundle/element.arrow.mjs",
+    "./avatar-component": "./bundle/component.avatar.mjs",
+    "./listbox-element": "./bundle/element.listbox.mjs",
+    "./option-element": "./bundle/element.option.mjs",
+    "./select-component": "./bundle/component.select.mjs",
+    "./src/*": "./source/*",
+    "./component/*": "./source/component/*",
+    "./element/*": "./source/element/*",
+    "./library/*": "./source/library/*"
   },
   "imports": {
     "#element/*": "./source/element/*",
     "#library/*": "./source/library/*",
-    "#type/*": "./@types/*",
     "#uikit/*": "@bpanchenko/uikit/*"
   },
   "scripts": {
     "build": "node ./.kernel/builder.js",
-    "clean": "rimraf \"assets/*.{mjs,map}\" --glob",
     "debug": "run-p server watch",
     "deploy": "node ./.kernel/deployer.js",
     "lint": "eslint . --fix",
     "postpublishOnly": "npm run deploy",
-    "prebuild": "npm run clean",
-    "prepublishOnly": "npm run build",
+    "prebuild": "rimraf \"bundle/*.{mjs,mts}\" --glob",
     "server": "node ./.kernel/server.cjs",
     "test": "npm run test:unit && npm run test:e2e",
     "test:e2e": "jest --config=.config/jest-e2e.cjs",
     "test:unit": "jest --config=.config/jest-unit.cjs --watch",
-    "typing": "npx -p typescript tsc --project ./.config/tsconfig.declaration.json",
-    "watch": "npx webpack watch --color --analyze --progress --stats -c ./.config/webpack.development.ts"
+    "watch": "npx webpack watch --color --progress --stats -c ./.config/webpack.development.ts"
   },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead"
+  ],
   "devDependencies": {
     "@babel/core": "7.26.9",
     "@babel/eslint-parser": "7.26.8",
@@ -113,16 +113,18 @@
     "webpack-bundle-analyzer": "4.10.2",
     "webpack-cli": "6.0.1"
   },
+  "homepage": "http://protosite.rocks",
+  "description": "Web Application Core. It сontains a library of Web Components.",
+  "keywords": [
+    "WEB Components",
+    "Custom Elements",
+    "Unit testing",
+    "End-to-End testing"
+  ],
   "author": {
     "name": "Boris Panchenko",
     "email": "boris.v.panchenko@mail.ru",
     "url": "https://bpanchenko.ru"
   },
-  "browserslist": [
-    "> 0.5%",
-    "last 2 versions",
-    "not dead"
-  ],
-  "homepage": "http://protosite.rocks",
   "license": "LGPL-3.0-only"
 }

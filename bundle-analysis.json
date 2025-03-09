@@ -11,7 +11,7 @@
       "format": "esm"
     },
     "source/library/fn.updateAttributes.ts": {
-      "bytes": 879,
+      "bytes": 872,
       "imports": [
         {
           "path": "source/library/fn.isObject.ts",
@@ -57,12 +57,12 @@
       "format": "esm"
     },
     "source/library/fn.checkFalsy.ts": {
-      "bytes": 222,
+      "bytes": 215,
       "imports": [],
       "format": "esm"
     },
     "source/library/fn.checkTruth.ts": {
-      "bytes": 210,
+      "bytes": 203,
       "imports": [],
       "format": "esm"
     },
@@ -71,7 +71,7 @@
       "imports": []
     },
     "source/component/Select/index.ts": {
-      "bytes": 10958,
+      "bytes": 10964,
       "imports": [
         {
           "path": "source/library/fn.checkFalsy.ts",
@@ -116,7 +116,7 @@
       "imports": []
     },
     "source/element/Arrow/index.ts": {
-      "bytes": 3187,
+      "bytes": 3165,
       "imports": [
         {
           "path": "source/library/enum.custom-state.ts",
@@ -424,7 +424,7 @@
       "format": "esm"
     },
     "source/element/Option.ts": {
-      "bytes": 1296,
+      "bytes": 1302,
       "imports": [
         {
           "path": "source/library/fn.updateAttributes.ts",
@@ -436,7 +436,7 @@
     }
   },
   "outputs": {
-    "assets/component.avatar.mjs": {
+    "bundle/component.avatar.mjs": {
       "imports": [],
       "exports": [
         "default"
@@ -464,7 +464,7 @@
       },
       "bytes": 4161
     },
-    "assets/component.select.mjs": {
+    "bundle/component.select.mjs": {
       "imports": [],
       "exports": [
         "default"
@@ -498,7 +498,7 @@
       },
       "bytes": 6910
     },
-    "assets/element.arrow.mjs": {
+    "bundle/element.arrow.mjs": {
       "imports": [],
       "exports": [
         "default"
@@ -523,7 +523,7 @@
       },
       "bytes": 3061
     },
-    "assets/element.listbox.mjs": {
+    "bundle/element.listbox.mjs": {
       "imports": [],
       "exports": [
         "default"
@@ -620,7 +620,7 @@
       },
       "bytes": 12025
     },
-    "assets/element.option.mjs": {
+    "bundle/element.option.mjs": {
       "imports": [],
       "exports": [
         "default"

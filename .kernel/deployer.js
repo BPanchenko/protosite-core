@@ -5,9 +5,9 @@ import { logger } from './logger.cjs'
 
 import ftpAccess from '../.config/ftp.json' with { type: 'json' }
 
-const asIs = globSync(['assets/*.mjs']).map((file) => [
+const asIs = globSync(['bundle/*.mjs']).map((file) => [
 	path.resolve(file),
-	path.join('core', path.relative('assets', file)).replaceAll('\\', '/'),
+	path.join('core', path.relative('bundle', file)).replaceAll('\\', '/'),
 ])
 
 const files = new Map(

@@ -17,7 +17,7 @@ const bundle = await build({
 	mainFields: ['browser', 'main', 'module'],
 	metafile: true,
 	minify: true,
-	outdir: 'assets',
+	outdir: 'bundle',
 	outExtension: {
 		'.js': '.mjs',
 	},
@@ -30,7 +30,7 @@ const bundle = await build({
 })
 
 writeFileSync(
-	'assets/bundle-analysis.json',
+	'./bundle-analysis.json',
 	JSON.stringify(bundle.metafile, undefined, 2),
 )
 

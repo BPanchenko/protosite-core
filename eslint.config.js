@@ -23,8 +23,9 @@ import typescriptPlugin from '@typescript-eslint/eslint-plugin'
 export default [
 	{
 		ignores: [
-			'assets/*',
-			'!assets/__tests__/',
+			'bundle/*',
+			'e2e-env/*',
+			'!e2e-env/__tests__/',
 			'source/component/FormField.js',
 			'node_modules/',
 		],
@@ -186,7 +187,7 @@ export default [
 		},
 	},
 	{
-		files: ['source/**/__specs__/*.spec.js', 'assets/__tests__/*.test.js'],
+		files: ['source/**/__specs__/*.spec.js', 'e2e-env/__tests__/*.test.js'],
 		languageOptions: {
 			globals: {
 				...globals.jest,

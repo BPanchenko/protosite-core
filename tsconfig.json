@@ -7,23 +7,27 @@
     "lib": ["DOM", "ESNext"],
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "noEmit": true,
     "noEmitOnError": true,
     "noImplicitThis": true,
-    "outDir": "assets",
+    "outDir": "bundle",
     "paths": {
       "#element/*": ["./source/element/*"],
+      "#library": ["./source/library/index.ts"],
       "#library/*": ["./source/library/*"],
-      "#type/*": ["./@types/*"],
+      "#types": ["./source/library/types.ts"],
       "#uikit/*": ["./node_modules/@bpanchenko/uikit/assets/*"]
     },
     "preserveConstEnums": true,
-    "removeComments": true,
     "resolveJsonModule": true,
     "rootDir": ".",
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "ES2022"
   },
-  "include": ["./.kernel/**/*", "./@types/*", "./assets/**/*", "./source/**/*"]
+  "include": [
+    "./.kernel/**/*",
+    "./bundle/*",
+    "./e2e-env/__tests__/*",
+    "./source/**/*"
+  ]
 }

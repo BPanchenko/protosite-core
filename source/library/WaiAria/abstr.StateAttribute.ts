@@ -2,6 +2,8 @@ import checkTruth from '../fn.checkTruth'
 import checkFalsy from '../fn.checkFalsy'
 import { AriaAttribute } from './abstr.AriaAttribute'
 
+import type { AriaAttributeInputValue } from '#types'
+
 export abstract class StateAttribute extends AriaAttribute {
 	static readonly default: StateAttributeValue = 'false'
 	static readonly validValues = <const>['false', 'true']

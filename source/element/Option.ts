@@ -1,6 +1,6 @@
 import updateAttributes from '#library/fn.updateAttributes'
 
-import type { CustomElement } from '#type/iface.CustomElement'
+import type { CustomElement } from '#types'
 
 class OptionElement extends HTMLElement implements CustomElement {
 	static readonly oberverAttributes = [

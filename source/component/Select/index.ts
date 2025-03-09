@@ -7,7 +7,7 @@ import CustomState from '#library/enum.custom-state'
 import template from './template.pug'
 
 import type { ListboxElement, Option } from '#element/Listbox/index'
-import type { CustomElement } from '#type/iface.CustomElement'
+import type { CustomElement } from '#types'
 
 type InitAttributesOptions = {
 	shadowRoot?: ShadowRoot

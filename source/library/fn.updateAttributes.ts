@@ -1,4 +1,5 @@
 import isObject from './fn.isObject'
+import type { Primitive } from './types'
 
 function updateAttributes(
 	element: HTMLElement,

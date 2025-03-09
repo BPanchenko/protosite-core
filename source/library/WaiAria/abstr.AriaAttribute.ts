@@ -1,5 +1,7 @@
 import getDeepPrototypeOf from '../fn.getDeepPrototypeOf'
 
+import type { AriaAttributeInputValue } from '#types'
+
 export enum AriaCategory {
 	Composite = 'composite',
 	Landmark = 'landmark',

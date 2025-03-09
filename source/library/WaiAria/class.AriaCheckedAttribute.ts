@@ -1,6 +1,6 @@
 import { AriaAttribute, AriaCategory } from './abstr.AriaAttribute'
-import checkFalsy from '../fn.checkFalsy'
-import checkTruth from '../fn.checkTruth'
+import { checkFalsy, checkTruth } from '#library'
+import type { AriaAttributeInputValue } from '#types'
 
 /**
  * [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-checked)

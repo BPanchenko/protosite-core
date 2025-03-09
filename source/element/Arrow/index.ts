@@ -117,7 +117,7 @@ class ArrowElement extends HTMLElement {
 
 export default ArrowElement
 export type {
-	ArrowElement as ArrowCustomElement,
+	ArrowElement,
 	Direction as ArrowDirection,
 	Figure as ArrowFigure,
 	Style as ArrowStyle,

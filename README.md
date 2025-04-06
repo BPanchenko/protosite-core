@@ -13,17 +13,16 @@
 Например структура файлов поля выбора данных на сервере:
 
 ```javascript
-http://assets.protosite.rocks/core/
- ├── select-field-component.mjs
- ├── select-field.css
- ├── select-field.html
+//assets.protosite.xyz/core/
+ ├── component.select.mjs
+ ├── component.select.css
  └── ...
 ```
 
 Скрипт модуля компоненты загружается на веб-странице тегом:
 
 ```html
-<script src="http://assets.protosite.rocks/core/select-field-component.mjs" type="module">
+<script src="//assets.protosite.xyz/core/component.select.mjs" type="module">
 ```
 
 ### Исходный код
@@ -49,5 +48,5 @@ http://assets.protosite.rocks/core/
 #### Установка Protosite Core
 
 ```bash
-yarn add @bpanchenko/core -D
+npm install @bpanchenko/core --save-dev
 ```

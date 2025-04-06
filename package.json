@@ -1,6 +1,6 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.15.55",
+  "version": "1.15.56",
   "type": "module",
   "main": "./bundle/index.js",
   "types": "./bundle/index.d.ts",

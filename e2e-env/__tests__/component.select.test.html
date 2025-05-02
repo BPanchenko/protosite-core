@@ -1,194 +1,164 @@
 <!doctype html>
 <html lang="ru">
-	<head>
-		<title>[TEST FORM OBJECT] Select Field Form ⁕ Protosite Core</title>
 
-		<link
-			rel="preload"
-			href="http://assets.protosite.rocks/core/component.select.css"
-			as="style"
-		>
-		<link
-			rel="preload"
-			href="http://assets.protosite.rocks/fonts/iconic/iconic-sm.ttf"
-			as="font"
-			type="font/ttf"
-			crossorigin
-		>
+<head>
+	<title>[TEST FORM OBJECT] Select Field Form ⁕ Protosite Core</title>
 
-		<link
-			href="http://assets.protosite.rocks/fonts/iconic/stylesheet.css"
-			rel="stylesheet"
-			type="text/css"
-		>
-		<link
-			href="http://assets.protosite.rocks/uikit/elements.css"
-			rel="stylesheet"
-			type="text/css"
-		>
-		<link
-			href="http://assets.protosite.rocks/uikit/utilities.css"
-			rel="stylesheet"
-			type="text/css"
-		>
-		<link
-			href="http://assets.protosite.rocks/uikit/component/panel.css"
-			rel="stylesheet"
-			type="text/css"
-		>
-		
-		<script src="../component.select.mjs" type="module"></script>
-		<style>
-			.u-container {
-				padding-block-start: 25dvh;
+	<link rel="preload" href="http://assets.protosite.xyz/core/component.select.css" as="style">
+	<link rel="preload" href="http://assets.protosite.xyz/fonts/iconic/iconic-sm.ttf" as="font" type="font/ttf"
+		crossorigin>
+
+	<link href="http://assets.protosite.xyz/fonts/iconic/stylesheet.css" rel="stylesheet" type="text/css">
+	<link href="http://assets.protosite.xyz/uikit/elements.css" rel="stylesheet" type="text/css">
+	<link href="http://assets.protosite.xyz/uikit/utilities.css" rel="stylesheet" type="text/css">
+	<link href="http://assets.protosite.xyz/uikit/component/panel.css" rel="stylesheet" type="text/css">
+
+	<script src="../component.select.mjs" type="module"></script>
+	<style>
+		.u-container {
+			padding-block-start: 25dvh;
+		}
+
+		.u-grid {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			gap: 8vmin;
+			justify-content: space-around;
+			align-items: center;
+
+			.c-panel {
+				text-align: center;
 			}
 
-			.u-grid {
-				display: grid;
-				grid-template-columns: 1fr 1fr;
-				gap: 8vmin;
-				justify-content: space-around;
-				align-items: center;
-
-				.c-panel {
-					text-align: center;
-				}
-
-				.c-panel:not([aria-hidden=true]) + .c-panel {
-					margin-top: unset;
-				}
+			.c-panel:not([aria-hidden=true])+.c-panel {
+				margin-top: unset;
 			}
+		}
 
 
-			hr:first-of-type {
-				margin-block-start: 8dvh;
-			}
-		</style>
-	</head>
-	<body class="t-document">
-		<main class="u-container" data-testid="container">
-			<form enctype="text/plain" data-testid="main-form">
-				<div class="u-grid">
-					<section class="c-panel s-clean">
-						<c-select
-							aria-label="Выбран:"
-							aria-placeholder="Фрукт на выбор..."
-							name="fruit-name"
-						>
-							<div role="option" value="Durian">Дуриан</div>
-							<div role="option" value="Mangosteen">Мангостин</div>
-							<div role="option" value="Lychee">Личи</div>
-							<div role="option" value="Jackfruit">Джекфрут</div>
-							<div role="option" value="Papaya">Папайя</div>
-							<div role="option" value="Mango">Манго</div>
-							<div role="option" value="Rambutan">Рамбутан</div>
-							<div role="option" value="Longan">Лонган</div>
-							<div role="option" value="Carambola">Карамбола</div>
-							<div role="option" value="Pitaya">Питайя</div>
-							<div role="option" value="Ackee">Аки</div>
-							<div role="option" value="Chompoo">Чомпу</div>
-							<div role="option" value="Sugar Apple">Сахарное яблоко</div>
-							<div role="option" value="Sapodilla">Саподилла</div>
-							<div role="option" value="Guava">Гуава</div>
-							<div role="option" value="Kiwano">Кивано</div>
-							<div role="option" value="Bael">Баиль</div>
-							<div role="option" value="Salak">Салак</div>
-							<div role="option" value="Bambangan">Бам-балан</div>
-							<div role="option" value="Ambarella">Амбарелла</div>
-							<div role="option" value="Citron">Цитрон</div>
-							<div role="option" value="Kumquat">Кумкват</div>
-							<div role="option" value="Marula">Марула</div>
-							<div role="option" value="Tamarind">Тамаринд</div>
-							<div role="option" value="Miracle Fruit">Магический фрукт</div>
-							<div role="option" value="Noni">Нони</div>
-							<div role="option" value="Soursop">Сметанное яблоко</div>
-							<div role="option" value="Naranjilla">Наранхилла</div>
-							<div role="option" value="Mamey">Мамея</div>
-							<div role="option" value="Pepino Dulce">Пепино</div>
-							<div role="option" value="Milky Fruit">Милкифрут</div>
-							<div role="option" value="Marang">Маранг</div>
-							<div role="option" value="Cupuasu">Купуасу</div>
-							<div role="option" value="Curuba">Куруба</div>
-							<div role="option" value="Jabuticaba">Жаботикаба</div>
-						</c-select>
-					</section>
-					<section class="c-panel">
-						<c-select
-							aria-label="Выбран:"
-							aria-placeholder="Цветок на выбор..."
-							name="flower-name"
-						>
-							<div role="option" value="Anemone">Анемон</div>
-							<div role="option" value="Allium">Аллиум</div>
-							<div role="option" value="Amaryllis">Амариллис</div>
-							<div role="option" value="Pineapple">Ананас</div>
-							<div role="option" value="Aster">Астер</div>
-							<div role="option" value="Astilba">Астильба</div>
-							<div role="option" value="Brassica">Брассика</div>
-							<div role="option" value="Bouvardia">Бувардия</div>
-							<div role="option" value="Wanda">Ванда</div>
-							<div role="option" value="Veronika">Вероника</div>
-							<div role="option" value="Viburnum">Вибурнум</div>
-							<div role="option" value="Genista">Гениста</div>
-							<div role="option" value="Hydrangea">Гортензия</div>
-							<div role="option" value="Hypericum">Гиперикум</div>
-							<div role="option" value="Hyacinth">Гиацинт</div>
-							<div role="option" value="Delphinium">Дельфиниум</div>
-							<div role="option" value="Calla Lilies">Каллы</div>
-							<div role="option" value="Kohia">Кохия</div>
-							<div role="option" value="Clematis">Клематис</div>
-							<div role="option" value="Leukadendron">Леукадендрон</div>
-							<div role="option" value="Leukospermum">Леукоспермум</div>
-							<div role="option" value="Limonium">Лимониум</div>
-							<div role="option" value="Mattiola">Маттиола</div>
-							<div role="option" value="Mimosa">Мимоза</div>
-							<div role="option" value="Ozothamnus">Озотамнус</div>
-							<div role="option" value="Ornithogalum">Орнитогалум</div>
-							<div role="option" value="Skimiya">Скимия</div>
-							<div role="option" value="Solidago">Солидаго</div>
-							<div role="option" value="Strelitzia">Стрелиция</div>
-							<div role="option" value="Sunflower">Подсолнух</div>
-							<div role="option" value="Protea">Протея</div>
-							<div role="option" value="Wheat">Пшеница</div>
-							<div role="option" value="Ranunculus">Ранункулюс</div>
-							<div role="option" value="Thanacetum">Танацетум</div>
-							<div role="option" value="Tweedy">Твидия</div>
-							<div role="option" value="Trachelium">Трахелиум</div>
-							<div role="option" value="Celosia">Целозия</div>
-							<div role="option" value="Freesia">Фрезия</div>
-							<div role="option" value="Heleborus">Хелеборус</div>
-							<div role="option" value="Eringium">Эрингиум</div>
-						</c-select>
-					</section>
-				</div>
-				<hr>
-				<output data-testid="output"></output>
-				<hr>
-				<section class="c-panel s-clean u-text-center">
-					<button data-testid="submitter" type="submit">Вывести данные формы</button>
-					<button type="reset">Сбросить форму</button>
+		hr:first-of-type {
+			margin-block-start: 8dvh;
+		}
+	</style>
+</head>
+
+<body class="t-document">
+	<main class="u-container" data-testid="container">
+		<form enctype="text/plain" data-testid="main-form">
+			<div class="u-grid">
+				<section class="c-panel s-clean">
+					<c-select aria-label="Выбран:" aria-placeholder="Фрукт на выбор..." name="fruit-name">
+						<div role="option" value="Durian">Дуриан</div>
+						<div role="option" value="Mangosteen">Мангостин</div>
+						<div role="option" value="Lychee">Личи</div>
+						<div role="option" value="Jackfruit">Джекфрут</div>
+						<div role="option" value="Papaya">Папайя</div>
+						<div role="option" value="Mango">Манго</div>
+						<div role="option" value="Rambutan">Рамбутан</div>
+						<div role="option" value="Longan">Лонган</div>
+						<div role="option" value="Carambola">Карамбола</div>
+						<div role="option" value="Pitaya">Питайя</div>
+						<div role="option" value="Ackee">Аки</div>
+						<div role="option" value="Chompoo">Чомпу</div>
+						<div role="option" value="Sugar Apple">Сахарное яблоко</div>
+						<div role="option" value="Sapodilla">Саподилла</div>
+						<div role="option" value="Guava">Гуава</div>
+						<div role="option" value="Kiwano">Кивано</div>
+						<div role="option" value="Bael">Баиль</div>
+						<div role="option" value="Salak">Салак</div>
+						<div role="option" value="Bambangan">Бам-балан</div>
+						<div role="option" value="Ambarella">Амбарелла</div>
+						<div role="option" value="Citron">Цитрон</div>
+						<div role="option" value="Kumquat">Кумкват</div>
+						<div role="option" value="Marula">Марула</div>
+						<div role="option" value="Tamarind">Тамаринд</div>
+						<div role="option" value="Miracle Fruit">Магический фрукт</div>
+						<div role="option" value="Noni">Нони</div>
+						<div role="option" value="Soursop">Сметанное яблоко</div>
+						<div role="option" value="Naranjilla">Наранхилла</div>
+						<div role="option" value="Mamey">Мамея</div>
+						<div role="option" value="Pepino Dulce">Пепино</div>
+						<div role="option" value="Milky Fruit">Милкифрут</div>
+						<div role="option" value="Marang">Маранг</div>
+						<div role="option" value="Cupuasu">Купуасу</div>
+						<div role="option" value="Curuba">Куруба</div>
+						<div role="option" value="Jabuticaba">Жаботикаба</div>
+					</c-select>
 				</section>
-			</form>
-			<script>
-				const $component = document.querySelector('[data-testid=target-component]')
-				const $form = document.querySelector('[data-testid=main-form]')
-				const $output = document.querySelector('[data-testid=output]')
-				const $submitter = $form.querySelector('[data-testid=submitter]')
+				<section class="c-panel">
+					<c-select aria-label="Выбран:" aria-placeholder="Цветок на выбор..." name="flower-name">
+						<div role="option" value="Anemone">Анемон</div>
+						<div role="option" value="Allium">Аллиум</div>
+						<div role="option" value="Amaryllis">Амариллис</div>
+						<div role="option" value="Pineapple">Ананас</div>
+						<div role="option" value="Aster">Астер</div>
+						<div role="option" value="Astilba">Астильба</div>
+						<div role="option" value="Brassica">Брассика</div>
+						<div role="option" value="Bouvardia">Бувардия</div>
+						<div role="option" value="Wanda">Ванда</div>
+						<div role="option" value="Veronika">Вероника</div>
+						<div role="option" value="Viburnum">Вибурнум</div>
+						<div role="option" value="Genista">Гениста</div>
+						<div role="option" value="Hydrangea">Гортензия</div>
+						<div role="option" value="Hypericum">Гиперикум</div>
+						<div role="option" value="Hyacinth">Гиацинт</div>
+						<div role="option" value="Delphinium">Дельфиниум</div>
+						<div role="option" value="Calla Lilies">Каллы</div>
+						<div role="option" value="Kohia">Кохия</div>
+						<div role="option" value="Clematis">Клематис</div>
+						<div role="option" value="Leukadendron">Леукадендрон</div>
+						<div role="option" value="Leukospermum">Леукоспермум</div>
+						<div role="option" value="Limonium">Лимониум</div>
+						<div role="option" value="Mattiola">Маттиола</div>
+						<div role="option" value="Mimosa">Мимоза</div>
+						<div role="option" value="Ozothamnus">Озотамнус</div>
+						<div role="option" value="Ornithogalum">Орнитогалум</div>
+						<div role="option" value="Skimiya">Скимия</div>
+						<div role="option" value="Solidago">Солидаго</div>
+						<div role="option" value="Strelitzia">Стрелиция</div>
+						<div role="option" value="Sunflower">Подсолнух</div>
+						<div role="option" value="Protea">Протея</div>
+						<div role="option" value="Wheat">Пшеница</div>
+						<div role="option" value="Ranunculus">Ранункулюс</div>
+						<div role="option" value="Thanacetum">Танацетум</div>
+						<div role="option" value="Tweedy">Твидия</div>
+						<div role="option" value="Trachelium">Трахелиум</div>
+						<div role="option" value="Celosia">Целозия</div>
+						<div role="option" value="Freesia">Фрезия</div>
+						<div role="option" value="Heleborus">Хелеборус</div>
+						<div role="option" value="Eringium">Эрингиум</div>
+					</c-select>
+				</section>
+			</div>
+			<hr>
+			<output data-testid="output"></output>
+			<hr>
+			<section class="c-panel s-clean u-text-center">
+				<button data-testid="submitter" type="submit">Вывести данные формы</button>
+				<button type="reset">Сбросить форму</button>
+			</section>
+		</form>
+		<script>
+			const $component = document.querySelector('[data-testid=target-component]')
+			const $form = document.querySelector('[data-testid=main-form]')
+			const $output = document.querySelector('[data-testid=output]')
+			const $submitter = $form.querySelector('[data-testid=submitter]')
 
-				$form.addEventListener('submit', event => {
-					event.preventDefault()
-					const $data = document.createElement('pre')
-					const formData = new FormData($form, $submitter)
+			$form.addEventListener('submit', event => {
+				event.preventDefault()
+				const $data = document.createElement('pre')
+				const formData = new FormData($form, $submitter)
 
-					console.log($form.elements)
-					console.log(Array.from(formData.keys()), Array.from(formData.values()))
+				console.log($form.elements)
+				console.log(Array.from(formData.keys()), Array.from(formData.values()))
 
-					for (const [key, value] of formData) {
-						$data.textContent += `${key}: ${value}\n`;
-					}
-					$output.prepend($data)
-				})
-			</script>
-		</main>
-	</body>
+				for (const [key, value] of formData) {
+					$data.textContent += `${key}: ${value}\n`;
+				}
+				$output.prepend($data)
+			})
+		</script>
+	</main>
+</body>
+
 </html>

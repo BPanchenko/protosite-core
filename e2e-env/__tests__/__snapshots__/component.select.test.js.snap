@@ -4,13 +4,13 @@ exports[`SelectField Page Markup 1`] = `
 "<!DOCTYPE html><html lang="ru"><head>
 		<title>[TEST FORM OBJECT] Select Field Form ⁕ Protosite Core</title>
 
-		<link rel="preload" href="http://assets.protosite.rocks/core/component.select.css" as="style">
-		<link rel="preload" href="http://assets.protosite.rocks/fonts/iconic/iconic-sm.ttf" as="font" type="font/ttf" crossorigin="">
+		<link rel="preload" href="http://assets.protosite.xyz/core/component.select.css" as="style">
+		<link rel="preload" href="http://assets.protosite.xyz/fonts/iconic/iconic-sm.ttf" as="font" type="font/ttf" crossorigin="">
 
-		<link href="http://assets.protosite.rocks/fonts/iconic/stylesheet.css" rel="stylesheet" type="text/css">
-		<link href="http://assets.protosite.rocks/uikit/elements.css" rel="stylesheet" type="text/css">
-		<link href="http://assets.protosite.rocks/uikit/utilities.css" rel="stylesheet" type="text/css">
-		<link href="http://assets.protosite.rocks/uikit/component/panel.css" rel="stylesheet" type="text/css">
+		<link href="http://assets.protosite.xyz/fonts/iconic/stylesheet.css" rel="stylesheet" type="text/css">
+		<link href="http://assets.protosite.xyz/uikit/elements.css" rel="stylesheet" type="text/css">
+		<link href="http://assets.protosite.xyz/uikit/utilities.css" rel="stylesheet" type="text/css">
+		<link href="http://assets.protosite.xyz/uikit/component/panel.css" rel="stylesheet" type="text/css">
 		
 		<script src="../component.select.mjs" type="module"></script>
 		<style>

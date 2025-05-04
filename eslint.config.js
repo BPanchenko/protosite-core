@@ -23,7 +23,7 @@ import typescriptPlugin from '@typescript-eslint/eslint-plugin'
 export default [
 	{
 		ignores: [
-			'bundle/*',
+			'.bundle/*',
 			'e2e-env/*',
 			'!e2e-env/__tests__/',
 			'source/component/FormField.js',

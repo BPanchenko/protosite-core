@@ -1,4 +1,4 @@
-import type { ListboxElement, Option } from './element.listbox.d.mts';
+import type { ListboxElement, Option } from './element.listbox.d.ts';
 import type { CustomElement } from './iface.custom-element';
 type InitAttributesOptions = {
 	shadowRoot?: ShadowRoot;

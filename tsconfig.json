@@ -3,8 +3,10 @@
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
+    "declaration": true,
+    "declarationDir": ".bundle",
     "esModuleInterop": true,
-    "lib": ["DOM", "ESNext"],
+    "lib": ["DOM", "ESNext", "ES2024"],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "noEmitOnError": true,
@@ -22,7 +24,7 @@
     "rootDir": ".",
     "sourceMap": true,
     "strictNullChecks": true,
-    "target": "ES2022"
+    "target": "ESNext"
   },
   "include": [
     "./.kernel/**/*",

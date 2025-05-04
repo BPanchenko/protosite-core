@@ -1,7 +1,7 @@
 {
   "name": "@bpanchenko/core",
   "private": true,
-  "version": "1.15.58",
+  "version": "1.15.61",
   "description": "Web Application Core. It сontains a library of Web Components.",
   "homepage": "https://protosite.xyz",
   "type": "module",
@@ -24,14 +24,16 @@
     "./library/*": "./source/library/*"
   },
   "imports": {
+    "#stylesheet/*": "./.bundle/stylesheet.*",
     "#element/*": "./source/element/*",
     "#library/*": "./source/library/*",
     "#uikit/*": "@bpanchenko/uikit/*"
   },
   "scripts": {
-    "build:assets": "node ./.kernel/builder.assets.js",
-    "build:package": "node ./.kernel/builder.package.js",
-    "build": "npm-run-all --parallel build:**",
+    "build:esmodules": "node ./.kernel/build.esmodules.js",
+    "build:package": "node ./.kernel/build.package.js",
+    "build:stylesheets": "node ./.kernel/build.stylesheets.js",
+    "build": "run-s build:stylesheets build:esmodules build:package",
     "debug": "run-p server watch",
     "deploy": "node ./.kernel/deployer.js",
     "lint": "eslint . --fix",
@@ -57,6 +59,7 @@
     "@babel/preset-typescript": "7.27.1",
     "@babel/types": "7.27.1",
     "@bpanchenko/uikit": "4.37.120",
+    "@csstools/custom-units": "0.1.1",
     "@eslint/js": "9.26.0",
     "@happy-dom/jest-environment": "17.4.6",
     "@html-eslint/eslint-plugin": "0.40.0",
@@ -65,9 +68,9 @@
     "@testing-library/dom": "10.4.0",
     "@testing-library/jest-dom": "6.6.3",
     "@types/lodash": "4.17.16",
+    "@types/postcss-safe-parser": "5.0.4",
     "@typescript-eslint/eslint-plugin": "8.31.1",
     "@typescript-eslint/parser": "8.31.1",
-    "@typescript/lib-dom": "npm:@types/web@0.0.231",
     "@webdiscus/pug-loader": "2.11.1",
     "babel-cli": "6.26.0",
     "babel-jest": "29.7.0",
@@ -77,6 +80,8 @@
     "construct-style-sheets-polyfill": "3.1.0",
     "core-js": "3.42.0",
     "css-loader": "7.1.2",
+    "cssnano": "7.0.6",
+    "cssnano-preset-default": "7.0.6",
     "date-format": "4.0.14",
     "element-internals-polyfill": "3.0.2",
     "esbuild": "0.25.3",
@@ -104,6 +109,14 @@
     "node-color-log": "12.0.1",
     "npm-run-all": "4.1.5",
     "portscanner": "2.2.0",
+    "postcss": "8.5.3",
+    "postcss-custom-media": "11.0.5",
+    "postcss-custom-selectors": "8.0.4",
+    "postcss-extend-rule": "4.0.0",
+    "postcss-import": "16.1.0",
+    "postcss-preset-env": "10.1.6",
+    "postcss-prune-var": "1.1.2",
+    "postcss-safe-parser": "7.0.1",
     "pptr-testing-library": "0.8.0",
     "prettier": "3.5.3",
     "pug": "3.0.3",
@@ -129,5 +142,13 @@
     "email": "boris.v.panchenko@mail.ru",
     "url": "https://bpanchenko.ru"
   },
-  "license": "LGPL-3.0-only"
+  "license": "LGPL-3.0-only",
+  "pnpm": {
+    "overrides": {
+      "@bpanchenko/uikit": "link:../protosite-uikit/Package"
+    }
+  },
+  "dependencies": {
+    "@types/pug": "2.0.10"
+  }
 }

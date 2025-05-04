@@ -11,7 +11,7 @@
       "format": "esm"
     },
     "source/library/fn.updateAttributes.ts": {
-      "bytes": 872,
+      "bytes": 914,
       "imports": [
         {
           "path": "source/library/fn.isObject.ts",
@@ -27,7 +27,7 @@
       "format": "esm"
     },
     "source/component/Avatar/template.pug": {
-      "bytes": 2377,
+      "bytes": 2392,
       "imports": []
     },
     "source/component/Avatar/index.ts": {
@@ -57,21 +57,21 @@
       "format": "esm"
     },
     "source/library/fn.checkFalsy.ts": {
-      "bytes": 215,
+      "bytes": 259,
       "imports": [],
       "format": "esm"
     },
     "source/library/fn.checkTruth.ts": {
-      "bytes": 203,
+      "bytes": 247,
       "imports": [],
       "format": "esm"
     },
     "source/component/Select/template.pug": {
-      "bytes": 521,
+      "bytes": 10841,
       "imports": []
     },
     "source/component/Select/index.ts": {
-      "bytes": 10964,
+      "bytes": 10939,
       "imports": [
         {
           "path": "source/library/fn.checkFalsy.ts",
@@ -112,7 +112,7 @@
       "format": "esm"
     },
     "source/element/Arrow/template.pug": {
-      "bytes": 691,
+      "bytes": 2754,
       "imports": []
     },
     "source/element/Arrow/index.ts": {
@@ -141,227 +141,227 @@
       ],
       "format": "esm"
     },
-    "node_modules/lodash/_baseClamp.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseClamp.js": {
       "bytes": 571,
       "imports": [],
       "format": "cjs"
     },
-    "node_modules/lodash/_freeGlobal.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_freeGlobal.js": {
       "bytes": 173,
       "imports": [],
       "format": "cjs"
     },
-    "node_modules/lodash/_root.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_root.js": {
       "bytes": 300,
       "imports": [
         {
-          "path": "node_modules/lodash/_freeGlobal.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_freeGlobal.js",
           "kind": "require-call",
           "original": "./_freeGlobal"
         }
       ],
       "format": "cjs"
     },
-    "node_modules/lodash/_Symbol.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Symbol.js": {
       "bytes": 118,
       "imports": [
         {
-          "path": "node_modules/lodash/_root.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_root.js",
           "kind": "require-call",
           "original": "./_root"
         }
       ],
       "format": "cjs"
     },
-    "node_modules/lodash/_arrayMap.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayMap.js": {
       "bytes": 556,
       "imports": [],
       "format": "cjs"
     },
-    "node_modules/lodash/isArray.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isArray.js": {
       "bytes": 488,
       "imports": [],
       "format": "cjs"
     },
-    "node_modules/lodash/_getRawTag.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getRawTag.js": {
       "bytes": 1139,
       "imports": [
         {
-          "path": "node_modules/lodash/_Symbol.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Symbol.js",
           "kind": "require-call",
           "original": "./_Symbol"
         }
       ],
       "format": "cjs"
     },
-    "node_modules/lodash/_objectToString.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_objectToString.js": {
       "bytes": 565,
       "imports": [],
       "format": "cjs"
     },
-    "node_modules/lodash/_baseGetTag.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseGetTag.js": {
       "bytes": 792,
       "imports": [
         {
-          "path": "node_modules/lodash/_Symbol.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Symbol.js",
           "kind": "require-call",
           "original": "./_Symbol"
         },
         {
-          "path": "node_modules/lodash/_getRawTag.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getRawTag.js",
           "kind": "require-call",
           "original": "./_getRawTag"
         },
         {
-          "path": "node_modules/lodash/_objectToString.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_objectToString.js",
           "kind": "require-call",
           "original": "./_objectToString"
         }
       ],
       "format": "cjs"
     },
-    "node_modules/lodash/isObjectLike.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObjectLike.js": {
       "bytes": 614,
       "imports": [],
       "format": "cjs"
     },
-    "node_modules/lodash/isSymbol.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isSymbol.js": {
       "bytes": 682,
       "imports": [
         {
-          "path": "node_modules/lodash/_baseGetTag.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseGetTag.js",
           "kind": "require-call",
           "original": "./_baseGetTag"
         },
         {
-          "path": "node_modules/lodash/isObjectLike.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObjectLike.js",
           "kind": "require-call",
           "original": "./isObjectLike"
         }
       ],
       "format": "cjs"
     },
-    "node_modules/lodash/_baseToString.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseToString.js": {
       "bytes": 1154,
       "imports": [
         {
-          "path": "node_modules/lodash/_Symbol.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Symbol.js",
           "kind": "require-call",
           "original": "./_Symbol"
         },
         {
-          "path": "node_modules/lodash/_arrayMap.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayMap.js",
           "kind": "require-call",
           "original": "./_arrayMap"
         },
         {
-          "path": "node_modules/lodash/isArray.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isArray.js",
           "kind": "require-call",
           "original": "./isArray"
         },
         {
-          "path": "node_modules/lodash/isSymbol.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isSymbol.js",
           "kind": "require-call",
           "original": "./isSymbol"
         }
       ],
       "format": "cjs"
     },
-    "node_modules/lodash/_trimmedEndIndex.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_trimmedEndIndex.js": {
       "bytes": 515,
       "imports": [],
       "format": "cjs"
     },
-    "node_modules/lodash/_baseTrim.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseTrim.js": {
       "bytes": 444,
       "imports": [
         {
-          "path": "node_modules/lodash/_trimmedEndIndex.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_trimmedEndIndex.js",
           "kind": "require-call",
           "original": "./_trimmedEndIndex"
         }
       ],
       "format": "cjs"
     },
-    "node_modules/lodash/isObject.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObject.js": {
       "bytes": 733,
       "imports": [],
       "format": "cjs"
     },
-    "node_modules/lodash/toNumber.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toNumber.js": {
       "bytes": 1519,
       "imports": [
         {
-          "path": "node_modules/lodash/_baseTrim.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseTrim.js",
           "kind": "require-call",
           "original": "./_baseTrim"
         },
         {
-          "path": "node_modules/lodash/isObject.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObject.js",
           "kind": "require-call",
           "original": "./isObject"
         },
         {
-          "path": "node_modules/lodash/isSymbol.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isSymbol.js",
           "kind": "require-call",
           "original": "./isSymbol"
         }
       ],
       "format": "cjs"
     },
-    "node_modules/lodash/toFinite.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toFinite.js": {
       "bytes": 868,
       "imports": [
         {
-          "path": "node_modules/lodash/toNumber.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toNumber.js",
           "kind": "require-call",
           "original": "./toNumber"
         }
       ],
       "format": "cjs"
     },
-    "node_modules/lodash/toInteger.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toInteger.js": {
       "bytes": 760,
       "imports": [
         {
-          "path": "node_modules/lodash/toFinite.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toFinite.js",
           "kind": "require-call",
           "original": "./toFinite"
         }
       ],
       "format": "cjs"
     },
-    "node_modules/lodash/toString.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toString.js": {
       "bytes": 580,
       "imports": [
         {
-          "path": "node_modules/lodash/_baseToString.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseToString.js",
           "kind": "require-call",
           "original": "./_baseToString"
         }
       ],
       "format": "cjs"
     },
-    "node_modules/lodash/startsWith.js": {
+    "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/startsWith.js": {
       "bytes": 1017,
       "imports": [
         {
-          "path": "node_modules/lodash/_baseClamp.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseClamp.js",
           "kind": "require-call",
           "original": "./_baseClamp"
         },
         {
-          "path": "node_modules/lodash/_baseToString.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseToString.js",
           "kind": "require-call",
           "original": "./_baseToString"
         },
         {
-          "path": "node_modules/lodash/toInteger.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toInteger.js",
           "kind": "require-call",
           "original": "./toInteger"
         },
         {
-          "path": "node_modules/lodash/toString.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toString.js",
           "kind": "require-call",
           "original": "./toString"
         }
@@ -381,7 +381,7 @@
       "bytes": 13141,
       "imports": [
         {
-          "path": "node_modules/lodash/startsWith.js",
+          "path": "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/startsWith.js",
           "kind": "import-statement",
           "original": "lodash/startsWith"
         },
@@ -424,7 +424,7 @@
       "format": "esm"
     },
     "source/element/Option.ts": {
-      "bytes": 1302,
+      "bytes": 1277,
       "imports": [
         {
           "path": "source/library/fn.updateAttributes.ts",
@@ -436,7 +436,7 @@
     }
   },
   "outputs": {
-    "bundle/component.avatar.mjs": {
+    ".bundle/component.avatar.js": {
       "imports": [],
       "exports": [
         "default"
@@ -444,27 +444,27 @@
       "entryPoint": "source/component/Avatar/index.ts",
       "inputs": {
         "source/library/fn.initShadowRoot.ts": {
-          "bytesInOutput": 278
+          "bytesInOutput": 280
         },
         "source/library/fn.isObject.ts": {
           "bytesInOutput": 77
         },
         "source/library/fn.updateAttributes.ts": {
-          "bytesInOutput": 339
+          "bytesInOutput": 341
         },
         "source/library/enum.custom-state.ts": {
-          "bytesInOutput": 222
+          "bytesInOutput": 223
         },
         "source/component/Avatar/template.pug": {
-          "bytesInOutput": 2386
+          "bytesInOutput": 2405
         },
         "source/component/Avatar/index.ts": {
-          "bytesInOutput": 837
+          "bytesInOutput": 845
         }
       },
-      "bytes": 4161
+      "bytes": 4193
     },
-    "bundle/component.select.mjs": {
+    ".bundle/component.select.js": {
       "imports": [],
       "exports": [
         "default"
@@ -478,27 +478,27 @@
           "bytesInOutput": 89
         },
         "source/library/fn.initShadowRoot.ts": {
-          "bytesInOutput": 278
+          "bytesInOutput": 280
         },
         "source/library/fn.isObject.ts": {
           "bytesInOutput": 77
         },
         "source/library/fn.updateAttributes.ts": {
-          "bytesInOutput": 339
+          "bytesInOutput": 341
         },
         "source/library/enum.custom-state.ts": {
-          "bytesInOutput": 222
+          "bytesInOutput": 223
         },
         "source/component/Select/template.pug": {
-          "bytesInOutput": 558
+          "bytesInOutput": 10895
         },
         "source/component/Select/index.ts": {
-          "bytesInOutput": 5235
+          "bytesInOutput": 5281
         }
       },
-      "bytes": 6910
+      "bytes": 17298
     },
-    "bundle/element.arrow.mjs": {
+    ".bundle/element.arrow.js": {
       "imports": [],
       "exports": [
         "default"
@@ -506,92 +506,92 @@
       "entryPoint": "source/element/Arrow/index.ts",
       "inputs": {
         "source/library/enum.custom-state.ts": {
-          "bytesInOutput": 222
+          "bytesInOutput": 223
         },
         "source/library/fn.initShadowRoot.ts": {
-          "bytesInOutput": 278
+          "bytesInOutput": 280
         },
         "source/element/Arrow/library.ts": {
-          "bytesInOutput": 628
+          "bytesInOutput": 636
         },
         "source/element/Arrow/template.pug": {
-          "bytesInOutput": 700
+          "bytesInOutput": 2772
         },
         "source/element/Arrow/index.ts": {
-          "bytesInOutput": 1211
+          "bytesInOutput": 1222
         }
       },
-      "bytes": 3061
+      "bytes": 5155
     },
-    "bundle/element.listbox.mjs": {
+    ".bundle/element.listbox.js": {
       "imports": [],
       "exports": [
         "default"
       ],
       "entryPoint": "source/element/Listbox/index.ts",
       "inputs": {
-        "node_modules/lodash/_baseClamp.js": {
-          "bytesInOutput": 132
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseClamp.js": {
+          "bytesInOutput": 133
         },
-        "node_modules/lodash/_freeGlobal.js": {
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_freeGlobal.js": {
           "bytesInOutput": 116
         },
-        "node_modules/lodash/_root.js": {
-          "bytesInOutput": 152
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_root.js": {
+          "bytesInOutput": 153
         },
-        "node_modules/lodash/_Symbol.js": {
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_Symbol.js": {
           "bytesInOutput": 69
         },
-        "node_modules/lodash/_arrayMap.js": {
-          "bytesInOutput": 140
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_arrayMap.js": {
+          "bytesInOutput": 141
         },
-        "node_modules/lodash/isArray.js": {
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isArray.js": {
           "bytesInOutput": 66
         },
-        "node_modules/lodash/_getRawTag.js": {
-          "bytesInOutput": 258
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_getRawTag.js": {
+          "bytesInOutput": 260
         },
-        "node_modules/lodash/_objectToString.js": {
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_objectToString.js": {
           "bytesInOutput": 117
         },
-        "node_modules/lodash/_baseGetTag.js": {
-          "bytesInOutput": 214
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseGetTag.js": {
+          "bytesInOutput": 215
         },
-        "node_modules/lodash/isObjectLike.js": {
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObjectLike.js": {
           "bytesInOutput": 95
         },
-        "node_modules/lodash/isSymbol.js": {
-          "bytesInOutput": 143
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isSymbol.js": {
+          "bytesInOutput": 144
         },
-        "node_modules/lodash/_baseToString.js": {
-          "bytesInOutput": 272
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseToString.js": {
+          "bytesInOutput": 274
         },
-        "node_modules/lodash/_trimmedEndIndex.js": {
-          "bytesInOutput": 128
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_trimmedEndIndex.js": {
+          "bytesInOutput": 129
         },
-        "node_modules/lodash/_baseTrim.js": {
-          "bytesInOutput": 125
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/_baseTrim.js": {
+          "bytesInOutput": 126
         },
-        "node_modules/lodash/isObject.js": {
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/isObject.js": {
           "bytesInOutput": 121
         },
-        "node_modules/lodash/toNumber.js": {
-          "bytesInOutput": 413
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toNumber.js": {
+          "bytesInOutput": 416
         },
-        "node_modules/lodash/toFinite.js": {
-          "bytesInOutput": 202
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toFinite.js": {
+          "bytesInOutput": 203
         },
-        "node_modules/lodash/toInteger.js": {
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toInteger.js": {
           "bytesInOutput": 116
         },
-        "node_modules/lodash/toString.js": {
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/toString.js": {
           "bytesInOutput": 98
         },
-        "node_modules/lodash/startsWith.js": {
-          "bytesInOutput": 182
+        "node_modules/.pnpm/lodash@4.17.21/node_modules/lodash/startsWith.js": {
+          "bytesInOutput": 183
         },
         "source/element/Listbox/index.ts": {
-          "bytesInOutput": 6288
+          "bytesInOutput": 6339
         },
         "source/library/fn.checkFalsy.ts": {
           "bytesInOutput": 93
@@ -600,27 +600,27 @@
           "bytesInOutput": 91
         },
         "source/library/fn.generateID.ts": {
-          "bytesInOutput": 227
+          "bytesInOutput": 228
         },
         "source/library/fn.initShadowRoot.ts": {
-          "bytesInOutput": 281
+          "bytesInOutput": 283
         },
         "source/library/fn.isObject.ts": {
           "bytesInOutput": 80
         },
         "source/library/fn.updateAttributes.ts": {
-          "bytesInOutput": 342
+          "bytesInOutput": 344
         },
         "source/library/enum.custom-state.ts": {
-          "bytesInOutput": 225
+          "bytesInOutput": 226
         },
         "source/element/Listbox/template.pug": {
           "bytesInOutput": 682
         }
       },
-      "bytes": 12025
+      "bytes": 12099
     },
-    "bundle/element.option.mjs": {
+    ".bundle/element.option.js": {
       "imports": [],
       "exports": [
         "default"
@@ -631,13 +631,13 @@
           "bytesInOutput": 77
         },
         "source/library/fn.updateAttributes.ts": {
-          "bytesInOutput": 339
+          "bytesInOutput": 341
         },
         "source/element/Option.ts": {
-          "bytesInOutput": 682
+          "bytesInOutput": 689
         }
       },
-      "bytes": 1120
+      "bytes": 1129
     }
   }
 }

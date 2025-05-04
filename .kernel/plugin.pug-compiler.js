@@ -6,9 +6,7 @@ import pug from 'pug'
 export const options = {
 	filters: {
 		'css-loader': (innerContent, { module }) => {
-			const filePath = fileURLToPath(
-				import.meta.resolve('#uikit/' + module),
-			)
+			const filePath = fileURLToPath(import.meta.resolve(module))
 			const cssContent = readFileSync(filePath, 'utf-8')
 			return cssContent + ' ' + innerContent
 		},

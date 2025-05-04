@@ -1,7 +1,7 @@
 import { dtsPlugin } from 'esbuild-plugin-d.ts'
 import { writeFileSync } from 'node:fs'
 
-import pugCompiler from './compiler.pug.js'
+import pugCompiler from './plugin.pug-compiler.js'
 import { analyzeMetafileSync, build } from 'esbuild'
 import { debug } from './logger.cjs'
 
@@ -19,19 +19,16 @@ const bundle = await build({
 	metafile: true,
 	minify: true,
 	outdir: '.bundle',
-	outExtension: {
-		'.js': '.mjs',
-	},
-	outbase: 'source',
 	format: 'esm',
 	sourcemap: false,
+	lineLimit: 120,
 	target: ['esnext', 'safari18'],
 	tsconfig: 'tsconfig.json',
 	plugins: [pugCompiler(), dtsPlugin()],
 })
 
 writeFileSync(
-	'./bundle-analysis.json',
+	'./.bundle/compilation-stats.json',
 	JSON.stringify(bundle.metafile, undefined, 2),
 )
 

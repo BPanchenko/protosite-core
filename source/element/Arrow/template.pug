@@ -1,19 +1,13 @@
-link#link-styling(
-	fetchpriority="low"
-	href="http://assets.protosite.xyz/core/element.arrow.css"
-	media="screen"
-	rel="stylesheet"
-	type="text/css"
-	title="Visual Rules for Arrow Element"
-)
 link#link-glyph-collection(
 	fetchpriority="low"
-	href="http://assets.protosite.xyz/uikit/element/icon.glyphs-arrow.css"
+	href="//assets.protosite.xyz/core/stylesheet.arrow-glyphs.css"
 	media="screen"
 	rel="stylesheet"
 	type="text/css"
 	title="Visual Symbol defines by the glyph name that passed to the data attribute"
 )
+style(type="text/css")
+	:css-loader(module="#stylesheet/arrow-element.css")
 style(type="text/css").
 	:host(:state(--defined)) {
 		content-visibility: hidden;

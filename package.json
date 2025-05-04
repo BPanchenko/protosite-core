@@ -1,20 +1,23 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.15.57",
+  "private": true,
+  "version": "1.15.58",
+  "description": "Web Application Core. It сontains a library of Web Components.",
+  "homepage": "https://protosite.xyz",
   "type": "module",
-  "main": "./bundle/index.js",
-  "types": "./bundle/index.d.ts",
+  "main": "./.bundle/index.js",
+  "types": "./.bundle/index.d.ts",
   "files": [
-    "bundle/*"
+    "./.bundle/*"
   ],
   "exports": {
-    ".": "./bundle/index.js",
-    "./esm/*": "./bundle/*",
-    "./arrow-element": "./bundle/element.arrow.mjs",
-    "./avatar-component": "./bundle/component.avatar.mjs",
-    "./listbox-element": "./bundle/element.listbox.mjs",
-    "./option-element": "./bundle/element.option.mjs",
-    "./select-component": "./bundle/component.select.mjs",
+    ".": "./.bundle/index.js",
+    "./esm/*": "./.bundle/*",
+    "./arrow-element": "./.bundle/element.arrow.mjs",
+    "./avatar-component": "./.bundle/component.avatar.mjs",
+    "./listbox-element": "./.bundle/element.listbox.mjs",
+    "./option-element": "./.bundle/element.option.mjs",
+    "./select-component": "./.bundle/component.select.mjs",
     "./src/*": "./source/*",
     "./component/*": "./source/component/*",
     "./element/*": "./source/element/*",
@@ -26,12 +29,14 @@
     "#uikit/*": "@bpanchenko/uikit/*"
   },
   "scripts": {
-    "build": "node ./.kernel/builder.js",
+    "build:assets": "node ./.kernel/builder.assets.js",
+    "build:package": "node ./.kernel/builder.package.js",
+    "build": "npm-run-all --parallel build:**",
     "debug": "run-p server watch",
     "deploy": "node ./.kernel/deployer.js",
     "lint": "eslint . --fix",
     "postpublishOnly": "npm run deploy",
-    "prebuild": "rimraf \"bundle/*.{mjs,mts}\" --glob",
+    "prebuild": "rimraf \"./.bundle/*.{js,ts}\" --glob",
     "server": "node ./.kernel/server.cjs",
     "test": "npm run test:unit && npm run test:e2e",
     "test:e2e": "jest --config=.config/jest-e2e.cjs",
@@ -113,8 +118,6 @@
     "webpack-bundle-analyzer": "4.10.2",
     "webpack-cli": "6.0.1"
   },
-  "homepage": "http://protosite.rocks",
-  "description": "Web Application Core. It сontains a library of Web Components.",
   "keywords": [
     "WEB Components",
     "Custom Elements",

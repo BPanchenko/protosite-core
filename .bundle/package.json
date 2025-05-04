@@ -1,0 +1,29 @@
+{
+  "name": "@bpanchenko/core",
+  "version": "1.15.58",
+  "description": "Web Application Core. It сontains a library of Web Components.",
+  "homepage": "https://protosite.xyz",
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "files": [
+    "./*"
+  ],
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead"
+  ],
+  "keywords": [
+    "WEB Components",
+    "Custom Elements",
+    "Unit testing",
+    "End-to-End testing"
+  ],
+  "author": {
+    "name": "Boris Panchenko",
+    "email": "boris.v.panchenko@mail.ru",
+    "url": "https://bpanchenko.ru"
+  },
+  "license": "LGPL-3.0-only"
+}

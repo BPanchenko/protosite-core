@@ -3,6 +3,7 @@ import { writeFileSync } from 'node:fs'
 
 import pugCompiler from './compiler.pug.js'
 import { analyzeMetafileSync, build } from 'esbuild'
+import { debug } from './logger.cjs'
 
 const bundle = await build({
 	bundle: true,
@@ -17,7 +18,7 @@ const bundle = await build({
 	mainFields: ['browser', 'main', 'module'],
 	metafile: true,
 	minify: true,
-	outdir: 'bundle',
+	outdir: '.bundle',
 	outExtension: {
 		'.js': '.mjs',
 	},
@@ -34,7 +35,7 @@ writeFileSync(
 	JSON.stringify(bundle.metafile, undefined, 2),
 )
 
-console.log(
+debug(
 	analyzeMetafileSync(bundle.metafile, {
 		verbose: true,
 	}),

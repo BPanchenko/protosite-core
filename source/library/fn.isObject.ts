@@ -1,6 +1,4 @@
-function isObject(value: unknown): boolean {
-	var type = typeof value
-	return !!value && (type == 'object' || type == 'function')
-}
+export const isObject = (value: unknown): value is Object =>
+	Boolean(value) && typeof value === 'object'
 
 export default isObject

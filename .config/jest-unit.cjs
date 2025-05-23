@@ -16,13 +16,13 @@ module.exports = {
 	rootDir: path.join(process.cwd(), 'source'),
 
 	bail: 2,
+	collectCoverage: true,
 	collectCoverageFrom: [
-		'<rootDir>/component/*.js',
 		'<rootDir>/component/*.ts',
 		'<rootDir>/element/*.ts',
 		'<rootDir>/library/*.ts',
 	],
-	coverageDirectory: '<rootDir>/__coverage__',
+	coverageDirectory: '../__coverage__',
 	globals,
 	moduleFileExtensions: ['js', 'cjs', 'mjs', 'css'],
 	moduleNameMapper: {

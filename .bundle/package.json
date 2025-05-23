@@ -1,19 +1,8 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.15.61",
-  "description": "Web Application Core. It сontains a library of Web Components.",
+  "version": "1.15.63",
+  "description": "The library \"Protosite Core\" is collection of interactive web components and graphical interface elements.",
   "homepage": "https://protosite.xyz",
-  "type": "module",
-  "main": "./index.js",
-  "types": "./index.d.ts",
-  "files": [
-    "./*"
-  ],
-  "browserslist": [
-    "> 0.5%",
-    "last 2 versions",
-    "not dead"
-  ],
   "keywords": [
     "WEB Components",
     "Custom Elements",
@@ -26,12 +15,19 @@
     "url": "https://bpanchenko.ru"
   },
   "license": "LGPL-3.0-only",
-  "pnpm": {
-    "overrides": {
-      "@bpanchenko/uikit": "link:../protosite-uikit/Package"
-    }
-  },
-  "dependencies": {
-    "@types/pug": "2.0.10"
+  "type": "module",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "files": [
+    "./*"
+  ],
+  "exports": {
+    ".": "./index.js",
+    "./arrow-element": "./element.arrow.js",
+    "./avatar-component": "./component.avatar.js",
+    "./listbox-element": "./element.listbox.js",
+    "./option-element": "./element.option.js",
+    "./select-component": "./component.select.js",
+    "./stylesheet/*": "./stylesheet.*"
   }
 }

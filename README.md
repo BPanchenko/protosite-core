@@ -1,52 +1,93 @@
-# Библиотека нативных ECMAScript модулей Protosite Core
+# Библиотека "Стержень Протосайта"
 
 [![npm](https://img.shields.io/npm/v/@bpanchenko/core.svg)](https://www.npmjs.com/package/@bpanchenko/core)
 
-Пакет предоставляет среду разработки веб-компонентов через автоматизированное тестирование. Реализованы методы модульного и E2E тестирования исходного кода и скомпилированных модулей ECMAScript.
+#### Комплект интерактивных веб-компонент и элементов графического интерфейса
 
-Внешний вид, описание и примеры использования даны на страницах [Протосайта](http://protosite.rocks).
+Процесс разработки веб-компонентов реализован через автоматизированное тестирование. Реализованы методы модульного и E2E тестирования исходного кода и скомпилированных модулей ECMAScript.
 
-### Активы библиотеки
+> [!TIP]
+> **Внешний вид, описание и примеры использования представлены на страницах Протосайта: https://protosite.xyz**
 
-Компоненты оболочки Протосайта загружаются непосредственно в браузер при помощи `<script type="module">`. Скрипт выполнит инициализацию веб-компоненты, а при монтировании в DOM компонента выполнит загрузку файлов CSS и HTML.
+## Активы библиотеки
 
-Например структура файлов поля выбора данных на сервере:
+Подключение модулей выполняется загрузкой внешних ресурсов непосредственно на веб-страницу, или через установку NPM-пакетов.
 
+### 1. Загружаемые веб-страницой. Инициализация в браузере
+
+| _Файловая структура каталога на веб-сервере_ |
+|:-----------------------:|
+```bash
+https://assets.protosite.xyz/core
+├── ./component.avatar.js 
+├── ./component.select.js
+├── ./element.arrow.js
+├── ./element.listbox.js
+├── ./element.option.js
+└── ...
+```
+
+| _Скрипт инициализации веб-компонент_ |
+|:-----------------------:|
 ```javascript
-//assets.protosite.xyz/core/
- ├── component.select.mjs
- ├── component.select.css
- └── ...
+import ArrowElement from "//assets.protosite.xyz/core/element.arrow.js"
+import SelectComponent from "//assets.protosite.xyz/core/component.select.js"
+
+customElements.define(ArrowElement.tagName, ArrowElement)
+customElements.define(SelectComponent.tagName, SelectComponent)
 ```
 
-Скрипт модуля компоненты загружается на веб-странице тегом:
+### 2. Подключаемые из NPM
 
-```html
-<script src="//assets.protosite.xyz/core/component.select.mjs" type="module">
+| _Установка NPM-пакета_ |
+|:-----------------------:|
+---
+```command
+npm install @bpanchenko/core --save-dev
 ```
 
-### Исходный код
+| _Исходный код инициализации веб-компонент_ |
+|:-----------------------:|
+```typescript
+import ArrowElement from "@bpanchenko/core/arrow-element"
+import SelectComponent from "@bpanchenko/core/select-component"
+
+customElements.define(ArrowElement.tagName, ArrowElement)
+customElements.define(SelectComponent.tagName, SelectComponent)
+```
+
+## Кодовая база библиотеки
 
 Веб-компонента библиотеки представлена модулем ES6, файлом декларации типов и Pug-файлом с шаблонами HTML.
 
-Например структура исходных файлов поля выбора данных:
-
-```javascript
-.
-├── src
-│   ├── components
-│   │   ├── select-field.d.ts
-│   │   ├── select-field.js
-│   │   └── select-field.pug
-│   └── ...
-├── LICENSE
-└── README.md
-```
-
-Исходный код CSS для веб-компоненты доступен в библиотеке [`@bpanchenko/uikit`](https://github.com/BPanchenko/protosite-uikit).
-
-#### Установка Protosite Core
-
+| _Структура каталога модулей исходного кода_ |
+|:-----------------------:|
 ```bash
-npm install @bpanchenko/core --save-dev
+.
+├── source
+│   │
+⁞   ├── component
+c   │   │
+o   │   ├── Avatar
+r   │   │   ├── index.ts
+e   │   │   ├── template.pug
+⁞   │   │   └── stylesheet.css
+│   │   │
+│   │   ├── Select
+│   │   ¦   ├── index.ts
+⁞   │       ├── template.pug
+r   │       └── stylesheet.css
+o   │
+o   └── element
+t       │
+⁞       ├── Arrow
+│       │   ├── index.ts
+│       ¦   ├── template.pug
+│           ├── stylesheet.main.css
+│           ├── stylesheet.arrow-glyphs.css
+│           ├── library.ts
+│           └── types.d.ts
+│
+├── LICENSE    
+└── README.md
 ```

@@ -1,35 +1,25 @@
-# Библиотека "Стержень Протосайта"
+# ПО "Комплемент Протосайта"
+
+#### Комплект интерактивных элементов графического интерфейса пользователя
+
+При отладке программного решения применяется автоматизированное тестирование.
+<br>Реализованы методы модульного тестирования исходного кода и E2E тестирования готового ПО.
+<br>Внешний вид, описание и примеры использования веб-компонентов представлены на [страницах Протосайта](https://protosite.xyz); там-же доступен [отчет о степени покрытия кода тестами](https://protosite.xyz/code-coverage/protosite-core/).
 
 [![npm](https://img.shields.io/npm/v/@bpanchenko/core.svg)](https://www.npmjs.com/package/@bpanchenko/core)
 
-#### Комплект интерактивных веб-компонент и элементов графического интерфейса
+## Использование ПО
 
-Процесс разработки веб-компонентов реализован через автоматизированное тестирование. Реализованы методы модульного и E2E тестирования исходного кода и скомпилированных модулей ECMAScript.
+Подключение публичных модулей выполняется через [загрузку внешних ресурсов](#1-загрузка-модулей-непосредственно-на-веб-страницу) непосредственно на веб-страницу или через [установку NPM-пакетов](#2-установка-из-npm).
 
-> [!TIP]
-> **Внешний вид, описание и примеры использования представлены на страницах Протосайта: https://protosite.xyz**
+### 1: Загрузка модулей непосредственно на веб-страницу
 
-## Активы библиотеки
-
-Подключение модулей выполняется загрузкой внешних ресурсов непосредственно на веб-страницу, или через установку NPM-пакетов.
-
-### 1. Загружаемые веб-страницой. Инициализация в браузере
-
-| _Файловая структура каталога на веб-сервере_ |
-|:-----------------------:|
-```bash
-https://assets.protosite.xyz/core
-├── ./component.avatar.js 
-├── ./component.select.js
-├── ./element.arrow.js
-├── ./element.listbox.js
-├── ./element.option.js
-└── ...
-```
-
-| _Скрипт инициализации веб-компонент_ |
-|:-----------------------:|
 ```javascript
+/**
+ * @module core/setup-custom-elements
+ * @overview Регистрация пользовательских элементов
+ */
+
 import ArrowElement from "//assets.protosite.xyz/core/element.arrow.js"
 import SelectComponent from "//assets.protosite.xyz/core/component.select.js"
 
@@ -37,18 +27,31 @@ customElements.define(ArrowElement.tagName, ArrowElement)
 customElements.define(SelectComponent.tagName, SelectComponent)
 ```
 
-### 2. Подключаемые из NPM
+```yaml
+# Файловая структура каталога на веб-сервере активов Протосайта
+―――
+https://assets.protosite.xyz/core/
+┯
+├── component.avatar.js 
+├── component.select.js
+├── element.arrow.js
+├── element.listbox.js
+├── element.option.js
+└── ...
+```
 
-| _Установка NPM-пакета_ |
-|:-----------------------:|
----
-```command
+### 2: Установка из NPM
+
+```powershell
 npm install @bpanchenko/core --save-dev
 ```
 
-| _Исходный код инициализации веб-компонент_ |
-|:-----------------------:|
-```typescript
+```javascript
+/**
+ * @module core/setup-custom-elements
+ * @overview Регистрация пользовательских элементов
+ */
+
 import ArrowElement from "@bpanchenko/core/arrow-element"
 import SelectComponent from "@bpanchenko/core/select-component"
 
@@ -56,18 +59,18 @@ customElements.define(ArrowElement.tagName, ArrowElement)
 customElements.define(SelectComponent.tagName, SelectComponent)
 ```
 
-## Кодовая база библиотеки
+## Кодовая база ПО
 
-Веб-компонента библиотеки представлена модулем ES6, файлом декларации типов и Pug-файлом с шаблонами HTML.
+Веб-компонента в исходном коде представлена модулем TypeScript, pug-шаблоном HTML и таблицами стилей CSS. Таблицы стилей либо вставляются в шаблон, либо подгружаются готовой компонентой при инициализации в браузере.
 
-| _Структура каталога модулей исходного кода_ |
-|:-----------------------:|
-```bash
+```yaml
+# Структура каталога модулей исходного кода
+―――
 .
-├── source
+├── /source
 │   │
-⁞   ├── component
-c   │   │
+⁞   ├── /component
+c   │   ¦
 o   │   ├── Avatar
 r   │   │   ├── index.ts
 e   │   │   ├── template.pug
@@ -75,13 +78,13 @@ e   │   │   ├── template.pug
 │   │   │
 │   │   ├── Select
 │   │   ¦   ├── index.ts
-⁞   │       ├── template.pug
+⁞   │   ¦   ├── template.pug
 r   │       └── stylesheet.css
 o   │
-o   └── element
-t       │
+o   └── /element
+t       ¦
 ⁞       ├── Arrow
-│       │   ├── index.ts
+│       ¦   ├── index.ts
 │       ¦   ├── template.pug
 │           ├── stylesheet.main.css
 │           ├── stylesheet.arrow-glyphs.css

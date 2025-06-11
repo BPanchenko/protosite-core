@@ -1,4 +1,4 @@
-function c(t){var e=typeof t;return!!t&&(e=="object"||e=="function")}var u=c;function p(t,e,i){return(u(e)?Object.entries(e):[[e,i]]).forEach(([r,a])=>{let s=String(r);if(a===null)t.removeAttribute(
+var c=t=>!!t&&typeof t=="object",u=c;function p(t,e,i){return(u(e)?Object.entries(e):[[e,i]]).forEach(([r,a])=>{let s=String(r);if(a===null)t.removeAttribute(
 s);else if(a instanceof Attr)t.setAttributeNode(a);else{let n=t.getAttributeNode(s),l=String(a);n!==null?n.value=l:t.setAttribute(
 s,l)}}),new Map(t.getAttributeNames().sort().map(r=>[r,t.getAttributeNode(r)]))}var d=p;var o=class t extends HTMLElement{static oberverAttributes=["aria-busy","aria-checked","aria-disabled","aria-hidden","ar\
 ia-invalid","aria-label","aria-labelledby","aria-posinset","aria-selected","aria-setsize","data-value","value"];static role="\

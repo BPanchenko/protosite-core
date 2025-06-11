@@ -1,6 +1,6 @@
 var x=o=>typeof o=="string"?["off","false"].includes(o.trim().toLocaleLowerCase()):!o,p=x;var f=o=>typeof o=="string"?["on","true"].includes(o.trim().toLocaleLowerCase()):!!o,s=f;function y(o){let{$template:t,template:a,delegatesFocus:e=!1,mode:r="closed",serializable:n=!1}=o,l=this.attachShadow({delegatesFocus:e,
 mode:r,serializable:n});return t instanceof DocumentFragment&&l.appendChild(t.cloneNode(!0)),typeof a=="string"&&l.setHTMLUnsafe(
-a),l}var h=y;function k(o){var t=typeof o;return!!o&&(t=="object"||t=="function")}var m=k;function w(o,t,a){return(m(t)?Object.entries(t):[[t,a]]).forEach(([r,n])=>{let l=String(r);if(n===null)o.removeAttribute(
+a),l}var h=y;var k=o=>!!o&&typeof o=="object",m=k;function w(o,t,a){return(m(t)?Object.entries(t):[[t,a]]).forEach(([r,n])=>{let l=String(r);if(n===null)o.removeAttribute(
 l);else if(n instanceof Attr)o.setAttributeNode(n);else{let d=o.getAttributeNode(l),c=String(n);d!==null?d.value=c:o.setAttribute(
 l,c)}}),new Map(o.getAttributeNames().sort().map(r=>[r,o.getAttributeNode(r)]))}var u=w;var v=(c=>(c.Animation="--animating",c.Collapsed="--collapsed",c.Defined="--defined",c.Disabled="--disabled",c.Expanded=
 "--expanded",c.Interactive="--interactive",c.Loaded="--loaded",c.Scrolled="--scrolled",c))(v||{}),i=v;var g=`<style title="UIKit Rules" type="text/css">:host{--base-duration:.16s;--base-easing:cubic-bezier(.3,0,.2,1)}:host\

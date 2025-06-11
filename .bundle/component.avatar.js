@@ -1,9 +1,9 @@
-function g(t){let{$template:e,template:s,delegatesFocus:a=!1,mode:o="closed",serializable:n=!1}=t,i=this.attachShadow({delegatesFocus:a,
-mode:o,serializable:n});return e instanceof DocumentFragment&&i.appendChild(e.cloneNode(!0)),typeof s=="string"&&i.setHTMLUnsafe(
-s),i}var c=g;function x(t){var e=typeof t;return!!t&&(e=="object"||e=="function")}var p=x;function v(t,e,s){return(p(e)?Object.entries(e):[[e,s]]).forEach(([o,n])=>{let i=String(o);if(n===null)t.removeAttribute(
-i);else if(n instanceof Attr)t.setAttributeNode(n);else{let d=t.getAttributeNode(i),r=String(n);d!==null?d.value=r:t.setAttribute(
-i,r)}}),new Map(t.getAttributeNames().sort().map(o=>[o,t.getAttributeNode(o)]))}var u=v;var b=(r=>(r.Animation="--animating",r.Collapsed="--collapsed",r.Defined="--defined",r.Disabled="--disabled",r.Expanded=
-"--expanded",r.Interactive="--interactive",r.Loaded="--loaded",r.Scrolled="--scrolled",r))(b||{}),m=b;var h=`<style title="UIKit Rules" type="text/css">:host{--clr-foreground-rgb:31 21 0}:host{--shadow-key-umbra-opacity:.2\
+function g(t){let{$template:e,template:r,delegatesFocus:a=!1,mode:o="closed",serializable:n=!1}=t,i=this.attachShadow({delegatesFocus:a,
+mode:o,serializable:n});return e instanceof DocumentFragment&&i.appendChild(e.cloneNode(!0)),typeof r=="string"&&i.setHTMLUnsafe(
+r),i}var c=g;var x=t=>!!t&&typeof t=="object",p=x;function v(t,e,r){return(p(e)?Object.entries(e):[[e,r]]).forEach(([o,n])=>{let i=String(o);if(n===null)t.removeAttribute(
+i);else if(n instanceof Attr)t.setAttributeNode(n);else{let d=t.getAttributeNode(i),s=String(n);d!==null?d.value=s:t.setAttribute(
+i,s)}}),new Map(t.getAttributeNames().sort().map(o=>[o,t.getAttributeNode(o)]))}var u=v;var b=(s=>(s.Animation="--animating",s.Collapsed="--collapsed",s.Defined="--defined",s.Disabled="--disabled",s.Expanded=
+"--expanded",s.Interactive="--interactive",s.Loaded="--loaded",s.Scrolled="--scrolled",s))(b||{}),m=b;var h=`<style title="UIKit Rules" type="text/css">:host{--clr-foreground-rgb:31 21 0}:host{--shadow-key-umbra-opacity:.2\
 ;--shadow-key-penumbra-opacity:.14;
 --shadow-ambient-shadow-opacity:.12;--shadow-2dp:0 2px 2px 0 rgb(var(--clr-foreground-rgb)/var(--shadow-key-penumbra-opa\
 city)),0
@@ -31,9 +31,9 @@ solid var(--bord-color);box-shadow:var(--shadow);box-sizing:border-box;display:b
 opacity:.8;z-index:2}#image[src]{display:block;-o-object-fit:cover;object-fit:cover;
 pointer-events:auto;z-index:1}}:host-context(.c-panel:not(.s-clean)) #mask{border:initial}
  </style><a id="link"></a><div id="mask" part="mask"></div><slot><img id="image"/></slot>`;var l=class extends HTMLElement{#e;#t=this.attachInternals();static observedAttributes=["alt","href","src","tabindex","t\
-arget"];static role="img";static tagName="c-avatar";static initAttributes(e){let s={"aria-atomic":!0,exportparts:"mask",
-role:this.role};return u(e,s)}constructor(){super(),this.#e=c.call(this,{template:h,delegatesFocus:!0}),this.#s.add(m.Defined)}attributeChangedCallback(e,s,a){
-if(this.isConnected===!1||s===a)return;let o=["href","target","tabindex"].includes(e)?this.#o:["alt","src"].includes(e)?
-this.#r:null;o!==null&&(a===null?o.removeAttribute(e):e==="tabindex"?o.setAttribute(e,"0"):o.setAttribute(e,a))}get#o(){
-return this.#e.getElementById("link")}get#r(){let e=this.#e.getElementById("image");if(e===null)throw new Error("Image e\
-lement not found but required!");return e}get#s(){return this.#t.states}},H=l;export{H as default};
+arget"];static role="img";static tagName="c-avatar";static initAttributes(e){let r={"aria-atomic":!0,exportparts:"mask",
+role:this.role};return u(e,r)}constructor(){super(),this.#e=c.call(this,{template:h,delegatesFocus:!0}),this.#r.add(m.Defined)}attributeChangedCallback(e,r,a){
+if(this.isConnected===!1||r===a)return;let o=["href","target","tabindex"].includes(e)?this.#o:["alt","src"].includes(e)?
+this.#s:null;o!==null&&(a===null?o.removeAttribute(e):e==="tabindex"?o.setAttribute(e,"0"):o.setAttribute(e,a))}get#o(){
+return this.#e.getElementById("link")}get#s(){let e=this.#e.getElementById("image");if(e===null)throw new Error("Image e\
+lement not found but required!");return e}get#r(){return this.#t.states}},H=l;export{H as default};

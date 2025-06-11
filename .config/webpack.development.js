@@ -1,8 +1,7 @@
 import path from 'node:path'
 import { options as pugOptions } from '../.kernel/compiler.pug.js'
-import type { Configuration } from 'webpack'
 
-const config: Configuration = {
+const config = /** @type {import('webpack').Configuration} */ {
 	context: process.cwd(),
 	devtool: 'eval-cheap-module-source-map',
 	entry: {

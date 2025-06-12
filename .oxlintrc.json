@@ -1,0 +1,97 @@
+{
+  "ignorePatterns": ["assets/**"],
+  "plugins": ["typescript", "unicorn", "nextjs", "oxc", "import", "jsdoc", "node"],
+  "categories": {
+    "correctness": "error",
+    "perf": "warn"
+  },
+  "rules": {
+    "consistent-function-scoping": "off",
+    "explicit-function-return-type": [
+      "warn",
+      {
+        "allowConciseArrowFunctionExpressionsStartingWithVoid": true
+      }
+    ],
+    "func-style": [
+      "warn",
+      "declaration",
+      {
+        "allowArrowFunctions": true
+      }
+    ],
+    "import/no-anonymous-default-export": [
+      "warn",
+      {
+        "allowObject": true
+      }
+    ],
+    "max-dependencies": [
+      "warn",
+      {
+        "max": 12
+      }
+    ],
+    "max-depth": ["error", 5],
+    "max-lines-per-function": [
+      "warn",
+      {
+        "max": 60
+      }
+    ],
+    "max-nested-callbacks": [
+      "warn",
+      {
+        "max": 2
+      }
+    ],
+    "max-params": ["error", 5],
+    "no-async-await": "off",
+    "no-default-export": "off",
+    "no-magic-numbers": "off",
+    "no-null": "off",
+    "no-optional-chaining": "off",
+    "no-array-for-each": "off",
+    "no-redeclare": "off",
+    "sort-imports": "off",
+    "prefer-logical-operator-over-ternary": "off",
+    "no-multi-assign": "off",
+    "no-ternary": "off",
+    "unicorn/filename-case": "off",
+    "no-unused-vars": [
+      1,
+      {
+        "args": "all",
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "caughtErrorsIgnorePattern": "_$",
+        "destructuredArrayIgnorePattern": "_$",
+        "ignoreRestSiblings": true,
+        "varsIgnorePattern": "_$"
+      }
+    ],
+    "import/max-dependencies": [
+      "warn",
+      {
+        "max": 30,
+        "ignoreTypeImports": true
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/__tests__/**", "**/__specs__/**"],
+      "plugins": ["jest"],
+      "env": {
+        "jest": true
+      },
+      "rules": {
+        "init-declarations": "off",
+        "jest/no-disabled-tests": "off",
+        "max-lines-per-function": "off",
+        "max-nested-callbacks": ["warn", 5],
+        "no-async-await": "off"
+      }
+    }
+  ]
+}

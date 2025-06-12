@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@bpanchenko/core",
-  "version": "1.16.68",
+  "version": "1.16.69",
   "type": "module",
   "main": "./source/index.ts",
   "imports": {
@@ -13,6 +13,7 @@
     "build": "node ./node_scripts/bundler.js --mode build",
     "debug": "node ./node_scripts/bundler.js --mode serve",
     "prebuild": "rimraf \"./assets/*.{js,css,map}\" --glob",
+    "lint": "oxlint --fix",
     "predebug": "npm run build",
     "prepublishOnly": "npm run test",
     "test:e2e": "jest --config=@config/jest-e2e.cjs",
@@ -49,7 +50,8 @@
     "nocache": "4.0.0",
     "node-color-log": "12.0.1",
     "npm-run-all": "4.1.5",
-    "postcss": "8.5.4",
+    "oxlint": "1.1.0",
+    "postcss": "8.5.5",
     "postcss-custom-media": "11.0.6",
     "postcss-custom-selectors": "8.0.5",
     "postcss-extend-rule": "4.0.0",

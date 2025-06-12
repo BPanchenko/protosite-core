@@ -8,7 +8,7 @@ declare class ArrowElement extends HTMLElement {
 	static readonly styles: Readonly<Style[]>;
 	static readonly weights: Readonly<Weight[]>;
 	constructor();
-	attributeChangedCallback(name_: any, previous: any, current: any): void;
+	attributeChangedCallback(_name: any, previous: any, current: any): void;
 	connectedCallback(): void;
 }
 export declare const validDirectionValues: readonly ["bottom", "bottom-left", "bottom-right", "left", "right", "top", "top-left", "top-right"];

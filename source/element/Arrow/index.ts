@@ -43,7 +43,7 @@ class ArrowElement extends HTMLElement {
 		this.#states.add(CustomState.Defined)
 	}
 
-	attributeChangedCallback(name_, previous, current) {
+	attributeChangedCallback(_name, previous, current) {
 		if (previous === current) return
 		this.#applyGlyph()
 	}

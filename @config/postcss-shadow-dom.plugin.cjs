@@ -1,13 +1,13 @@
 /**
  * Check if specified selector is a :root
  * @param  {String} selector
- * @return {Boolean}
+ * @returns {Boolean}
  */
 function isRootSelector(selector) {
-	return /^:root/.test(selector)
+	return selector.startsWith(':root')
 }
 
-module.exports = (opts = {}) => {
+module.exports = () => {
 	return {
 		postcssPlugin: 'postcss-shadow-dom',
 		Rule(rule) {

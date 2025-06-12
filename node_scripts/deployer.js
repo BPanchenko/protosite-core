@@ -22,7 +22,7 @@ const files = new Map(
 		logger.uploadCaption()
 
 		for (const [from, to] of files.entries()) {
-			await client.uploadFrom(from, to)
+			client.uploadFrom(from, to)
 			logger.uploadedFile(to)
 		}
 	} catch (err) {

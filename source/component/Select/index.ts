@@ -298,12 +298,12 @@ class SelectComponent extends HTMLElement implements CustomElement {
 		return this.#focusCont
 	}
 
-	#onBlur(event_: FocusEvent) {
+	#onBlur(_event: FocusEvent) {
 		this.hidePicker()
 		this.#interCont?.abort()
 	}
 
-	#onFocus(event_: FocusEvent) {
+	#onFocus(_event: FocusEvent) {
 		this.#listenInteraction()
 	}
 
@@ -335,7 +335,7 @@ class SelectComponent extends HTMLElement implements CustomElement {
 		return this.#passingCont
 	}
 
-	#onInput(event_: InputEvent) {
+	#onInput(_event: InputEvent) {
 		const { label = null, value = null } =
 			this.options[this.#$picker.selectedIndex] ?? {}
 		this.#internals.setFormValue(value)
@@ -360,7 +360,7 @@ class SelectComponent extends HTMLElement implements CustomElement {
 		return this.#interCont
 	}
 
-	#onClick(event_: MouseEvent) {
+	#onClick(_event: MouseEvent) {
 		this.expanded ? this.hidePicker() : this.showPicker()
 	}
 
@@ -420,7 +420,7 @@ class SelectComponent extends HTMLElement implements CustomElement {
 		)
 	}
 
-	#onAnimationEnd(event_: AnimationEvent) {
+	#onAnimationEnd(_event: AnimationEvent) {
 		this.#states.delete(CustomState.Animation)
 		this.#updateChildNodes()
 	}

@@ -1,5 +1,3 @@
-/// <reference path="../../globals.d.ts" />
-
 import initShadowRoot from '#library/fn.initShadowRoot'
 import updateAttributes from '#library/fn.updateAttributes'
 

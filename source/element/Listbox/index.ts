@@ -126,12 +126,12 @@ class ListboxElement extends HTMLElement {
 		this.#slotChangeCont?.abort()
 	}
 
-	formAssociatedCallback(form_) { }
-	formDisabledCallback(state_) { }
+	formAssociatedCallback(_form) { }
+	formDisabledCallback(_state) { }
 	formResetCallback() {
 		this.selectedIndex = this.#selectedIndexByDefault
 	}
-	formStateRestoreCallback(state_, reason_) { }
+	formStateRestoreCallback(_state, _reason) { }
 
 	/**
 	 * Returns an first option wich value is fully equal to the query string.
@@ -439,11 +439,11 @@ class ListboxElement extends HTMLElement {
 		return this.#focusCont
 	}
 
-	#onBlur(event_: FocusEvent) {
+	#onBlur(_event: FocusEvent) {
 		this.#interCont?.abort()
 	}
 
-	#onFocus(event_: FocusEvent) {
+	#onFocus(_event: FocusEvent) {
 		this.#listenInteraction()
 	}
 

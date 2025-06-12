@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} PostcssConfig
- * @property {import('postcss-safe-parser').PostCssSafeParser} parser
- * @property {import('postcss').AcceptedPlugin[]} plugins
+ * @property {import('postcss-safe-parser').PostCssSafeParser} parser ...
+ * @property {import('postcss').AcceptedPlugin[]} plugins ...
  */
 
 const parser = require('postcss-safe-parser')

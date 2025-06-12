@@ -1,9 +1,3 @@
-interface CustomStateSet {
-	has(state: string): boolean
-	add(state: string): void
-	delete(state: string): void
-}
-
 interface CSSRuleList {
 	[Symbol.iterator](): Iterator<CSSStyleRule>
 }

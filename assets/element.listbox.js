@@ -96,3 +96,4 @@ e.stopPropagation();break;case"Space":this.selectedIndex===this.activeIndex?this
 this.activeIndex;break;case"End":this.activeIndex=this.length-1;break;case"Home":this.activeIndex=0;break;case"ArrowUp":
 this.#r&&(e.altKey?this.activeIndex=0:this.shift(-1),e.stopPropagation()),e.preventDefault();break;case"ArrowDown":e.altKey?
 this.activeIndex=this.length-1:this.shift(1),e.preventDefault();break;default:/\w+/.test(e.key);return}}},xi=m;export{xi as default};
+//# sourceMappingURL=element.listbox.js.map

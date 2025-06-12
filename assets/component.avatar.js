@@ -37,3 +37,4 @@ if(this.isConnected===!1||r===a)return;let o=["href","target","tabindex"].includ
 this.#s:null;o!==null&&(a===null?o.removeAttribute(e):e==="tabindex"?o.setAttribute(e,"0"):o.setAttribute(e,a))}get#o(){
 return this.#e.getElementById("link")}get#s(){let e=this.#e.getElementById("image");if(e===null)throw new Error("Image e\
 lement not found but required!");return e}get#r(){return this.#t.states}},H=l;export{H as default};
+//# sourceMappingURL=component.avatar.js.map

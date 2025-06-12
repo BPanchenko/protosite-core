@@ -6,7 +6,7 @@ ht-bottom","angle-right-bottom-fill","angle-right-top","angle-thick-bottom-left"
 thick-left-bottom-line","angle-thick-top-left","angle-thick-top-right","fill","line"],h=["acute","angled","large","large\
 -acute","large-angled","large-oblique","oblique"],g=["thick"],m=(t,e)=>{if(e===null||!e?.cssRules)return!0;for(let i of e.
 cssRules)if(i.selectorText===`[data-glyph="${t}"]`)return!0;return!1},f=t=>c.includes(t),x=t=>d.includes(t),v=t=>h.includes(
-t),b=t=>g.includes(t);var w=`<link id="link-glyph-collection" fetchpriority="low" href="//assets.protosite.xyz/core/stylesheet.arrow-glyphs.cs\
+t),b=t=>g.includes(t);var w=`<link id="link-glyph-collection" fetchpriority="low" href="//protosite.xyz/assets/core/stylesheet.arrow-glyphs.cs\
 s" media="screen" rel="stylesheet" type="text/css" title="Visual Symbol defines by the glyph name that passed to the dat\
 a attribute"/><style type="text/css">:host{--unit:1.6rem;--space-md:max(2.5 * var(--unit));--space-xl:max(8 * var(--unit\
 ))}
@@ -49,3 +49,4 @@ if(b(r))e.push(r);else throw new TypeError(`Invalid Weight: ${r}`);if(i!==null)i
 l))e.push(l);else throw new TypeError(`Invalid Style: ${l}`);let s=e.join("-");console.assert(m(s,this.#t),`Unsupported \
 Glyph: ${s}`),this.#s.dataset.glyph=s}get#s(){return this.#e.getElementById("icon-container")}get#l(){return this.#e.getElementById(
 "link-styling")}get#i(){return this.#o.states}},W=u;export{W as default};
+//# sourceMappingURL=element.arrow.js.map

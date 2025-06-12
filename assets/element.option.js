@@ -6,3 +6,4 @@ option";static tagName="e-option";static initAttributes(e){let i={"aria-selected
 role};return e.isConnected&&!i.id&&(i.id=[this.role,Math.round(performance.now())].join("-")),d(e,i)}constructor(){super(),
 t.initAttributes(this)}connectedCallback(){t.initAttributes(this)}get label(){return this.ariaLabel||this.textContent}get value(){
 return this.dataset.value||this.getAttribute("value")}},h=o;export{h as default};
+//# sourceMappingURL=element.option.js.map

@@ -166,3 +166,4 @@ this.#e.addEventListener("animationend",a=>this.#E(a),{signal:t})}#E(t){this.#t.
 bubbles:a,data:e,type:r}=t,n=Object.getPrototypeOf(t).constructor,l=new n(r,{bubbles:a,data:e});return this.dispatchEvent(
 l),this}#p(){let t=this.#t.has(i.Expanded),a=this.#t.has(i.Collapsed);t?(this.#e.focus(),this.#e.updateScrollbar()):this.#l.
 focus(),this.#e.ariaHidden=a.toString()}},H=b;export{H as default};
+//# sourceMappingURL=component.select.js.map

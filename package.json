@@ -1,40 +1,23 @@
 {
-  "name": "@bpanchenko/core",
   "private": true,
-  "version": "1.15.66",
-  "description": "The library `Protosite Core` is collection of interactive web components and graphical interface elements.",
-  "homepage": "https://protosite.xyz",
+  "name": "@bpanchenko/core",
+  "version": "1.16.68",
   "type": "module",
-  "main": "./.bundle/index.js",
-  "types": "./.bundle/index.d.ts",
-  "files": [
-    "./.bundle/*"
-  ],
-  "exports": {
-    "./arrow-element": "./.bundle/element.arrow.js",
-    "./avatar-component": "./.bundle/component.avatar.js",
-    "./listbox-element": "./.bundle/element.listbox.js",
-    "./option-element": "./.bundle/element.option.js",
-    "./select-component": "./.bundle/component.select.js"
-  },
+  "main": "./source/index.ts",
   "imports": {
-    "#stylesheet/*": "./.bundle/stylesheet.*",
     "#element/*": "./source/element/*",
     "#library/*": "./source/library/*",
     "#uikit/*": "@bpanchenko/uikit/*"
   },
   "scripts": {
-    "build:esmodules": "node ./.kernel/build.esmodules.js",
-    "build:package": "node ./.kernel/build.package.js",
-    "build:stylesheets": "node ./.kernel/build.stylesheets.js",
-    "build": "run-s build:stylesheets build:esmodules build:package",
-    "deploy": "node ./.kernel/deployer.js",
-    "lint": "eslint . --fix",
-    "postpublishOnly": "npm run deploy",
-    "prebuild": "rimraf \"./.bundle/*.{js,ts}\" --glob",
-    "test": "npm run test:unit && npm run test:e2e",
-    "test:e2e": "jest --config=.config/jest-e2e.cjs",
-    "test:unit": "jest --config=.config/jest-unit.cjs"
+    "build": "node ./node_scripts/bundler.js --mode build",
+    "debug": "node ./node_scripts/bundler.js --mode serve",
+    "prebuild": "rimraf \"./assets/*.{js,css,map}\" --glob",
+    "predebug": "npm run build",
+    "prepublishOnly": "npm run test",
+    "test:e2e": "jest --config=@config/jest-e2e.cjs",
+    "test:unit": "jest --config=@config/jest-unit.cjs",
+    "test": "run-p --print-label test:*"
   },
   "devDependencies": {
     "@bpanchenko/uikit": "file:../protosite-uikit",
@@ -46,6 +29,7 @@
     "@types/lodash": "4.17.17",
     "@types/postcss-safe-parser": "5.0.4",
     "@types/pug": "2.0.10",
+    "commander": "14.0.0",
     "construct-style-sheets-polyfill": "3.1.0",
     "cssnano": "7.0.7",
     "cssnano-preset-default": "7.0.7",
@@ -81,20 +65,10 @@
     "setimmediate": "1.0.5",
     "typescript": "5.8.3"
   },
-  "keywords": [
-    "WEB Components",
-    "Custom Elements",
-    "Unit testing",
-    "End-to-End testing"
-  ],
   "author": {
     "name": "Boris Panchenko",
     "email": "boris.v.panchenko@mail.ru",
     "url": "https://bpanchenko.ru"
   },
-  "license": "LGPL-3.0-only",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/BPanchenko/protosite-core.git"
-  }
+  "license": "LGPL-3.0-only"
 }

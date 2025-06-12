@@ -1,12 +1,9 @@
-import postcss from 'postcss'
-import { readFileSync } from 'node:fs'
+const { readFileSync } = require('node:fs')
+const postcss = require('postcss')
+const { parser, plugins } = require('./postcss.config.cjs')
 
-import PostcssConfig from '../.config/postcss.config.cjs'
-
-const { parser, plugins } = PostcssConfig
-
-export const esbuildPlugin = () => ({
-	name: 'postcss-processor',
+const postcssPlugin = () => ({
+	name: 'postcss-plugin',
 	setup(build) {
 		build.onLoad({ filter: /\.css$/ }, async ({ path }) => {
 			const sourceCss = readFileSync(path, 'utf8')
@@ -22,4 +19,6 @@ export const esbuildPlugin = () => ({
 	},
 })
 
-export default esbuildPlugin
+module.exports = {
+	postcssPlugin
+}

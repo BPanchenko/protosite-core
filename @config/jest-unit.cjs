@@ -1,5 +1,5 @@
 const path = require('node:path')
-const { debug, error, info, success, warn } = require('../.kernel/logger.cjs')
+const { debug, error, info, success, warn } = require('../node_scripts/logger.cjs')
 
 const globals = {
 	ENV: 'DEV',

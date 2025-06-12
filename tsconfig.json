@@ -4,14 +4,14 @@
     "allowSyntheticDefaultImports": true,
     "alwaysStrict": true,
     "declaration": true,
-    "declarationDir": ".bundle",
+    "declarationDir": "@types",
     "esModuleInterop": true,
     "lib": ["DOM", "ESNext", "ES2024"],
     "module": "ESNext",
     "moduleResolution": "bundler",
     "noEmitOnError": true,
     "noImplicitThis": true,
-    "outDir": ".bundle",
+    "outDir": "assets",
     "paths": {
       "#element/*": ["./source/element/*"],
       "#library": ["./source/library/index.ts"],
@@ -27,9 +27,10 @@
     "target": "ESNext"
   },
   "include": [
-    "./.kernel/**/*",
-    "./.bundle/*",
-    "./e2e-env/__tests__/*",
+    "./node_scripts/**/*",
+    "./assets/*",
+    "./@config/*",
+    "assets/__tests__/*",
     "./source/**/*"
   ]
 }

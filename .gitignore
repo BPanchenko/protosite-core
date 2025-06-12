@@ -1,9 +1,11 @@
-/.eslintcache
-/*-lock.json
-/*-lock.yaml
-/*.lock
+@types/source/
+.vscode/
+assets/__tests__/__image_snapshots__/__diff_output__/
+node_modules/
 
-/.config/ftp.json
-/.vscode
-/e2e-env/__tests__/__image_snapshots__/__diff_output__
-/node_modules
+@config/ftp.json
+
+*-lock.json
+*-lock.yaml
+*.lock
+assets/*.map

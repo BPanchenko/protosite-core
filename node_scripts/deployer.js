@@ -3,7 +3,7 @@ import { globSync } from 'glob'
 import path from 'node:path'
 import { logger } from './logger.cjs'
 
-import ftpAccess from '../.config/ftp.json' with { type: 'json' }
+import ftpAccess from '../@config/ftp.json' with { type: 'json' }
 
 const asIs = globSync(['bundle/*.mjs']).map((file) => [
 	path.resolve(file),

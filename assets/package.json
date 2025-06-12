@@ -1,6 +1,6 @@
 {
   "name": "@bpanchenko/core",
-  "version": "1.15.66",
+  "version": "1.16.68",
   "description": "The library `Protosite Core` is collection of interactive web components and graphical interface elements.",
   "homepage": "https://protosite.xyz",
   "keywords": [
@@ -12,7 +12,7 @@
   "author": {
     "name": "Boris Panchenko",
     "email": "boris.v.panchenko@mail.ru",
-    "url": "https://bpanchenko.ru"
+    "url": "https://bp-studio.ru"
   },
   "license": "LGPL-3.0-only",
   "repository": {
@@ -22,9 +22,6 @@
   "type": "module",
   "main": "./index.js",
   "types": "./index.d.ts",
-  "files": [
-    "./*"
-  ],
   "exports": {
     ".": "./index.js",
     "./arrow-element": "./element.arrow.js",

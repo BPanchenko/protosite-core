@@ -3,26 +3,24 @@ const { postcssPlugin } = require('./plugin.postcss.cjs')
 module.exports = {
     bundle: true,
     color: true,
-    entryPoints: [{
-        in: 'source/component/Avatar/stylesheet.main.css',
-        out: 'stylesheet.avatar-component'
-    }, {
-        in: 'source/component/Select/stylesheet.main.css',
-        out: 'stylesheet.select-component'
-    }, {
-        in: 'source/element/Arrow/stylesheet.main.css',
-        out: 'stylesheet.arrow-element'
-    }, {
-        in: 'source/element/Arrow/stylesheet.arrow-glyphs.css',
-        out: 'stylesheet.arrow-glyphs'
-    }, {
-        in: 'source/element/File/stylesheet.main.css',
-        out: 'stylesheet.file-element'
-    }, {
-        in: 'source/element/File/stylesheet.file-glyphs.css',
-        out: 'stylesheet.file-glyphs'
-    }],
-    lineLimit: 80,
+    entryPoints: [
+		{
+			in: 'source/component/Avatar/stylesheet.css',
+			out: 'component.avatar'
+		},
+		{
+			in: 'source/component/Select/stylesheet.css',
+			out: 'component.select'
+		},
+		{
+			in: 'source/element/Arrow/stylesheet.css',
+			out: 'element.arrow'
+		},
+		{
+			in: 'source/element/File/stylesheet.css',
+			out: 'element.file'
+		},
+	],
     logLevel: 'info',
     metafile: true,
     minify: true,

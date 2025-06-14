@@ -32,7 +32,7 @@ module.exports = {
     metafile: true,
     minify: true,
     outdir: 'assets',
-    plugins: [postcssPlugin(), pugCompiler(), dtsPlugin()],
+    plugins: [postcssPlugin(), pugCompiler()/** , dtsPlugin() */],
     sourcemap: true,
     target: ['esnext', 'safari18'],
     tsconfig: 'tsconfig.json'

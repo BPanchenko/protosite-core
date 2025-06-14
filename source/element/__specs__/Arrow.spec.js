@@ -1,7 +1,7 @@
 import '../__mocks__/window.mock'
 
-import ArrowComponent from '../Arrow/index.ts'
 import compactObject from '#library/fn.compactObject.ts'
+import ArrowComponent from '../Arrow'
 
 describe('[ArrowComponent]', () => {
 	describe('Attributes:', () => {
